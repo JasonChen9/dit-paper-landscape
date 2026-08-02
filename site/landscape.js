@@ -456,7 +456,9 @@
 
   function startAmbientMotion(token) {
     let lastFrame = 0;
+    let handoffStart = null;
     const frameInterval = 1000 / 30;
+    const handoffDuration = 1200;
     const frame = (timestamp) => {
       if (token !== state.animationToken) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -471,6 +473,9 @@
       if (!document.hidden && timestamp - lastFrame >= frameInterval) {
         const elapsed = lastFrame ? timestamp - lastFrame : frameInterval;
         lastFrame = timestamp;
+        if (handoffStart === null) handoffStart = timestamp;
+        const handoffProgress = Math.min(1, (timestamp - handoffStart) / handoffDuration);
+        const handoffBlend = 1 - Math.pow(1 - handoffProgress, 3);
         if (state.hovered !== null) {
           state.hoverEnergy += (1 - state.hoverEnergy) * 0.2;
         } else {
@@ -489,8 +494,8 @@
           const activation = state.hoverEnergy * proximity;
           const amplitude = node.driftAmplitude * (1 + activation * 0.95);
           const phase = node.driftPhase + timestamp * node.driftSpeed * (1 + activation * 0.45);
-          node.x = node.anchorX + Math.sin(phase) * amplitude;
-          node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72;
+          node.x = node.anchorX + Math.sin(phase) * amplitude * handoffBlend;
+          node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72 * handoffBlend;
         });
         draw();
       }
@@ -508,13 +513,16 @@
       draw();
       return;
     }
-    let iterations = 0;
+    let settleFrame = 0;
+    const settleFrames = 72;
     const frame = () => {
       if (token !== state.animationToken) return;
-      for (let step = 0; step < 4; step += 1) forceStep();
+      const settleProgress = settleFrame / (settleFrames - 1);
+      const forceSteps = Math.max(1, Math.round(5 - settleProgress * 4));
+      for (let step = 0; step < forceSteps; step += 1) forceStep();
       draw();
-      iterations += 4;
-      if (iterations < 220) {
+      settleFrame += 1;
+      if (settleFrame < settleFrames) {
         requestAnimationFrame(frame);
       } else {
         captureAnchors();
