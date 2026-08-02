@@ -1,10 +1,14 @@
-# 最近一年 DiT 研究版图
+# 最近三年 DiT 研究版图
 
-> 统计窗口：2025-08-02—2026-08-02。精选 48 篇窗口内论文，另列 8 篇窗口外背景锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
+> 统计窗口：2023-08-02—2026-08-02。精选 60 篇窗口内论文，另列 16 篇更早的历史锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
 
 ## 一句话判断
 
 DiT 的研究重心已经从“Transformer 能否替代 U-Net”转向“如何让连续生成模型具备更好的表示、更长的时间跨度、更低的系统成本，以及可通过 RL 和交互数据获得新能力”。
+
+## 综述回填的历史链
+
+依据 [Diffusion Models: A Comprehensive Survey of Methods and Applications](https://arxiv.org/abs/2209.00796) 回查后，主图谱补入 20 篇对 DiT 有直接方法意义的前置工作：DDPM / Score SDE 的生成基础，LDM 的 latent 与条件接口，DDIM / EDM / DPM-Solver / Progressive Distillation 的训练采样设计，Flow Matching / Rectified Flow 的连续流目标，Video Diffusion Models 的视频起点，以及 One Transformer Fits All、MMaDA 和早期 diffusion RL / preference alignment。纯垂直应用、普通 Transformer、扩散语言模型中的非多模态工作不纳入。
 
 ## 六条主线
 

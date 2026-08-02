@@ -1,8 +1,8 @@
-# DiT Paper Landscape（2025-08-02—2026-08-02）
+# DiT Paper Landscape（2023-08-02—2026-08-02）
 
 这是一个面向研究阅读的 Diffusion Transformer（DiT）文献仓库，重点回答三个问题：
 
-1. 最近一年 DiT 社区在集中解决什么问题？
+1. 最近三年 DiT 社区在集中解决什么问题？
 2. RL、Agent/World Model、Omni/统一多模态怎样与 DiT 结合？
 3. 哪些结论适用于主流 Dense DiT，哪些只适用于研究型 MoE、特定系统或特定任务？
 
@@ -39,7 +39,7 @@
 
 ```text
 papers/
-├── 00_background/             # 窗口外但解释当前趋势必需的锚点
+├── 00_background/             # 生成基础与解释当前趋势所需的前置工作
 ├── 01_foundation_architecture/
 ├── 02_video_long_context/
 ├── 03_efficiency_systems/
@@ -52,8 +52,8 @@ papers/
 
 ## 口径
 
-- **严格时间窗口**：首次公开日期位于 2025-08-02 至 2026-08-02。
-- **背景锚点**：DiT、DiT-MoE、Wan、Flow-GRPO、DanceGRPO、Self-Forcing、OmniGen2 等虽然早于窗口，但对理解最近一年不可缺少，单列而不计入年度趋势数量。
+- **三年主窗口**：首次公开日期位于 2023-08-02 至 2026-08-02。
+- **历史锚点**：包括 DDPM / LDM / Flow Matching、原始 DiT 等生成基础；其中 16 篇早于三年窗口，但对解释方法演进不可缺少。
 - **来源优先级**：会议官方页 / OpenReview / arXiv / 作者项目页；不以二手新闻作为论文事实依据。
 - **DiT 关系标签**：
   - `direct`：DiT/MMDiT 是核心生成或策略网络；
@@ -64,7 +64,7 @@ papers/
 
 ## 当前结论（极简版）
 
-最近一年最明显的主线不是“把 DiT 再堆大一点”，而是：
+最近三年最明显的主线不是“把 DiT 再堆大一点”，而是：
 
 1. **换 latent**：从传统 VAE latent 转向语义更强的 Representation Autoencoder（RAE），同时重新处理高维 latent 的噪声尺度与宽度匹配。
 2. **降低 token/attention 成本**：更强 VAE、线性/稀疏注意力、token routing、缓存、量化和多 GPU 并行成为共同主题。
@@ -76,7 +76,7 @@ papers/
 
 ## 同步 PDF
 
-PDF 保存在本地分类目录，但默认不进入普通 Git 历史：当前全集接近 0.9 GB，且可由结构化目录重复下载。若需要把 PDF 一并推送到远端，建议另行配置 Git LFS。
+PDF 保存在本地分类目录，但默认不进入普通 Git 历史：当前全集约 1.2 GB，且可由结构化目录重复下载。若需要把 PDF 一并推送到远端，建议另行配置 Git LFS。
 
 ```bash
 python3 scripts/sync_papers.py

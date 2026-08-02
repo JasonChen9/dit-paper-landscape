@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="最近一年 Diffusion Transformer 论文数据库：架构、视频、系统效率、RL、Agent 与 Omni。"
+      content="最近三年 Diffusion Transformer 论文数据库：架构、视频、系统效率、RL、Agent 与 Omni。"
     />
     <meta name="theme-color" content="#ffffff" />
     <title>DiT Paper Atlas</title>
@@ -16,9 +16,9 @@
         document.documentElement.dataset.theme = saved || preferred;
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260802-xema" />
-    <script src="./landscape.js?v=20260802-xema" defer></script>
-    <script src="./app.js?v=20260802-xema" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260802-three-year" />
+    <script src="./landscape.js?v=20260802-three-year" defer></script>
+    <script src="./app.js?v=20260802-three-year" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -40,12 +40,12 @@
         <h1 id="page-title"><strong>DiT Paper</strong> Atlas</h1>
         <p class="subtitle">A curated research index for Diffusion Transformers</p>
         <p>
-          本站整理最近一年 DiT 的代表性工作，关注基础架构、视频长上下文、系统效率、
+          本站整理最近三年 DiT 的代表性工作，关注基础架构、视频长上下文、系统效率、
           RL 后训练、Agent / World Model 与 Omni 统一模型。数据库强调问题结构和论文之间的关系，而非关键词穷举。
         </p>
         <div class="stats" aria-label="数据库统计">
-          <span><strong id="total-count">56</strong> papers</span>
-          <span><strong id="window-count">48</strong> in the last year</span>
+          <span><strong id="total-count">76</strong> papers</span>
+          <span><strong id="window-count">60</strong> in the last 3 years</span>
           <span><strong>6</strong> research topics</span>
           <span>updated Aug 2026</span>
         </div>
@@ -133,7 +133,7 @@
 
         <div class="landscape-subsection">
           <h3>cross-topic bridges</h3>
-          <p>最近一年中标签相似、但原始分类不同的论文对，是最值得交叉阅读的连接点。</p>
+          <p>最近三年中标签相似、但原始分类不同的论文对，是最值得交叉阅读的连接点。</p>
           <div id="bridge-list" class="bridge-list"></div>
         </div>
       </section>
@@ -170,7 +170,7 @@
               <span>时间范围</span>
               <select id="window-select">
                 <option value="all">全部论文</option>
-                <option value="in-window">最近一年</option>
+                <option value="in-window">最近三年</option>
                 <option value="background">背景锚点</option>
               </select>
             </label>
@@ -204,7 +204,7 @@
         <div class="method-grid">
           <article>
             <h3>时间范围</h3>
-            <p>严格窗口采用 arXiv 首次公开日期 2025-08-02—2026-08-02；更早论文只在解释趋势不可缺少时作为背景收录。</p>
+            <p>主窗口采用 arXiv 首次公开日期 2023-08-02—2026-08-02；更早论文只在解释 DiT 方法演进不可缺少时作为历史锚点收录。</p>
           </article>
           <article>
             <h3>筛选原则</h3>

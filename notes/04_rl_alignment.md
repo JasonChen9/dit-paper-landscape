@@ -2,7 +2,7 @@
 
 ## RL 为什么在 DiT 上突然变热
 
-监督微调只能模仿数据分布；RL 可以直接优化不可微或需要完整样本才能判断的目标。视觉生成最初常用审美、文本对齐 reward，最近一年正在转向更可验证的能力：文字是否拼对、物体是否数对、3D/4D 是否一致、动作是否满足物理或规则。
+监督微调只能模仿数据分布；RL 可以直接优化不可微或需要完整样本才能判断的目标。视觉生成最初常用审美、文本对齐 reward，近三年正在转向更可验证的能力：文字是否拼对、物体是否数对、3D/4D 是否一致、动作是否满足物理或规则。
 
 其基本闭环是：
 
@@ -20,6 +20,9 @@ flowchart LR
 
 | 论文 | 奖励/方法重点 | DiT 关系 |
 |---|---|---|
+| Aligning T2I / ImageReward（背景） | 人类反馈数据、奖励模型与 ReFL | 建立视觉 diffusion 对齐闭环；方法可迁移到 DiT |
+| DPOK（背景） | online policy gradient + KL regularization | 把多步去噪显式视为策略优化问题 |
+| Diffusion-DPO / D3PO（背景） | 直接偏好优化、有/无显式 reward model | 后续 DiT preference optimization 的目标函数基线 |
 | Flow-GRPO（背景） | 把 online GRPO 适配到 flow matching | 已有 flow/DiT 的后训练框架 |
 | DanceGRPO（背景） | 系统化视觉 GRPO、采样与稳定性 | 已有视觉生成器适配 |
 | [DiffusionNFT](https://arxiv.org/abs/2509.16117) | 利用 forward process 做在线 diffusion RL | 解决探索/概率实现问题 |

@@ -16,6 +16,8 @@
         "rae", "latent", "representation", "pixel-space", "tokenization", "single-stream",
         "hybrid-architecture", "scaling-law", "moe", "routing", "expert-design", "scaling",
         "foundation", "foundation-model", "image", "text-rendering", "editing", "conversion",
+        "ddpm", "score-sde", "continuous-time", "training-objective", "rectified-flow",
+        "flow-matching", "straight-path", "training-design", "noise-schedule",
       ],
     },
     video: {
@@ -32,6 +34,7 @@
         "pipeline", "serving", "scheduling", "communication", "overlap", "load-balancing",
         "inference", "compression", "efficiency", "engine", "speculation", "sequence-parallel",
         "training", "block-wise", "hierarchical", "memory-management", "auto-configuration",
+        "sampling", "implicit-process", "ode-solver", "few-step", "distillation", "guidance",
       ],
     },
     rl: {
@@ -40,6 +43,7 @@
         "rl", "grpo", "reward-model", "verifiable-reward", "alignment", "online",
         "forward-process", "gradient-estimation", "rollout", "spot-gpu", "3d-constraint",
         "4d-consistency", "reasoning", "visual-generation", "flow-matching",
+        "dpo", "preference", "human-feedback", "policy-gradient", "kl-regularization", "reward-free",
       ],
     },
     agent: {
@@ -55,6 +59,7 @@
         "omni", "multimodal", "multi-output", "audio", "synchronization", "interleaved",
         "understanding", "generation", "perception", "unified-representation", "instruction",
         "image-editing", "prior-preservation", "decoupled", "unified", "prediction",
+        "discrete-diffusion",
       ],
     },
   };

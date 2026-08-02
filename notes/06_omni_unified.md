@@ -10,6 +10,8 @@
 
 因此看到模型名中的 Omni，首先要问它统一的是 condition、output，还是 representation/objective。
 
+历史上，[One Transformer Fits All](https://arxiv.org/abs/2303.06555) 已尝试用同一个 Transformer diffusion 拟合单模态与联合多模态分布；[MMaDA](https://arxiv.org/abs/2505.15809) 则用离散 diffusion Transformer 统一理解与生成。它们分别是连续多模态生成和离散多模态建模的背景锚点，不应因为都叫 diffusion 就视为同一种 DiT。
+
 ## 代表工作
 
 - [3MDiT](https://arxiv.org/abs/2511.21780)：联合文本条件下的同步音频—视频去噪，跨模态时间对齐是核心。

@@ -4,7 +4,7 @@
 
 1. 在 `catalog/papers.csv` 增加一行。
 2. `category` 必须对应 `papers/` 下已有目录。
-3. `window` 使用 `in-window` 或 `background-anchor`。
+3. `window` 使用 `in-window` 或 `background`。
 4. `dit_relation` 使用 `direct`、`adaptation`、`system` 或 `adjacent`。
 5. `summary_zh` 只写论文解决的核心问题与方法，不复制摘要。
 6. 运行 `python3 scripts/sync_papers.py` 下载 PDF。
@@ -26,9 +26,8 @@
 
 - 只有找到会议官方页面或 OpenReview 最终状态时才写正式 venue。
 - 只有 arXiv 时写 `arXiv preprint`，不要根据模板猜测录用状态。
-- `background-anchor` 可以来自窗口前，但必须在笔记中说明为什么保留。
+- `background` 可以来自窗口前，但必须在笔记中说明为什么保留。
 
 ## PDF 版权与来源
 
 PDF 均从 arXiv 官方 `https://arxiv.org/pdf/<id>` 下载，仅用于个人研究整理。提交 GitHub 前请根据仓库用途和文件体积决定是否用 Git LFS，或改为只提交目录与链接。
-

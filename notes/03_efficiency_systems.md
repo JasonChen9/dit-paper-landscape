@@ -13,6 +13,16 @@
 
 ## 论文地图
 
+### 生成方程与采样基础
+
+- [DDIM](https://arxiv.org/abs/2010.02502)：在相同训练目标下改用非马尔可夫隐式采样，说明推理轨迹可以独立于训练链设计。
+- [DPM-Solver](https://arxiv.org/abs/2206.00927)：利用 diffusion ODE 的结构做高阶少步求解，是评估 DiT 采样器时必须纳入的经典 baseline。
+- [Progressive Distillation](https://arxiv.org/abs/2202.00512)：通过教师—学生逐轮减半采样步数，奠定 few-step diffusion distillation 的基本范式。
+- [Consistency Flow Matching](https://arxiv.org/abs/2407.02398)：从训练目标侧约束同一路径上的速度一致性，连接 flow matching 与少步生成。
+- [Rectified Diffusion](https://arxiv.org/abs/2410.07303)：提醒“轨迹更直”不是最终目标，应把离散采样误差与生成质量分开衡量。
+
+这些方法减少的是 denoiser 调用次数或单步离散误差；cache、quantization、kernel 和并行则减少每次调用成本。两层优化可以叠加，但比较时必须固定采样步数与质量。
+
 ### 缓存与压缩
 
 - [SpeCa](https://arxiv.org/abs/2509.11628)：推测哪些中间特征可以跨 timestep 复用。
