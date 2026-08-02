@@ -316,7 +316,7 @@
         vx: 0,
         vy: 0,
         driftPhase: hashNumber(`${paper.arxiv_id}:phase`) * Math.PI * 2,
-        driftSpeed: 0.00082 + hashNumber(`${paper.arxiv_id}:speed`) * 0.00048,
+        driftSpeed: 0.00164 + hashNumber(`${paper.arxiv_id}:speed`) * 0.00096,
         driftAmplitude: 3.2 + hashNumber(`${paper.arxiv_id}:amplitude`) * 2,
       };
     });
@@ -743,11 +743,9 @@
     state.hovered = null;
     state.hoverFocus = null;
     state.hoverEnergy = 0;
-    initializeNodes();
     renderLegend();
     renderTopicCloud();
     selectPaper(chooseInitialPaper());
-    runSimulation();
   }
 
   function init(papers) {
