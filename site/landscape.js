@@ -495,6 +495,7 @@
 
       if (!document.hidden && timestamp - lastFrame >= frameInterval) {
         const elapsed = lastFrame ? timestamp - lastFrame : frameInterval;
+        const motionElapsed = Math.min(elapsed, frameInterval * 3);
         lastFrame = timestamp;
         if (handoffStart === null) handoffStart = timestamp;
         const handoffProgress = Math.min(1, (timestamp - handoffStart) / handoffDuration);
@@ -516,7 +517,8 @@
           const proximity = node.index === state.hoverFocus ? 1 : similarity;
           const activation = state.hoverEnergy * proximity;
           const amplitude = node.driftAmplitude * (1 + activation * 0.95);
-          const phase = node.driftPhase + timestamp * node.driftSpeed * (1 + activation * 0.45);
+          node.driftPhase += motionElapsed * node.driftSpeed * (1 + activation * 0.45);
+          const phase = node.driftPhase;
           node.x = node.anchorX + Math.sin(phase) * amplitude * handoffBlend;
           node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72 * handoffBlend;
         });
