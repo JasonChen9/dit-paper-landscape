@@ -22,13 +22,13 @@ flowchart LR
 |---|---|---|
 | Flow-GRPO（背景） | 把 online GRPO 适配到 flow matching | 已有 flow/DiT 的后训练框架 |
 | DanceGRPO（背景） | 系统化视觉 GRPO、采样与稳定性 | 已有视觉生成器适配 |
-| [DiffusionNFT](../papers/04_rl_alignment/2509.16117__diffusionnft.pdf) | 利用 forward process 做在线 diffusion RL | 解决探索/概率实现问题 |
-| [VGGRPO](../papers/04_rl_alignment/2603.26599__vggrpo.pdf) | 4D latent world-consistency reward | 视频结构能力训练 |
-| [World-R1](../papers/04_rl_alignment/2604.24764__world-r1.pdf) | 3D constraints | 用几何规则提供可验证信号 |
-| [VideoRLVR](../papers/04_rl_alignment/2605.15458__videorlvr.pdf) | verifiable reward 下的视频推理 | 从偏好对齐走向规则能力 |
-| [DiT-Reward](../papers/04_rl_alignment/2606.23626__dit-reward.pdf) | 用生成 DiT 表征构建 reward model | 奖励模型与生成器表征对齐 |
-| [JAGG](../papers/04_rl_alignment/2607.17572__jagg.pdf) | Jacobian 聚合组梯度 | 降低长去噪轨迹估计代价 |
-| [Spotlight](../papers/04_rl_alignment/2606.19004__spotlight.pdf) | seed exploration + spot GPU | 直接优化 rollout 系统成本 |
+| [DiffusionNFT](https://arxiv.org/abs/2509.16117) | 利用 forward process 做在线 diffusion RL | 解决探索/概率实现问题 |
+| [VGGRPO](https://arxiv.org/abs/2603.26599) | 4D latent world-consistency reward | 视频结构能力训练 |
+| [World-R1](https://arxiv.org/abs/2604.24764) | 3D constraints | 用几何规则提供可验证信号 |
+| [VideoRLVR](https://arxiv.org/abs/2605.15458) | verifiable reward 下的视频推理 | 从偏好对齐走向规则能力 |
+| [DiT-Reward](https://arxiv.org/abs/2606.23626) | 用生成 DiT 表征构建 reward model | 奖励模型与生成器表征对齐 |
+| [JAGG](https://arxiv.org/abs/2607.17572) | Jacobian 聚合组梯度 | 降低长去噪轨迹估计代价 |
+| [Spotlight](https://arxiv.org/abs/2606.19004) | seed exploration + spot GPU | 直接优化 rollout 系统成本 |
 
 ## 真正瓶颈
 
@@ -49,4 +49,3 @@ flowchart LR
 - 与 rejection sampling / best-of-N / supervised fine-tuning 的相同算力对比是否成立？
 - rollout、reward 推理和训练各占多少时间？
 - 论文改进的是优化器、奖励、采样器，还是系统调度？不要把四者混为一个“RL 增益”。
-

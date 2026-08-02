@@ -12,13 +12,13 @@
 
 ## 代表工作
 
-- [3MDiT](../papers/06_omni_unified/2511.21780__3mdit.pdf)：联合文本条件下的同步音频—视频去噪，跨模态时间对齐是核心。
-- [Loom](../papers/06_omni_unified/2512.18254__loom.pdf)：生成交错多模态内容，连接连续扩散与序列式交互。
-- [UniDDT](../papers/06_omni_unified/2606.16255__uniddt.pdf)：以 decoupled diffusion transformer 统一理解/生成，承认完全共享会产生任务干扰。
-- [MMDiff](../papers/06_omni_unified/2606.16673__mmdiff.pdf)：扩展 DiT 处理多个输出模态，需协调每种连续信号的噪声参数化。
-- [UniGP](../papers/06_omni_unified/2606.30332__unigp.pdf)：联合 generation/perception 时显式 preservation 生成先验。
-- [Twins](../papers/06_omni_unified/2607.22531__twins.pdf)：把统一连续表征本身作为预测对象，代表“先统一 representation，再统一任务”的路线。
-- [Qwen-Audio-3.0-Gen](../papers/06_omni_unified/2607.27011__qwen-audio-3-gen.pdf)：说明 Omni 输出正在扩展到音频；它与视觉 DiT 更接近共享训练思想而非同一视觉架构。
+- [3MDiT](https://arxiv.org/abs/2511.21780)：联合文本条件下的同步音频—视频去噪，跨模态时间对齐是核心。
+- [Loom](https://arxiv.org/abs/2512.18254)：生成交错多模态内容，连接连续扩散与序列式交互。
+- [UniDDT](https://arxiv.org/abs/2606.16255)：以 decoupled diffusion transformer 统一理解/生成，承认完全共享会产生任务干扰。
+- [MMDiff](https://arxiv.org/abs/2606.16673)：扩展 DiT 处理多个输出模态，需协调每种连续信号的噪声参数化。
+- [UniGP](https://arxiv.org/abs/2606.30332)：联合 generation/perception 时显式 preservation 生成先验。
+- [Twins](https://arxiv.org/abs/2607.22531)：把统一连续表征本身作为预测对象，代表“先统一 representation，再统一任务”的路线。
+- [Qwen-Audio-3.0-Gen](https://arxiv.org/abs/2607.27011)：说明 Omni 输出正在扩展到音频；它与视觉 DiT 更接近共享训练思想而非同一视觉架构。
 
 ## DiT 为什么适合做统一连续生成
 

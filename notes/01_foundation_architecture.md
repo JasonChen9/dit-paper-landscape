@@ -10,13 +10,13 @@
 
 | 论文 | 主要问题 | 我的判断 |
 |---|---|---|
-| [Qwen-Image](../papers/01_foundation_architecture/2508.02324__qwen-image.pdf) | 复杂文字渲染、生成编辑统一 | 证明数据、文本编码和后训练仍可比“新 block”更决定上限 |
-| [Seedream 4.0](../papers/01_foundation_architecture/2509.20427__seedream-4-0.pdf) | 多图参考与生成编辑统一 | 代表产品级多条件图像模型，而非单纯架构论文 |
-| [RAE](../papers/01_foundation_architecture/2510.11690__rae.pdf) | 用语义表征编码器替代 VAE | 最近一年最值得跟踪的基础变量之一 |
-| [Scaling RAE DiT](../papers/01_foundation_architecture/2601.16208__scaling-rae-dit.pdf) | RAE latent 的规模化规律 | 让“latent 如何扩展”成为可测量的研究问题 |
-| [PixelDiT](../papers/01_foundation_architecture/2511.20645__pixeldit.pdf) | 是否需要 VAE | 理念干净，但像素 token 计算量和高频建模仍是门槛 |
-| [Z-Image](../papers/01_foundation_architecture/2511.22699__z-image.pdf) | 单流与低成本图像基础模型 | 更接近工程主线：减少路径复杂度并优化低步推理 |
-| [Chimera](../papers/01_foundation_architecture/2607.28611__chimera.pdf) | 混合模块与 Chinchilla scaling | 重要之处是把架构选择和 compute-optimal scaling 联动 |
+| [Qwen-Image](https://arxiv.org/abs/2508.02324) | 复杂文字渲染、生成编辑统一 | 证明数据、文本编码和后训练仍可比“新 block”更决定上限 |
+| [Seedream 4.0](https://arxiv.org/abs/2509.20427) | 多图参考与生成编辑统一 | 代表产品级多条件图像模型，而非单纯架构论文 |
+| [RAE](https://arxiv.org/abs/2510.11690) | 用语义表征编码器替代 VAE | 最近一年最值得跟踪的基础变量之一 |
+| [Scaling RAE DiT](https://arxiv.org/abs/2601.16208) | RAE latent 的规模化规律 | 让“latent 如何扩展”成为可测量的研究问题 |
+| [PixelDiT](https://arxiv.org/abs/2511.20645) | 是否需要 VAE | 理念干净，但像素 token 计算量和高频建模仍是门槛 |
+| [Z-Image](https://arxiv.org/abs/2511.22699) | 单流与低成本图像基础模型 | 更接近工程主线：减少路径复杂度并优化低步推理 |
+| [Chimera](https://arxiv.org/abs/2607.28611) | 混合模块与 Chinchilla scaling | 重要之处是把架构选择和 compute-optimal scaling 联动 |
 
 ## 专家化架构分支
 

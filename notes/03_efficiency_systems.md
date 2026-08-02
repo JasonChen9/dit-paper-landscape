@@ -15,26 +15,26 @@
 
 ### 缓存与压缩
 
-- [SpeCa](../papers/03_efficiency_systems/2509.11628__speca.pdf)：推测哪些中间特征可以跨 timestep 复用。
-- [BWCache](../papers/03_efficiency_systems/2509.13789__bwcache.pdf)：在视频 DiT block 粒度缓存。
-- [OmniCache](../papers/03_efficiency_systems/2607.23844__omnicache.pdf)：组合层、时间步、token 等多维层级策略。
-- [QuantSparse](../papers/03_efficiency_systems/2509.23681__quantsparse.pdf)：联合量化与 attention sparsification，避免单点优化互相抵消。
+- [SpeCa](https://arxiv.org/abs/2509.11628)：推测哪些中间特征可以跨 timestep 复用。
+- [BWCache](https://arxiv.org/abs/2509.13789)：在视频 DiT block 粒度缓存。
+- [OmniCache](https://arxiv.org/abs/2607.23844)：组合层、时间步、token 等多维层级策略。
+- [QuantSparse](https://arxiv.org/abs/2509.23681)：联合量化与 attention sparsification，避免单点优化互相抵消。
 
 缓存的核心风险是误差会在多步去噪中累积；比较时应同时看 wall-clock、额外控制开销、不同 prompt/分辨率的最差画质下降。
 
 ### Kernel 与注意力执行
 
-- [FlashOmni](../papers/03_efficiency_systems/2509.25401__flashomni.pdf)：统一稀疏注意力模式的执行引擎。
+- [FlashOmni](https://arxiv.org/abs/2509.25401)：统一稀疏注意力模式的执行引擎。
 - SANA-Video 系列：算法复杂度和 kernel 友好性共同决定线性注意力是否真快。
 
 “理论稀疏”只有在索引、数据布局和 kernel 足够规则时才会变成端到端收益。
 
 ### 多 GPU 推理与 serving
 
-- [SwiftFusion](../papers/03_efficiency_systems/2601.20273__swiftfusion.pdf)：长序列 DiT 的可扩展 sequence parallel。
-- [PipeDiT](../papers/03_efficiency_systems/2511.12056__pipedit.pdf)：任务流水和模型解耦，填补 denoising 阶段空泡。
-- [GF-DiT](../papers/03_efficiency_systems/2606.13501__gf-dit.pdf)：在 serving 层调度不同并行策略。
-- [X-Stage](../papers/03_efficiency_systems/2607.23264__x-stage.pdf)：让发送端 remote-store 与下一层计算重叠，补足只优化接收/collective 侧的遗漏阶段。
+- [SwiftFusion](https://arxiv.org/abs/2601.20273)：长序列 DiT 的可扩展 sequence parallel。
+- [PipeDiT](https://arxiv.org/abs/2511.12056)：任务流水和模型解耦，填补 denoising 阶段空泡。
+- [GF-DiT](https://arxiv.org/abs/2606.13501)：在 serving 层调度不同并行策略。
+- [X-Stage](https://arxiv.org/abs/2607.23264)：让发送端 remote-store 与下一层计算重叠，补足只优化接收/collective 侧的遗漏阶段。
 
 ## 回答“DiT 计算高，通信瓶颈真的大吗”
 
@@ -57,4 +57,3 @@ T_layer ≈ T_compute + T_comm_exposed + T_sync
 - 网络拓扑、GPU 型号、SP/TP/EP degree、batch、分辨率与帧数。
 - 优化是否改变显存峰值、数值结果或可支持的模型范围。
 - 多步扩散是否每一步都获益，还是只在少数层/阶段获益。
-
