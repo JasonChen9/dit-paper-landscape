@@ -859,10 +859,6 @@ kbd {
   justify-content: flex-end;
 }
 
-.source-data-link {
-  margin-right: 3px;
-}
-
 .export-status {
   color: var(--accent);
   white-space: nowrap;
@@ -886,6 +882,51 @@ kbd {
 .export-button:disabled {
   cursor: not-allowed;
   opacity: 0.45;
+}
+
+.export-menu {
+  position: relative;
+}
+
+.export-menu-toggle::after {
+  content: "▾";
+  margin-left: 6px;
+  font-size: 0.65rem;
+}
+
+.export-menu-options {
+  position: absolute;
+  z-index: 12;
+  top: calc(100% + 5px);
+  right: 0;
+  min-width: 132px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  box-shadow: 0 8px 22px var(--shadow);
+}
+
+.export-menu-options[hidden] {
+  display: none;
+}
+
+.export-menu-options button {
+  display: block;
+  width: 100%;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.74rem;
+  text-align: left;
+}
+
+.export-menu-options button:hover,
+.export-menu-options button:focus-visible {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
 }
 
 .paper-list {
@@ -1247,10 +1288,6 @@ kbd {
 
   .intro h1 {
     font-size: 2rem;
-  }
-
-  .source-data-link {
-    display: none;
   }
 
   .results-toolbar {

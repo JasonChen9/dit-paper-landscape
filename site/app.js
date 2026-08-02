@@ -59,6 +59,9 @@ const elements = {
   pageButtons: document.querySelector("#page-buttons"),
   empty: document.querySelector("#empty-state"),
   reset: document.querySelector("#reset-button"),
+  exportMenu: document.querySelector("#export-menu"),
+  exportMenuToggle: document.querySelector("#export-menu-toggle"),
+  exportMenuOptions: document.querySelector("#export-menu-options"),
   exportMarkdown: document.querySelector("#export-markdown"),
   exportHTML: document.querySelector("#export-html"),
   exportStatus: document.querySelector("#export-status"),
@@ -392,6 +395,12 @@ function exportCurrent(format) {
   }
 }
 
+function setExportMenuOpen(open) {
+  const shouldOpen = Boolean(open) && !elements.exportMenuToggle.disabled;
+  elements.exportMenuOptions.hidden = !shouldOpen;
+  elements.exportMenuToggle.setAttribute("aria-expanded", String(shouldOpen));
+}
+
 function pageSequence(totalPages, currentPage) {
   if (totalPages <= 7) return Array.from({ length: totalPages }, (_, index) => index + 1);
   const pages = new Set([1, totalPages, currentPage - 1, currentPage, currentPage + 1]);
@@ -467,8 +476,12 @@ function render() {
     activeContext.push(t("results.date", { start: state.customStart, end: state.customEnd }));
   }
   elements.resultCount.textContent = `${t("results.count", { count: filtered.length, total: state.papers.length })}${activeContext.length ? ` · ${activeContext.join(" · ")}` : ""}`;
+  elements.exportMenuToggle.textContent = t(filtered.length === 1 ? "export.selectionCountOne" : "export.selectionCount", { count: filtered.length });
+  elements.exportMenuToggle.title = t("export.chooseFormat", { count: filtered.length });
+  elements.exportMenuToggle.disabled = filtered.length === 0;
   elements.exportMarkdown.disabled = filtered.length === 0;
   elements.exportHTML.disabled = filtered.length === 0;
+  if (filtered.length === 0) setExportMenuOpen(false);
   elements.exportStatus.textContent = "";
   elements.empty.hidden = filtered.length > 0;
   elements.paperList.hidden = filtered.length === 0;
@@ -599,8 +612,20 @@ function bindEvents() {
     state.page = 1;
     render();
   });
-  elements.exportMarkdown.addEventListener("click", () => exportCurrent("markdown"));
-  elements.exportHTML.addEventListener("click", () => exportCurrent("html"));
+  elements.exportMenuToggle.addEventListener("click", () => {
+    setExportMenuOpen(elements.exportMenuOptions.hidden);
+  });
+  elements.exportMarkdown.addEventListener("click", () => {
+    exportCurrent("markdown");
+    setExportMenuOpen(false);
+  });
+  elements.exportHTML.addEventListener("click", () => {
+    exportCurrent("html");
+    setExportMenuOpen(false);
+  });
+  document.addEventListener("click", (event) => {
+    if (!elements.exportMenu.contains(event.target)) setExportMenuOpen(false);
+  });
   window.addEventListener("dit:landscape-clusters-ready", (event) => {
     if (Array.isArray(event.detail?.clusters)) applyClusterCatalog(event.detail.clusters);
   });
@@ -649,6 +674,11 @@ function bindEvents() {
     render();
   });
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !elements.exportMenuOptions.hidden) {
+      setExportMenuOpen(false);
+      elements.exportMenuToggle.focus();
+      return;
+    }
     if (event.key === "/" && document.activeElement?.tagName !== "INPUT") {
       event.preventDefault();
       elements.search.focus();
