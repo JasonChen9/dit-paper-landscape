@@ -31,7 +31,7 @@
         "cache", "quantization", "sparse-attention", "kernel", "distributed", "parallelism",
         "pipeline", "serving", "scheduling", "communication", "overlap", "load-balancing",
         "inference", "compression", "efficiency", "engine", "speculation", "sequence-parallel",
-        "training", "block-wise", "hierarchical",
+        "training", "block-wise", "hierarchical", "memory-management", "auto-configuration",
       ],
     },
     rl: {

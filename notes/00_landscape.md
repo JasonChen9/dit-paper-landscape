@@ -1,6 +1,6 @@
 # 最近一年 DiT 研究版图
 
-> 统计窗口：2025-08-02—2026-08-02。精选 47 篇窗口内论文，另列 8 篇窗口外背景锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
+> 统计窗口：2025-08-02—2026-08-02。精选 48 篇窗口内论文，另列 8 篇窗口外背景锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
 
 ## 一句话判断
 
@@ -12,7 +12,7 @@ DiT 的研究重心已经从“Transformer 能否替代 U-Net”转向“如何�
 |---|---|---|
 | 表示与架构 | VAE latent 是否限制语义和细节；高维 RAE latent 如何扩散；单流、像素空间和混合模块怎样扩展 | RAE、Scaling RAE DiT、PixelDiT、Z-Image、Chimera |
 | 视频与长上下文 | token 数爆炸、长时漂移、训练—推理不一致、流式状态和音画/动作一致性 | SANA-Video、Helios、Causal-rCM、SANA-Video 2.0 |
-| 系统效率 | 缓存误差、量化与稀疏协同、sequence parallel 通信、多 GPU 调度与 kernel 落地 | QuantSparse、FlashOmni、SwiftFusion、GF-DiT、X-Stage |
+| 系统效率 | 缓存误差、显存峰值与碎片、量化与稀疏协同、sequence parallel 通信、多 GPU 调度与 kernel 落地 | QuantSparse、FlashOmni、SwiftFusion、GF-DiT、Xema、X-Stage |
 | RL 与奖励 | 从审美偏好扩展到文字、几何、3D/4D、物理和规则等可验证能力；降低 rollout 和 reward 成本 | DiffusionNFT、World-R1、VideoRLVR、DiT-Reward、JAGG |
 | Agent / World Model | DiT 既可作为动作 policy，也可作为未来视频/世界预测器；开始尝试联合 world + action | Tenma、DECO、Qwen-RobotWorld、AlayaWorld、WorldDiT |
 | Omni / 统一模型 | 从“多条件图像生成”走向多输出、交错生成以及理解—生成共享连续表示 | 3MDiT、Loom、UniDDT、MMDiff、UniGP、Twins |

@@ -7,7 +7,7 @@
 | 算法 | denoising 步数、全注意力复杂度 | 蒸馏、线性/稀疏 attention |
 | 模型 | 重复特征、权重/激活带宽 | cache、quantization、结构稀疏 |
 | 并行 | all-gather / reduce-scatter / all-to-all 暴露 | sequence/context parallel、通信计算重叠 |
-| 服务 | batch 波动、异构请求、GPU 空泡 | 并行策略选择、流水、请求调度 |
+| 服务 | batch 波动、异构请求、GPU 空泡、显存峰值与碎片 | 并行策略选择、流水、请求调度、细粒度显存控制 |
 
 同一模型在单卡、NVLink 机内多卡和跨机 InfiniBand 上会落入不同瓶颈，因此不能用一张 FLOPs 饼图判断通信优化有没有价值。
 
@@ -34,6 +34,7 @@
 - [SwiftFusion](https://arxiv.org/abs/2601.20273)：长序列 DiT 的可扩展 sequence parallel。
 - [PipeDiT](https://arxiv.org/abs/2511.12056)：任务流水和模型解耦，填补 denoising 阶段空泡。
 - [GF-DiT](https://arxiv.org/abs/2606.13501)：在 serving 层调度不同并行策略。
+- [Xema](https://arxiv.org/abs/2607.11136)：根据请求模板的离线显存轨迹，只在短暂峰值区间实施最小必要的显存缓解；静态张量布局减少碎片，并由离线规划器联合选择并行、并发和显存策略。
 - [X-Stage](https://arxiv.org/abs/2607.23264)：让发送端 remote-store 与下一层计算重叠，补足只优化接收/collective 侧的遗漏阶段。
 
 ## 回答“DiT 计算高，通信瓶颈真的大吗”
