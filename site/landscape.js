@@ -1,14 +1,4 @@
 (() => {
-  const CATEGORY_LABELS = {
-    "00_background": "背景锚点",
-    "01_foundation_architecture": "基础架构",
-    "02_video_long_context": "视频与长上下文",
-    "03_efficiency_systems": "效率与系统",
-    "04_rl_alignment": "RL 与对齐",
-    "05_agent_world_robotics": "Agent 与世界模型",
-    "06_omni_unified": "Omni 统一模型",
-  };
-
   const FAMILIES = {
     architecture: {
       label: "表示与架构",
@@ -89,6 +79,7 @@
     timeMax: null,
     timeStart: null,
     timeEnd: null,
+    externalIds: null,
   };
 
   const elements = {};
@@ -111,6 +102,20 @@
   function paperInTimeRange(index) {
     const day = state.paperDays[index];
     return day >= state.timeStart && day <= state.timeEnd;
+  }
+
+  function paperInExternalFilter(index) {
+    return state.externalIds === null || state.externalIds.has(state.papers[index].arxiv_id);
+  }
+
+  function paperInTopicFilter(index) {
+    if (state.activeCluster !== null && state.clusters[index] !== state.activeCluster) return false;
+    if (state.activeTag && !paperTags(state.papers[index]).includes(state.activeTag)) return false;
+    return true;
+  }
+
+  function paperAvailable(index) {
+    return paperInTimeRange(index) && paperInExternalFilter(index);
   }
 
   function familyScores(tags) {
@@ -408,7 +413,7 @@
   }
 
   function isNodeActive(node) {
-    if (!paperInTimeRange(node.index)) return false;
+    if (!paperAvailable(node.index)) return false;
     if (state.activeCluster !== null && node.cluster !== state.activeCluster) return false;
     if (state.activeTag && !paperTags(state.papers[node.index]).includes(state.activeTag)) return false;
     return true;
@@ -588,7 +593,7 @@
 
     const eyebrow = document.createElement("p");
     eyebrow.className = "selection-eyebrow";
-    eyebrow.textContent = `${cluster.name} · ${CATEGORY_LABELS[paper.category]}`;
+    eyebrow.textContent = cluster.name;
     const title = document.createElement("h3");
     title.textContent = paper.short_title;
     const fullTitle = document.createElement("p");
@@ -615,6 +620,50 @@
     draw();
   }
 
+  function emitTopicFilter() {
+    let ids = null;
+    let label = "";
+    let source = null;
+    let cluster = null;
+    if (state.activeCluster !== null) {
+      const info = state.clusterInfo[state.activeCluster];
+      ids = info.members.map((index) => state.papers[index].arxiv_id);
+      label = info.name;
+      source = "cluster";
+      cluster = state.activeCluster;
+    } else if (state.activeTag) {
+      ids = state.papers
+        .filter((paper) => paperTags(paper).includes(state.activeTag))
+        .map((paper) => paper.arxiv_id);
+      label = `标签 ${state.activeTag}`;
+      source = "tag";
+    }
+    window.dispatchEvent(new CustomEvent("dit:landscape-topic-filter", {
+      detail: { ids, label, source, cluster },
+    }));
+  }
+
+  function emitClusterCatalog() {
+    const clusters = state.clusterInfo.map((info, cluster) => ({
+      id: String(cluster),
+      name: info.name,
+      ids: info.members.map((index) => state.papers[index].arxiv_id),
+      topTags: [...info.topTags],
+    }));
+    window.dispatchEvent(new CustomEvent("dit:landscape-clusters-ready", { detail: { clusters } }));
+  }
+
+  function emitTimeFilter() {
+    const fullRange = state.timeStart === state.timeMin && state.timeEnd === state.timeMax;
+    window.dispatchEvent(new CustomEvent("dit:landscape-time-filter", {
+      detail: {
+        start: formatDay(state.timeStart),
+        end: formatDay(state.timeEnd),
+        fullRange,
+      },
+    }));
+  }
+
   function renderLegend() {
     elements.legend.replaceChildren();
     state.clusterInfo.forEach((info, cluster) => {
@@ -628,14 +677,18 @@
       const label = document.createElement("span");
       label.innerHTML = `<strong></strong><small></small>`;
       label.querySelector("strong").textContent = info.name;
-      label.querySelector("small").textContent = `${info.members.length} 篇 · ${info.topTags.join(" / ")}`;
+      const availableCount = info.members.filter(paperAvailable).length;
+      label.querySelector("small").textContent = `${availableCount} 篇 · ${info.topTags.join(" / ")}`;
       button.append(swatch, label);
       button.addEventListener("click", () => {
         state.activeCluster = state.activeCluster === cluster ? null : cluster;
         state.activeTag = null;
+        renderTimeDensity();
+        syncTimeFilter();
         renderLegend();
         renderTopicCloud();
         draw();
+        emitTopicFilter();
       });
       elements.legend.append(button);
     });
@@ -643,13 +696,17 @@
 
   function renderTopicCloud() {
     const counts = new Map();
-    state.papers.forEach((paper) => paperTags(paper).forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)));
+    state.papers.forEach((paper, index) => {
+      if (!paperAvailable(index)) return;
+      paperTags(paper).forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1));
+    });
     const tags = [...counts.entries()]
       .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
       .slice(0, 24);
+    elements.cloud.replaceChildren();
+    if (!tags.length) return;
     const max = Math.max(...tags.map(([, count]) => count));
     const min = Math.min(...tags.map(([, count]) => count));
-    elements.cloud.replaceChildren();
     tags.forEach(([tag, count]) => {
       const button = document.createElement("button");
       button.type = "button";
@@ -661,9 +718,12 @@
       button.addEventListener("click", () => {
         state.activeTag = state.activeTag === tag ? null : tag;
         state.activeCluster = null;
+        renderTimeDensity();
+        syncTimeFilter();
         renderLegend();
         renderTopicCloud();
         draw();
+        emitTopicFilter();
       });
       elements.cloud.append(button);
     });
@@ -673,8 +733,9 @@
     const pairs = [];
     for (let left = 0; left < state.papers.length; left += 1) {
       for (let right = left + 1; right < state.papers.length; right += 1) {
-        if (state.papers[left].category === state.papers[right].category) continue;
+        if (state.clusters[left] === state.clusters[right]) continue;
         if (state.papers[left].window !== "in-window" || state.papers[right].window !== "in-window") continue;
+        if (!paperAvailable(left) || !paperAvailable(right)) continue;
         pairs.push({ left, right, similarity: state.similarities[left][right] });
       }
     }
@@ -682,7 +743,7 @@
     const signatures = new Set();
     pairs.sort((left, right) => right.similarity - left.similarity).forEach((pair) => {
       if (selected.length >= 6 || pair.similarity < 0.12) return;
-      const signature = [state.papers[pair.left].category, state.papers[pair.right].category].sort().join(":");
+      const signature = [state.clusters[pair.left], state.clusters[pair.right]].sort().join(":");
       if (signatures.has(signature)) return;
       signatures.add(signature);
       selected.push(pair);
@@ -695,7 +756,7 @@
       const titles = document.createElement("strong");
       titles.textContent = `${state.papers[pair.left].short_title} ↔ ${state.papers[pair.right].short_title}`;
       const meta = document.createElement("span");
-      meta.textContent = `${CATEGORY_LABELS[state.papers[pair.left].category]} × ${CATEGORY_LABELS[state.papers[pair.right].category]} · ${Math.round(pair.similarity * 100)}%`;
+      meta.textContent = `${state.clusterInfo[state.clusters[pair.left]].name} × ${state.clusterInfo[state.clusters[pair.right]].name} · ${Math.round(pair.similarity * 100)}%`;
       button.append(titles, meta);
       button.addEventListener("click", () => selectPaper(pair.left));
       elements.bridges.append(button);
@@ -706,7 +767,8 @@
     const binCount = 30;
     const span = Math.max(1, state.timeMax - state.timeMin);
     const counts = new Array(binCount).fill(0);
-    state.paperDays.forEach((day) => {
+    state.paperDays.forEach((day, paperIndex) => {
+      if (!paperInExternalFilter(paperIndex) || !paperInTopicFilter(paperIndex)) return;
       const index = Math.min(
         binCount - 1,
         Math.round(((day - state.timeMin) / span) * (binCount - 1)),
@@ -759,17 +821,25 @@
     elements.timeReadout.textContent = fullRange
       ? "全部时间"
       : `${formatDay(state.timeStart)} — ${formatDay(state.timeEnd)}`;
-    const count = state.paperDays.filter((day) => day >= state.timeStart && day <= state.timeEnd).length;
-    elements.timeCount.textContent = `${count} / ${state.papers.length} 篇`;
+    const availableTotal = state.papers.filter((_, index) =>
+      paperInExternalFilter(index) && paperInTopicFilter(index)).length;
+    const count = state.paperDays.filter((day, index) =>
+      paperInExternalFilter(index) && paperInTopicFilter(index)
+      && day >= state.timeStart && day <= state.timeEnd).length;
+    elements.timeCount.textContent = `${count} / ${availableTotal} 篇`;
   }
 
-  function applyTimeRange(start, end) {
+  function applyTimeRange(start, end, { notify = true } = {}) {
     state.timeStart = Math.max(state.timeMin, Math.min(start, state.timeMax));
     state.timeEnd = Math.max(state.timeStart, Math.min(end, state.timeMax));
     state.hovered = null;
     elements.tooltip.hidden = true;
     syncTimeFilter();
+    renderLegend();
+    renderTopicCloud();
+    renderBridges();
     draw();
+    if (notify) emitTimeFilter();
   }
 
   function bindTimeBrushWindow() {
@@ -858,7 +928,7 @@
       elements.canvas.style.cursor = node ? "pointer" : "default";
       if (node) {
         const paper = state.papers[node.index];
-        elements.tooltip.textContent = `${paper.short_title} · ${CATEGORY_LABELS[paper.category]}`;
+        elements.tooltip.textContent = `${paper.short_title} · ${state.clusterInfo[node.cluster].name}`;
         elements.tooltip.hidden = false;
         const left = Math.min(state.width - 230, Math.max(8, x + 13));
         const top = Math.max(8, y - 34);
@@ -885,8 +955,9 @@
     let bestScore = -1;
     state.similarities.forEach((row, index) => {
       if (state.papers[index].window !== "in-window") return;
+      if (!paperInExternalFilter(index)) return;
       const crossThemeScore = row.reduce((sum, similarity, other) =>
-        sum + (state.papers[index].category !== state.papers[other].category ? similarity : 0), 0);
+        sum + (state.clusters[index] !== state.clusters[other] ? similarity : 0), 0);
       if (crossThemeScore > bestScore) {
         best = index;
         bestScore = crossThemeScore;
@@ -895,7 +966,7 @@
     return best;
   }
 
-  function reset() {
+  function resetFilters(notify = false) {
     state.activeCluster = null;
     state.activeTag = null;
     state.hovered = null;
@@ -903,10 +974,74 @@
     state.hoverEnergy = 0;
     state.timeStart = state.timeMin;
     state.timeEnd = state.timeMax;
+    renderTimeDensity();
     syncTimeFilter();
     renderLegend();
     renderTopicCloud();
     selectPaper(chooseInitialPaper());
+    renderBridges();
+    if (notify) {
+      emitTopicFilter();
+      emitTimeFilter();
+    }
+  }
+
+  function clearTopicFilter() {
+    if (state.activeCluster === null && !state.activeTag) return;
+    state.activeCluster = null;
+    state.activeTag = null;
+    renderTimeDensity();
+    syncTimeFilter();
+    renderLegend();
+    renderTopicCloud();
+    draw();
+  }
+
+  function setClusterFilter(cluster) {
+    const nextCluster = Number.isInteger(cluster) && cluster >= 0 && cluster < state.clusterInfo.length
+      ? cluster
+      : null;
+    state.activeCluster = nextCluster;
+    state.activeTag = null;
+    if (!state.papers.length) return;
+    renderTimeDensity();
+    syncTimeFilter();
+    renderLegend();
+    renderTopicCloud();
+    draw();
+  }
+
+  function setExternalFilter(ids) {
+    state.externalIds = Array.isArray(ids) ? new Set(ids) : null;
+    if (!state.papers.length) return;
+    renderTimeDensity();
+    syncTimeFilter();
+    renderLegend();
+    renderTopicCloud();
+    renderBridges();
+    draw();
+  }
+
+  function setTimePreset(preset) {
+    if (!state.papers.length) return;
+    if (preset === "all" || preset === "custom") {
+      applyTimeRange(state.timeMin, state.timeMax, { notify: false });
+      return;
+    }
+    const days = state.papers
+      .map((paper, index) => ({ paper, day: state.paperDays[index] }))
+      .filter(({ paper }) => paper.window === preset)
+      .map(({ day }) => day);
+    if (days.length) applyTimeRange(Math.min(...days), Math.max(...days), { notify: false });
+  }
+
+  function setTimeRange(start, end) {
+    if (!state.papers.length) return;
+    const startDay = publishedDay(start);
+    const endDay = publishedDay(end);
+    if (Number.isFinite(startDay) && Number.isFinite(endDay)) {
+      applyTimeRange(startDay, endDay, { notify: false });
+    }
   }
 
   function init(papers) {
@@ -947,9 +1082,10 @@
     renderLegend();
     renderTopicCloud();
     renderBridges();
+    emitClusterCatalog();
     selectPaper(chooseInitialPaper());
     bindCanvas();
-    elements.reset.addEventListener("click", reset);
+    elements.reset.addEventListener("click", () => resetFilters(true));
     new ResizeObserver(() => {
       if (setDimensions()) {
         initializeNodes();
@@ -966,5 +1102,14 @@
     draw();
   }
 
-  window.DiTLandscape = { init, themeChanged };
+  window.DiTLandscape = {
+    init,
+    themeChanged,
+    clearTopicFilter,
+    resetFilters,
+    setClusterFilter,
+    setExternalFilter,
+    setTimePreset,
+    setTimeRange,
+  };
 })();

@@ -1,16 +1,5 @@
 const DATA_URL = "./data/papers.csv";
 
-const CATEGORIES = {
-  all: "全部主题",
-  "00_background": "背景锚点",
-  "01_foundation_architecture": "基础架构",
-  "02_video_long_context": "视频与长上下文",
-  "03_efficiency_systems": "效率与系统",
-  "04_rl_alignment": "RL 与对齐",
-  "05_agent_world_robotics": "Agent 与世界模型",
-  "06_omni_unified": "Omni 统一模型",
-};
-
 const RELATIONS = {
   direct: "核心 DiT",
   adaptation: "后训练 / 适配",
@@ -22,6 +11,7 @@ const WINDOW_LABELS = {
   all: "全部论文",
   "in-window": "最近三年",
   background: "历史锚点",
+  custom: "自定义日期区间",
 };
 
 const SORT_LABELS = {
@@ -32,11 +22,18 @@ const SORT_LABELS = {
 
 const state = {
   papers: [],
+  clusters: [],
+  paperClusterLabels: new Map(),
   query: "",
-  category: "all",
+  cluster: "all",
   relation: "all",
   window: "all",
   sort: "newest",
+  customStart: null,
+  customEnd: null,
+  topicIds: null,
+  topicLabel: "",
+  topicSource: null,
 };
 
 const elements = {
@@ -106,10 +103,19 @@ function normalize(value) {
   return value.toLocaleLowerCase("zh-CN").replace(/[-_/]/g, " ");
 }
 
-function matchesPaper(paper) {
-  if (state.category !== "all" && paper.category !== state.category) return false;
+function clusterLabelForPaper(paper) {
+  return state.paperClusterLabels.get(paper.arxiv_id) ?? "自动聚类待计算";
+}
+
+function matchesPaper(paper, { includeTopic = true, includeTime = true } = {}) {
   if (state.relation !== "all" && paper.dit_relation !== state.relation) return false;
-  if (state.window !== "all" && paper.window !== state.window) return false;
+  if (includeTime && state.window === "custom") {
+    if (!state.customStart || !state.customEnd) return false;
+    if (paper.published < state.customStart || paper.published > state.customEnd) return false;
+  } else if (includeTime && state.window !== "all" && paper.window !== state.window) {
+    return false;
+  }
+  if (includeTopic && state.topicIds && !state.topicIds.has(paper.arxiv_id)) return false;
   if (!state.query) return true;
 
   const haystack = normalize(
@@ -119,7 +125,7 @@ function matchesPaper(paper) {
       paper.venue,
       paper.topic_tags,
       paper.summary_zh,
-      CATEGORIES[paper.category],
+      clusterLabelForPaper(paper),
       RELATIONS[paper.dit_relation],
     ].join(" "),
   );
@@ -139,6 +145,32 @@ function sortPapers(papers) {
 
 function filteredPapers() {
   return sortPapers(state.papers.filter(matchesPaper));
+}
+
+function listControlledPaperIds() {
+  return state.papers
+    .filter((paper) => matchesPaper(paper, { includeTopic: false, includeTime: false }))
+    .map((paper) => paper.arxiv_id);
+}
+
+function syncLandscapeListFilter() {
+  window.DiTLandscape?.setExternalFilter(listControlledPaperIds());
+}
+
+function clearTopicFilter() {
+  state.cluster = "all";
+  state.topicIds = null;
+  state.topicLabel = "";
+  state.topicSource = null;
+  window.DiTLandscape?.clearTopicFilter();
+}
+
+function syncLandscapeTimeFilter() {
+  if (state.window === "custom" && state.customStart && state.customEnd) {
+    window.DiTLandscape?.setTimeRange(state.customStart, state.customEnd);
+  } else {
+    window.DiTLandscape?.setTimePreset(state.window);
+  }
 }
 
 function createElement(tag, className, text) {
@@ -188,21 +220,29 @@ function createPaperCard(paper) {
 function updateURL() {
   const params = new URLSearchParams();
   if (state.query) params.set("q", state.query);
-  if (state.category !== "all") params.set("category", state.category);
+  if (state.cluster !== "all") params.set("cluster", state.cluster);
   if (state.relation !== "all") params.set("relation", state.relation);
   if (state.window !== "all") params.set("window", state.window);
+  if (state.window === "custom" && state.customStart && state.customEnd) {
+    params.set("from", state.customStart);
+    params.set("to", state.customEnd);
+  }
   if (state.sort !== "newest") params.set("sort", state.sort);
   const query = params.toString();
   history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}${location.hash}`);
 }
 
 function filterDescription() {
+  const timeLabel = state.window === "custom" && state.customStart && state.customEnd
+    ? `${state.customStart} — ${state.customEnd}`
+    : WINDOW_LABELS[state.window] ?? state.window;
   const parts = [
-    `主题：${CATEGORIES[state.category] ?? state.category}`,
+    `主题聚类：${state.topicSource === "cluster" ? state.topicLabel : "全部聚类"}`,
     `DiT 关系：${state.relation === "all" ? "全部关系" : RELATIONS[state.relation]}`,
-    `时间：${WINDOW_LABELS[state.window] ?? state.window}`,
+    `时间：${timeLabel}`,
     `排序：${SORT_LABELS[state.sort] ?? state.sort}`,
   ];
+  if (state.topicSource === "tag") parts.push(`词云筛选：${state.topicLabel}`);
   if (state.query) parts.push(`搜索：${state.query}`);
   return parts.join("；");
 }
@@ -246,7 +286,7 @@ function markdownExport(papers) {
       "",
       `- 简称：${escapeMarkdown(paper.short_title)}`,
       `- 发表日期：${paper.published}`,
-      `- 主题：${escapeMarkdown(CATEGORIES[paper.category] ?? paper.category)}`,
+      `- 主题聚类：${escapeMarkdown(clusterLabelForPaper(paper))}`,
       `- DiT 关系：${escapeMarkdown(RELATIONS[paper.dit_relation] ?? paper.dit_relation)}`,
       `- 来源：${escapeMarkdown(paper.venue)}`,
       `- 标签：${tags || "-"}`,
@@ -276,7 +316,7 @@ function htmlExport(papers) {
       <article>
         <p class="meta">${index + 1} · ${escapeHTML(paper.published)} · ${escapeHTML(paper.venue)} · ${escapeHTML(RELATIONS[paper.dit_relation] ?? paper.dit_relation)}</p>
         <h2><a href="${escapeHTML(paper.arxiv_url)}">${escapeHTML(paper.title)}</a></h2>
-        <p class="short-title">${escapeHTML(paper.short_title)} · ${escapeHTML(CATEGORIES[paper.category] ?? paper.category)}</p>
+        <p class="short-title">${escapeHTML(paper.short_title)} · ${escapeHTML(clusterLabelForPaper(paper))}</p>
         <p>${escapeHTML(paper.summary_zh)}</p>
         <ul class="tags">${tags}</ul>
         <p class="links"><a href="${escapeHTML(paper.arxiv_url)}">arXiv</a><a href="${escapeHTML(paper.pdf_url)}">PDF</a></p>
@@ -334,36 +374,52 @@ function exportCurrent(format) {
 function render() {
   const filtered = filteredPapers();
   elements.paperList.replaceChildren(...filtered.map(createPaperCard));
-  elements.resultCount.textContent = `显示 ${filtered.length} / ${state.papers.length} 篇论文`;
+  const activeContext = [];
+  if (state.topicSource === "tag" && state.topicLabel) activeContext.push(`标签：${state.topicLabel}`);
+  if (state.window === "custom" && state.customStart && state.customEnd) {
+    activeContext.push(`${state.customStart} — ${state.customEnd}`);
+  }
+  elements.resultCount.textContent = `显示 ${filtered.length} / ${state.papers.length} 篇论文${activeContext.length ? ` · ${activeContext.join(" · ")}` : ""}`;
   elements.exportMarkdown.disabled = filtered.length === 0;
   elements.exportHTML.disabled = filtered.length === 0;
   elements.exportStatus.textContent = "";
   elements.empty.hidden = filtered.length > 0;
   elements.paperList.hidden = filtered.length === 0;
 
-  for (const button of elements.categories.querySelectorAll("button")) {
-    const selected = button.dataset.category === state.category;
-    button.classList.toggle("active", selected);
-    button.setAttribute("aria-pressed", String(selected));
-  }
+  renderClusterFilters();
   updateURL();
+  syncLandscapeListFilter();
 }
 
-function renderCategoryFilters() {
-  const counts = state.papers.reduce((result, paper) => {
-    result[paper.category] = (result[paper.category] ?? 0) + 1;
-    return result;
-  }, {});
-
-  const buttons = Object.entries(CATEGORIES).map(([category, label]) => {
-    const count = category === "all" ? state.papers.length : counts[category] ?? 0;
+function renderClusterFilters() {
+  if (!state.clusters.length) {
+    elements.categories.textContent = "正在计算统一主题聚类…";
+    return;
+  }
+  const availableIds = new Set(
+    state.papers
+      .filter((paper) => matchesPaper(paper, { includeTopic: false }))
+      .map((paper) => paper.arxiv_id),
+  );
+  const choices = [
+    { id: "all", name: "全部主题", ids: state.papers.map((paper) => paper.arxiv_id) },
+    ...state.clusters,
+  ];
+  const buttons = choices.map((cluster) => {
+    const count = cluster.ids.filter((id) => availableIds.has(id)).length;
     const button = createElement("button", "category-filter");
     button.type = "button";
-    button.dataset.category = category;
-    button.setAttribute("aria-pressed", "false");
-    button.append(document.createTextNode(label), createElement("span", "", String(count).padStart(2, "0")));
+    button.dataset.cluster = cluster.id;
+    const selected = cluster.id === state.cluster;
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+    button.append(document.createTextNode(cluster.name), createElement("span", "", String(count).padStart(2, "0")));
     button.addEventListener("click", () => {
-      state.category = category;
+      state.cluster = cluster.id;
+      state.topicIds = cluster.id === "all" ? null : new Set(cluster.ids);
+      state.topicLabel = cluster.id === "all" ? "" : cluster.name;
+      state.topicSource = cluster.id === "all" ? null : "cluster";
+      window.DiTLandscape?.setClusterFilter(cluster.id === "all" ? null : Number(cluster.id));
       render();
     });
     return button;
@@ -373,20 +429,44 @@ function renderCategoryFilters() {
 
 function readURLState() {
   const params = new URLSearchParams(location.search);
-  const category = params.get("category");
+  state.cluster = params.get("cluster") ?? "all";
   const relation = params.get("relation");
   const windowValue = params.get("window");
+  const customStart = params.get("from");
+  const customEnd = params.get("to");
   const sort = params.get("sort");
   state.query = params.get("q") ?? "";
-  if (category in CATEGORIES) state.category = category;
   if (relation === "all" || relation in RELATIONS) state.relation = relation;
   if (["all", "in-window", "background"].includes(windowValue)) state.window = windowValue;
+  if (windowValue === "custom" && /^\d{4}-\d{2}-\d{2}$/.test(customStart ?? "") && /^\d{4}-\d{2}-\d{2}$/.test(customEnd ?? "")) {
+    state.window = "custom";
+    state.customStart = customStart;
+    state.customEnd = customEnd;
+  }
   if (["newest", "oldest", "title"].includes(sort)) state.sort = sort;
 
   elements.search.value = state.query;
   elements.relation.value = state.relation;
   elements.window.value = state.window;
   elements.sort.value = state.sort;
+}
+
+function applyClusterCatalog(clusters) {
+  state.clusters = clusters;
+  state.paperClusterLabels = new Map();
+  clusters.forEach((cluster) => {
+    cluster.ids.forEach((id) => state.paperClusterLabels.set(id, cluster.name));
+  });
+  const selected = clusters.find((cluster) => cluster.id === state.cluster);
+  if (selected) {
+    state.topicIds = new Set(selected.ids);
+    state.topicLabel = selected.name;
+    state.topicSource = "cluster";
+    window.DiTLandscape?.setClusterFilter(Number(selected.id));
+  } else {
+    clearTopicFilter();
+  }
+  render();
 }
 
 function bindEvents() {
@@ -407,6 +487,9 @@ function bindEvents() {
   });
   elements.window.addEventListener("change", (event) => {
     state.window = event.target.value;
+    state.customStart = null;
+    state.customEnd = null;
+    syncLandscapeTimeFilter();
     render();
   });
   elements.sort.addEventListener("change", (event) => {
@@ -415,16 +498,47 @@ function bindEvents() {
   });
   elements.exportMarkdown.addEventListener("click", () => exportCurrent("markdown"));
   elements.exportHTML.addEventListener("click", () => exportCurrent("html"));
+  window.addEventListener("dit:landscape-clusters-ready", (event) => {
+    if (Array.isArray(event.detail?.clusters)) applyClusterCatalog(event.detail.clusters);
+  });
+  window.addEventListener("dit:landscape-topic-filter", (event) => {
+    const ids = event.detail?.ids;
+    state.topicIds = Array.isArray(ids) ? new Set(ids) : null;
+    state.topicLabel = event.detail?.label ?? "";
+    state.topicSource = event.detail?.source ?? null;
+    state.cluster = state.topicSource === "cluster" ? String(event.detail.cluster) : "all";
+    render();
+  });
+  window.addEventListener("dit:landscape-time-filter", (event) => {
+    const { start, end, fullRange } = event.detail ?? {};
+    if (fullRange) {
+      state.window = "all";
+      state.customStart = null;
+      state.customEnd = null;
+    } else if (start && end) {
+      state.window = "custom";
+      state.customStart = start;
+      state.customEnd = end;
+    }
+    elements.window.value = state.window;
+    render();
+  });
   elements.reset.addEventListener("click", () => {
     state.query = "";
-    state.category = "all";
+    state.cluster = "all";
     state.relation = "all";
     state.window = "all";
     state.sort = "newest";
+    state.customStart = null;
+    state.customEnd = null;
+    state.topicIds = null;
+    state.topicLabel = "";
+    state.topicSource = null;
     elements.search.value = "";
     elements.relation.value = "all";
     elements.window.value = "all";
     elements.sort.value = "newest";
+    window.DiTLandscape?.resetFilters();
     render();
   });
   document.addEventListener("keydown", (event) => {
@@ -441,12 +555,13 @@ async function initialize() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     state.papers = parseCSV(await response.text());
     readURLState();
-    renderCategoryFilters();
     bindEvents();
     elements.total.textContent = state.papers.length;
     elements.windowCount.textContent = state.papers.filter((paper) => paper.window === "in-window").length;
     render();
     window.DiTLandscape?.init(state.papers);
+    syncLandscapeTimeFilter();
+    syncLandscapeListFilter();
   } catch (error) {
     elements.resultCount.textContent = "论文数据加载失败，请稍后刷新。";
     elements.empty.hidden = false;

@@ -11,12 +11,13 @@
 - 网站：<https://jasonchen9.github.io/dit-paper-landscape/>
 - GitHub 操作说明：[GITHUB_GUIDE.md](GITHUB_GUIDE.md)
 
-网站直接读取 `catalog/papers.csv`，支持标题/摘要搜索、主题与 DiT 关系筛选，并将 arXiv 摘要和 PDF 显示为浏览器可点击链接。当前筛选出的论文子集可以直接导出为 Markdown 或独立 HTML，包含论文名称、中文摘要、标签、arXiv 与 PDF 链接。`research landscape` 页面还提供动态论文点图、自动聚类、主题词云、最近邻工作和跨主题桥接关系。
+网站直接读取 `catalog/papers.csv`，支持标题/摘要搜索、主题与 DiT 关系筛选，并将 arXiv 摘要和 PDF 显示为浏览器可点击链接。动态点图的自动聚类、词云和发表时间区间与下方论文列表双向同步；当前子集可以直接导出为 Markdown 或独立 HTML，包含论文名称、中文摘要、标签、arXiv 与 PDF 链接。`research landscape` 还提供最近邻工作和跨主题桥接关系。
 
 ### 聚类口径
 
 - 从 `topic_tags` 构造 TF-IDF 特征，并加入架构、视频、系统、RL、Agent、Omni 六类概念特征。
 - 使用确定性初始化的 `k=6` cosine k-means；聚类名称由组内高频概念和标签自动生成。
+- 网站的上下两处主题筛选共用这 6 个自动聚类，不再另设一套人工分类口径。
 - 点图边和最近邻来自 cosine 相似度，布局使用前端 force simulation；位置用于探索相近问题，不代表论文质量或严格学科边界。
 - 该方法刻意保持轻量和可解释。若以后加入论文摘要 embedding，可升级为 UMAP/SPECTER 等语义聚类。
 

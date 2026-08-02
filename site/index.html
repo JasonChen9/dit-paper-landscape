@@ -16,9 +16,9 @@
         document.documentElement.dataset.theme = saved || preferred;
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260802-export3" />
-    <script src="./landscape.js?v=20260802-export3" defer></script>
-    <script src="./app.js?v=20260802-export3" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260802-sync4" />
+    <script src="./landscape.js?v=20260802-sync4" defer></script>
+    <script src="./app.js?v=20260802-sync4" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -127,13 +127,13 @@
 
         <div class="landscape-subsection">
           <h3>topic cloud</h3>
-          <p>词越大表示出现越频繁；点击可在点图中高亮相关工作。</p>
+          <p>词越大表示出现越频繁；点击会同步筛选点图和下方论文列表。</p>
           <div id="topic-cloud" class="topic-cloud" aria-label="主题词云"></div>
         </div>
 
         <div class="landscape-subsection">
           <h3>cross-topic bridges</h3>
-          <p>最近三年中标签相似、但原始分类不同的论文对，是最值得交叉阅读的连接点。</p>
+          <p>最近三年中标签相似、但属于不同自动聚类的论文对，是最值得交叉阅读的连接点。</p>
           <div id="bridge-list" class="bridge-list"></div>
         </div>
       </section>
@@ -172,6 +172,7 @@
                 <option value="all">全部论文</option>
                 <option value="in-window">最近三年</option>
                 <option value="background">背景锚点</option>
+                <option value="custom" disabled>自定义日期区间</option>
               </select>
             </label>
             <label for="sort-select">
@@ -185,7 +186,7 @@
           </div>
         </div>
 
-        <div id="category-filters" class="category-filters" aria-label="按主题筛选"></div>
+        <div id="category-filters" class="category-filters" aria-label="按统一自动聚类主题筛选"></div>
 
         <div class="results-toolbar">
           <p id="result-count" aria-live="polite">正在加载论文数据…</p>
