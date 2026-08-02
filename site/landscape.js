@@ -316,7 +316,7 @@
         vx: 0,
         vy: 0,
         driftPhase: hashNumber(`${paper.arxiv_id}:phase`) * Math.PI * 2,
-        driftSpeed: 0.0003 + hashNumber(`${paper.arxiv_id}:speed`) * 0.00018,
+        driftSpeed: 0.00041 + hashNumber(`${paper.arxiv_id}:speed`) * 0.00024,
         driftAmplitude: 3.2 + hashNumber(`${paper.arxiv_id}:amplitude`) * 2,
       };
     });
