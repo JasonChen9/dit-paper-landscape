@@ -1,5 +1,7 @@
 const DATA_URL = "./data/papers.csv";
 const ENGLISH_SUMMARIES_URL = "./data/summaries_en.json";
+const EXPORT_COUNTER_URL = "https://api.counterapi.dev/v1/jasonchen9-dit-paper-landscape/paper-exports";
+const EXPORT_COUNT_CACHE_KEY = "dit-paper-export-count-cache";
 
 const RELATION_KEYS = {
   direct: "relation.direct",
@@ -67,6 +69,8 @@ const elements = {
   exportStatus: document.querySelector("#export-status"),
   theme: document.querySelector("#theme-toggle"),
   total: document.querySelector("#total-count"),
+  exportCount: document.querySelector("#export-count"),
+  exportCountLabel: document.querySelector("#export-count-label"),
   windowCount: document.querySelector("#window-count"),
 };
 
@@ -383,6 +387,39 @@ function htmlExport(papers) {
 </html>`;
 }
 
+function updateExportCount(value) {
+  const count = Number(value);
+  if (!Number.isSafeInteger(count) || count < 0) return;
+  elements.exportCount.textContent = count.toLocaleString(window.DiTI18n.language === "zh" ? "zh-CN" : "en-US");
+  elements.exportCountLabel.textContent = t(count === 1 ? "stats.export" : "stats.exports");
+  localStorage.setItem(EXPORT_COUNT_CACHE_KEY, String(count));
+}
+
+async function requestExportCount({ increment = false } = {}) {
+  const url = increment ? `${EXPORT_COUNTER_URL}/up` : `${EXPORT_COUNTER_URL}/`;
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: { Accept: "application/json" },
+  });
+  if (!increment && response.status === 400) {
+    updateExportCount(0);
+    return;
+  }
+  if (!response.ok) throw new Error(`Export counter HTTP ${response.status}`);
+  const payload = await response.json();
+  updateExportCount(payload.count);
+}
+
+function loadExportCount() {
+  const cached = Number(localStorage.getItem(EXPORT_COUNT_CACHE_KEY));
+  if (Number.isSafeInteger(cached) && cached >= 0) updateExportCount(cached);
+  requestExportCount().catch((error) => console.warn("Export count unavailable", error));
+}
+
+function recordExport() {
+  requestExportCount({ increment: true }).catch((error) => console.warn("Export count could not be updated", error));
+}
+
 function exportCurrent(format) {
   const papers = filteredPapers();
   if (!papers.length) return;
@@ -393,6 +430,7 @@ function exportCurrent(format) {
     downloadText(htmlExport(papers), exportFilename("html", papers.length), "text/html");
     elements.exportStatus.textContent = t(papers.length === 1 ? "export.successOne" : "export.success", { count: papers.length, format: "HTML" });
   }
+  recordExport();
 }
 
 function setExportMenuOpen(open) {
@@ -653,7 +691,11 @@ function bindEvents() {
     elements.window.value = state.window;
     render();
   });
-  window.addEventListener("dit:language-change", () => render());
+  window.addEventListener("dit:language-change", () => {
+    const cached = Number(localStorage.getItem(EXPORT_COUNT_CACHE_KEY));
+    if (Number.isSafeInteger(cached) && cached >= 0) updateExportCount(cached);
+    render();
+  });
   elements.reset.addEventListener("click", () => {
     state.query = "";
     state.cluster = "all";
@@ -687,6 +729,7 @@ function bindEvents() {
 }
 
 async function initialize() {
+  loadExportCount();
   try {
     const [response, englishSummaries] = await Promise.all([
       fetch(DATA_URL),
