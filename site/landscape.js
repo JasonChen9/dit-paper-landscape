@@ -62,6 +62,7 @@
   const CLUSTER_COUNT = 6;
   const state = {
     papers: [],
+    paperDays: [],
     tags: [],
     vectors: [],
     similarities: [],
@@ -79,6 +80,10 @@
     animationToken: 0,
     hoverFocus: null,
     hoverEnergy: 0,
+    timeMin: null,
+    timeMax: null,
+    timeStart: null,
+    timeEnd: null,
   };
 
   const elements = {};
@@ -88,6 +93,19 @@
       .split(";")
       .map((tag) => tag.trim().toLowerCase())
       .filter(Boolean);
+  }
+
+  function publishedDay(value) {
+    return Math.floor(Date.parse(`${value}T00:00:00Z`) / 86400000);
+  }
+
+  function formatDay(day) {
+    return new Date(day * 86400000).toISOString().slice(0, 10);
+  }
+
+  function paperInTimeRange(index) {
+    const day = state.paperDays[index];
+    return day >= state.timeStart && day <= state.timeEnd;
   }
 
   function familyScores(tags) {
@@ -309,6 +327,7 @@
       return {
         index,
         cluster,
+        publishedDay: state.paperDays[index],
         x,
         y,
         anchorX: x,
@@ -384,6 +403,7 @@
   }
 
   function isNodeActive(node) {
+    if (!paperInTimeRange(node.index)) return false;
     if (state.activeCluster !== null && node.cluster !== state.activeCluster) return false;
     if (state.activeTag && !paperTags(state.papers[node.index]).includes(state.activeTag)) return false;
     return true;
@@ -403,14 +423,17 @@
     for (const edge of state.edges) {
       const source = state.nodes[edge.source];
       const target = state.nodes[edge.target];
-      const highlighted = focus !== null
+      const edgeActive = isNodeActive(source) && isNodeActive(target);
+      const highlighted = edgeActive && focus !== null
         && (edge.source === focus && focusNeighbors.has(edge.target)
           || edge.target === focus && focusNeighbors.has(edge.source));
       context.beginPath();
       context.moveTo(source.x, source.y);
       context.lineTo(target.x, target.y);
       context.strokeStyle = highlighted ? state.palette[source.cluster] : edgeColor;
-      context.globalAlpha = highlighted ? 0.7 : 0.18 + edge.similarity * 0.25;
+      context.globalAlpha = edgeActive
+        ? (highlighted ? 0.7 : 0.18 + edge.similarity * 0.25)
+        : 0.025;
       context.lineWidth = highlighted ? 1.6 : 0.8;
       context.stroke();
     }
@@ -426,13 +449,13 @@
       context.fillStyle = state.palette[node.cluster];
       context.globalAlpha = active ? 0.94 : 0.12;
       context.fill();
-      if (selected || hovered) {
+      if ((selected || hovered) && active) {
         context.strokeStyle = labelColor;
         context.globalAlpha = 0.9;
         context.lineWidth = 1.5;
         context.stroke();
       }
-      if (selected || hovered) {
+      if ((selected || hovered) && active) {
         const paper = state.papers[node.index];
         context.globalAlpha = 1;
         context.fillStyle = labelColor;
@@ -672,6 +695,51 @@
     });
   }
 
+  function syncTimeFilter() {
+    const span = Math.max(1, state.timeMax - state.timeMin);
+    const startPercent = ((state.timeStart - state.timeMin) / span) * 100;
+    const endPercent = ((state.timeEnd - state.timeMin) / span) * 100;
+    elements.timeControl.style.setProperty("--range-start", `${startPercent.toFixed(3)}%`);
+    elements.timeControl.style.setProperty("--range-end", `${endPercent.toFixed(3)}%`);
+    elements.timeStart.value = String(state.timeStart);
+    elements.timeEnd.value = String(state.timeEnd);
+    elements.timeStart.setAttribute("aria-valuetext", formatDay(state.timeStart));
+    elements.timeEnd.setAttribute("aria-valuetext", formatDay(state.timeEnd));
+    elements.timeReadout.textContent = `${formatDay(state.timeStart)} — ${formatDay(state.timeEnd)}`;
+    const count = state.paperDays.filter((day) => day >= state.timeStart && day <= state.timeEnd).length;
+    elements.timeCount.textContent = `${count} / ${state.papers.length} 篇`;
+  }
+
+  function initializeTimeFilter() {
+    state.paperDays = state.papers.map((paper) => publishedDay(paper.published));
+    state.timeMin = Math.min(...state.paperDays);
+    state.timeMax = Math.max(...state.paperDays);
+    state.timeStart = state.timeMin;
+    state.timeEnd = state.timeMax;
+    [elements.timeStart, elements.timeEnd].forEach((input) => {
+      input.min = String(state.timeMin);
+      input.max = String(state.timeMax);
+      input.step = "1";
+    });
+    elements.timeMin.textContent = formatDay(state.timeMin);
+    elements.timeMax.textContent = formatDay(state.timeMax);
+    elements.timeStart.addEventListener("input", (event) => {
+      state.timeStart = Math.min(Number(event.currentTarget.value), state.timeEnd);
+      state.hovered = null;
+      elements.tooltip.hidden = true;
+      syncTimeFilter();
+      draw();
+    });
+    elements.timeEnd.addEventListener("input", (event) => {
+      state.timeEnd = Math.max(Number(event.currentTarget.value), state.timeStart);
+      state.hovered = null;
+      elements.tooltip.hidden = true;
+      syncTimeFilter();
+      draw();
+    });
+    syncTimeFilter();
+  }
+
   function pointerNode(event) {
     const rect = elements.canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -743,6 +811,9 @@
     state.hovered = null;
     state.hoverFocus = null;
     state.hoverEnergy = 0;
+    state.timeStart = state.timeMin;
+    state.timeEnd = state.timeMax;
+    syncTimeFilter();
     renderLegend();
     renderTopicCloud();
     selectPaper(chooseInitialPaper());
@@ -759,10 +830,18 @@
       cloud: document.querySelector("#topic-cloud"),
       bridges: document.querySelector("#bridge-list"),
       reset: document.querySelector("#landscape-reset"),
+      timeControl: document.querySelector("#time-range-control"),
+      timeStart: document.querySelector("#time-range-start"),
+      timeEnd: document.querySelector("#time-range-end"),
+      timeReadout: document.querySelector("#time-range-readout"),
+      timeCount: document.querySelector("#time-range-count"),
+      timeMin: document.querySelector("#time-range-min"),
+      timeMax: document.querySelector("#time-range-max"),
     });
     if (Object.values(elements).some((element) => !element)) return;
     elements.context = elements.canvas.getContext("2d");
     state.papers = papers;
+    initializeTimeFilter();
     const model = buildVectors(papers);
     state.tags = model.documents;
     state.vectors = model.vectors;

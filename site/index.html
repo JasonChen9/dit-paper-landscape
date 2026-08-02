@@ -75,6 +75,37 @@
             <div id="landscape-tooltip" class="landscape-tooltip" hidden></div>
           </div>
 
+          <div class="landscape-time-filter" role="group" aria-labelledby="time-filter-title">
+            <div class="time-filter-summary">
+              <span id="time-filter-title">publication window</span>
+              <output id="time-range-readout" for="time-range-start time-range-end" aria-live="polite">
+                全部时间
+              </output>
+              <span id="time-range-count"></span>
+            </div>
+            <div id="time-range-control" class="time-range-control">
+              <div class="time-range-track" aria-hidden="true">
+                <span class="time-range-selection"></span>
+              </div>
+              <input
+                id="time-range-start"
+                type="range"
+                aria-label="起始发表日期"
+                aria-describedby="time-range-readout"
+              />
+              <input
+                id="time-range-end"
+                type="range"
+                aria-label="结束发表日期"
+                aria-describedby="time-range-readout"
+              />
+            </div>
+            <div class="time-range-axis" aria-hidden="true">
+              <time id="time-range-min"></time>
+              <time id="time-range-max"></time>
+            </div>
+          </div>
+
           <aside class="landscape-sidebar" aria-label="聚类图例和选中论文">
             <div>
               <h3>自动聚类</h3>
