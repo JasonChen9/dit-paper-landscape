@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="最近一年 Diffusion Transformer 论文数据库：架构、视频、系统效率、RL、Agent 与 Omni。"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <title>DiT Paper Atlas</title>
+    <script>
+      (() => {
+        const saved = localStorage.getItem("dit-paper-theme");
+        const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = saved || preferred;
+      })();
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar page-width" aria-label="站点导航">
+        <a class="site-title" href="./"><strong>DiT Paper</strong> Atlas</a>
+        <div class="nav-links">
+          <a class="active" href="#papers">papers</a>
+          <a href="#method">about</a>
+          <a href="https://jasonchen9.github.io/">homepage</a>
+          <a href="https://github.com/JasonChen9/dit-paper-landscape">GitHub</a>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题">◐</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-width">
+      <section class="intro" aria-labelledby="page-title">
+        <h1 id="page-title"><strong>DiT Paper</strong> Atlas</h1>
+        <p class="subtitle">A curated research index for Diffusion Transformers</p>
+        <p>
+          本站整理最近一年 DiT 的代表性工作，关注基础架构、视频长上下文、系统效率、
+          RL 后训练、Agent / World Model 与 Omni 统一模型。数据库强调问题结构和论文之间的关系，而非关键词穷举。
+        </p>
+        <div class="stats" aria-label="数据库统计">
+          <span><strong id="total-count">55</strong> papers</span>
+          <span><strong id="window-count">47</strong> in the last year</span>
+          <span><strong>6</strong> research topics</span>
+          <span>updated Aug 2026</span>
+        </div>
+      </section>
+
+      <section id="papers" class="papers-section" aria-labelledby="papers-title">
+        <h2 id="papers-title">papers</h2>
+        <p class="section-note">
+          搜索标题、标签或中文摘要；点击 <b>arXiv</b> 查看摘要，点击 <b>PDF</b> 在浏览器中直接阅读原文。
+        </p>
+
+        <div class="search-panel">
+          <label class="search-box" for="search-input">
+            <span aria-hidden="true">⌕</span>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Search title, topic, summary…"
+              autocomplete="off"
+            />
+            <kbd>/</kbd>
+          </label>
+          <div class="select-row">
+            <label for="relation-select">
+              <span>DiT 关系</span>
+              <select id="relation-select">
+                <option value="all">全部关系</option>
+                <option value="direct">核心架构</option>
+                <option value="adaptation">后训练 / 适配</option>
+                <option value="system">系统优化</option>
+                <option value="adjacent">相邻方向</option>
+              </select>
+            </label>
+            <label for="window-select">
+              <span>时间范围</span>
+              <select id="window-select">
+                <option value="all">全部论文</option>
+                <option value="in-window">最近一年</option>
+                <option value="background">背景锚点</option>
+              </select>
+            </label>
+            <label for="sort-select">
+              <span>排序</span>
+              <select id="sort-select">
+                <option value="newest">最新优先</option>
+                <option value="oldest">最早优先</option>
+                <option value="title">标题 A—Z</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div id="category-filters" class="category-filters" aria-label="按主题筛选"></div>
+
+        <div class="results-toolbar">
+          <p id="result-count" aria-live="polite">正在加载论文数据…</p>
+          <a href="https://github.com/JasonChen9/dit-paper-landscape/blob/main/catalog/papers.csv">view source data ↗</a>
+        </div>
+
+        <div id="paper-list" class="paper-list" aria-live="polite"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <p>没有匹配的论文。</p>
+          <button id="reset-button" type="button">清除筛选</button>
+        </div>
+      </section>
+
+      <section id="method" class="method" aria-labelledby="method-title">
+        <h2 id="method-title">about this collection</h2>
+        <div class="method-grid">
+          <article>
+            <h3>时间范围</h3>
+            <p>严格窗口采用 arXiv 首次公开日期 2025-08-02—2026-08-02；更早论文只在解释趋势不可缺少时作为背景收录。</p>
+          </article>
+          <article>
+            <h3>筛选原则</h3>
+            <p>优先保留能代表架构、训练、系统或评测问题的工作，并标注其与 DiT 的直接、适配、系统或相邻关系。</p>
+          </article>
+          <article>
+            <h3>来源与维护</h3>
+            <p>元数据来自会议官方页面和 arXiv；PDF 按钮直达原始来源。结构化目录和中文笔记在 GitHub 持续维护。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-width">
+        © 2026 Guangyu Xiang · DiT Paper Atlas. Styled to match the <a href="https://github.com/alshedivat/al-folio">al-folio</a> academic site.
+      </div>
+    </footer>
+  </body>
+</html>
+

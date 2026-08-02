@@ -6,6 +6,13 @@
 2. RL、Agent/World Model、Omni/统一多模态怎样与 DiT 结合？
 3. 哪些结论适用于主流 Dense DiT，哪些只适用于研究型 MoE、特定系统或特定任务？
 
+## 在线网站
+
+- 网站：<https://jasonchen9.github.io/dit-paper-landscape/>
+- GitHub 操作说明：[GITHUB_GUIDE.md](GITHUB_GUIDE.md)
+
+网站直接读取 `catalog/papers.csv`，支持标题/摘要搜索、主题与 DiT 关系筛选，并将 arXiv 摘要和 PDF 显示为浏览器可点击链接。
+
 ## 快速入口
 
 - [总览与核心结论](notes/00_landscape.md)
@@ -19,6 +26,7 @@
 - [结构化论文目录](catalog/papers.csv)
 - [PDF 分层索引](papers/README.md)
 - [维护指南](CONTRIBUTING.md)
+- [GitHub 与网站维护指南](GITHUB_GUIDE.md)
 
 ## PDF 层级
 
