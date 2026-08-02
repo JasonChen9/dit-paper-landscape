@@ -59,7 +59,7 @@
               点的位置由论文标签相似度决定，越近表示研究问题越接近；颜色来自 6 组标签 TF-IDF 聚类。即使没有鼠标交互，布局稳定后也会持续低速漂浮；经过节点可进一步激活相邻工作。
             </p>
           </div>
-          <button id="landscape-reset" class="plain-button" type="button">重置视图</button>
+          <button id="landscape-reset" class="plain-button" type="button">重置筛选</button>
         </div>
 
         <div class="landscape-layout">
@@ -84,9 +84,20 @@
               <span id="time-range-count"></span>
             </div>
             <div id="time-range-control" class="time-range-control">
-              <div class="time-range-track" aria-hidden="true">
-                <span class="time-range-selection"></span>
-              </div>
+              <svg
+                id="time-density-chart"
+                class="time-density-chart"
+                viewBox="0 0 1000 56"
+                preserveAspectRatio="none"
+                role="img"
+                aria-label="论文发表时间密度概览"
+              >
+                <path id="time-density-area" class="time-density-area"></path>
+                <path id="time-density-line" class="time-density-line"></path>
+              </svg>
+              <div class="time-brush-mask time-brush-mask-start" aria-hidden="true"></div>
+              <div class="time-brush-mask time-brush-mask-end" aria-hidden="true"></div>
+              <div id="time-brush-window" class="time-brush-window" aria-hidden="true"></div>
               <input
                 id="time-range-start"
                 type="range"
@@ -100,10 +111,7 @@
                 aria-describedby="time-range-readout"
               />
             </div>
-            <div class="time-range-axis" aria-hidden="true">
-              <time id="time-range-min"></time>
-              <time id="time-range-max"></time>
-            </div>
+            <div id="time-range-ticks" class="time-range-ticks" aria-hidden="true"></div>
           </div>
 
           <aside class="landscape-sidebar" aria-label="聚类图例和选中论文">

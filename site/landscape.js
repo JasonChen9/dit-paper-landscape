@@ -697,6 +697,49 @@
     });
   }
 
+  function renderTimeDensity() {
+    const binCount = 30;
+    const span = Math.max(1, state.timeMax - state.timeMin);
+    const counts = new Array(binCount).fill(0);
+    state.paperDays.forEach((day) => {
+      const index = Math.min(
+        binCount - 1,
+        Math.round(((day - state.timeMin) / span) * (binCount - 1)),
+      );
+      counts[index] += 1;
+    });
+    const smoothed = counts.map((count, index) => {
+      const previous = counts[Math.max(0, index - 1)];
+      const next = counts[Math.min(binCount - 1, index + 1)];
+      return (previous + count * 2 + next) / 4;
+    });
+    const peak = Math.max(1, ...smoothed);
+    const points = smoothed.map((count, index) => ({
+      x: (index / (binCount - 1)) * 1000,
+      y: 52 - (count / peak) * 44,
+    }));
+    const line = points.map((point, index) =>
+      `${index ? "L" : "M"}${point.x.toFixed(2)},${point.y.toFixed(2)}`).join(" ");
+    elements.timeDensityLine.setAttribute("d", line);
+    elements.timeDensityArea.setAttribute("d", `M0,56 ${line} L1000,56 Z`);
+  }
+
+  function renderTimeTicks() {
+    elements.timeTicks.replaceChildren();
+    const span = Math.max(1, state.timeMax - state.timeMin);
+    const firstYear = new Date(state.timeMin * 86400000).getUTCFullYear();
+    const lastYear = new Date(state.timeMax * 86400000).getUTCFullYear();
+    for (let year = firstYear; year <= lastYear; year += 1) {
+      const day = publishedDay(`${year}-01-01`);
+      if (day < state.timeMin || day > state.timeMax) continue;
+      const tick = document.createElement("span");
+      tick.className = "time-range-tick";
+      tick.style.left = `${(((day - state.timeMin) / span) * 100).toFixed(3)}%`;
+      tick.textContent = String(year);
+      elements.timeTicks.append(tick);
+    }
+  }
+
   function syncTimeFilter() {
     const span = Math.max(1, state.timeMax - state.timeMin);
     const startPercent = ((state.timeStart - state.timeMin) / span) * 100;
@@ -707,9 +750,56 @@
     elements.timeEnd.value = String(state.timeEnd);
     elements.timeStart.setAttribute("aria-valuetext", formatDay(state.timeStart));
     elements.timeEnd.setAttribute("aria-valuetext", formatDay(state.timeEnd));
-    elements.timeReadout.textContent = `${formatDay(state.timeStart)} — ${formatDay(state.timeEnd)}`;
+    const fullRange = state.timeStart === state.timeMin && state.timeEnd === state.timeMax;
+    elements.timeReadout.textContent = fullRange
+      ? "全部时间"
+      : `${formatDay(state.timeStart)} — ${formatDay(state.timeEnd)}`;
     const count = state.paperDays.filter((day) => day >= state.timeStart && day <= state.timeEnd).length;
     elements.timeCount.textContent = `${count} / ${state.papers.length} 篇`;
+  }
+
+  function applyTimeRange(start, end) {
+    state.timeStart = Math.max(state.timeMin, Math.min(start, state.timeMax));
+    state.timeEnd = Math.max(state.timeStart, Math.min(end, state.timeMax));
+    state.hovered = null;
+    elements.tooltip.hidden = true;
+    syncTimeFilter();
+    draw();
+  }
+
+  function bindTimeBrushWindow() {
+    let drag = null;
+    elements.timeWindow.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      drag = {
+        pointerId: event.pointerId,
+        clientX: event.clientX,
+        start: state.timeStart,
+        end: state.timeEnd,
+      };
+      elements.timeWindow.setPointerCapture(event.pointerId);
+      elements.timeWindow.classList.add("is-dragging");
+      event.preventDefault();
+    });
+    elements.timeWindow.addEventListener("pointermove", (event) => {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      const rect = elements.timeControl.getBoundingClientRect();
+      const totalSpan = Math.max(1, state.timeMax - state.timeMin);
+      const selectedSpan = drag.end - drag.start;
+      const delta = Math.round(((event.clientX - drag.clientX) / rect.width) * totalSpan);
+      const start = Math.max(state.timeMin, Math.min(drag.start + delta, state.timeMax - selectedSpan));
+      applyTimeRange(start, start + selectedSpan);
+    });
+    const finishDrag = (event) => {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      if (elements.timeWindow.hasPointerCapture(event.pointerId)) {
+        elements.timeWindow.releasePointerCapture(event.pointerId);
+      }
+      drag = null;
+      elements.timeWindow.classList.remove("is-dragging");
+    };
+    elements.timeWindow.addEventListener("pointerup", finishDrag);
+    elements.timeWindow.addEventListener("pointercancel", finishDrag);
   }
 
   function initializeTimeFilter() {
@@ -723,22 +813,15 @@
       input.max = String(state.timeMax);
       input.step = "1";
     });
-    elements.timeMin.textContent = formatDay(state.timeMin);
-    elements.timeMax.textContent = formatDay(state.timeMax);
+    renderTimeDensity();
+    renderTimeTicks();
     elements.timeStart.addEventListener("input", (event) => {
-      state.timeStart = Math.min(Number(event.currentTarget.value), state.timeEnd);
-      state.hovered = null;
-      elements.tooltip.hidden = true;
-      syncTimeFilter();
-      draw();
+      applyTimeRange(Math.min(Number(event.currentTarget.value), state.timeEnd), state.timeEnd);
     });
     elements.timeEnd.addEventListener("input", (event) => {
-      state.timeEnd = Math.max(Number(event.currentTarget.value), state.timeStart);
-      state.hovered = null;
-      elements.tooltip.hidden = true;
-      syncTimeFilter();
-      draw();
+      applyTimeRange(state.timeStart, Math.max(Number(event.currentTarget.value), state.timeStart));
     });
+    bindTimeBrushWindow();
     syncTimeFilter();
   }
 
@@ -837,8 +920,10 @@
       timeEnd: document.querySelector("#time-range-end"),
       timeReadout: document.querySelector("#time-range-readout"),
       timeCount: document.querySelector("#time-range-count"),
-      timeMin: document.querySelector("#time-range-min"),
-      timeMax: document.querySelector("#time-range-max"),
+      timeDensityArea: document.querySelector("#time-density-area"),
+      timeDensityLine: document.querySelector("#time-density-line"),
+      timeTicks: document.querySelector("#time-range-ticks"),
+      timeWindow: document.querySelector("#time-brush-window"),
     });
     if (Object.values(elements).some((element) => !element)) return;
     elements.context = elements.canvas.getContext("2d");
