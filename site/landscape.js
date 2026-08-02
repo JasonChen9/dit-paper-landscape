@@ -77,6 +77,8 @@
     height: 0,
     palette: [],
     animationToken: 0,
+    hoverFocus: null,
+    hoverEnergy: 0,
   };
 
   const elements = {};
@@ -302,13 +304,20 @@
       const angle = (cluster / CLUSTER_COUNT) * Math.PI * 2 - Math.PI / 2;
       const jitterAngle = hashNumber(`${paper.arxiv_id}:a`) * Math.PI * 2;
       const jitterRadius = 20 + hashNumber(`${paper.arxiv_id}:r`) * 62;
+      const x = centerX + Math.cos(angle) * radius + Math.cos(jitterAngle) * jitterRadius;
+      const y = centerY + Math.sin(angle) * radius + Math.sin(jitterAngle) * jitterRadius;
       return {
         index,
         cluster,
-        x: centerX + Math.cos(angle) * radius + Math.cos(jitterAngle) * jitterRadius,
-        y: centerY + Math.sin(angle) * radius + Math.sin(jitterAngle) * jitterRadius,
+        x,
+        y,
+        anchorX: x,
+        anchorY: y,
         vx: 0,
         vy: 0,
+        driftPhase: hashNumber(`${paper.arxiv_id}:phase`) * Math.PI * 2,
+        driftSpeed: 0.00018 + hashNumber(`${paper.arxiv_id}:speed`) * 0.00016,
+        driftAmplitude: 1.6 + hashNumber(`${paper.arxiv_id}:amplitude`) * 1.2,
       };
     });
   }
@@ -438,11 +447,64 @@
     context.globalAlpha = 1;
   }
 
+  function captureAnchors() {
+    state.nodes.forEach((node) => {
+      node.anchorX = node.x;
+      node.anchorY = node.y;
+    });
+  }
+
+  function startAmbientMotion(token) {
+    let lastFrame = 0;
+    const frameInterval = 1000 / 30;
+    const frame = (timestamp) => {
+      if (token !== state.animationToken) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        state.nodes.forEach((node) => {
+          node.x = node.anchorX;
+          node.y = node.anchorY;
+        });
+        draw();
+        return;
+      }
+
+      if (!document.hidden && timestamp - lastFrame >= frameInterval) {
+        const elapsed = lastFrame ? timestamp - lastFrame : frameInterval;
+        lastFrame = timestamp;
+        if (state.hovered !== null) {
+          state.hoverEnergy += (1 - state.hoverEnergy) * 0.2;
+        } else {
+          state.hoverEnergy *= Math.pow(0.955, elapsed / frameInterval);
+        }
+        if (state.hoverEnergy < 0.01) {
+          state.hoverEnergy = 0;
+          state.hoverFocus = null;
+        }
+
+        state.nodes.forEach((node) => {
+          const similarity = state.hoverFocus === null
+            ? 0
+            : state.similarities[state.hoverFocus][node.index];
+          const proximity = node.index === state.hoverFocus ? 1 : similarity;
+          const activation = state.hoverEnergy * proximity;
+          const amplitude = node.driftAmplitude * (1 + activation * 1.65);
+          const phase = node.driftPhase + timestamp * node.driftSpeed * (1 + activation * 0.45);
+          node.x = node.anchorX + Math.sin(phase) * amplitude;
+          node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72;
+        });
+        draw();
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
   function runSimulation() {
     const token = ++state.animationToken;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
       for (let index = 0; index < 180; index += 1) forceStep();
+      captureAnchors();
       draw();
       return;
     }
@@ -452,7 +514,12 @@
       for (let step = 0; step < 4; step += 1) forceStep();
       draw();
       iterations += 4;
-      if (iterations < 220) requestAnimationFrame(frame);
+      if (iterations < 220) {
+        requestAnimationFrame(frame);
+      } else {
+        captureAnchors();
+        startAmbientMotion(token);
+      }
     };
     requestAnimationFrame(frame);
   }
@@ -618,6 +685,10 @@
     elements.canvas.addEventListener("pointermove", (event) => {
       const { node, x, y } = pointerNode(event);
       state.hovered = node?.index ?? null;
+      if (node) {
+        state.hoverFocus = node.index;
+        state.hoverEnergy = 1;
+      }
       elements.canvas.style.cursor = node ? "pointer" : "default";
       if (node) {
         const paper = state.papers[node.index];
@@ -662,6 +733,8 @@
     state.activeCluster = null;
     state.activeTag = null;
     state.hovered = null;
+    state.hoverFocus = null;
+    state.hoverEnergy = 0;
     initializeNodes();
     renderLegend();
     renderTopicCloud();
