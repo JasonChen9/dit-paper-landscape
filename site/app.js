@@ -1,24 +1,30 @@
 const DATA_URL = "./data/papers.csv";
+const ENGLISH_SUMMARIES_URL = "./data/summaries_en.json";
 
-const RELATIONS = {
-  direct: "核心 DiT",
-  adaptation: "后训练 / 适配",
-  system: "系统优化",
-  adjacent: "相邻方向",
+const RELATION_KEYS = {
+  direct: "relation.direct",
+  adaptation: "relation.adaptation",
+  system: "relation.system",
+  adjacent: "relation.adjacent",
 };
 
-const WINDOW_LABELS = {
-  all: "全部论文",
-  "in-window": "最近三年",
-  background: "历史锚点",
-  custom: "自定义日期区间",
+const WINDOW_KEYS = {
+  all: "window.all",
+  "in-window": "window.in-window",
+  background: "window.background",
+  custom: "window.custom",
 };
 
-const SORT_LABELS = {
-  newest: "最新优先",
-  oldest: "最早优先",
-  title: "标题 A-Z",
+const SORT_KEYS = {
+  newest: "sort.newest",
+  oldest: "sort.oldest",
+  title: "sort.title",
 };
+
+const t = (key, values) => window.DiTI18n.t(key, values);
+const relationLabel = (value) => value === "all" ? t("relation.all") : t(RELATION_KEYS[value] ?? value);
+const windowLabel = (value) => t(WINDOW_KEYS[value] ?? value);
+const sortLabel = (value) => t(SORT_KEYS[value] ?? value);
 
 const state = {
   papers: [],
@@ -34,6 +40,9 @@ const state = {
   topicIds: null,
   topicLabel: "",
   topicSource: null,
+  page: 1,
+  pageSize: 12,
+  initialized: false,
 };
 
 const elements = {
@@ -44,6 +53,10 @@ const elements = {
   categories: document.querySelector("#category-filters"),
   resultCount: document.querySelector("#result-count"),
   paperList: document.querySelector("#paper-list"),
+  pagination: document.querySelector("#pagination"),
+  paginationSummary: document.querySelector("#pagination-summary"),
+  pageSize: document.querySelector("#page-size-select"),
+  pageButtons: document.querySelector("#page-buttons"),
   empty: document.querySelector("#empty-state"),
   reset: document.querySelector("#reset-button"),
   exportMarkdown: document.querySelector("#export-markdown"),
@@ -104,7 +117,11 @@ function normalize(value) {
 }
 
 function clusterLabelForPaper(paper) {
-  return state.paperClusterLabels.get(paper.arxiv_id) ?? "自动聚类待计算";
+  return state.paperClusterLabels.get(paper.arxiv_id) ?? t("cluster.computing");
+}
+
+function paperSummary(paper) {
+  return window.DiTI18n.language === "zh" ? paper.summary_zh : paper.summary_en || paper.summary_zh;
 }
 
 function matchesPaper(paper, { includeTopic = true, includeTime = true } = {}) {
@@ -124,9 +141,10 @@ function matchesPaper(paper, { includeTopic = true, includeTime = true } = {}) {
       paper.title,
       paper.venue,
       paper.topic_tags,
+      paper.summary_en,
       paper.summary_zh,
       clusterLabelForPaper(paper),
-      RELATIONS[paper.dit_relation],
+      relationLabel(paper.dit_relation),
     ].join(" "),
   );
   return state.query
@@ -193,7 +211,7 @@ function createPaperCard(paper) {
 
   const meta = createElement("div", "paper-meta");
   meta.append(
-    createElement("span", "relation-badge", RELATIONS[paper.dit_relation] ?? paper.dit_relation),
+    createElement("span", "relation-badge", relationLabel(paper.dit_relation)),
     createElement("span", "", paper.published),
     createElement("span", "", `· ${paper.venue}`),
   );
@@ -203,7 +221,7 @@ function createPaperCard(paper) {
   heading.append(titleLink);
 
   const fullTitle = createElement("p", "full-title", paper.title);
-  const summary = createElement("p", "summary", paper.summary_zh);
+  const summary = createElement("p", "summary", paperSummary(paper));
 
   const tags = createElement("ul", "tag-list");
   for (const tag of paper.topic_tags.split(";").filter(Boolean)) {
@@ -211,7 +229,7 @@ function createPaperCard(paper) {
   }
 
   const links = createElement("div", "card-links");
-  links.append(createLink("摘要 ↗", paper.arxiv_url), createLink("PDF ↗", paper.pdf_url));
+  links.append(createLink(t("paper.abstract"), paper.arxiv_url), createLink(t("paper.pdf"), paper.pdf_url));
 
   card.append(meta, heading, fullTitle, summary, tags, links);
   return card;
@@ -228,6 +246,8 @@ function updateURL() {
     params.set("to", state.customEnd);
   }
   if (state.sort !== "newest") params.set("sort", state.sort);
+  if (state.page !== 1) params.set("page", state.page);
+  if (state.pageSize !== 12) params.set("perPage", state.pageSize);
   const query = params.toString();
   history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}${location.hash}`);
 }
@@ -235,16 +255,16 @@ function updateURL() {
 function filterDescription() {
   const timeLabel = state.window === "custom" && state.customStart && state.customEnd
     ? `${state.customStart} — ${state.customEnd}`
-    : WINDOW_LABELS[state.window] ?? state.window;
+    : windowLabel(state.window);
   const parts = [
-    `主题聚类：${state.topicSource === "cluster" ? state.topicLabel : "全部聚类"}`,
-    `DiT 关系：${state.relation === "all" ? "全部关系" : RELATIONS[state.relation]}`,
-    `时间：${timeLabel}`,
-    `排序：${SORT_LABELS[state.sort] ?? state.sort}`,
+    t("filterDesc.cluster", { value: state.topicSource === "cluster" ? state.topicLabel : t("filterDesc.allClusters") }),
+    t("filterDesc.relation", { value: relationLabel(state.relation) }),
+    t("filterDesc.time", { value: timeLabel }),
+    t("filterDesc.sort", { value: sortLabel(state.sort) }),
   ];
-  if (state.topicSource === "tag") parts.push(`词云筛选：${state.topicLabel}`);
-  if (state.query) parts.push(`搜索：${state.query}`);
-  return parts.join("；");
+  if (state.topicSource === "tag") parts.push(t("filterDesc.tag", { value: state.topicLabel }));
+  if (state.query) parts.push(t("filterDesc.search", { value: state.query }));
+  return parts.join(window.DiTI18n.language === "zh" ? "；" : "; ");
 }
 
 function escapeMarkdown(value) {
@@ -279,29 +299,30 @@ function downloadText(content, filename, mimeType) {
 
 function markdownExport(papers) {
   const generated = new Date().toISOString();
+  const separator = window.DiTI18n.language === "zh" ? "：" : ": ";
   const sections = papers.map((paper, index) => {
     const tags = paper.topic_tags.split(";").filter(Boolean).map((tag) => `\`${escapeMarkdown(tag)}\``).join(" · ");
     return [
       `## ${index + 1}. [${escapeMarkdown(paper.title)}](${paper.arxiv_url})`,
       "",
-      `- 简称：${escapeMarkdown(paper.short_title)}`,
-      `- 发表日期：${paper.published}`,
-      `- 主题聚类：${escapeMarkdown(clusterLabelForPaper(paper))}`,
-      `- DiT 关系：${escapeMarkdown(RELATIONS[paper.dit_relation] ?? paper.dit_relation)}`,
-      `- 来源：${escapeMarkdown(paper.venue)}`,
-      `- 标签：${tags || "-"}`,
-      `- arXiv：[${paper.arxiv_url}](${paper.arxiv_url})`,
-      `- PDF：[${paper.pdf_url}](${paper.pdf_url})`,
+      `- ${t("export.shortTitle")}${separator}${escapeMarkdown(paper.short_title)}`,
+      `- ${t("export.published")}${separator}${paper.published}`,
+      `- ${t("export.cluster")}${separator}${escapeMarkdown(clusterLabelForPaper(paper))}`,
+      `- ${t("export.relation")}${separator}${escapeMarkdown(relationLabel(paper.dit_relation))}`,
+      `- ${t("export.source")}${separator}${escapeMarkdown(paper.venue)}`,
+      `- ${t("export.tags")}${separator}${tags || "-"}`,
+      `- arXiv${separator}[${paper.arxiv_url}](${paper.arxiv_url})`,
+      `- PDF${separator}[${paper.pdf_url}](${paper.pdf_url})`,
       "",
-      escapeMarkdown(paper.summary_zh),
+      escapeMarkdown(paperSummary(paper)),
     ].join("\n");
   });
   return [
-    "# DiT Paper Atlas 导出",
+    `# ${t("export.title")}`,
     "",
-    `- 论文数量：${papers.length}`,
-    `- 导出条件：${escapeMarkdown(filterDescription())}`,
-    `- 生成时间：${generated}`,
+    `- ${t("export.paperCount", { count: papers.length })}`,
+    `- ${t("export.conditions", { value: escapeMarkdown(filterDescription()) })}`,
+    `- ${t("export.generated", { value: generated })}`,
     "",
     ...sections,
     "",
@@ -314,21 +335,21 @@ function htmlExport(papers) {
     const tags = paper.topic_tags.split(";").filter(Boolean).map((tag) => `<li>${escapeHTML(tag)}</li>`).join("");
     return `
       <article>
-        <p class="meta">${index + 1} · ${escapeHTML(paper.published)} · ${escapeHTML(paper.venue)} · ${escapeHTML(RELATIONS[paper.dit_relation] ?? paper.dit_relation)}</p>
+        <p class="meta">${index + 1} · ${escapeHTML(paper.published)} · ${escapeHTML(paper.venue)} · ${escapeHTML(relationLabel(paper.dit_relation))}</p>
         <h2><a href="${escapeHTML(paper.arxiv_url)}">${escapeHTML(paper.title)}</a></h2>
         <p class="short-title">${escapeHTML(paper.short_title)} · ${escapeHTML(clusterLabelForPaper(paper))}</p>
-        <p>${escapeHTML(paper.summary_zh)}</p>
+        <p>${escapeHTML(paperSummary(paper))}</p>
         <ul class="tags">${tags}</ul>
         <p class="links"><a href="${escapeHTML(paper.arxiv_url)}">arXiv</a><a href="${escapeHTML(paper.pdf_url)}">PDF</a></p>
       </article>`;
   }).join("");
 
   return `<!doctype html>
-<html lang="zh-CN">
+<html lang="${window.DiTI18n.language === "zh" ? "zh-CN" : "en"}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DiT Paper Atlas 导出</title>
+  <title>${escapeHTML(t("export.title"))}</title>
   <style>
     :root { color-scheme: light dark; --bg: #fff; --text: #242424; --muted: #6c757d; --border: #d9d9d9; --accent: #2698ba; --tag: #f3f5f6; }
     @media (prefers-color-scheme: dark) { :root { --bg: #191919; --text: #e8e8e8; --muted: #a8a8a8; --border: #3b3b3b; --accent: #58b7d3; --tag: #25292b; } }
@@ -349,10 +370,10 @@ function htmlExport(papers) {
 </head>
 <body>
   <header>
-    <h1>DiT Paper Atlas 导出</h1>
-    <p>${papers.length} 篇论文</p>
+    <h1>${escapeHTML(t("export.title"))}</h1>
+    <p>${escapeHTML(t("export.paperCount", { count: papers.length }))}</p>
     <p>${escapeHTML(filterDescription())}</p>
-    <p>生成时间：${escapeHTML(generated)}</p>
+    <p>${escapeHTML(t("export.generated", { value: generated }))}</p>
   </header>
   <main>${cards}</main>
 </body>
@@ -364,27 +385,94 @@ function exportCurrent(format) {
   if (!papers.length) return;
   if (format === "markdown") {
     downloadText(markdownExport(papers), exportFilename("md", papers.length), "text/markdown");
-    elements.exportStatus.textContent = `已导出 ${papers.length} 篇 · Markdown`;
+    elements.exportStatus.textContent = t(papers.length === 1 ? "export.successOne" : "export.success", { count: papers.length, format: "Markdown" });
   } else {
     downloadText(htmlExport(papers), exportFilename("html", papers.length), "text/html");
-    elements.exportStatus.textContent = `已导出 ${papers.length} 篇 · HTML`;
+    elements.exportStatus.textContent = t(papers.length === 1 ? "export.successOne" : "export.success", { count: papers.length, format: "HTML" });
   }
+}
+
+function pageSequence(totalPages, currentPage) {
+  if (totalPages <= 7) return Array.from({ length: totalPages }, (_, index) => index + 1);
+  const pages = new Set([1, totalPages, currentPage - 1, currentPage, currentPage + 1]);
+  const ordered = [...pages].filter((page) => page >= 1 && page <= totalPages).sort((a, b) => a - b);
+  const sequence = [];
+  ordered.forEach((page, index) => {
+    if (index && page - ordered[index - 1] > 1) sequence.push("ellipsis");
+    sequence.push(page);
+  });
+  return sequence;
+}
+
+function goToPage(page) {
+  state.page = page;
+  render();
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  elements.resultCount.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+}
+
+function renderPagination(total) {
+  if (!total) {
+    elements.pagination.hidden = true;
+    return;
+  }
+  const totalPages = Math.max(1, Math.ceil(total / state.pageSize));
+  state.page = Math.min(Math.max(1, state.page), totalPages);
+  const start = (state.page - 1) * state.pageSize + 1;
+  const end = Math.min(total, state.page * state.pageSize);
+  elements.pagination.hidden = false;
+  elements.paginationSummary.textContent = t("pagination.summary", { start, end, total });
+  elements.pageSize.value = String(state.pageSize);
+
+  const previous = createElement("button", "page-direction", t("pagination.previous"));
+  previous.type = "button";
+  previous.disabled = state.page === 1;
+  previous.addEventListener("click", () => goToPage(state.page - 1));
+
+  const next = createElement("button", "page-direction", t("pagination.next"));
+  next.type = "button";
+  next.disabled = state.page === totalPages;
+  next.addEventListener("click", () => goToPage(state.page + 1));
+
+  const controls = [previous];
+  pageSequence(totalPages, state.page).forEach((item) => {
+    if (item === "ellipsis") {
+      const ellipsis = createElement("span", "page-ellipsis", "…");
+      ellipsis.setAttribute("aria-hidden", "true");
+      controls.push(ellipsis);
+      return;
+    }
+    const button = createElement("button", "page-number", String(item));
+    button.type = "button";
+    button.classList.toggle("active", item === state.page);
+    button.setAttribute("aria-label", t(item === state.page ? "pagination.current" : "pagination.page", { page: item }));
+    if (item === state.page) button.setAttribute("aria-current", "page");
+    button.addEventListener("click", () => goToPage(item));
+    controls.push(button);
+  });
+  controls.push(next);
+  elements.pageButtons.replaceChildren(...controls);
 }
 
 function render() {
   const filtered = filteredPapers();
-  elements.paperList.replaceChildren(...filtered.map(createPaperCard));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / state.pageSize));
+  state.page = Math.min(Math.max(1, state.page), totalPages);
+  const pageStart = (state.page - 1) * state.pageSize;
+  const visiblePapers = filtered.slice(pageStart, pageStart + state.pageSize);
+  elements.paperList.replaceChildren(...visiblePapers.map(createPaperCard));
   const activeContext = [];
-  if (state.topicSource === "tag" && state.topicLabel) activeContext.push(`标签：${state.topicLabel}`);
+  if (state.topicSource === "tag" && state.topicLabel) activeContext.push(t("results.tag", { value: state.topicLabel }));
   if (state.window === "custom" && state.customStart && state.customEnd) {
-    activeContext.push(`${state.customStart} — ${state.customEnd}`);
+    activeContext.push(t("results.date", { start: state.customStart, end: state.customEnd }));
   }
-  elements.resultCount.textContent = `显示 ${filtered.length} / ${state.papers.length} 篇论文${activeContext.length ? ` · ${activeContext.join(" · ")}` : ""}`;
+  elements.resultCount.textContent = `${t("results.count", { count: filtered.length, total: state.papers.length })}${activeContext.length ? ` · ${activeContext.join(" · ")}` : ""}`;
   elements.exportMarkdown.disabled = filtered.length === 0;
   elements.exportHTML.disabled = filtered.length === 0;
   elements.exportStatus.textContent = "";
   elements.empty.hidden = filtered.length > 0;
   elements.paperList.hidden = filtered.length === 0;
+  renderPagination(filtered.length);
 
   renderClusterFilters();
   updateURL();
@@ -393,7 +481,7 @@ function render() {
 
 function renderClusterFilters() {
   if (!state.clusters.length) {
-    elements.categories.textContent = "正在计算统一主题聚类…";
+    elements.categories.textContent = t("cluster.computing");
     return;
   }
   const availableIds = new Set(
@@ -402,7 +490,7 @@ function renderClusterFilters() {
       .map((paper) => paper.arxiv_id),
   );
   const choices = [
-    { id: "all", name: "全部主题", ids: state.papers.map((paper) => paper.arxiv_id) },
+    { id: "all", name: t("cluster.all"), ids: state.papers.map((paper) => paper.arxiv_id) },
     ...state.clusters,
   ];
   const buttons = choices.map((cluster) => {
@@ -419,6 +507,7 @@ function renderClusterFilters() {
       state.topicIds = cluster.id === "all" ? null : new Set(cluster.ids);
       state.topicLabel = cluster.id === "all" ? "" : cluster.name;
       state.topicSource = cluster.id === "all" ? null : "cluster";
+      state.page = 1;
       window.DiTLandscape?.setClusterFilter(cluster.id === "all" ? null : Number(cluster.id));
       render();
     });
@@ -435,8 +524,10 @@ function readURLState() {
   const customStart = params.get("from");
   const customEnd = params.get("to");
   const sort = params.get("sort");
+  const page = Number.parseInt(params.get("page") ?? "1", 10);
+  const pageSize = Number.parseInt(params.get("perPage") ?? "12", 10);
   state.query = params.get("q") ?? "";
-  if (relation === "all" || relation in RELATIONS) state.relation = relation;
+  if (relation === "all" || relation in RELATION_KEYS) state.relation = relation;
   if (["all", "in-window", "background"].includes(windowValue)) state.window = windowValue;
   if (windowValue === "custom" && /^\d{4}-\d{2}-\d{2}$/.test(customStart ?? "") && /^\d{4}-\d{2}-\d{2}$/.test(customEnd ?? "")) {
     state.window = "custom";
@@ -444,11 +535,14 @@ function readURLState() {
     state.customEnd = customEnd;
   }
   if (["newest", "oldest", "title"].includes(sort)) state.sort = sort;
+  if (Number.isInteger(page) && page > 0) state.page = page;
+  if ([12, 24, 48].includes(pageSize)) state.pageSize = pageSize;
 
   elements.search.value = state.query;
   elements.relation.value = state.relation;
   elements.window.value = state.window;
   elements.sort.value = state.sort;
+  elements.pageSize.value = String(state.pageSize);
 }
 
 function applyClusterCatalog(clusters) {
@@ -463,7 +557,7 @@ function applyClusterCatalog(clusters) {
     state.topicLabel = selected.name;
     state.topicSource = "cluster";
     window.DiTLandscape?.setClusterFilter(Number(selected.id));
-  } else {
+  } else if (state.topicSource !== "tag") {
     clearTopicFilter();
   }
   render();
@@ -479,21 +573,30 @@ function bindEvents() {
   });
   elements.search.addEventListener("input", (event) => {
     state.query = event.target.value.trim();
+    if (state.initialized) state.page = 1;
     render();
   });
   elements.relation.addEventListener("change", (event) => {
     state.relation = event.target.value;
+    if (state.initialized) state.page = 1;
     render();
   });
   elements.window.addEventListener("change", (event) => {
     state.window = event.target.value;
     state.customStart = null;
     state.customEnd = null;
+    state.page = 1;
     syncLandscapeTimeFilter();
     render();
   });
   elements.sort.addEventListener("change", (event) => {
     state.sort = event.target.value;
+    state.page = 1;
+    render();
+  });
+  elements.pageSize.addEventListener("change", (event) => {
+    state.pageSize = Number(event.target.value);
+    state.page = 1;
     render();
   });
   elements.exportMarkdown.addEventListener("click", () => exportCurrent("markdown"));
@@ -507,6 +610,7 @@ function bindEvents() {
     state.topicLabel = event.detail?.label ?? "";
     state.topicSource = event.detail?.source ?? null;
     state.cluster = state.topicSource === "cluster" ? String(event.detail.cluster) : "all";
+    if (state.initialized) state.page = 1;
     render();
   });
   window.addEventListener("dit:landscape-time-filter", (event) => {
@@ -520,9 +624,11 @@ function bindEvents() {
       state.customStart = start;
       state.customEnd = end;
     }
+    if (state.initialized) state.page = 1;
     elements.window.value = state.window;
     render();
   });
+  window.addEventListener("dit:language-change", () => render());
   elements.reset.addEventListener("click", () => {
     state.query = "";
     state.cluster = "all";
@@ -534,6 +640,7 @@ function bindEvents() {
     state.topicIds = null;
     state.topicLabel = "";
     state.topicSource = null;
+    state.page = 1;
     elements.search.value = "";
     elements.relation.value = "all";
     elements.window.value = "all";
@@ -551,9 +658,17 @@ function bindEvents() {
 
 async function initialize() {
   try {
-    const response = await fetch(DATA_URL);
+    const [response, englishSummaries] = await Promise.all([
+      fetch(DATA_URL),
+      fetch(ENGLISH_SUMMARIES_URL)
+        .then((summariesResponse) => summariesResponse.ok ? summariesResponse.json() : {})
+        .catch(() => ({})),
+    ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.papers = parseCSV(await response.text());
+    state.papers = parseCSV(await response.text()).map((paper) => ({
+      ...paper,
+      summary_en: englishSummaries[paper.arxiv_id] ?? "",
+    }));
     readURLState();
     bindEvents();
     elements.total.textContent = state.papers.length;
@@ -562,10 +677,11 @@ async function initialize() {
     window.DiTLandscape?.init(state.papers);
     syncLandscapeTimeFilter();
     syncLandscapeListFilter();
+    state.initialized = true;
   } catch (error) {
-    elements.resultCount.textContent = "论文数据加载失败，请稍后刷新。";
+    elements.resultCount.textContent = t("error.catalog");
     elements.empty.hidden = false;
-    elements.empty.querySelector("p").textContent = "无法读取论文目录。";
+    elements.empty.querySelector("p").textContent = t("error.empty");
     elements.reset.hidden = true;
     console.error(error);
   }

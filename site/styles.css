@@ -157,6 +157,20 @@ select {
   color: var(--accent);
 }
 
+.language-toggle {
+  min-width: 42px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.language-toggle:hover {
+  color: var(--accent);
+}
+
 .intro {
   padding: 64px 0 46px;
   border-bottom: 1px solid var(--border);
@@ -953,6 +967,84 @@ kbd {
   text-decoration: none;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 0 0;
+  color: var(--faint);
+  font-size: 0.76rem;
+}
+
+.pagination[hidden] {
+  display: none;
+}
+
+.pagination p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.pagination-actions,
+.pagination-actions label,
+.page-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.pagination-actions label {
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.pagination-actions select {
+  padding: 4px 22px 4px 7px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.74rem;
+}
+
+.page-buttons {
+  gap: 4px;
+}
+
+.page-buttons button {
+  min-width: 29px;
+  height: 29px;
+  padding: 0 7px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.page-buttons button:hover:not(:disabled),
+.page-buttons button.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--button-text);
+}
+
+.page-buttons button:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.page-ellipsis {
+  width: 20px;
+  text-align: center;
+}
+
 .empty-state {
   padding: 64px 0;
   border-bottom: 1px solid var(--border);
@@ -1078,6 +1170,10 @@ kbd {
   .method-grid {
     gap: 24px;
   }
+
+  .pagination {
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1137,6 +1233,25 @@ kbd {
   .export-status {
     flex-basis: 100%;
     text-align: right;
+  }
+
+  .pagination {
+    display: block;
+  }
+
+  .pagination-actions {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .page-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .page-number,
+  .page-ellipsis {
+    display: none;
   }
 }
 

@@ -1,7 +1,9 @@
 (() => {
+  const t = (key, values) => window.DiTI18n.t(key, values);
+
   const FAMILIES = {
     architecture: {
-      label: "表示与架构",
+      labelKey: "cluster.architecture",
       tags: [
         "rae", "latent", "representation", "pixel-space", "tokenization", "single-stream",
         "hybrid-architecture", "scaling-law", "moe", "routing", "expert-design", "scaling",
@@ -11,14 +13,14 @@
       ],
     },
     video: {
-      label: "视频与长时生成",
+      labelKey: "cluster.video",
       tags: [
         "video", "long-video", "streaming", "avatar", "real-time", "audio-driven", "mobile",
         "4d-consistency", "3d-constraint", "causal", "autoregressive", "world-consistency",
       ],
     },
     systems: {
-      label: "系统与推理效率",
+      labelKey: "cluster.systems",
       tags: [
         "cache", "quantization", "sparse-attention", "kernel", "distributed", "parallelism",
         "pipeline", "serving", "scheduling", "communication", "overlap", "load-balancing",
@@ -28,7 +30,7 @@
       ],
     },
     rl: {
-      label: "RL 与奖励",
+      labelKey: "cluster.rl",
       tags: [
         "rl", "grpo", "reward-model", "verifiable-reward", "alignment", "online",
         "forward-process", "gradient-estimation", "rollout", "spot-gpu", "3d-constraint",
@@ -37,14 +39,14 @@
       ],
     },
     agent: {
-      label: "Agent 与世界模型",
+      labelKey: "cluster.agent",
       tags: [
         "robotics", "diffusion-policy", "cross-embodiment", "tactile", "bimanual", "world-model",
         "action", "interactive", "long-horizon", "language", "u-shape", "cross-embodiment",
       ],
     },
     omni: {
-      label: "Omni 与多模态",
+      labelKey: "cluster.omni",
       tags: [
         "omni", "multimodal", "multi-output", "audio", "synchronization", "interleaved",
         "understanding", "generation", "perception", "unified-representation", "instruction",
@@ -97,6 +99,16 @@
 
   function formatDay(day) {
     return new Date(day * 86400000).toISOString().slice(0, 10);
+  }
+
+  function paperSummary(paper) {
+    return window.DiTI18n.language === "zh" ? paper.summary_zh : paper.summary_en || paper.summary_zh;
+  }
+
+  function clusterName(info) {
+    const primary = info.primaryFamily ? t(FAMILIES[info.primaryFamily].labelKey) : t("cluster.other");
+    const secondary = info.secondaryFamily ? t(FAMILIES[info.secondaryFamily].labelKey) : null;
+    return secondary ? `${primary} × ${secondary}` : primary;
   }
 
   function paperInTimeRange(index) {
@@ -257,14 +269,15 @@
         .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
         .slice(0, 3)
         .map(([tag]) => tag);
-      const primary = FAMILIES[scores[0]?.family]?.label ?? "其他";
-      const secondary = scores[1]?.score >= Math.max(1, scores[0]?.score * 0.5)
-        ? FAMILIES[scores[1].family].label
+      const primaryFamily = scores[0]?.family ?? null;
+      const secondaryFamily = scores[1]?.score >= Math.max(1, scores[0]?.score * 0.5)
+        ? scores[1].family
         : null;
       return {
         cluster,
         members,
-        name: secondary ? `${primary} × ${secondary}` : primary,
+        primaryFamily,
+        secondaryFamily,
         topTags,
       };
     });
@@ -593,20 +606,20 @@
 
     const eyebrow = document.createElement("p");
     eyebrow.className = "selection-eyebrow";
-    eyebrow.textContent = cluster.name;
+    eyebrow.textContent = clusterName(cluster);
     const title = document.createElement("h3");
     title.textContent = paper.short_title;
     const fullTitle = document.createElement("p");
     fullTitle.className = "selection-full-title";
     fullTitle.textContent = paper.title;
     const summary = document.createElement("p");
-    summary.textContent = paper.summary_zh;
+    summary.textContent = paperSummary(paper);
     const links = document.createElement("div");
     links.className = "selection-links";
-    links.append(link("arXiv ↗", paper.arxiv_url), link("PDF ↗", paper.pdf_url));
+    links.append(link(t("paper.abstract"), paper.arxiv_url), link(t("paper.pdf"), paper.pdf_url));
 
     const neighborTitle = document.createElement("h4");
-    neighborTitle.textContent = "最接近的工作";
+    neighborTitle.textContent = t("neighbors.heading");
     const neighbors = document.createElement("div");
     neighbors.className = "neighbor-list";
     nearestPapers(index).forEach(({ candidate, similarity }) => {
@@ -628,14 +641,14 @@
     if (state.activeCluster !== null) {
       const info = state.clusterInfo[state.activeCluster];
       ids = info.members.map((index) => state.papers[index].arxiv_id);
-      label = info.name;
+      label = clusterName(info);
       source = "cluster";
       cluster = state.activeCluster;
     } else if (state.activeTag) {
       ids = state.papers
         .filter((paper) => paperTags(paper).includes(state.activeTag))
         .map((paper) => paper.arxiv_id);
-      label = `标签 ${state.activeTag}`;
+      label = state.activeTag;
       source = "tag";
     }
     window.dispatchEvent(new CustomEvent("dit:landscape-topic-filter", {
@@ -646,7 +659,7 @@
   function emitClusterCatalog() {
     const clusters = state.clusterInfo.map((info, cluster) => ({
       id: String(cluster),
-      name: info.name,
+      name: clusterName(info),
       ids: info.members.map((index) => state.papers[index].arxiv_id),
       topTags: [...info.topTags],
     }));
@@ -676,9 +689,9 @@
       swatch.className = "cluster-swatch";
       const label = document.createElement("span");
       label.innerHTML = `<strong></strong><small></small>`;
-      label.querySelector("strong").textContent = info.name;
+      label.querySelector("strong").textContent = clusterName(info);
       const availableCount = info.members.filter(paperAvailable).length;
-      label.querySelector("small").textContent = `${availableCount} 篇 · ${info.topTags.join(" / ")}`;
+      label.querySelector("small").textContent = `${t(availableCount === 1 ? "count.paper" : "count.papers", { count: availableCount })} · ${info.topTags.join(" / ")}`;
       button.append(swatch, label);
       button.addEventListener("click", () => {
         state.activeCluster = state.activeCluster === cluster ? null : cluster;
@@ -756,7 +769,7 @@
       const titles = document.createElement("strong");
       titles.textContent = `${state.papers[pair.left].short_title} ↔ ${state.papers[pair.right].short_title}`;
       const meta = document.createElement("span");
-      meta.textContent = `${state.clusterInfo[state.clusters[pair.left]].name} × ${state.clusterInfo[state.clusters[pair.right]].name} · ${Math.round(pair.similarity * 100)}%`;
+      meta.textContent = `${clusterName(state.clusterInfo[state.clusters[pair.left]])} × ${clusterName(state.clusterInfo[state.clusters[pair.right]])} · ${Math.round(pair.similarity * 100)}%`;
       button.append(titles, meta);
       button.addEventListener("click", () => selectPaper(pair.left));
       elements.bridges.append(button);
@@ -819,14 +832,14 @@
     elements.timeEnd.setAttribute("aria-valuetext", formatDay(state.timeEnd));
     const fullRange = state.timeStart === state.timeMin && state.timeEnd === state.timeMax;
     elements.timeReadout.textContent = fullRange
-      ? "全部时间"
+      ? t("time.all")
       : `${formatDay(state.timeStart)} — ${formatDay(state.timeEnd)}`;
     const availableTotal = state.papers.filter((_, index) =>
       paperInExternalFilter(index) && paperInTopicFilter(index)).length;
     const count = state.paperDays.filter((day, index) =>
       paperInExternalFilter(index) && paperInTopicFilter(index)
       && day >= state.timeStart && day <= state.timeEnd).length;
-    elements.timeCount.textContent = `${count} / ${availableTotal} 篇`;
+    elements.timeCount.textContent = t("time.count", { count, total: availableTotal });
   }
 
   function applyTimeRange(start, end, { notify = true } = {}) {
@@ -928,7 +941,7 @@
       elements.canvas.style.cursor = node ? "pointer" : "default";
       if (node) {
         const paper = state.papers[node.index];
-        elements.tooltip.textContent = `${paper.short_title} · ${state.clusterInfo[node.cluster].name}`;
+        elements.tooltip.textContent = `${paper.short_title} · ${clusterName(state.clusterInfo[node.cluster])}`;
         elements.tooltip.hidden = false;
         const left = Math.min(state.width - 230, Math.max(8, x + 13));
         const top = Math.max(8, y - 34);
@@ -1101,6 +1114,19 @@
     renderLegend();
     draw();
   }
+
+  function languageChanged() {
+    if (!state.papers.length) return;
+    renderLegend();
+    renderTopicCloud();
+    renderBridges();
+    syncTimeFilter();
+    if (state.selected !== null) selectPaper(state.selected);
+    emitClusterCatalog();
+    draw();
+  }
+
+  window.addEventListener("dit:language-change", languageChanged);
 
   window.DiTLandscape = {
     init,

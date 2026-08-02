@@ -1,0 +1,292 @@
+(() => {
+  const STORAGE_KEY = "dit-paper-language";
+  const COPY = {
+    en: {
+      "meta.description": "A curated map of Diffusion Transformer research across architecture, video, systems, reinforcement learning, agents, and multimodal models.",
+      "nav.aria": "Site navigation",
+      "nav.map": "map",
+      "nav.papers": "papers",
+      "nav.about": "about",
+      "nav.homepage": "homepage",
+      "theme.toggle": "Toggle color theme",
+      "language.toggle": "Switch to Chinese",
+      "intro.subtitle": "A curated research index for Diffusion Transformers",
+      "intro.description": "A focused map of representative DiT research from the past three years, spanning model architecture, video and long context, efficient systems, reinforcement learning, agents and world models, and unified multimodal generation. The collection is organized around research questions and connections between papers.",
+      "stats.aria": "Collection statistics",
+      "stats.papers": "papers",
+      "stats.threeYears": "in the last 3 years",
+      "stats.topics": "research topics",
+      "stats.updated": "updated Aug 2026",
+      "landscape.title": "research landscape",
+      "landscape.description": "Papers are positioned by tag similarity: nearby nodes tend to address related questions. Colors show the six topic clusters used throughout the site. Select a cluster, tag, or date range to update the map, paper list, and exports together.",
+      "landscape.reset": "Reset filters",
+      "landscape.canvasAria": "Similarity map of DiT papers. The paper list below provides the same content in text form.",
+      "time.title": "publication window",
+      "time.all": "All dates",
+      "time.densityAria": "Paper publication density over time",
+      "time.startAria": "Start publication date",
+      "time.endAria": "End publication date",
+      "landscape.sidebarAria": "Topic clusters and selected paper",
+      "cluster.heading": "topic clusters",
+      "cluster.loading": "Computing paper similarities…",
+      "cluster.architecture": "Representations & Architecture",
+      "cluster.video": "Video & Long-Horizon Generation",
+      "cluster.systems": "Systems & Inference Efficiency",
+      "cluster.rl": "Reinforcement Learning & Rewards",
+      "cluster.agent": "Agents & World Models",
+      "cluster.omni": "Omni & Multimodal Models",
+      "cluster.other": "Other",
+      "cluster.all": "All topics",
+      "cluster.computing": "Computing shared topic clusters…",
+      "cluster.filterAria": "Filter by the shared topic clusters",
+      "cloud.title": "topic cloud",
+      "cloud.description": "Larger terms appear more often in the current selection. Select a term to filter both the map and paper list.",
+      "cloud.aria": "Topic cloud",
+      "bridges.title": "cross-topic bridges",
+      "bridges.description": "Pairs from different clusters that remain close in the similarity space—useful starting points for cross-topic reading.",
+      "papers.title": "papers",
+      "papers.description": "Search titles, tags, or summaries. Open arXiv for the abstract or PDF for the paper.",
+      "search.placeholder": "Search title, topic, summary…",
+      "filter.relation": "DiT relationship",
+      "relation.all": "All relationships",
+      "relation.direct": "Core DiT",
+      "relation.adaptation": "Post-training / adaptation",
+      "relation.system": "Systems optimization",
+      "relation.adjacent": "Adjacent work",
+      "filter.time": "Publication window",
+      "window.all": "All papers",
+      "window.in-window": "Last three years",
+      "window.background": "Historical anchors",
+      "window.custom": "Custom date range",
+      "filter.sort": "Sort",
+      "sort.newest": "Newest first",
+      "sort.oldest": "Oldest first",
+      "sort.title": "Title A–Z",
+      "papers.loading": "Loading the paper catalog…",
+      "source.data": "view source data ↗",
+      "export.markdown": "Export Markdown",
+      "export.html": "Export HTML",
+      "export.currentTitle": "Export the current selection",
+      "empty.message": "No papers match the current filters.",
+      "empty.reset": "Clear filters",
+      "about.title": "about this collection",
+      "about.timeHeading": "Time coverage",
+      "about.timeBody": "The main window covers papers first released from 2 Aug 2023 to 2 Aug 2026. Earlier work is included only when it is needed to understand how DiT methods evolved.",
+      "about.criteriaHeading": "Inclusion criteria",
+      "about.criteriaBody": "The collection favors papers that introduce a reusable architectural, training, systems, or evaluation idea. Each paper is also labeled by how directly it relates to DiT.",
+      "about.sourcesHeading": "Sources & maintenance",
+      "about.sourcesBody": "Metadata is checked against conference pages and arXiv. PDF links point to the original source; the structured catalog and research notes are maintained on GitHub.",
+      "paper.abstract": "Abstract ↗",
+      "paper.pdf": "PDF ↗",
+      "neighbors.heading": "Related papers",
+      "tag.prefix": "Tag {tag}",
+      "count.papers": "{count} papers",
+      "count.paper": "{count} paper",
+      "time.count": "{count} / {total} papers",
+      "filterDesc.cluster": "Topic cluster: {value}",
+      "filterDesc.allClusters": "All clusters",
+      "filterDesc.relation": "DiT relationship: {value}",
+      "filterDesc.time": "Time: {value}",
+      "filterDesc.sort": "Sort: {value}",
+      "filterDesc.tag": "Tag filter: {value}",
+      "filterDesc.search": "Search: {value}",
+      "export.title": "DiT Paper Atlas Export",
+      "export.paperCount": "Paper count: {count}",
+      "export.conditions": "Filters: {value}",
+      "export.generated": "Generated: {value}",
+      "export.shortTitle": "Short title",
+      "export.published": "Published",
+      "export.cluster": "Topic cluster",
+      "export.relation": "DiT relationship",
+      "export.source": "Venue",
+      "export.tags": "Tags",
+      "export.success": "Exported {count} papers · {format}",
+      "export.successOne": "Exported {count} paper · {format}",
+      "results.count": "Showing {count} of {total} papers",
+      "results.tag": "Tag: {value}",
+      "results.date": "{start} — {end}",
+      "pagination.aria": "Paper list pagination",
+      "pagination.summary": "{start}–{end} of {total}",
+      "pagination.perPage": "Papers per page",
+      "pagination.previous": "Previous",
+      "pagination.next": "Next",
+      "pagination.page": "Page {page}",
+      "pagination.current": "Page {page}, current page",
+      "error.catalog": "The paper catalog could not be loaded. Please refresh and try again.",
+      "error.empty": "The catalog is unavailable.",
+      "footer.designBefore": "Design follows the",
+      "footer.designAfter": "academic site.",
+    },
+    zh: {
+      "meta.description": "DiT 论文研究地图，覆盖架构、视频、系统效率、强化学习、Agent 与多模态模型。",
+      "nav.aria": "站点导航",
+      "nav.map": "地图",
+      "nav.papers": "论文",
+      "nav.about": "关于",
+      "nav.homepage": "主页",
+      "theme.toggle": "切换明暗主题",
+      "language.toggle": "Switch to English",
+      "intro.subtitle": "Diffusion Transformer 研究索引",
+      "intro.description": "这份地图整理了近三年有代表性的 DiT 工作，涵盖模型架构、视频与长上下文、高效系统、强化学习、Agent 与世界模型，以及统一多模态生成。收录重点是研究问题和论文之间的联系。",
+      "stats.aria": "数据库统计",
+      "stats.papers": "篇论文",
+      "stats.threeYears": "篇来自近三年",
+      "stats.topics": "个研究主题",
+      "stats.updated": "2026 年 8 月更新",
+      "landscape.title": "研究地图",
+      "landscape.description": "论文位置由标签相似度决定：距离越近，研究问题通常越相关。颜色对应全站统一使用的六个主题聚类。选择聚类、标签或时间区间后，点图、论文列表和导出结果会一起更新。",
+      "landscape.reset": "重置筛选",
+      "landscape.canvasAria": "DiT 论文相似度地图；下方论文列表提供相同内容的文字版。",
+      "time.title": "发表时间",
+      "time.all": "全部时间",
+      "time.densityAria": "论文发表时间密度",
+      "time.startAria": "起始发表日期",
+      "time.endAria": "截止发表日期",
+      "landscape.sidebarAria": "主题聚类与当前论文",
+      "cluster.heading": "主题聚类",
+      "cluster.loading": "正在计算论文相似度…",
+      "cluster.architecture": "表示与架构",
+      "cluster.video": "视频与长时生成",
+      "cluster.systems": "系统与推理效率",
+      "cluster.rl": "强化学习与奖励",
+      "cluster.agent": "Agent 与世界模型",
+      "cluster.omni": "Omni 与多模态",
+      "cluster.other": "其他",
+      "cluster.all": "全部主题",
+      "cluster.computing": "正在计算统一主题聚类…",
+      "cluster.filterAria": "按统一主题聚类筛选",
+      "cloud.title": "主题词云",
+      "cloud.description": "字号越大，表示该词在当前论文中出现越频繁。选择一个词后，点图和论文列表会同步筛选。",
+      "cloud.aria": "主题词云",
+      "bridges.title": "跨主题桥接",
+      "bridges.description": "这些论文来自不同聚类，但在相似度空间中仍然接近，适合作为跨主题阅读的起点。",
+      "papers.title": "论文",
+      "papers.description": "可以搜索标题、标签或摘要。打开 arXiv 查看原始摘要，或直接阅读 PDF。",
+      "search.placeholder": "搜索标题、主题或摘要…",
+      "filter.relation": "DiT 关系",
+      "relation.all": "全部关系",
+      "relation.direct": "核心 DiT",
+      "relation.adaptation": "后训练 / 适配",
+      "relation.system": "系统优化",
+      "relation.adjacent": "相邻方向",
+      "filter.time": "发表时间",
+      "window.all": "全部论文",
+      "window.in-window": "近三年",
+      "window.background": "历史锚点",
+      "window.custom": "自定义日期区间",
+      "filter.sort": "排序",
+      "sort.newest": "最新优先",
+      "sort.oldest": "最早优先",
+      "sort.title": "标题 A–Z",
+      "papers.loading": "正在加载论文目录…",
+      "source.data": "查看源数据 ↗",
+      "export.markdown": "导出 Markdown",
+      "export.html": "导出 HTML",
+      "export.currentTitle": "导出当前筛选结果",
+      "empty.message": "没有符合当前筛选条件的论文。",
+      "empty.reset": "清除筛选",
+      "about.title": "关于本收录",
+      "about.timeHeading": "时间范围",
+      "about.timeBody": "主时间窗口覆盖 2023 年 8 月 2 日至 2026 年 8 月 2 日首次公开的论文。更早的工作只在解释 DiT 方法演进时必不可少的情况下收录。",
+      "about.criteriaHeading": "收录标准",
+      "about.criteriaBody": "优先收录提出可迁移架构、训练、系统或评测观点的工作，并标注每篇论文与 DiT 的直接程度。",
+      "about.sourcesHeading": "来源与维护",
+      "about.sourcesBody": "元数据经会议官方页面和 arXiv 核对。PDF 链接指向原始来源；结构化目录和研究笔记在 GitHub 持续维护。",
+      "paper.abstract": "摘要 ↗",
+      "paper.pdf": "PDF ↗",
+      "neighbors.heading": "相关论文",
+      "tag.prefix": "标签 {tag}",
+      "count.papers": "{count} 篇",
+      "count.paper": "{count} 篇",
+      "time.count": "{count} / {total} 篇",
+      "filterDesc.cluster": "主题聚类：{value}",
+      "filterDesc.allClusters": "全部聚类",
+      "filterDesc.relation": "DiT 关系：{value}",
+      "filterDesc.time": "时间：{value}",
+      "filterDesc.sort": "排序：{value}",
+      "filterDesc.tag": "标签筛选：{value}",
+      "filterDesc.search": "搜索：{value}",
+      "export.title": "DiT Paper Atlas 导出",
+      "export.paperCount": "论文数量：{count}",
+      "export.conditions": "筛选条件：{value}",
+      "export.generated": "生成时间：{value}",
+      "export.shortTitle": "简称",
+      "export.published": "发表日期",
+      "export.cluster": "主题聚类",
+      "export.relation": "DiT 关系",
+      "export.source": "来源",
+      "export.tags": "标签",
+      "export.success": "已导出 {count} 篇 · {format}",
+      "export.successOne": "已导出 {count} 篇 · {format}",
+      "results.count": "显示 {count} / {total} 篇论文",
+      "results.tag": "标签：{value}",
+      "results.date": "{start} — {end}",
+      "pagination.aria": "论文列表分页",
+      "pagination.summary": "第 {start}–{end} 篇，共 {total} 篇",
+      "pagination.perPage": "每页论文数",
+      "pagination.previous": "上一页",
+      "pagination.next": "下一页",
+      "pagination.page": "第 {page} 页",
+      "pagination.current": "第 {page} 页，当前页",
+      "error.catalog": "论文目录加载失败，请刷新后重试。",
+      "error.empty": "暂时无法读取论文目录。",
+      "footer.designBefore": "视觉风格参考",
+      "footer.designAfter": "学术主页。",
+    },
+  };
+
+  let language = localStorage.getItem(STORAGE_KEY) === "zh" ? "zh" : "en";
+
+  function t(key, values = {}) {
+    const template = COPY[language][key] ?? COPY.en[key] ?? key;
+    return template.replace(/\{(\w+)\}/g, (_, name) => values[name] ?? `{${name}}`);
+  }
+
+  function applyStaticCopy() {
+    document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", t("meta.description"));
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      element.textContent = t(element.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+      element.setAttribute("placeholder", t(element.dataset.i18nPlaceholder));
+    });
+    document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+      element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel));
+    });
+    document.querySelectorAll("[data-i18n-title]").forEach((element) => {
+      element.setAttribute("title", t(element.dataset.i18nTitle));
+    });
+    const toggle = document.querySelector("#language-toggle");
+    if (toggle) {
+      toggle.textContent = language === "en" ? "中文" : "English";
+      toggle.setAttribute("aria-label", t("language.toggle"));
+      toggle.setAttribute("title", t("language.toggle"));
+    }
+  }
+
+  function setLanguage(nextLanguage, { persist = true } = {}) {
+    const next = nextLanguage === "zh" ? "zh" : "en";
+    if (next === language) {
+      applyStaticCopy();
+      return;
+    }
+    language = next;
+    if (persist) localStorage.setItem(STORAGE_KEY, language);
+    applyStaticCopy();
+    window.dispatchEvent(new CustomEvent("dit:language-change", { detail: { language } }));
+  }
+
+  window.DiTI18n = {
+    get language() {
+      return language;
+    },
+    t,
+    setLanguage,
+  };
+
+  applyStaticCopy();
+  document.querySelector("#language-toggle")?.addEventListener("click", () => {
+    setLanguage(language === "en" ? "zh" : "en");
+  });
+})();
