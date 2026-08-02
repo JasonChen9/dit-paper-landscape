@@ -316,8 +316,8 @@
         vx: 0,
         vy: 0,
         driftPhase: hashNumber(`${paper.arxiv_id}:phase`) * Math.PI * 2,
-        driftSpeed: 0.00018 + hashNumber(`${paper.arxiv_id}:speed`) * 0.00016,
-        driftAmplitude: 1.6 + hashNumber(`${paper.arxiv_id}:amplitude`) * 1.2,
+        driftSpeed: 0.0003 + hashNumber(`${paper.arxiv_id}:speed`) * 0.00018,
+        driftAmplitude: 3.2 + hashNumber(`${paper.arxiv_id}:amplitude`) * 2,
       };
     });
   }
@@ -487,7 +487,7 @@
             : state.similarities[state.hoverFocus][node.index];
           const proximity = node.index === state.hoverFocus ? 1 : similarity;
           const activation = state.hoverEnergy * proximity;
-          const amplitude = node.driftAmplitude * (1 + activation * 1.65);
+          const amplitude = node.driftAmplitude * (1 + activation * 0.95);
           const phase = node.driftPhase + timestamp * node.driftSpeed * (1 + activation * 0.45);
           node.x = node.anchorX + Math.sin(phase) * amplitude;
           node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72;
