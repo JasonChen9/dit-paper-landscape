@@ -16,9 +16,9 @@
         document.documentElement.dataset.theme = saved || preferred;
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260802-three-year" />
-    <script src="./landscape.js?v=20260802-three-year" defer></script>
-    <script src="./app.js?v=20260802-three-year" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260802-export3" />
+    <script src="./landscape.js?v=20260802-export3" defer></script>
+    <script src="./app.js?v=20260802-export3" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -189,7 +189,12 @@
 
         <div class="results-toolbar">
           <p id="result-count" aria-live="polite">正在加载论文数据…</p>
-          <a href="https://github.com/JasonChen9/dit-paper-landscape/blob/main/catalog/papers.csv">view source data ↗</a>
+          <div class="results-actions">
+            <span id="export-status" class="export-status" aria-live="polite"></span>
+            <a class="source-data-link" href="https://github.com/JasonChen9/dit-paper-landscape/blob/main/catalog/papers.csv">view source data ↗</a>
+            <button id="export-markdown" class="export-button" type="button" title="导出当前筛选结果" disabled>导出 Markdown</button>
+            <button id="export-html" class="export-button" type="button" title="导出当前筛选结果" disabled>导出 HTML</button>
+          </div>
         </div>
 
         <div id="paper-list" class="paper-list" aria-live="polite"></div>

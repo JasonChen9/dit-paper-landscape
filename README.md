@@ -11,7 +11,7 @@
 - 网站：<https://jasonchen9.github.io/dit-paper-landscape/>
 - GitHub 操作说明：[GITHUB_GUIDE.md](GITHUB_GUIDE.md)
 
-网站直接读取 `catalog/papers.csv`，支持标题/摘要搜索、主题与 DiT 关系筛选，并将 arXiv 摘要和 PDF 显示为浏览器可点击链接。`research landscape` 页面还提供动态论文点图、自动聚类、主题词云、最近邻工作和跨主题桥接关系。
+网站直接读取 `catalog/papers.csv`，支持标题/摘要搜索、主题与 DiT 关系筛选，并将 arXiv 摘要和 PDF 显示为浏览器可点击链接。当前筛选出的论文子集可以直接导出为 Markdown 或独立 HTML，包含论文名称、中文摘要、标签、arXiv 与 PDF 链接。`research landscape` 页面还提供动态论文点图、自动聚类、主题词云、最近邻工作和跨主题桥接关系。
 
 ### 聚类口径
 

@@ -18,6 +18,18 @@ const RELATIONS = {
   adjacent: "相邻方向",
 };
 
+const WINDOW_LABELS = {
+  all: "全部论文",
+  "in-window": "最近三年",
+  background: "历史锚点",
+};
+
+const SORT_LABELS = {
+  newest: "最新优先",
+  oldest: "最早优先",
+  title: "标题 A-Z",
+};
+
 const state = {
   papers: [],
   query: "",
@@ -37,6 +49,9 @@ const elements = {
   paperList: document.querySelector("#paper-list"),
   empty: document.querySelector("#empty-state"),
   reset: document.querySelector("#reset-button"),
+  exportMarkdown: document.querySelector("#export-markdown"),
+  exportHTML: document.querySelector("#export-html"),
+  exportStatus: document.querySelector("#export-status"),
   theme: document.querySelector("#theme-toggle"),
   total: document.querySelector("#total-count"),
   windowCount: document.querySelector("#window-count"),
@@ -122,6 +137,10 @@ function sortPapers(papers) {
   });
 }
 
+function filteredPapers() {
+  return sortPapers(state.papers.filter(matchesPaper));
+}
+
 function createElement(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -177,10 +196,148 @@ function updateURL() {
   history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}${location.hash}`);
 }
 
+function filterDescription() {
+  const parts = [
+    `主题：${CATEGORIES[state.category] ?? state.category}`,
+    `DiT 关系：${state.relation === "all" ? "全部关系" : RELATIONS[state.relation]}`,
+    `时间：${WINDOW_LABELS[state.window] ?? state.window}`,
+    `排序：${SORT_LABELS[state.sort] ?? state.sort}`,
+  ];
+  if (state.query) parts.push(`搜索：${state.query}`);
+  return parts.join("；");
+}
+
+function escapeMarkdown(value) {
+  return String(value ?? "").replace(/([\\[\]*_`])/g, "\\$1");
+}
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function exportFilename(extension, count) {
+  const date = new Date().toISOString().slice(0, 10);
+  return `dit-papers-${date}-${count}.${extension}`;
+}
+
+function downloadText(content, filename, mimeType) {
+  const blob = new Blob(["\ufeff", content], { type: `${mimeType};charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function markdownExport(papers) {
+  const generated = new Date().toISOString();
+  const sections = papers.map((paper, index) => {
+    const tags = paper.topic_tags.split(";").filter(Boolean).map((tag) => `\`${escapeMarkdown(tag)}\``).join(" · ");
+    return [
+      `## ${index + 1}. [${escapeMarkdown(paper.title)}](${paper.arxiv_url})`,
+      "",
+      `- 简称：${escapeMarkdown(paper.short_title)}`,
+      `- 发表日期：${paper.published}`,
+      `- 主题：${escapeMarkdown(CATEGORIES[paper.category] ?? paper.category)}`,
+      `- DiT 关系：${escapeMarkdown(RELATIONS[paper.dit_relation] ?? paper.dit_relation)}`,
+      `- 来源：${escapeMarkdown(paper.venue)}`,
+      `- 标签：${tags || "-"}`,
+      `- arXiv：[${paper.arxiv_url}](${paper.arxiv_url})`,
+      `- PDF：[${paper.pdf_url}](${paper.pdf_url})`,
+      "",
+      escapeMarkdown(paper.summary_zh),
+    ].join("\n");
+  });
+  return [
+    "# DiT Paper Atlas 导出",
+    "",
+    `- 论文数量：${papers.length}`,
+    `- 导出条件：${escapeMarkdown(filterDescription())}`,
+    `- 生成时间：${generated}`,
+    "",
+    ...sections,
+    "",
+  ].join("\n");
+}
+
+function htmlExport(papers) {
+  const generated = new Date().toISOString();
+  const cards = papers.map((paper, index) => {
+    const tags = paper.topic_tags.split(";").filter(Boolean).map((tag) => `<li>${escapeHTML(tag)}</li>`).join("");
+    return `
+      <article>
+        <p class="meta">${index + 1} · ${escapeHTML(paper.published)} · ${escapeHTML(paper.venue)} · ${escapeHTML(RELATIONS[paper.dit_relation] ?? paper.dit_relation)}</p>
+        <h2><a href="${escapeHTML(paper.arxiv_url)}">${escapeHTML(paper.title)}</a></h2>
+        <p class="short-title">${escapeHTML(paper.short_title)} · ${escapeHTML(CATEGORIES[paper.category] ?? paper.category)}</p>
+        <p>${escapeHTML(paper.summary_zh)}</p>
+        <ul class="tags">${tags}</ul>
+        <p class="links"><a href="${escapeHTML(paper.arxiv_url)}">arXiv</a><a href="${escapeHTML(paper.pdf_url)}">PDF</a></p>
+      </article>`;
+  }).join("");
+
+  return `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DiT Paper Atlas 导出</title>
+  <style>
+    :root { color-scheme: light dark; --bg: #fff; --text: #242424; --muted: #6c757d; --border: #d9d9d9; --accent: #2698ba; --tag: #f3f5f6; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #191919; --text: #e8e8e8; --muted: #a8a8a8; --border: #3b3b3b; --accent: #58b7d3; --tag: #25292b; } }
+    * { box-sizing: border-box; }
+    body { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; background: var(--bg); color: var(--text); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    header { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    h1 { margin: 0 0 8px; font-size: 2rem; }
+    h2 { margin: 4px 0 5px; font-size: 1.2rem; line-height: 1.4; }
+    a { color: var(--accent); }
+    article { padding: 25px 0; border-bottom: 1px solid var(--border); }
+    .meta, .short-title, header p { margin: 0; color: var(--muted); font-size: .85rem; }
+    article > p { margin: 9px 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
+    .tags li { padding: 2px 7px; border: 1px solid var(--border); border-radius: 3px; background: var(--tag); font-size: .75rem; }
+    .links { display: flex; gap: 12px; }
+    @media print { body { max-width: none; padding: 0; } article { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DiT Paper Atlas 导出</h1>
+    <p>${papers.length} 篇论文</p>
+    <p>${escapeHTML(filterDescription())}</p>
+    <p>生成时间：${escapeHTML(generated)}</p>
+  </header>
+  <main>${cards}</main>
+</body>
+</html>`;
+}
+
+function exportCurrent(format) {
+  const papers = filteredPapers();
+  if (!papers.length) return;
+  if (format === "markdown") {
+    downloadText(markdownExport(papers), exportFilename("md", papers.length), "text/markdown");
+    elements.exportStatus.textContent = `已导出 ${papers.length} 篇 · Markdown`;
+  } else {
+    downloadText(htmlExport(papers), exportFilename("html", papers.length), "text/html");
+    elements.exportStatus.textContent = `已导出 ${papers.length} 篇 · HTML`;
+  }
+}
+
 function render() {
-  const filtered = sortPapers(state.papers.filter(matchesPaper));
+  const filtered = filteredPapers();
   elements.paperList.replaceChildren(...filtered.map(createPaperCard));
   elements.resultCount.textContent = `显示 ${filtered.length} / ${state.papers.length} 篇论文`;
+  elements.exportMarkdown.disabled = filtered.length === 0;
+  elements.exportHTML.disabled = filtered.length === 0;
+  elements.exportStatus.textContent = "";
   elements.empty.hidden = filtered.length > 0;
   elements.paperList.hidden = filtered.length === 0;
 
@@ -256,6 +413,8 @@ function bindEvents() {
     state.sort = event.target.value;
     render();
   });
+  elements.exportMarkdown.addEventListener("click", () => exportCurrent("markdown"));
+  elements.exportHTML.addEventListener("click", () => exportCurrent("html"));
   elements.reset.addEventListener("click", () => {
     state.query = "";
     state.category = "all";
