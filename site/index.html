@@ -17,6 +17,7 @@
       })();
     </script>
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./landscape.js" defer></script>
     <script src="./app.js" defer></script>
   </head>
   <body>
@@ -24,10 +25,11 @@
       <nav class="navbar page-width" aria-label="站点导航">
         <a class="site-title" href="./"><strong>DiT Paper</strong> Atlas</a>
         <div class="nav-links">
+          <a href="#landscape">map</a>
           <a class="active" href="#papers">papers</a>
           <a href="#method">about</a>
-          <a href="https://jasonchen9.github.io/">homepage</a>
-          <a href="https://github.com/JasonChen9/dit-paper-landscape">GitHub</a>
+          <a class="nav-home" href="https://jasonchen9.github.io/">homepage</a>
+          <a class="nav-github" href="https://github.com/JasonChen9/dit-paper-landscape">GitHub</a>
           <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题">◐</button>
         </div>
       </nav>
@@ -46,6 +48,54 @@
           <span><strong id="window-count">47</strong> in the last year</span>
           <span><strong>6</strong> research topics</span>
           <span>updated Aug 2026</span>
+        </div>
+      </section>
+
+      <section id="landscape" class="landscape-section" aria-labelledby="landscape-title">
+        <div class="landscape-heading">
+          <div>
+            <h2 id="landscape-title">research landscape</h2>
+            <p id="landscape-description" class="section-note">
+              点的位置由论文标签相似度决定，越近表示研究问题越接近；颜色来自 6 组标签 TF-IDF 聚类。点击圆点查看最近邻工作。
+            </p>
+          </div>
+          <button id="landscape-reset" class="plain-button" type="button">重置视图</button>
+        </div>
+
+        <div class="landscape-layout">
+          <div id="landscape-plot" class="landscape-plot">
+            <canvas
+              id="landscape-canvas"
+              width="900"
+              height="520"
+              role="img"
+              aria-label="DiT 论文相似度聚类点图；下方论文列表提供相同内容的文字访问方式"
+              aria-describedby="landscape-description"
+            ></canvas>
+            <div id="landscape-tooltip" class="landscape-tooltip" hidden></div>
+          </div>
+
+          <aside class="landscape-sidebar" aria-label="聚类图例和选中论文">
+            <div>
+              <h3>自动聚类</h3>
+              <div id="cluster-legend" class="cluster-legend"></div>
+            </div>
+            <div id="landscape-selection" class="landscape-selection" aria-live="polite">
+              <p class="landscape-placeholder">正在计算论文相似度…</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="landscape-subsection">
+          <h3>topic cloud</h3>
+          <p>词越大表示出现越频繁；点击可在点图中高亮相关工作。</p>
+          <div id="topic-cloud" class="topic-cloud" aria-label="主题词云"></div>
+        </div>
+
+        <div class="landscape-subsection">
+          <h3>cross-topic bridges</h3>
+          <p>最近一年中标签相似、但原始分类不同的论文对，是最值得交叉阅读的连接点。</p>
+          <div id="bridge-list" class="bridge-list"></div>
         </div>
       </section>
 
@@ -136,4 +186,3 @@
     </footer>
   </body>
 </html>
-

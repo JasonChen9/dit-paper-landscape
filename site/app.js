@@ -238,6 +238,7 @@ function bindEvents() {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("dit-paper-theme", theme);
     document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#1c1c1d" : "#ffffff";
+    window.DiTLandscape?.themeChanged();
   });
   elements.search.addEventListener("input", (event) => {
     state.query = event.target.value.trim();
@@ -286,6 +287,7 @@ async function initialize() {
     elements.total.textContent = state.papers.length;
     elements.windowCount.textContent = state.papers.filter((paper) => paper.window === "in-window").length;
     render();
+    window.DiTLandscape?.init(state.papers);
   } catch (error) {
     elements.resultCount.textContent = "论文数据加载失败，请稍后刷新。";
     elements.empty.hidden = false;
