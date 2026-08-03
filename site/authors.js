@@ -1,6 +1,28 @@
 (() => {
   const t = (key, values) => window.DiTI18n.t(key, values);
   const CLUSTER_COUNT = 7;
+  const INSTITUTION_ABBREVIATIONS = new Map([
+    ["Hong Kong University of Science and Technology", "HKUST"],
+    ["Hong Kong University of Science and Technology (Guangzhou)", "HKUST(GZ)"],
+    ["Shanghai Jiao Tong University", "SJTU"],
+    ["New York University", "NYU"],
+    ["Stanford University", "Stanford"],
+    ["Tsinghua University", "Tsinghua"],
+    ["Shanghai AI Laboratory", "Shanghai AI Lab"],
+    ["University of California, Berkeley", "UC Berkeley"],
+    ["University of Illinois Urbana-Champaign", "UIUC"],
+    ["University of Texas at Austin", "UT Austin"],
+    ["University of Chinese Academy of Sciences", "UCAS"],
+    ["Chinese Academy of Sciences", "CAS"],
+    ["Chinese University of Hong Kong", "CUHK"],
+    ["National University of Singapore", "NUS"],
+    ["Massachusetts Institute of Technology", "MIT"],
+    ["Carnegie Mellon University", "CMU"],
+    ["University of California, Los Angeles", "UCLA"],
+    ["Max Planck Institute for Intelligent Systems", "MPI-IS"],
+    ["Physical Intelligence", "PI"],
+    ["Google DeepMind", "DeepMind"],
+  ]);
   const state = {
     papers: [],
     profiles: [],
@@ -606,6 +628,50 @@
     return group.name;
   }
 
+  function institutionAbbreviation(name) {
+    if (INSTITUTION_ABBREVIATIONS.has(name)) return INSTITUTION_ABBREVIATIONS.get(name);
+    if (name.length <= 18) return name;
+    const words = name.replace(/[&/,()-]+/g, " ").split(/\s+/).filter(Boolean);
+    const stopWords = new Set(["of", "the", "and", "for", "at", "in"]);
+    const initials = words.filter((word) => !stopWords.has(word.toLocaleLowerCase("en")))
+      .map((word) => word[0]).join("").toUpperCase();
+    return initials.length >= 2 && initials.length <= 7 ? initials : `${words[0]} ${words[words.length - 1]}`;
+  }
+
+  function hideInstitutionTooltip() {
+    if (elements.institutionTooltip) elements.institutionTooltip.hidden = true;
+  }
+
+  function positionInstitutionTooltip(event, tile) {
+    const tooltip = elements.institutionTooltip;
+    const wrapper = elements.institutionTreemap.parentElement;
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const tileRect = tile.getBoundingClientRect();
+    const x = Number.isFinite(event?.clientX) ? event.clientX - wrapperRect.left : tileRect.left - wrapperRect.left + tileRect.width / 2;
+    const y = Number.isFinite(event?.clientY) ? event.clientY - wrapperRect.top : tileRect.top - wrapperRect.top + tileRect.height / 2;
+    const left = Math.max(6, Math.min(wrapperRect.width - tooltip.offsetWidth - 6, x + 10));
+    let top = y + 10;
+    if (top + tooltip.offsetHeight > wrapperRect.height - 6) top = y - tooltip.offsetHeight - 10;
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${Math.max(6, top)}px`;
+  }
+
+  function showInstitutionTooltip(event, tile, group, authors, resolvedCount) {
+    const tooltip = elements.institutionTooltip;
+    const title = document.createElement("strong");
+    title.textContent = group.name;
+    const share = document.createElement("span");
+    share.textContent = t("authors.institutionShare", {
+      count: group.count,
+      share: Math.round((group.count / Math.max(1, resolvedCount)) * 100),
+    });
+    const people = document.createElement("span");
+    people.textContent = t("authors.institutionPeople", { names: authors.slice(0, 6).join(" · ") });
+    tooltip.replaceChildren(title, share, people);
+    tooltip.hidden = false;
+    positionInstitutionTooltip(event, tile);
+  }
+
   function splitTreemap(items, x, y, width, height) {
     if (!items.length) return [];
     if (items.length === 1) return [{ ...items[0], x, y, width, height }];
@@ -639,34 +705,61 @@
   function renderInstitutionTreemap() {
     if (!elements.institutionTreemap) return;
     const counts = new Map(state.institutionGroups.map((group) => [group.name, 0]));
+    const authorsByInstitution = new Map();
     state.profiles.forEach((profile) => {
       if (availablePapers(profile).length) {
         const group = profile.institution.group || "Unknown";
         counts.set(group, (counts.get(group) || 0) + 1);
+        if (group !== "Unknown") {
+          if (!authorsByInstitution.has(group)) authorsByInstitution.set(group, []);
+          authorsByInstitution.get(group).push(profile);
+        }
       }
     });
     const items = state.institutionGroups.map((group) => ({ ...group, count: counts.get(group.name) || 0 }))
-      .filter((group) => group.count > 0)
+      .filter((group) => group.kind !== "unknown" && group.count > 0)
       .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name, "en"));
+    const resolvedCount = items.reduce((sum, group) => sum + group.count, 0);
     const layout = splitTreemap(items, 0, 0, 100, 100);
+    const treemapRect = elements.institutionTreemap.getBoundingClientRect();
+    hideInstitutionTooltip();
     elements.institutionTreemap.replaceChildren(...layout.map((group) => {
       const tile = document.createElement("div");
       tile.className = "institution-tile";
-      tile.classList.toggle("compact", group.width < 9 || group.height < 11);
-      tile.classList.toggle("tiny", group.width < 4.5 || group.height < 5.5);
+      const pixelWidth = group.width * Math.max(300, treemapRect.width) / 100;
+      const pixelHeight = group.height * Math.max(150, treemapRect.height) / 100;
+      tile.classList.toggle("compact", pixelWidth < 74 || pixelHeight < 30);
+      tile.classList.toggle("tiny", pixelWidth < 28 || pixelHeight < 17);
       tile.setAttribute("role", "listitem");
+      tile.tabIndex = 0;
       tile.style.left = `${group.x}%`;
       tile.style.top = `${group.y}%`;
       tile.style.width = `${group.width}%`;
       tile.style.height = `${group.height}%`;
       tile.style.backgroundColor = institutionColor({ institution: group, cluster: 0 });
       const label = institutionGroupLabel(group);
-      tile.title = `${label} · ${t("authors.authorCount", { count: group.count })}`;
-      const name = document.createElement("strong");
-      name.textContent = label;
-      const count = document.createElement("span");
-      count.textContent = String(group.count);
-      tile.append(name, count);
+      const abbreviation = institutionAbbreviation(label);
+      const fullNameFits = pixelHeight >= 34 && pixelWidth >= Math.min(210, label.length * 5.3 + 12);
+      const shortNameFits = pixelHeight >= 20 && pixelWidth >= abbreviation.length * 5.6 + 8;
+      tile.setAttribute("aria-label", `${label}, ${t("authors.authorCount", { count: group.count })}`);
+      if (fullNameFits || shortNameFits) {
+        const name = document.createElement("strong");
+        name.textContent = fullNameFits ? label : abbreviation;
+        tile.append(name);
+      }
+      if (pixelWidth >= 18 && pixelHeight >= 16) {
+        const count = document.createElement("span");
+        count.textContent = String(group.count);
+        tile.append(count);
+      }
+      const authors = (authorsByInstitution.get(group.name) || [])
+        .sort((left, right) => availablePapers(right).length - availablePapers(left).length || left.name.localeCompare(right.name, "en"))
+        .map((profile) => profile.name);
+      tile.addEventListener("mouseenter", (event) => showInstitutionTooltip(event, tile, group, authors, resolvedCount));
+      tile.addEventListener("mousemove", (event) => positionInstitutionTooltip(event, tile));
+      tile.addEventListener("mouseleave", hideInstitutionTooltip);
+      tile.addEventListener("focus", () => showInstitutionTooltip(null, tile, group, authors, resolvedCount));
+      tile.addEventListener("blur", hideInstitutionTooltip);
       return tile;
     }));
   }
@@ -879,6 +972,7 @@
       selection: document.querySelector("#author-landscape-selection"),
       mapCount: document.querySelector("#author-map-count"),
       institutionTreemap: document.querySelector("#institution-treemap"),
+      institutionTooltip: document.querySelector("#institution-treemap-tooltip"),
       index: document.querySelector("#author-index"),
       indexCount: document.querySelector("#author-index-count"),
       search: document.querySelector("#author-search-input"),
@@ -930,6 +1024,7 @@
         initializeNodes();
         startAmbientMotion();
       }
+      renderInstitutionTreemap();
     }).observe(elements.plot);
     startAmbientMotion();
   }

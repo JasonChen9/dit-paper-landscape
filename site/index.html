@@ -158,8 +158,11 @@
           <aside id="author-landscape-sidebar" class="landscape-sidebar" aria-label="Author index scope and selected author" data-i18n-aria-label="authors.sidebarAria" hidden>
             <div>
               <h3 data-i18n="authors.heading">institution mix</h3>
-              <p class="author-scope-note" data-i18n="authors.scope">Authors include first, explicitly marked co-first, and corresponding authors. Institution follows the latest resolved key-author paper.</p>
-              <div id="institution-treemap" class="institution-treemap" role="list" aria-label="Authors by institution" data-i18n-aria-label="authors.institutionAria"></div>
+              <p class="author-scope-note" data-i18n="authors.scope">The treemap summarizes identified primary affiliations from each author's latest resolved key-author paper.</p>
+              <div class="institution-treemap-wrap">
+                <div id="institution-treemap" class="institution-treemap" role="list" aria-label="Authors by identified institution" data-i18n-aria-label="authors.institutionAria"></div>
+                <div id="institution-treemap-tooltip" class="institution-treemap-tooltip" role="tooltip" hidden></div>
+              </div>
               <p id="author-map-count" class="author-map-count"></p>
             </div>
             <div id="author-landscape-selection" class="landscape-selection" aria-live="polite">
