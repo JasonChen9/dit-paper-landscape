@@ -10,7 +10,7 @@
 
 1. 打开仓库中的 `catalog/papers.csv`。
 2. 点击右上角铅笔按钮 **Edit this file**。
-3. 修改或新增一行。`arxiv_url` 和 `pdf_url` 会自动显示为网站上的可点击按钮。
+3. 修改或新增一行。`authors` 保存完整作者列表；`key_authors` 按 `catalog/README.md` 的角色格式维护。`arxiv_url` 和 `pdf_url` 会自动显示为网站上的可点击按钮。
 4. 点击 **Commit changes**，目标选择 `main`。
 5. 打开仓库的 **Actions** 页面。`Deploy GitHub Pages` 变绿后，网站即已更新。
 
@@ -27,6 +27,7 @@ git pull
 修改 `catalog/papers.csv` 或网站文件，然后检查和提交：
 
 ```bash
+python3 scripts/enrich_authors.py
 python3 scripts/sync_papers.py --check
 git add catalog README.md notes site
 git commit -m "Update paper catalog"
@@ -37,14 +38,14 @@ git push
 
 ## 添加论文链接
 
-每条记录包含两个浏览器可点击来源：
+每条记录包含两个浏览器可点击来源。arXiv 论文通常写成：
 
 ```text
 arxiv_url = https://arxiv.org/abs/论文编号
 pdf_url   = https://arxiv.org/pdf/论文编号
 ```
 
-网站从 `catalog/papers.csv` 读取论文记录，并通过 `arxiv_url` 和 `pdf_url` 提供在线阅读入口。本地运行 `scripts/sync_papers.py` 可以把 PDF 下载到分类目录，供离线阅读。
+会议或出版社版本也可以把官方论文页写入 `arxiv_url` 兼容字段，并用 `source_label` 指定按钮名称。网站从 `catalog/papers.csv` 读取论文记录，并通过 `arxiv_url` 和 `pdf_url` 提供在线阅读入口。本地运行 `scripts/sync_papers.py` 可以把 PDF 下载到分类目录，供离线阅读。
 
 ## 查看部署状态
 

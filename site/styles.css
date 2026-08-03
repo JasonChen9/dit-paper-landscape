@@ -58,6 +58,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 82px;
@@ -254,6 +258,43 @@ select:focus-visible {
   max-width: 700px;
 }
 
+.landscape-actions {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.landscape-mode-toggle {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.landscape-mode-toggle button {
+  padding: 5px 9px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.landscape-mode-toggle button:first-child {
+  border-left: 0;
+}
+
+.landscape-mode-toggle button:hover,
+.landscape-mode-toggle button.active {
+  background: var(--surface-hover);
+  color: var(--accent);
+}
+
+.landscape-mode-toggle button.active {
+  box-shadow: inset 0 -2px var(--accent);
+}
+
 .plain-button {
   flex: 0 0 auto;
   padding: 5px 10px;
@@ -287,15 +328,27 @@ select:focus-visible {
   background-position: -1px -1px;
 }
 
-#landscape-canvas {
+#landscape-canvas,
+#author-landscape-canvas {
   display: block;
   width: 100%;
   cursor: grab;
   touch-action: none;
 }
 
-#landscape-canvas.is-panning {
+#author-landscape-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+#landscape-canvas.is-panning,
+#author-landscape-canvas.is-panning {
   cursor: grabbing;
+}
+
+.landscape-view-hidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .landscape-zoom-controls {
@@ -628,6 +681,33 @@ select:focus-visible {
   line-height: 1.45;
 }
 
+.author-scope-note,
+.author-map-count,
+.author-index-description,
+.author-index-count {
+  margin: 0;
+  color: var(--faint);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.author-map-count {
+  margin-top: 9px;
+  color: var(--accent);
+}
+
+.neighbor-list a {
+  display: block;
+  padding: 3px 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.neighbor-list a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
 .selection-eyebrow,
 .selection-full-title {
   color: var(--faint);
@@ -692,6 +772,89 @@ select:focus-visible {
 .topic-cloud,
 .bridge-list {
   grid-column: 2;
+}
+
+.author-index-section {
+  align-items: start;
+}
+
+.author-search-label {
+  display: block;
+}
+
+.author-search-label input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.75rem;
+}
+
+.author-index-description {
+  margin-bottom: 5px;
+}
+
+.author-index-count {
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+
+.author-index {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px 12px;
+  max-height: 330px;
+  overflow: auto;
+  padding-right: 5px;
+}
+
+.author-index-entry {
+  min-width: 0;
+  padding: 5px 6px;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.author-index-entry strong {
+  overflow: hidden;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.author-index-entry span {
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.author-index-entry:hover,
+.author-index-entry.active {
+  background: var(--surface-hover);
+  color: var(--accent);
+}
+
+.author-index-entry.active {
+  box-shadow: inset 2px 0 var(--accent);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .topic-cloud {
@@ -1026,6 +1189,17 @@ kbd {
   line-height: 1.45;
 }
 
+.paper-authors {
+  margin: -3px 0 9px;
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--faint);
+  font-size: 0.74rem;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .summary {
   margin: 0;
   font-size: 0.9rem;
@@ -1263,8 +1437,13 @@ kbd {
   }
 
   .topic-cloud,
-  .bridge-list {
+  .bridge-list,
+  .author-index-section > div:last-child {
     grid-column: 1;
+  }
+
+  .author-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .select-row label,
@@ -1304,8 +1483,13 @@ kbd {
     display: block;
   }
 
-  .landscape-heading .plain-button {
-    margin-bottom: 14px;
+  .landscape-actions {
+    margin: 12px 0 14px;
+    justify-content: space-between;
+  }
+
+  .author-index {
+    grid-template-columns: 1fr;
   }
 
   #time-range-count {

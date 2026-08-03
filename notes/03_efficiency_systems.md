@@ -50,6 +50,22 @@
 - [Xema](https://arxiv.org/abs/2607.11136)：根据请求模板的离线显存轨迹，只在短暂峰值区间实施最小必要的显存缓解；静态张量布局减少碎片，并由离线规划器联合选择并行、并发和显存策略。
 - [X-Stage](https://arxiv.org/abs/2607.23264)：让发送端 remote-store 与下一层计算重叠，补足只优化接收/collective 侧的遗漏阶段。
 
+### 生产服务与生成工作流
+
+- [Nirvana](https://arxiv.org/abs/2312.04429)：在相似 prompt 请求之间复用中间噪声状态，把跨请求近似缓存带入生产扩散服务。
+- [Katz / SwiftDiffusion](https://www.usenix.org/conference/atc25/presentation/li-suyi-katz)：把 ControlNet、LoRA 等模块的计算和加载特征分开管理，为多适配器工作流做独立扩缩容、缓存与 latent parallelism。
+- [DiffServe](https://arxiv.org/abs/2411.15381)：根据请求难度构造模型级联，并联合考虑质量、负载与 SLO。
+- [PATCHEDSERVE](https://arxiv.org/abs/2501.09253)：把不同分辨率请求统一成 patch 级连续批处理，并在同一粒度做缓存与调度。
+- [FlashPS / InstGenIE](https://arxiv.org/abs/2505.20600)：利用编辑 mask 只执行受影响区域，并将缓存加载、连续批处理和负载均衡组合起来。
+- [Production Diffusion Serving](https://doi.org/10.1145/3772052.3772206)：用 300 多块 GPU、350 万请求的生产数据分析 workload、缓存、调度、扩缩容和资源效率。
+- [LegoDiffusion](https://arxiv.org/abs/2604.08123)：把文生图工作流拆成模型级微服务，使各阶段能够独立共享、扩缩容和选择并行策略。
+- [DisagFusion](https://arxiv.org/abs/2605.25550)：将编码器、DiT 与解码器解耦到异构 GPU，以异步流水和反馈式弹性调度解决阶段失衡。
+- [TurboServe](https://arxiv.org/abs/2606.19271)：面向流式长视频会话联合管理迁移、状态卸载、批处理和 GPU 扩缩容。
+- [FlashDiff](https://arxiv.org/abs/2607.12121)：按 latent 区域的收敛速度跳过低影响更新，并把释放的算力调度给其他请求。
+- [ServerlessT2I](https://arxiv.org/abs/2607.26566)：把工作流拆为可独立扩缩容的 serverless 模型函数，并处理多租户公平性和 GPU 显存共享。
+
+这组工作表明，扩散服务的对象已经从“一个固定 denoiser”扩展为由编码器、基础模型、ControlNet/LoRA、解码器和编辑模块组成的动态工作流。研究问题也相应从单 kernel 延迟扩展到阶段拆分、模型共享、缓存复用、异构放置、弹性扩缩容、SLO 与多租户公平。
+
 ### VLA 与混合 workflow serving
 
 - [vLLM-Omni](https://arxiv.org/abs/2602.02204)：用 stage graph 表示 VLM/LLM、DiT action expert 和其他模态组件，每个阶段独立 batching、GPU 分配和路由。它解决的是混合模型服务，不是机器人上的整个闭环控制器。

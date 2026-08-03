@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download and verify arXiv PDFs listed in catalog/papers.csv."""
+"""Download and verify source PDFs listed in catalog/papers.csv."""
 
 from __future__ import annotations
 
@@ -26,8 +26,9 @@ def slugify(value: str) -> str:
 
 
 def target_path(row: dict[str, str]) -> Path:
-    arxiv_id = row["arxiv_id"].split("v", 1)[0]
-    filename = f"{arxiv_id}__{slugify(row['short_title'])}.pdf"
+    paper_id = row["arxiv_id"].split("v", 1)[0]
+    safe_id = paper_id if re.fullmatch(r"\d{4}\.\d{4,5}", paper_id) else slugify(paper_id)
+    filename = f"{safe_id}__{slugify(row['short_title'])}.pdf"
     return ROOT / "papers" / row["category"] / filename
 
 
@@ -40,7 +41,7 @@ def is_valid_pdf(path: Path) -> bool:
 
 def download(row: dict[str, str], path: Path, retries: int = 3) -> None:
     arxiv_id = row["arxiv_id"].split("v", 1)[0]
-    url = f"https://arxiv.org/pdf/{arxiv_id}.pdf"
+    url = row.get("pdf_url") or f"https://arxiv.org/pdf/{arxiv_id}.pdf"
     path.parent.mkdir(parents=True, exist_ok=True)
     partial = path.with_suffix(path.suffix + ".part")
     request = urllib.request.Request(

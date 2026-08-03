@@ -1,4 +1,4 @@
-const CATALOG_VERSION = "20260803-world-embodied-omni";
+const CATALOG_VERSION = "20260803-author-landscape-v1";
 const DATA_URL = `./data/papers.csv?v=${CATALOG_VERSION}`;
 const ENGLISH_SUMMARIES_URL = `./data/summaries_en.json?v=${CATALOG_VERSION}`;
 const DEPLOY_VERSION_URL = "./version.json";
@@ -48,6 +48,7 @@ const state = {
   topicIds: null,
   topicLabel: "",
   topicSource: null,
+  mapMode: "topics",
   page: 1,
   pageSize: 12,
   initialized: false,
@@ -67,6 +68,7 @@ const elements = {
   pageButtons: document.querySelector("#page-buttons"),
   empty: document.querySelector("#empty-state"),
   reset: document.querySelector("#reset-button"),
+  landscapeReset: document.querySelector("#landscape-reset"),
   exportMenu: document.querySelector("#export-menu"),
   exportMenuToggle: document.querySelector("#export-menu-toggle"),
   exportMenuOptions: document.querySelector("#export-menu-options"),
@@ -78,6 +80,18 @@ const elements = {
   exportCount: document.querySelector("#export-count"),
   exportCountLabel: document.querySelector("#export-count-label"),
   windowCount: document.querySelector("#window-count"),
+  modeTopics: document.querySelector("#landscape-mode-topics"),
+  modeAuthors: document.querySelector("#landscape-mode-authors"),
+  landscapeDescription: document.querySelector("#landscape-description"),
+  topicCanvas: document.querySelector("#landscape-canvas"),
+  authorCanvas: document.querySelector("#author-landscape-canvas"),
+  topicZoom: document.querySelector(".landscape-zoom-controls:not(#author-zoom-controls)"),
+  authorZoom: document.querySelector("#author-zoom-controls"),
+  topicSidebar: document.querySelector("#topic-landscape-sidebar"),
+  authorSidebar: document.querySelector("#author-landscape-sidebar"),
+  topicCloudSection: document.querySelector("#topic-cloud-section"),
+  bridgeSection: document.querySelector("#bridge-section"),
+  authorIndexSection: document.querySelector("#author-index-section"),
 };
 
 async function readDeployVersion() {
@@ -182,6 +196,8 @@ function matchesPaper(paper, { includeTopic = true, includeTime = true } = {}) {
     [
       paper.short_title,
       paper.title,
+      paper.alternate_titles,
+      paper.authors,
       paper.venue,
       paper.topic_tags,
       paper.summary_en,
@@ -210,12 +226,14 @@ function filteredPapers() {
 
 function listControlledPaperIds() {
   return state.papers
-    .filter((paper) => matchesPaper(paper, { includeTopic: false, includeTime: false }))
+    .filter((paper) => matchesPaper(paper, { includeTime: false }))
     .map((paper) => paper.arxiv_id);
 }
 
 function syncLandscapeListFilter() {
-  window.DiTLandscape?.setExternalFilter(listControlledPaperIds());
+  const ids = listControlledPaperIds();
+  window.DiTLandscape?.setExternalFilter(ids);
+  window.DiTAuthors?.setExternalFilter(ids);
 }
 
 function clearTopicFilter() {
@@ -224,14 +242,62 @@ function clearTopicFilter() {
   state.topicLabel = "";
   state.topicSource = null;
   window.DiTLandscape?.clearTopicFilter();
+  window.DiTAuthors?.clearAuthorFilter?.();
+}
+
+function resetAllFilters() {
+  state.query = "";
+  state.cluster = "all";
+  state.relation = "all";
+  state.window = "all";
+  state.sort = "newest";
+  state.customStart = null;
+  state.customEnd = null;
+  state.topicIds = null;
+  state.topicLabel = "";
+  state.topicSource = null;
+  state.page = 1;
+  elements.search.value = "";
+  elements.relation.value = "all";
+  elements.window.value = "all";
+  elements.sort.value = "newest";
+  const allIds = state.papers.map((paper) => paper.arxiv_id);
+  window.DiTLandscape?.setExternalFilter(allIds);
+  window.DiTAuthors?.setExternalFilter(allIds);
+  window.DiTLandscape?.resetFilters();
+  window.DiTAuthors?.resetFilters();
+  render();
 }
 
 function syncLandscapeTimeFilter() {
   if (state.window === "custom" && state.customStart && state.customEnd) {
     window.DiTLandscape?.setTimeRange(state.customStart, state.customEnd);
+    window.DiTAuthors?.setTimeRange(state.customStart, state.customEnd);
   } else {
     window.DiTLandscape?.setTimePreset(state.window);
+    window.DiTAuthors?.setTimePreset(state.window);
   }
+}
+
+function setLandscapeMode(mode, { updateHistory = true } = {}) {
+  state.mapMode = mode === "authors" ? "authors" : "topics";
+  const authors = state.mapMode === "authors";
+  elements.modeTopics.classList.toggle("active", !authors);
+  elements.modeAuthors.classList.toggle("active", authors);
+  elements.modeTopics.setAttribute("aria-pressed", String(!authors));
+  elements.modeAuthors.setAttribute("aria-pressed", String(authors));
+  elements.topicCanvas.classList.toggle("landscape-view-hidden", authors);
+  elements.authorCanvas.classList.toggle("landscape-view-hidden", !authors);
+  elements.topicZoom.hidden = authors;
+  elements.authorZoom.hidden = !authors;
+  elements.topicSidebar.hidden = authors;
+  elements.authorSidebar.hidden = !authors;
+  elements.topicCloudSection.hidden = authors;
+  elements.bridgeSection.hidden = authors;
+  elements.authorIndexSection.hidden = !authors;
+  elements.landscapeDescription.textContent = t(authors ? "authors.description" : "landscape.description");
+  if (authors) window.DiTAuthors?.fitView();
+  if (updateHistory) updateURL();
 }
 
 function createElement(tag, className, text) {
@@ -264,6 +330,7 @@ function createPaperCard(paper) {
   heading.append(titleLink);
 
   const fullTitle = createElement("p", "full-title", paper.title);
+  const authors = createElement("p", "paper-authors", paper.authors);
   const summary = createElement("p", "summary", paperSummary(paper));
 
   const tags = createElement("ul", "tag-list");
@@ -272,9 +339,9 @@ function createPaperCard(paper) {
   }
 
   const links = createElement("div", "card-links");
-  links.append(createLink(t("paper.abstract"), paper.arxiv_url), createLink(t("paper.pdf"), paper.pdf_url));
+  links.append(createLink(`${paper.source_label || "arXiv"} ↗`, paper.arxiv_url), createLink(t("paper.pdf"), paper.pdf_url));
 
-  card.append(meta, heading, fullTitle, summary, tags, links);
+  card.append(meta, heading, fullTitle, authors, summary, tags, links);
   return card;
 }
 
@@ -291,6 +358,7 @@ function updateURL() {
   if (state.sort !== "newest") params.set("sort", state.sort);
   if (state.page !== 1) params.set("page", state.page);
   if (state.pageSize !== 12) params.set("perPage", state.pageSize);
+  if (state.mapMode === "authors") params.set("view", "authors");
   const query = params.toString();
   history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}${location.hash}`);
 }
@@ -306,6 +374,7 @@ function filterDescription() {
     t("filterDesc.sort", { value: sortLabel(state.sort) }),
   ];
   if (state.topicSource === "tag") parts.push(t("filterDesc.tag", { value: state.topicLabel }));
+  if (state.topicSource === "author") parts.push(t("filterDesc.author", { value: state.topicLabel }));
   if (state.query) parts.push(t("filterDesc.search", { value: state.query }));
   return parts.join(window.DiTI18n.language === "zh" ? "；" : "; ");
 }
@@ -325,7 +394,7 @@ function escapeHTML(value) {
 
 function exportFilename(extension, count) {
   const date = new Date().toISOString().slice(0, 10);
-  return `dit-papers-${date}-${count}.${extension}`;
+  return `diffusion-intelligence-papers-${date}-${count}.${extension}`;
 }
 
 function downloadText(content, filename, mimeType) {
@@ -349,12 +418,14 @@ function markdownExport(papers) {
       `## ${index + 1}. [${escapeMarkdown(paper.title)}](${paper.arxiv_url})`,
       "",
       `- ${t("export.shortTitle")}${separator}${escapeMarkdown(paper.short_title)}`,
+      `- ${t("export.authors")}${separator}${escapeMarkdown(paper.authors)}`,
+      `- ${t("export.keyAuthors")}${separator}${escapeMarkdown(paper.key_authors || "-")}`,
       `- ${t("export.published")}${separator}${paper.published}`,
       `- ${t("export.cluster")}${separator}${escapeMarkdown(clusterLabelForPaper(paper))}`,
       `- ${t("export.relation")}${separator}${escapeMarkdown(relationLabel(paper.dit_relation))}`,
       `- ${t("export.source")}${separator}${escapeMarkdown(paper.venue)}`,
       `- ${t("export.tags")}${separator}${tags || "-"}`,
-      `- arXiv${separator}[${paper.arxiv_url}](${paper.arxiv_url})`,
+      `- ${escapeMarkdown(paper.source_label || "arXiv")}${separator}[${paper.arxiv_url}](${paper.arxiv_url})`,
       `- PDF${separator}[${paper.pdf_url}](${paper.pdf_url})`,
       "",
       escapeMarkdown(paperSummary(paper)),
@@ -381,9 +452,10 @@ function htmlExport(papers) {
         <p class="meta">${index + 1} · ${escapeHTML(paper.published)} · ${escapeHTML(paper.venue)} · ${escapeHTML(relationLabel(paper.dit_relation))}</p>
         <h2><a href="${escapeHTML(paper.arxiv_url)}">${escapeHTML(paper.title)}</a></h2>
         <p class="short-title">${escapeHTML(paper.short_title)} · ${escapeHTML(clusterLabelForPaper(paper))}</p>
+        <p class="authors">${escapeHTML(paper.authors)}</p>
         <p>${escapeHTML(paperSummary(paper))}</p>
         <ul class="tags">${tags}</ul>
-        <p class="links"><a href="${escapeHTML(paper.arxiv_url)}">arXiv</a><a href="${escapeHTML(paper.pdf_url)}">PDF</a></p>
+        <p class="links"><a href="${escapeHTML(paper.arxiv_url)}">${escapeHTML(paper.source_label || "arXiv")}</a><a href="${escapeHTML(paper.pdf_url)}">PDF</a></p>
       </article>`;
   }).join("");
 
@@ -403,7 +475,7 @@ function htmlExport(papers) {
     h2 { margin: 4px 0 5px; font-size: 1.2rem; line-height: 1.4; }
     a { color: var(--accent); }
     article { padding: 25px 0; border-bottom: 1px solid var(--border); }
-    .meta, .short-title, header p { margin: 0; color: var(--muted); font-size: .85rem; }
+    .meta, .short-title, .authors, header p { margin: 0; color: var(--muted); font-size: .85rem; }
     article > p { margin: 9px 0; }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
     .tags li { padding: 2px 7px; border: 1px solid var(--border); border-radius: 3px; background: var(--tag); font-size: .75rem; }
@@ -546,6 +618,7 @@ function render() {
   elements.paperList.replaceChildren(...visiblePapers.map(createPaperCard));
   const activeContext = [];
   if (state.topicSource === "tag" && state.topicLabel) activeContext.push(t("results.tag", { value: state.topicLabel }));
+  if (state.topicSource === "author" && state.topicLabel) activeContext.push(t("results.author", { value: state.topicLabel }));
   if (state.window === "custom" && state.customStart && state.customEnd) {
     activeContext.push(t("results.date", { start: state.customStart, end: state.customEnd }));
   }
@@ -595,6 +668,7 @@ function renderClusterFilters() {
       state.topicLabel = cluster.id === "all" ? "" : cluster.name;
       state.topicSource = cluster.id === "all" ? null : "cluster";
       state.page = 1;
+      window.DiTAuthors?.clearAuthorFilter?.();
       window.DiTLandscape?.setClusterFilter(cluster.id === "all" ? null : Number(cluster.id));
       render();
     });
@@ -613,6 +687,7 @@ function readURLState() {
   const sort = params.get("sort");
   const page = Number.parseInt(params.get("page") ?? "1", 10);
   const pageSize = Number.parseInt(params.get("perPage") ?? "12", 10);
+  state.mapMode = params.get("view") === "authors" ? "authors" : "topics";
   state.query = params.get("q") ?? "";
   if (relation === "all" || relation in RELATION_KEYS) state.relation = relation;
   if (["all", "in-window", "background"].includes(windowValue)) state.window = windowValue;
@@ -648,6 +723,7 @@ function applyClusterCatalog(clusters) {
     clearTopicFilter();
   }
   render();
+  window.DiTAuthors?.setClusters(clusters);
 }
 
 function bindEvents() {
@@ -657,7 +733,10 @@ function bindEvents() {
     localStorage.setItem("dit-paper-theme", theme);
     document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#1c1c1d" : "#ffffff";
     window.DiTLandscape?.themeChanged();
+    window.DiTAuthors?.themeChanged();
   });
+  elements.modeTopics.addEventListener("click", () => setLandscapeMode("topics"));
+  elements.modeAuthors.addEventListener("click", () => setLandscapeMode("authors"));
   elements.search.addEventListener("input", (event) => {
     state.query = event.target.value.trim();
     if (state.initialized) state.page = 1;
@@ -709,6 +788,7 @@ function bindEvents() {
     state.topicLabel = event.detail?.label ?? "";
     state.topicSource = event.detail?.source ?? null;
     state.cluster = state.topicSource === "cluster" ? String(event.detail.cluster) : "all";
+    if (state.topicSource !== "author") window.DiTAuthors?.clearAuthorFilter?.();
     if (state.initialized) state.page = 1;
     render();
   });
@@ -731,26 +811,10 @@ function bindEvents() {
     const cached = Number(localStorage.getItem(EXPORT_COUNT_CACHE_KEY));
     if (Number.isSafeInteger(cached) && cached >= 0) updateExportCount(cached);
     render();
+    setLandscapeMode(state.mapMode, { updateHistory: false });
   });
-  elements.reset.addEventListener("click", () => {
-    state.query = "";
-    state.cluster = "all";
-    state.relation = "all";
-    state.window = "all";
-    state.sort = "newest";
-    state.customStart = null;
-    state.customEnd = null;
-    state.topicIds = null;
-    state.topicLabel = "";
-    state.topicSource = null;
-    state.page = 1;
-    elements.search.value = "";
-    elements.relation.value = "all";
-    elements.window.value = "all";
-    elements.sort.value = "newest";
-    window.DiTLandscape?.resetFilters();
-    render();
-  });
+  elements.reset.addEventListener("click", resetAllFilters);
+  elements.landscapeReset.addEventListener("click", resetAllFilters);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !elements.exportMenuOptions.hidden) {
       setExportMenuOpen(false);
@@ -785,8 +849,10 @@ async function initialize() {
     elements.windowCount.textContent = state.papers.filter((paper) => paper.window === "in-window").length;
     render();
     window.DiTLandscape?.init(state.papers);
+    window.DiTAuthors?.init(state.papers);
     syncLandscapeTimeFilter();
     syncLandscapeListFilter();
+    setLandscapeMode(state.mapMode, { updateHistory: false });
     state.initialized = true;
   } catch (error) {
     elements.resultCount.textContent = t("error.catalog");

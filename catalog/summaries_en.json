@@ -143,5 +143,16 @@
   "2606.04463": "Conditioned a Cosmos video world model on a shared 2D kinematic skeleton to evaluate robot policies across embodiments.",
   "2606.05558": "Alternated an LLM agent with a latent diffusion world model in causal order to estimate new agent policies from offline trajectories.",
   "2606.12987": "Predicted eight seconds of driving futures with a compact action-conditioned latent DiT and exposed why distortion metrics favor blurry regression means.",
-  "2606.29501": "Pretrained a multi-view action-conditioned diffusion world model, then adapted the same dynamics prior into a policy evaluator and a joint video-action policy."
+  "2606.29501": "Pretrained a multi-view action-conditioned diffusion world model, then adapted the same dynamics prior into a policy evaluator and a joint video-action policy.",
+  "2312.04429": "Reused intermediate noise states across requests with similar prompts and applied a benefit-aware cache policy to reduce production text-to-image compute, latency, and cost.",
+  "2407.02031": "Separated compute-heavy ControlNets from loading-heavy LoRAs, combining independent scaling, caching, bounded asynchronous loading, and latent parallelism for adapter-rich diffusion workflows.",
+  "2411.15381": "Built query-aware diffusion model cascades and dynamically allocated resources to balance response quality, latency, and SLO attainment under changing demand.",
+  "2501.09253": "Converted mixed-resolution requests into patch-level batches and combined patch reuse with SLO-aware scheduling for hybrid-resolution diffusion serving.",
+  "2505.20600": "Exploited editing masks to skip unchanged regions, then combined cache-loading pipelines, continuous batching, and load balancing for generative image-editing services.",
+  "socc25-diffusion-serving": "Analyzed 3.5 million production requests across more than 300 GPUs and used the findings to coordinate caching, scaling, instance templates, I/O, and prefetching across the serving stack.",
+  "2604.08123": "Decomposed diffusion workflows into independently managed model-execution nodes, enabling per-model scaling, sharing, and adaptive parallelism.",
+  "2605.25550": "Disaggregated encoder, DiT, and decoder stages across heterogeneous GPUs, using asynchronous pipelines and feedback-driven elastic scheduling to address stage imbalance and handoff overhead.",
+  "2606.19271": "Managed long-lived streaming-video sessions with joint migration and GPU autoscaling, plus chunk batching, state offloading, and online rebalancing.",
+  "2607.12121": "Skipped low-impact latent-region updates based on denoising convergence and reassigned the reclaimed compute capacity across concurrent diffusion requests.",
+  "2607.26566": "Decomposed text-to-image workflows into independently scalable model functions and used idle GPU memory as a data plane for efficient, fair multi-tenant serverless serving."
 }

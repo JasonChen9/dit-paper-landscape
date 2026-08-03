@@ -870,7 +870,7 @@
     summary.textContent = paperSummary(paper);
     const links = document.createElement("div");
     links.className = "selection-links";
-    links.append(link(t("paper.abstract"), paper.arxiv_url), link(t("paper.pdf"), paper.pdf_url));
+    links.append(link(`${paper.source_label || "arXiv"} ↗`, paper.arxiv_url), link(t("paper.pdf"), paper.pdf_url));
 
     const neighborTitle = document.createElement("h4");
     neighborTitle.textContent = t("neighbors.heading");
@@ -1295,6 +1295,8 @@
   }
 
   function chooseInitialPaper() {
+    const landmark = state.papers.findIndex((paper) => paper.arxiv_id === "2212.09748");
+    if (landmark >= 0 && paperAvailable(landmark) && paperInTopicFilter(landmark)) return landmark;
     let best = 0;
     let bestScore = -1;
     state.similarities.forEach((row, index) => {
@@ -1433,7 +1435,6 @@
     emitClusterCatalog();
     selectPaper(chooseInitialPaper());
     bindCanvas();
-    elements.reset.addEventListener("click", () => resetFilters(true));
     elements.zoomOut.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 0.8, true));
     elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 1.25, true));
     elements.zoomFit.addEventListener("click", fitView);

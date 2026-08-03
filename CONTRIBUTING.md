@@ -7,8 +7,10 @@
 3. `window` 使用 `in-window` 或 `background`。
 4. `dit_relation` 使用 `direct`、`adaptation`、`system` 或 `adjacent`。
 5. `summary_zh` 只写论文解决的核心问题与方法，不复制摘要。
-6. 运行 `python3 scripts/sync_papers.py` 下载 PDF。
-7. 在相应 `notes/*.md` 中补充“为什么值得读”，必要时增加跨主题链接。
+6. `authors` 保存完整作者列表；`key_authors` 只标记第一作者、论文明确标注的共一和通讯作者，不根据作者顺序猜测通讯身份。
+7. 运行 `python3 scripts/enrich_authors.py` 补全 arXiv 作者元数据，再人工核对 `catalog/key_authors.json` 中的共一与通讯标记。
+8. 运行 `python3 scripts/sync_papers.py` 下载 PDF。
+9. 在相应 `notes/*.md` 中补充“为什么值得读”，必要时增加跨主题链接。
 
 ## 纳入判断
 

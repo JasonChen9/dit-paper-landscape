@@ -1,0 +1,52 @@
+{
+  "2312.04429": [
+    "Shubham Agarwal|first",
+    "Subrata Mitra|corresponding"
+  ],
+  "2407.02031": [
+    "Suyi Li|first+co-first",
+    "Lingyun Yang|co-first"
+  ],
+  "2411.15381": [
+    "Sohaib Ahmad|first+co-first",
+    "Qizheng Yang|co-first"
+  ],
+  "2501.09253": [
+    "Desen Sun|first"
+  ],
+  "2505.20600": [
+    "Xiaoxiao Jiang|first+co-first",
+    "Suyi Li|co-first+corresponding"
+  ],
+  "2604.08123": [
+    "Lingyun Yang|first+co-first",
+    "Suyi Li|co-first+corresponding"
+  ],
+  "2605.25550": [
+    "Hantian Zha|first"
+  ],
+  "2606.19271": [
+    "Youhe Jiang|first+co-first",
+    "Haoxu Wang|co-first",
+    "Haotong Bao|co-first",
+    "Jintao Zhang|corresponding"
+  ],
+  "2607.11136": [
+    "Xueze Kang|first+co-first",
+    "Guangyu Xiang|co-first",
+    "Lin Zhang|corresponding",
+    "Xiaowen Chu|corresponding"
+  ],
+  "2607.12121": [
+    "Yaqi Qiao|first+co-first",
+    "Ping He|co-first"
+  ],
+  "2607.26566": [
+    "Xiaoxiao Jiang|first+co-first",
+    "Suyi Li|co-first+corresponding"
+  ],
+  "socc25-diffusion-serving": [
+    "Yanying Lin|first",
+    "Kejiang Ye|corresponding"
+  ]
+}

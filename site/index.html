@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./styles.css?v=__DEPLOY_VERSION__" />
     <script src="./i18n.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./landscape.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./authors.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./app.js?v=__DEPLOY_VERSION__" defer></script>
   </head>
   <body>
@@ -43,8 +44,8 @@
         <p class="subtitle" data-i18n="intro.subtitle">A research map of diffusion models and embodied intelligence</p>
         <p data-i18n="intro.description">A curated map connecting diffusion and flow models with scalable generation, efficient systems, reinforcement learning, world models, embodied AI, and native multimodal intelligence. DiT remains a central architectural thread, while adjacent work is included where it helps explain how these areas converge.</p>
         <div class="stats" aria-label="Collection statistics" data-i18n-aria-label="stats.aria">
-          <span><strong id="total-count">145</strong> <span data-i18n="stats.papers">papers</span></span>
-          <span><strong id="window-count">128</strong> <span data-i18n="stats.threeYears">in the last 3 years</span></span>
+          <span><strong id="total-count">156</strong> <span data-i18n="stats.papers">papers</span></span>
+          <span><strong id="window-count">139</strong> <span data-i18n="stats.threeYears">in the last 3 years</span></span>
           <span><strong>7</strong> <span data-i18n="stats.topics">research topics</span></span>
           <span><strong id="export-count" aria-live="polite">—</strong> <span id="export-count-label" data-i18n="stats.exports">exports</span></span>
           <span data-i18n="stats.updated">updated Aug 2026</span>
@@ -57,7 +58,13 @@
             <h2 id="landscape-title" data-i18n="landscape.title">research landscape</h2>
             <p id="landscape-description" class="section-note" data-i18n="landscape.description">Papers are positioned by tag similarity: nearby nodes tend to address related questions. Colors show the seven topic clusters used throughout the site. Select a cluster, tag, or date range to update the whole view. Pinch or use the mouse wheel to zoom; drag or use two-finger scrolling to pan.</p>
           </div>
-          <button id="landscape-reset" class="plain-button" type="button" data-i18n="landscape.reset">Reset filters</button>
+          <div class="landscape-actions">
+            <div class="landscape-mode-toggle" role="group" aria-label="Landscape view" data-i18n-aria-label="landscape.modeAria">
+              <button id="landscape-mode-topics" class="active" type="button" aria-pressed="true" data-i18n="landscape.modeTopics">Topics</button>
+              <button id="landscape-mode-authors" type="button" aria-pressed="false" data-i18n="landscape.modeAuthors">Authors</button>
+            </div>
+            <button id="landscape-reset" class="plain-button" type="button" data-i18n="landscape.reset">Reset filters</button>
+          </div>
         </div>
 
         <div class="landscape-layout">
@@ -71,12 +78,28 @@
               data-i18n-aria-label="landscape.canvasAria"
               aria-describedby="landscape-description"
             ></canvas>
+            <canvas
+              id="author-landscape-canvas"
+              class="landscape-view-hidden"
+              width="900"
+              height="520"
+              role="img"
+              aria-label="Research map of first, co-first, and corresponding authors."
+              data-i18n-aria-label="authors.canvasAria"
+              aria-describedby="landscape-description"
+            ></canvas>
             <div class="landscape-zoom-controls" role="group" aria-label="Map zoom controls" data-i18n-aria-label="zoom.aria">
               <button id="landscape-zoom-out" type="button" aria-label="Zoom out" title="Zoom out" data-i18n-aria-label="zoom.out" data-i18n-title="zoom.out">−</button>
               <button id="landscape-zoom-in" type="button" aria-label="Zoom in" title="Zoom in" data-i18n-aria-label="zoom.in" data-i18n-title="zoom.in">+</button>
               <button id="landscape-zoom-fit" type="button" aria-label="Fit map to view" title="Fit map to view" data-i18n="zoom.fit" data-i18n-aria-label="zoom.fit" data-i18n-title="zoom.fit">Fit</button>
             </div>
+            <div id="author-zoom-controls" class="landscape-zoom-controls" role="group" aria-label="Author map zoom controls" data-i18n-aria-label="authors.zoomAria" hidden>
+              <button id="author-zoom-out" type="button" aria-label="Zoom out" title="Zoom out" data-i18n-aria-label="zoom.out" data-i18n-title="zoom.out">−</button>
+              <button id="author-zoom-in" type="button" aria-label="Zoom in" title="Zoom in" data-i18n-aria-label="zoom.in" data-i18n-title="zoom.in">+</button>
+              <button id="author-zoom-fit" type="button" aria-label="Fit author map to view" title="Fit author map to view" data-i18n="zoom.fit" data-i18n-aria-label="authors.zoomFit" data-i18n-title="authors.zoomFit">Fit</button>
+            </div>
             <div id="landscape-tooltip" class="landscape-tooltip" hidden></div>
+            <div id="author-landscape-tooltip" class="landscape-tooltip" hidden></div>
           </div>
 
           <div class="landscape-time-filter" role="group" aria-labelledby="time-filter-title">
@@ -121,7 +144,7 @@
             <div id="time-range-ticks" class="time-range-ticks" aria-hidden="true"></div>
           </div>
 
-          <aside class="landscape-sidebar" aria-label="Topic clusters and selected paper" data-i18n-aria-label="landscape.sidebarAria">
+          <aside id="topic-landscape-sidebar" class="landscape-sidebar" aria-label="Topic clusters and selected paper" data-i18n-aria-label="landscape.sidebarAria">
             <div>
               <h3 data-i18n="cluster.heading">topic clusters</h3>
               <div id="cluster-legend" class="cluster-legend"></div>
@@ -130,24 +153,50 @@
               <p class="landscape-placeholder" data-i18n="cluster.loading">Computing paper similarities…</p>
             </div>
           </aside>
+
+          <aside id="author-landscape-sidebar" class="landscape-sidebar" aria-label="Author index scope and selected author" data-i18n-aria-label="authors.sidebarAria" hidden>
+            <div>
+              <h3 data-i18n="authors.heading">key-author map</h3>
+              <p class="author-scope-note" data-i18n="authors.scope">Counts include first authors, explicitly marked co-first authors, and corresponding authors.</p>
+              <p id="author-map-count" class="author-map-count"></p>
+            </div>
+            <div id="author-landscape-selection" class="landscape-selection" aria-live="polite">
+              <p class="landscape-placeholder" data-i18n="authors.loading">Building author profiles…</p>
+            </div>
+          </aside>
         </div>
 
-        <div class="landscape-subsection">
+        <div id="topic-cloud-section" class="landscape-subsection">
           <h3 data-i18n="cloud.title">topic cloud</h3>
           <p data-i18n="cloud.description">Larger terms appear more often in the current selection. Select a term to filter both the map and paper list.</p>
           <div id="topic-cloud" class="topic-cloud" aria-label="Topic cloud" data-i18n-aria-label="cloud.aria"></div>
         </div>
 
-        <div class="landscape-subsection">
+        <div id="bridge-section" class="landscape-subsection">
           <h3 data-i18n="bridges.title">cross-topic bridges</h3>
           <p data-i18n="bridges.description">Pairs from different clusters that remain close in the similarity space—useful starting points for cross-topic reading.</p>
           <div id="bridge-list" class="bridge-list"></div>
+        </div>
+
+        <div id="author-index-section" class="landscape-subsection author-index-section" hidden>
+          <div>
+            <h3 data-i18n="authors.indexTitle">author index</h3>
+            <label class="author-search-label">
+              <span class="sr-only" data-i18n="authors.searchLabel">Search key authors</span>
+              <input id="author-search-input" type="search" placeholder="Search authors…" data-i18n-placeholder="authors.searchPlaceholder" />
+            </label>
+          </div>
+          <div>
+            <p class="author-index-description" data-i18n="authors.indexDescription">Select an author to filter the map and paper list. Counts follow the current topic and publication window.</p>
+            <p id="author-index-count" class="author-index-count" aria-live="polite"></p>
+            <div id="author-index" class="author-index"></div>
+          </div>
         </div>
       </section>
 
       <section id="papers" class="papers-section" aria-labelledby="papers-title">
         <h2 id="papers-title" data-i18n="papers.title">papers</h2>
-        <p class="section-note" data-i18n="papers.description">Search titles, tags, or summaries. Open arXiv for the abstract or PDF for the paper.</p>
+        <p class="section-note" data-i18n="papers.description">Search titles, authors, topics, or summaries. Open the source page for metadata or PDF for the paper.</p>
 
         <div class="search-panel">
           <label class="search-box" for="search-input">
@@ -155,7 +204,7 @@
             <input
               id="search-input"
               type="search"
-              placeholder="Search title, topic, summary…"
+              placeholder="Search title, author, topic, summary…"
               data-i18n-placeholder="search.placeholder"
               autocomplete="off"
             />

@@ -1,6 +1,6 @@
 # 最近三年 DiT 研究版图
 
-> 统计窗口：2023-08-02—2026-08-02。精选 128 篇窗口内论文，另列 17 篇更早的历史锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
+> 统计窗口：2023-08-02—2026-08-02。精选 139 篇窗口内论文，另列 17 篇更早的历史锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
 
 ## 一句话判断
 
@@ -16,7 +16,7 @@ DiT 的研究重心已经从“Transformer 能否替代 U-Net”转向“如何�
 |---|---|---|
 | 表示与架构 | 从 latent、flow 目标、多模态交互到线性注意力如何联合扩展 | PixArt-α/Σ、SiT、Stable Diffusion 3、SANA、REPA、RAE |
 | 视频与长上下文 | token 数爆炸、长时漂移、训练—推理不一致、流式状态和音画/动作一致性 | W.A.L.T.、Latte、CogVideoX、HunyuanVideo、LTX-Video、SANA-Video |
-| 系统效率 | 缓存误差、显存峰值与碎片、量化与稀疏协同、sequence parallel 通信、多 GPU 调度与混合模型 serving | DistriFusion、PipeFusion、xDiT、TeaCache、vLLM-Omni、Xema、X-Stage |
+| 系统效率 | 缓存误差、显存峰值与碎片、量化与稀疏协同、sequence parallel 通信、多 GPU 调度与混合模型 serving | DistriFusion、PipeFusion、xDiT、Katz、LegoDiffusion、Xema、X-Stage |
 | RL 与奖励 | 从审美偏好扩展到文字、几何、3D/4D、物理和规则等可验证能力；降低 rollout 和 reward 成本 | DiffusionNFT、World-R1、VideoRLVR、DiT-Reward、JAGG |
 | 世界模型与交互模拟 | 从视觉上可信走向动作因果可辨、长时记忆、实时交互和策略评测 | DIAMOND、GameNGen、Cosmos、WorldGym、COMBAT、dWorldEval |
 | 具身智能与机器人控制 | 从 3D diffusion policy 扩展到通用 VLA action expert，同时解决跨本体、导航、触觉和实时闭环 | 3D Diffuser Actor、RDT-1B、π0/π0.5、CogACT、GR00T N1、NavDP |
