@@ -1,8 +1,13 @@
 const CATALOG_VERSION = "20260803-world-embodied-omni";
 const DATA_URL = `./data/papers.csv?v=${CATALOG_VERSION}`;
 const ENGLISH_SUMMARIES_URL = `./data/summaries_en.json?v=${CATALOG_VERSION}`;
+const DEPLOY_VERSION_URL = "./version.json";
+const DEPLOY_CHECK_INTERVAL_MS = 15000;
 const EXPORT_COUNTER_URL = "https://api.counterapi.dev/v1/jasonchen9-dit-paper-landscape/paper-exports";
 const EXPORT_COUNT_CACHE_KEY = "dit-paper-export-count-cache";
+let activeDeployVersion = null;
+let deployCheckTimer = null;
+let deployRefreshStarted = false;
 
 const RELATION_KEYS = {
   direct: "relation.direct",
@@ -74,6 +79,36 @@ const elements = {
   exportCountLabel: document.querySelector("#export-count-label"),
   windowCount: document.querySelector("#window-count"),
 };
+
+async function readDeployVersion() {
+  try {
+    const response = await fetch(`${DEPLOY_VERSION_URL}?t=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) return null;
+    const payload = await response.json();
+    return typeof payload.version === "string" && payload.version ? payload.version : null;
+  } catch {
+    return null;
+  }
+}
+
+async function checkForDeployUpdate() {
+  const version = await readDeployVersion();
+  if (!version) return;
+  if (!activeDeployVersion) {
+    activeDeployVersion = version;
+    return;
+  }
+  if (version === activeDeployVersion || deployRefreshStarted) return;
+  deployRefreshStarted = true;
+  const url = new URL(window.location.href);
+  url.searchParams.set("deploy", version.slice(0, 12));
+  window.location.replace(url.toString());
+}
+
+async function startDeployVersionMonitor() {
+  await checkForDeployUpdate();
+  deployCheckTimer = window.setInterval(checkForDeployUpdate, DEPLOY_CHECK_INTERVAL_MS);
+}
 
 function parseCSV(text) {
   const rows = [];
@@ -731,6 +766,7 @@ function bindEvents() {
 
 async function initialize() {
   loadExportCount();
+  startDeployVersionMonitor();
   try {
     const [response, englishSummaries] = await Promise.all([
       fetch(DATA_URL, { cache: "no-store" }),

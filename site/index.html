@@ -16,10 +16,10 @@
         document.documentElement.dataset.theme = saved || preferred;
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260803-world-embodied-omni" />
-    <script src="./i18n.js?v=20260803-world-embodied-omni" defer></script>
-    <script src="./landscape.js?v=20260803-world-embodied-omni" defer></script>
-    <script src="./app.js?v=20260803-world-embodied-omni" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=__DEPLOY_VERSION__" />
+    <script src="./i18n.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./landscape.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./app.js?v=__DEPLOY_VERSION__" defer></script>
   </head>
   <body>
     <header class="site-header">
@@ -55,7 +55,7 @@
         <div class="landscape-heading">
           <div>
             <h2 id="landscape-title" data-i18n="landscape.title">research landscape</h2>
-            <p id="landscape-description" class="section-note" data-i18n="landscape.description">Papers are positioned by tag similarity: nearby nodes tend to address related questions. Colors show the seven topic clusters used throughout the site. Select a cluster, tag, or date range to update the whole view.</p>
+            <p id="landscape-description" class="section-note" data-i18n="landscape.description">Papers are positioned by tag similarity: nearby nodes tend to address related questions. Colors show the seven topic clusters used throughout the site. Select a cluster, tag, or date range to update the whole view. Pinch or use the mouse wheel to zoom; drag or use two-finger scrolling to pan.</p>
           </div>
           <button id="landscape-reset" class="plain-button" type="button" data-i18n="landscape.reset">Reset filters</button>
         </div>
@@ -71,6 +71,11 @@
               data-i18n-aria-label="landscape.canvasAria"
               aria-describedby="landscape-description"
             ></canvas>
+            <div class="landscape-zoom-controls" role="group" aria-label="Map zoom controls" data-i18n-aria-label="zoom.aria">
+              <button id="landscape-zoom-out" type="button" aria-label="Zoom out" title="Zoom out" data-i18n-aria-label="zoom.out" data-i18n-title="zoom.out">−</button>
+              <button id="landscape-zoom-in" type="button" aria-label="Zoom in" title="Zoom in" data-i18n-aria-label="zoom.in" data-i18n-title="zoom.in">+</button>
+              <button id="landscape-zoom-fit" type="button" aria-label="Fit map to view" title="Fit map to view" data-i18n="zoom.fit" data-i18n-aria-label="zoom.fit" data-i18n-title="zoom.fit">Fit</button>
+            </div>
             <div id="landscape-tooltip" class="landscape-tooltip" hidden></div>
           </div>
 

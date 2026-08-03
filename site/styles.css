@@ -290,7 +290,47 @@ select:focus-visible {
 #landscape-canvas {
   display: block;
   width: 100%;
-  touch-action: manipulation;
+  cursor: grab;
+  touch-action: none;
+}
+
+#landscape-canvas.is-panning {
+  cursor: grabbing;
+}
+
+.landscape-zoom-controls {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.landscape-zoom-controls button {
+  min-width: 30px;
+  height: 29px;
+  padding: 0 8px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1;
+}
+
+.landscape-zoom-controls button:first-child {
+  border-left: 0;
+}
+
+.landscape-zoom-controls button:hover,
+.landscape-zoom-controls button:focus-visible {
+  background: var(--surface-hover);
+  color: var(--accent);
 }
 
 .landscape-time-filter {

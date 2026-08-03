@@ -94,6 +94,22 @@
     activeTag: null,
     width: 0,
     height: 0,
+    virtualWidth: 0,
+    virtualHeight: 0,
+    clusterTargets: [],
+    view: {
+      scale: 1,
+      offsetX: 0,
+      offsetY: 0,
+      targetScale: 1,
+      targetOffsetX: 0,
+      targetOffsetY: 0,
+      fitScale: 1,
+      fitOffsetX: 0,
+      fitOffsetY: 0,
+      initialized: false,
+      manual: false,
+    },
     palette: [],
     animationToken: 0,
     hoverFocus: null,
@@ -349,6 +365,11 @@
     if (Math.abs(width - state.width) < 4 && state.nodes.length) return false;
     state.width = width;
     state.height = height;
+    const paperScale = Math.sqrt(Math.max(1, state.papers.length));
+    state.virtualHeight = Math.max(980, height * 1.9, paperScale * 88);
+    state.virtualWidth = Math.max(1520, width * 1.55, state.virtualHeight * 1.95);
+    state.view.initialized = false;
+    state.view.manual = false;
     const ratio = Math.min(2, window.devicePixelRatio || 1);
     elements.canvas.width = Math.round(width * ratio);
     elements.canvas.height = Math.round(height * ratio);
@@ -357,17 +378,92 @@
     return true;
   }
 
+  function computeClusterTargets() {
+    const total = Math.max(1, state.papers.length);
+    const virtualArea = state.virtualWidth * state.virtualHeight;
+    const slots = [
+      [0.5, 0.28],
+      [0.27, 0.3],
+      [0.73, 0.3],
+      [0.14, 0.7],
+      [0.38, 0.7],
+      [0.62, 0.7],
+      [0.86, 0.7],
+    ];
+    const orderedClusters = state.clusterInfo
+      .map((info, cluster) => ({ cluster, count: info.members.length }))
+      .sort((left, right) => right.count - left.count || left.cluster - right.cluster);
+    const targets = new Array(CLUSTER_COUNT);
+
+    orderedClusters.forEach(({ cluster, count }, rank) => {
+      const [xRatio, yRatio] = slots[rank];
+      const radius = Math.max(
+        118,
+        Math.min(
+          state.virtualHeight * 0.24,
+          Math.sqrt((count * virtualArea * 0.3) / (total * Math.PI)),
+        ),
+      );
+      targets[cluster] = {
+        x: state.virtualWidth * xRatio,
+        y: state.virtualHeight * yRatio,
+        homeX: state.virtualWidth * xRatio,
+        homeY: state.virtualHeight * yRatio,
+        radius,
+        count,
+      };
+    });
+
+    for (let iteration = 0; iteration < 160; iteration += 1) {
+      for (let left = 0; left < targets.length; left += 1) {
+        for (let right = left + 1; right < targets.length; right += 1) {
+          const a = targets[left];
+          const b = targets[right];
+          let dx = b.x - a.x;
+          let dy = b.y - a.y;
+          let distance = Math.hypot(dx, dy);
+          if (distance < 1) {
+            const angle = (left + right * 0.61) * 2.39996;
+            dx = Math.cos(angle);
+            dy = Math.sin(angle);
+            distance = 1;
+          }
+          const minimum = a.radius + b.radius + 66;
+          if (distance < minimum) {
+            const shift = (minimum - distance) * 0.51;
+            const ux = dx / distance;
+            const uy = dy / distance;
+            a.x -= ux * shift;
+            a.y -= uy * shift;
+            b.x += ux * shift;
+            b.y += uy * shift;
+          }
+        }
+      }
+      targets.forEach((target) => {
+        target.x += (target.homeX - target.x) * 0.035;
+        target.y += (target.homeY - target.y) * 0.035;
+        const margin = target.radius + 86;
+        target.x = Math.max(margin, Math.min(state.virtualWidth - margin, target.x));
+        target.y = Math.max(margin, Math.min(state.virtualHeight - margin, target.y));
+      });
+    }
+    state.clusterTargets = targets;
+  }
+
   function initializeNodes() {
-    const radius = Math.min(state.width, state.height) * 0.29;
-    const centerX = state.width / 2;
-    const centerY = state.height / 2;
+    computeClusterTargets();
+    const clusterRanks = new Array(CLUSTER_COUNT).fill(0);
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
     state.nodes = state.papers.map((paper, index) => {
       const cluster = state.clusters[index];
-      const angle = (cluster / CLUSTER_COUNT) * Math.PI * 2 - Math.PI / 2;
-      const jitterAngle = hashNumber(`${paper.arxiv_id}:a`) * Math.PI * 2;
-      const jitterRadius = 20 + hashNumber(`${paper.arxiv_id}:r`) * 62;
-      const x = centerX + Math.cos(angle) * radius + Math.cos(jitterAngle) * jitterRadius;
-      const y = centerY + Math.sin(angle) * radius + Math.sin(jitterAngle) * jitterRadius;
+      const target = state.clusterTargets[cluster];
+      const rank = clusterRanks[cluster]++;
+      const angle = rank * goldenAngle + hashNumber(`${paper.arxiv_id}:a`) * 0.42;
+      const fillRatio = Math.sqrt((rank + 0.65) / Math.max(1, target.count));
+      const distance = target.radius * 0.8 * fillRatio;
+      const x = target.x + Math.cos(angle) * distance;
+      const y = target.y + Math.sin(angle) * distance;
       return {
         index,
         cluster,
@@ -383,6 +479,101 @@
         driftAmplitude: 3.2 + hashNumber(`${paper.arxiv_id}:amplitude`) * 2,
       };
     });
+    updateViewTarget(true);
+  }
+
+  function updateViewTarget(immediate = false, force = false) {
+    if (!state.nodes.length) return;
+    const padding = 82;
+    const minX = Math.min(...state.nodes.map((node) => node.x)) - padding;
+    const maxX = Math.max(...state.nodes.map((node) => node.x)) + padding;
+    const minY = Math.min(...state.nodes.map((node) => node.y)) - padding;
+    const maxY = Math.max(...state.nodes.map((node) => node.y)) + padding;
+    const contentWidth = Math.max(1, maxX - minX);
+    const contentHeight = Math.max(1, maxY - minY);
+    const screenPaddingX = Math.min(48, state.width * 0.06);
+    const screenPaddingY = Math.min(38, state.height * 0.08);
+    const scale = Math.min(
+      (state.width - screenPaddingX * 2) / contentWidth,
+      (state.height - screenPaddingY * 2) / contentHeight,
+      1.15,
+    );
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+    state.view.fitScale = scale;
+    state.view.fitOffsetX = state.width / 2 - centerX * scale;
+    state.view.fitOffsetY = state.height / 2 - centerY * scale;
+    if (state.view.manual && !force) return;
+    state.view.targetScale = scale;
+    state.view.targetOffsetX = state.view.fitOffsetX;
+    state.view.targetOffsetY = state.view.fitOffsetY;
+    if (immediate || !state.view.initialized) {
+      state.view.scale = state.view.targetScale;
+      state.view.offsetX = state.view.targetOffsetX;
+      state.view.offsetY = state.view.targetOffsetY;
+      state.view.initialized = true;
+    }
+  }
+
+  function easeView(amount = 0.1) {
+    state.view.scale += (state.view.targetScale - state.view.scale) * amount;
+    state.view.offsetX += (state.view.targetOffsetX - state.view.offsetX) * amount;
+    state.view.offsetY += (state.view.targetOffsetY - state.view.offsetY) * amount;
+  }
+
+  function screenPosition(node) {
+    return {
+      x: node.x * state.view.scale + state.view.offsetX,
+      y: node.y * state.view.scale + state.view.offsetY,
+    };
+  }
+
+  function zoomAt(screenX, screenY, factor) {
+    const currentScale = Math.max(0.001, state.view.scale);
+    const minimumScale = state.view.fitScale * 0.7;
+    const maximumScale = state.view.fitScale * 6;
+    const nextScale = Math.max(minimumScale, Math.min(maximumScale, currentScale * factor));
+    if (Math.abs(nextScale - currentScale) < 0.0001) return;
+    const worldX = (screenX - state.view.offsetX) / currentScale;
+    const worldY = (screenY - state.view.offsetY) / currentScale;
+    state.view.scale = nextScale;
+    state.view.offsetX = screenX - worldX * nextScale;
+    state.view.offsetY = screenY - worldY * nextScale;
+    state.view.targetScale = state.view.scale;
+    state.view.targetOffsetX = state.view.offsetX;
+    state.view.targetOffsetY = state.view.offsetY;
+    state.view.manual = true;
+    draw();
+  }
+
+  function panView(deltaX, deltaY) {
+    state.view.offsetX += deltaX;
+    state.view.offsetY += deltaY;
+    state.view.targetOffsetX = state.view.offsetX;
+    state.view.targetOffsetY = state.view.offsetY;
+    state.view.targetScale = state.view.scale;
+    state.view.manual = true;
+    draw();
+  }
+
+  function fitView() {
+    state.view.manual = false;
+    const immediate = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    updateViewTarget(immediate, true);
+    draw();
+  }
+
+  function softWallForce(position, maximum) {
+    const zone = 132;
+    if (position < zone) {
+      const distance = zone - position;
+      return distance * 0.011 * (1 + distance / zone);
+    }
+    if (position > maximum - zone) {
+      const distance = position - maximum + zone;
+      return -distance * 0.011 * (1 + distance / zone);
+    }
+    return 0;
   }
 
   function forceStep() {
@@ -392,7 +583,7 @@
         const dx = nodes[right].x - nodes[left].x;
         const dy = nodes[right].y - nodes[left].y;
         const distanceSquared = Math.max(80, dx * dx + dy * dy);
-        const force = 12 / distanceSquared;
+        const force = 18 / distanceSquared;
         nodes[left].vx -= dx * force;
         nodes[left].vy -= dy * force;
         nodes[right].vx += dx * force;
@@ -406,8 +597,8 @@
       const dx = target.x - source.x;
       const dy = target.y - source.y;
       const distance = Math.max(1, Math.hypot(dx, dy));
-      const desired = 38 + (1 - edge.similarity) * 82;
-      const force = (distance - desired) * (0.0025 + edge.similarity * 0.009);
+      const desired = 54 + (1 - edge.similarity) * 104;
+      const force = (distance - desired) * (0.0018 + edge.similarity * 0.0065);
       const fx = (dx / distance) * force;
       const fy = (dy / distance) * force;
       source.vx += fx;
@@ -416,33 +607,30 @@
       target.vy -= fy;
     }
 
-    const clusterCenters = Array.from({ length: CLUSTER_COUNT }, () => ({ x: 0, y: 0, count: 0 }));
     nodes.forEach((node) => {
-      clusterCenters[node.cluster].x += node.x;
-      clusterCenters[node.cluster].y += node.y;
-      clusterCenters[node.cluster].count += 1;
-    });
-    clusterCenters.forEach((center) => {
-      if (center.count) {
-        center.x /= center.count;
-        center.y /= center.count;
+      const target = state.clusterTargets[node.cluster];
+      const dx = target.x - node.x;
+      const dy = target.y - node.y;
+      const distance = Math.max(1, Math.hypot(dx, dy));
+      node.vx += dx * 0.00125;
+      node.vy += dy * 0.00125;
+      const clusterLimit = target.radius * 1.08;
+      if (distance > clusterLimit) {
+        const excess = distance - clusterLimit;
+        node.vx += (dx / distance) * excess * 0.012;
+        node.vy += (dy / distance) * excess * 0.012;
       }
-    });
-
-    nodes.forEach((node) => {
-      const clusterCenter = clusterCenters[node.cluster];
-      node.vx += (clusterCenter.x - node.x) * 0.0024;
-      node.vy += (clusterCenter.y - node.y) * 0.0024;
-      node.vx += (state.width / 2 - node.x) * 0.0032;
-      node.vy += (state.height / 2 - node.y) * 0.0032;
-      if (node.x < 38) node.vx += (38 - node.x) * 0.025;
-      if (node.x > state.width - 38) node.vx -= (node.x - state.width + 38) * 0.025;
-      if (node.y < 38) node.vy += (38 - node.y) * 0.025;
-      if (node.y > state.height - 38) node.vy -= (node.y - state.height + 38) * 0.025;
-      node.vx *= 0.84;
-      node.vy *= 0.84;
-      node.x = Math.max(17, Math.min(state.width - 17, node.x + node.vx));
-      node.y = Math.max(17, Math.min(state.height - 17, node.y + node.vy));
+      node.vx += softWallForce(node.x, state.virtualWidth);
+      node.vy += softWallForce(node.y, state.virtualHeight);
+      node.vx *= 0.86;
+      node.vy *= 0.86;
+      const speed = Math.max(1, Math.hypot(node.vx, node.vy));
+      if (speed > 13) {
+        node.vx = (node.vx / speed) * 13;
+        node.vy = (node.vy / speed) * 13;
+      }
+      node.x += node.vx;
+      node.y += node.vy;
     });
   }
 
@@ -467,13 +655,15 @@
     for (const edge of state.edges) {
       const source = state.nodes[edge.source];
       const target = state.nodes[edge.target];
+      const sourcePoint = screenPosition(source);
+      const targetPoint = screenPosition(target);
       const edgeActive = isNodeActive(source) && isNodeActive(target);
       const highlighted = edgeActive && focus !== null
         && (edge.source === focus && focusNeighbors.has(edge.target)
           || edge.target === focus && focusNeighbors.has(edge.source));
       context.beginPath();
-      context.moveTo(source.x, source.y);
-      context.lineTo(target.x, target.y);
+      context.moveTo(sourcePoint.x, sourcePoint.y);
+      context.lineTo(targetPoint.x, targetPoint.y);
       context.strokeStyle = highlighted ? state.palette[source.cluster] : edgeColor;
       context.globalAlpha = edgeActive
         ? (highlighted ? 0.7 : 0.18 + edge.similarity * 0.25)
@@ -483,13 +673,14 @@
     }
 
     state.nodes.forEach((node) => {
+      const point = screenPosition(node);
       const active = isNodeActive(node);
       const selected = state.selected === node.index;
       const hovered = state.hovered === node.index;
       const degree = state.edges.filter((edge) => edge.source === node.index || edge.target === node.index).length;
       const radius = (selected ? 7.5 : hovered ? 6.8 : 4.3) + Math.min(1.8, degree * 0.12);
       context.beginPath();
-      context.arc(node.x, node.y, radius, 0, Math.PI * 2);
+      context.arc(point.x, point.y, radius, 0, Math.PI * 2);
       context.fillStyle = state.palette[node.cluster];
       context.globalAlpha = active ? 0.94 : 0.12;
       context.fill();
@@ -506,8 +697,8 @@
         context.font = "500 12px Roboto, sans-serif";
         const label = paper.short_title;
         const labelWidth = context.measureText(label).width;
-        const x = Math.min(state.width - labelWidth - 7, node.x + 10);
-        const y = Math.max(14, node.y - 10);
+        const x = Math.min(state.width - labelWidth - 7, point.x + 10);
+        const y = Math.max(14, point.y - 10);
         context.fillText(label, x, y);
       }
     });
@@ -566,6 +757,7 @@
           node.x = node.anchorX + Math.sin(phase) * amplitude * handoffBlend;
           node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72 * handoffBlend;
         });
+        easeView(0.12);
         draw();
       }
       requestAnimationFrame(frame);
@@ -578,6 +770,7 @@
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
       for (let index = 0; index < 180; index += 1) forceStep();
+      updateViewTarget(true);
       captureAnchors();
       draw();
       return;
@@ -589,11 +782,14 @@
       const settleProgress = settleFrame / (settleFrames - 1);
       const forceSteps = Math.max(1, Math.round(5 - settleProgress * 4));
       for (let step = 0; step < forceSteps; step += 1) forceStep();
+      updateViewTarget();
+      easeView(0.095);
       draw();
       settleFrame += 1;
       if (settleFrame < settleFrames) {
         requestAnimationFrame(frame);
       } else {
+        updateViewTarget();
         captureAnchors();
         startAmbientMotion(token);
       }
@@ -942,7 +1138,8 @@
     let nearestDistance = 14;
     state.nodes.forEach((node) => {
       if (!isNodeActive(node)) return;
-      const distance = Math.hypot(node.x - x, node.y - y);
+      const point = screenPosition(node);
+      const distance = Math.hypot(point.x - x, point.y - y);
       if (distance < nearestDistance) {
         nearest = node;
         nearestDistance = distance;
@@ -952,14 +1149,46 @@
   }
 
   function bindCanvas() {
+    let pan = null;
+    let suppressClick = false;
+    let lastWheelAt = 0;
+    let trackpadSeries = false;
+
+    elements.canvas.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      pan = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        lastX: event.clientX,
+        lastY: event.clientY,
+        moved: false,
+      };
+      elements.canvas.setPointerCapture(event.pointerId);
+      elements.canvas.classList.add("is-panning");
+      elements.tooltip.hidden = true;
+    });
+
     elements.canvas.addEventListener("pointermove", (event) => {
+      if (pan && event.pointerId === pan.pointerId) {
+        const totalDistance = Math.hypot(event.clientX - pan.startX, event.clientY - pan.startY);
+        if (totalDistance > 3) pan.moved = true;
+        if (pan.moved) {
+          panView(event.clientX - pan.lastX, event.clientY - pan.lastY);
+          state.hovered = null;
+          elements.tooltip.hidden = true;
+        }
+        pan.lastX = event.clientX;
+        pan.lastY = event.clientY;
+        return;
+      }
       const { node, x, y } = pointerNode(event);
       state.hovered = node?.index ?? null;
       if (node) {
         state.hoverFocus = node.index;
         state.hoverEnergy = 1;
       }
-      elements.canvas.style.cursor = node ? "pointer" : "default";
+      elements.canvas.style.cursor = node ? "pointer" : "grab";
       if (node) {
         const paper = state.papers[node.index];
         elements.tooltip.textContent = `${paper.short_title} · ${clusterName(state.clusterInfo[node.cluster])}`;
@@ -973,15 +1202,59 @@
       }
       draw();
     });
+
+    const finishPan = (event) => {
+      if (!pan || event.pointerId !== pan.pointerId) return;
+      suppressClick = pan.moved;
+      if (elements.canvas.hasPointerCapture(event.pointerId)) {
+        elements.canvas.releasePointerCapture(event.pointerId);
+      }
+      pan = null;
+      elements.canvas.classList.remove("is-panning");
+      elements.canvas.style.cursor = "grab";
+    };
+    elements.canvas.addEventListener("pointerup", finishPan);
+    elements.canvas.addEventListener("pointercancel", finishPan);
+
     elements.canvas.addEventListener("pointerleave", () => {
+      if (pan) return;
       state.hovered = null;
       elements.tooltip.hidden = true;
       draw();
     });
     elements.canvas.addEventListener("click", (event) => {
+      if (suppressClick) {
+        suppressClick = false;
+        return;
+      }
       const { node } = pointerNode(event);
       if (node) selectPaper(node.index);
     });
+
+    elements.canvas.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      const rect = elements.canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const now = performance.now();
+      if (now - lastWheelAt > 180) trackpadSeries = false;
+      lastWheelAt = now;
+
+      if (event.ctrlKey) {
+        zoomAt(x, y, Math.exp(-event.deltaY * 0.012));
+      } else {
+        if (event.deltaMode === 0 && (Math.abs(event.deltaX) > 0 || Math.abs(event.deltaY) < 50)) {
+          trackpadSeries = true;
+        }
+        if (trackpadSeries) {
+          panView(-event.deltaX, -event.deltaY);
+        } else {
+          zoomAt(x, y, event.deltaY > 0 ? 0.86 : 1.16);
+        }
+      }
+      state.hovered = null;
+      elements.tooltip.hidden = true;
+    }, { passive: false });
   }
 
   function chooseInitialPaper() {
@@ -1014,6 +1287,7 @@
     renderTopicCloud();
     selectPaper(chooseInitialPaper());
     renderBridges();
+    fitView();
     if (notify) {
       emitTopicFilter();
       emitTimeFilter();
@@ -1089,6 +1363,9 @@
       cloud: document.querySelector("#topic-cloud"),
       bridges: document.querySelector("#bridge-list"),
       reset: document.querySelector("#landscape-reset"),
+      zoomOut: document.querySelector("#landscape-zoom-out"),
+      zoomIn: document.querySelector("#landscape-zoom-in"),
+      zoomFit: document.querySelector("#landscape-zoom-fit"),
       timeControl: document.querySelector("#time-range-control"),
       timeStart: document.querySelector("#time-range-start"),
       timeEnd: document.querySelector("#time-range-end"),
@@ -1120,6 +1397,9 @@
     selectPaper(chooseInitialPaper());
     bindCanvas();
     elements.reset.addEventListener("click", () => resetFilters(true));
+    elements.zoomOut.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 0.8));
+    elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 1.25));
+    elements.zoomFit.addEventListener("click", fitView);
     new ResizeObserver(() => {
       if (setDimensions()) {
         initializeNodes();
