@@ -258,6 +258,7 @@ function clearTopicFilter() {
   state.topicSource = null;
   window.DiTLandscape?.clearTopicFilter();
   window.DiTAuthors?.clearAuthorFilter?.();
+  window.DiTAuthors?.clearInstitutionFilter?.();
 }
 
 function resetAllFilters() {
@@ -390,6 +391,7 @@ function filterDescription() {
   ];
   if (state.topicSource === "tag") parts.push(t("filterDesc.tag", { value: state.topicLabel }));
   if (state.topicSource === "author") parts.push(t("filterDesc.author", { value: state.topicLabel }));
+  if (state.topicSource === "institution") parts.push(t("filterDesc.institution", { value: state.topicLabel }));
   if (state.query) parts.push(t("filterDesc.search", { value: state.query }));
   return parts.join(window.DiTI18n.language === "zh" ? "；" : "; ");
 }
@@ -634,6 +636,7 @@ function render() {
   const activeContext = [];
   if (state.topicSource === "tag" && state.topicLabel) activeContext.push(t("results.tag", { value: state.topicLabel }));
   if (state.topicSource === "author" && state.topicLabel) activeContext.push(t("results.author", { value: state.topicLabel }));
+  if (state.topicSource === "institution" && state.topicLabel) activeContext.push(t("results.institution", { value: state.topicLabel }));
   if (state.window === "custom" && state.customStart && state.customEnd) {
     activeContext.push(t("results.date", { start: state.customStart, end: state.customEnd }));
   }
@@ -684,6 +687,7 @@ function renderClusterFilters() {
       state.topicSource = cluster.id === "all" ? null : "cluster";
       state.page = 1;
       window.DiTAuthors?.clearAuthorFilter?.();
+      window.DiTAuthors?.clearInstitutionFilter?.();
       window.DiTLandscape?.setClusterFilter(cluster.id === "all" ? null : Number(cluster.id));
       render();
     });
@@ -804,6 +808,7 @@ function bindEvents() {
     state.topicSource = event.detail?.source ?? null;
     state.cluster = state.topicSource === "cluster" ? String(event.detail.cluster) : "all";
     if (state.topicSource !== "author") window.DiTAuthors?.clearAuthorFilter?.();
+    if (state.topicSource !== "institution") window.DiTAuthors?.clearInstitutionFilter?.();
     if (state.initialized) state.page = 1;
     render();
   });
@@ -813,10 +818,12 @@ function bindEvents() {
       state.window = "all";
       state.customStart = null;
       state.customEnd = null;
+      window.DiTAuthors?.setTimePreset("all");
     } else if (start && end) {
       state.window = "custom";
       state.customStart = start;
       state.customEnd = end;
+      window.DiTAuthors?.setTimeRange(start, end);
     }
     if (state.initialized) state.page = 1;
     elements.window.value = state.window;

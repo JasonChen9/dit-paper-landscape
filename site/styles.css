@@ -729,7 +729,7 @@ select:focus-visible {
 .institution-treemap {
   position: relative;
   width: 100%;
-  height: 158px;
+  height: clamp(220px, 24vw, 300px);
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 3px;
@@ -743,8 +743,21 @@ select:focus-visible {
   padding: 5px 6px;
   overflow: hidden;
   border: 1px solid var(--surface);
+  border-radius: 0;
   color: #fff;
+  cursor: pointer;
+  text-align: left;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.institution-tile:hover {
+  z-index: 1;
+  filter: brightness(1.09);
+}
+
+.institution-tile.active {
+  z-index: 2;
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.94);
 }
 
 .institution-tile:focus-visible {
@@ -819,6 +832,12 @@ select:focus-visible {
 
 .institution-treemap-tooltip span + span {
   margin-top: 3px;
+}
+
+.institution-treemap-tooltip .institution-tooltip-action {
+  margin-top: 6px;
+  color: var(--accent);
+  font-weight: 500;
 }
 
 .selection-affiliation {

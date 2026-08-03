@@ -36,6 +36,7 @@
     selected: null,
     hovered: null,
     activeFilterName: null,
+    activeInstitutionGroup: null,
     externalIds: null,
     timeStart: -Infinity,
     timeEnd: Infinity,
@@ -306,12 +307,13 @@
   }
 
   function updateViewTarget(immediate = false, force = false) {
-    if (!state.nodes.length) return;
+    const visibleNodes = state.nodes.filter(isNodeActive);
+    if (!visibleNodes.length) return;
     const padding = 90;
-    const minX = Math.min(...state.nodes.map((node) => node.x)) - padding;
-    const maxX = Math.max(...state.nodes.map((node) => node.x)) + padding;
-    const minY = Math.min(...state.nodes.map((node) => node.y)) - padding;
-    const maxY = Math.max(...state.nodes.map((node) => node.y)) + padding;
+    const minX = Math.min(...visibleNodes.map((node) => node.x)) - padding;
+    const maxX = Math.max(...visibleNodes.map((node) => node.x)) + padding;
+    const minY = Math.min(...visibleNodes.map((node) => node.y)) - padding;
+    const maxY = Math.max(...visibleNodes.map((node) => node.y)) + padding;
     const scale = Math.min((state.width - 72) / (maxX - minX), (state.height - 62) / (maxY - minY), 1.15);
     state.view.fitScale = scale;
     state.view.fitOffsetX = state.width / 2 - ((minX + maxX) / 2) * scale;
@@ -394,7 +396,7 @@
   }
 
   function fitView() {
-    if (!state.nodes.length) return;
+    if (!state.nodes.some(isNodeActive)) return;
     state.view.manual = false;
     const immediate = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     updateViewTarget(immediate, true);
@@ -416,7 +418,7 @@
 
   function nearestAuthors(index, limit = 5) {
     return state.similarities[index].map((similarity, candidate) => ({ candidate, similarity }))
-      .filter(({ candidate }) => candidate !== index)
+      .filter(({ candidate }) => candidate !== index && isNodeActive(state.nodes[candidate]))
       .sort((left, right) => right.similarity - left.similarity)
       .slice(0, limit);
   }
@@ -429,59 +431,62 @@
     const labelColor = styles.getPropertyValue("--text").trim();
     const zoomRatio = state.view.scale / Math.max(0.001, state.view.fitScale);
     context.clearRect(0, 0, state.width, state.height);
-    const focus = state.hovered ?? state.selected;
+    const focusCandidate = state.hovered ?? state.selected;
+    const focus = focusCandidate !== null && isNodeActive(state.nodes[focusCandidate]) ? focusCandidate : null;
     const neighbors = new Set(focus === null ? [] : nearestAuthors(focus, 5).map(({ candidate }) => candidate));
     const labelBoxes = [];
+    const activeCounts = state.profiles.map((profile) => availablePapers(profile).length);
     state.edges.forEach((edge) => {
+      const active = activeCounts[edge.source] > 0 && activeCounts[edge.target] > 0;
+      if (!active) return;
       const source = state.nodes[edge.source];
       const target = state.nodes[edge.target];
       const a = screenPosition(source);
       const b = screenPosition(target);
-      const active = isNodeActive(source) && isNodeActive(target);
-      const highlighted = active && focus !== null
+      const highlighted = focus !== null
         && (edge.source === focus && neighbors.has(edge.target) || edge.target === focus && neighbors.has(edge.source));
       context.beginPath();
       context.moveTo(a.x, a.y);
       context.lineTo(b.x, b.y);
       context.strokeStyle = highlighted ? state.palette[source.cluster] : edgeColor;
-      context.globalAlpha = active ? (highlighted ? 0.72 : 0.13 + edge.similarity * 0.18) : 0.02;
+      context.globalAlpha = highlighted ? 0.72 : 0.13 + edge.similarity * 0.18;
       context.lineWidth = highlighted ? 1.6 : 0.75;
       context.stroke();
     });
     state.nodes.forEach((node) => {
       const point = screenPosition(node);
       const profile = state.profiles[node.index];
-      const activeCount = availablePapers(profile).length;
-      const active = activeCount > 0;
+      const activeCount = activeCounts[node.index];
+      if (!activeCount) return;
       const selected = node.index === state.selected;
       const hovered = node.index === state.hovered;
-      const radius = (selected ? 8.4 : hovered ? 7.2 : 4.4) + Math.min(4, Math.sqrt(profile.papers.length) * 1.25);
+      const radius = (selected ? 8.4 : hovered ? 7.2 : 4.4) + Math.min(4, Math.sqrt(activeCount) * 1.25);
       context.beginPath();
       context.arc(point.x, point.y, radius, 0, Math.PI * 2);
       context.fillStyle = institutionColor(profile);
-      context.globalAlpha = active ? 0.96 : 0.09;
+      context.globalAlpha = 0.96;
       context.fill();
       context.beginPath();
       context.arc(point.x, point.y, radius + 1.45, 0, Math.PI * 2);
       context.lineWidth = 1.35;
       context.strokeStyle = state.palette[node.cluster] || state.palette[0];
-      context.globalAlpha = active ? 0.88 : 0.08;
+      context.globalAlpha = 0.88;
       context.stroke();
       if (selected || hovered) {
         context.beginPath();
         context.arc(point.x, point.y, radius + 3.1, 0, Math.PI * 2);
         context.lineWidth = selected ? 2 : 1.4;
         context.strokeStyle = labelColor;
-        context.globalAlpha = active ? 0.94 : 0.25;
+        context.globalAlpha = 0.94;
         context.stroke();
       }
       const showLabel = selected
         || hovered
-        || profile.papers.length >= 3
-        || (zoomRatio >= 1.4 && profile.papers.length >= 2)
+        || activeCount >= 3
+        || (zoomRatio >= 1.4 && activeCount >= 2)
         || zoomRatio >= 1.9;
       const inViewport = point.x >= 0 && point.x <= state.width && point.y >= 0 && point.y <= state.height;
-      if (active && showLabel && inViewport) {
+      if (showLabel && inViewport) {
         const fontSize = selected ? 12 : 10;
         const fontWeight = selected ? 600 : 500;
         const align = point.x > state.width - 130 ? "right" : "left";
@@ -510,9 +515,16 @@
     context.globalAlpha = 1;
   }
 
-  function topTags(profile) {
-    return [...profile.tagCounts.entries()]
-      .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+  function topTagsForPapers(papers) {
+    const counts = new Map();
+    papers.forEach(({ paper }) => {
+      splitValues(paper.topic_tags).forEach((tag) => {
+        const normalized = tag.toLowerCase();
+        counts.set(normalized, (counts.get(normalized) || 0) + 1);
+      });
+    });
+    return [...counts.entries()]
+      .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "en"))
       .slice(0, 6)
       .map(([tag]) => tag);
   }
@@ -536,18 +548,20 @@
     affiliation.className = "selection-affiliation";
     affiliation.textContent = t("authors.affiliation", { institution: profile.institution.primary });
     const roles = document.createElement("p");
-    roles.textContent = [...profile.roleCounts.entries()]
+    const roleCounts = new Map();
+    papers.forEach(({ roles: paperRoles }) => paperRoles.forEach((role) => roleCounts.set(role, (roleCounts.get(role) || 0) + 1)));
+    roles.textContent = [...roleCounts.entries()]
       .sort((left, right) => right[1] - left[1])
       .map(([role, count]) => `${roleLabel(role)} ${count}`)
       .join(" · ");
     const tags = document.createElement("p");
     tags.className = "selection-full-title";
-    tags.textContent = topTags(profile).join(" / ");
+    tags.textContent = topTagsForPapers(papers).join(" / ");
     const paperHeading = document.createElement("h4");
     paperHeading.textContent = t("authors.papersHeading");
     const list = document.createElement("div");
     list.className = "neighbor-list";
-    (papers.length ? papers : profile.papers).slice().sort((left, right) => right.paper.published.localeCompare(left.paper.published)).forEach(({ paper }) => {
+    papers.slice().sort((left, right) => right.paper.published.localeCompare(left.paper.published)).forEach(({ paper }) => {
       const link = document.createElement("a");
       link.href = paper.arxiv_url;
       link.target = "_blank";
@@ -568,6 +582,51 @@
     });
     elements.selection.append(eyebrow, title, affiliation, roles, tags, paperHeading, list, relatedHeading, related);
     renderIndex();
+    draw();
+  }
+
+  function bestAvailableAuthorIndex() {
+    let bestIndex = null;
+    let bestCount = 0;
+    state.profiles.forEach((profile, index) => {
+      const count = availablePapers(profile).length;
+      if (count > bestCount) {
+        bestIndex = index;
+        bestCount = count;
+      }
+    });
+    return bestIndex;
+  }
+
+  function renderEmptySelection() {
+    state.selected = null;
+    const message = document.createElement("p");
+    message.className = "selection-eyebrow";
+    message.textContent = t("authors.emptySelection");
+    elements.selection.replaceChildren(message);
+  }
+
+  function refreshFilteredView({ refit = true } = {}) {
+    if (!state.profiles.length || !elements.selection) {
+      renderIndex();
+      return;
+    }
+    const currentIsAvailable = state.selected !== null && availablePapers(state.profiles[state.selected]).length > 0;
+    const nextSelection = currentIsAvailable ? state.selected : bestAvailableAuthorIndex();
+    if (nextSelection === null) {
+      renderEmptySelection();
+      renderIndex();
+    } else {
+      selectAuthor(nextSelection);
+    }
+    state.hovered = null;
+    elements.tooltip.hidden = true;
+    if (refit && state.nodes.some(isNodeActive)) {
+      state.view.manual = false;
+      const immediate = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      updateViewTarget(immediate, true);
+      if (!immediate) startViewAnimation();
+    }
     draw();
   }
 
@@ -667,9 +726,31 @@
     });
     const people = document.createElement("span");
     people.textContent = t("authors.institutionPeople", { names: authors.slice(0, 6).join(" · ") });
-    tooltip.replaceChildren(title, share, people);
+    const action = document.createElement("span");
+    action.className = "institution-tooltip-action";
+    action.textContent = t(state.activeInstitutionGroup === group.name
+      ? "authors.institutionClearAction"
+      : "authors.institutionFilterAction");
+    tooltip.replaceChildren(title, share, people, action);
     tooltip.hidden = false;
     positionInstitutionTooltip(event, tile);
+  }
+
+  function toggleInstitutionFilter(group) {
+    const clearing = state.activeInstitutionGroup === group.name;
+    state.activeInstitutionGroup = clearing ? null : group.name;
+    state.activeFilterName = null;
+    const ids = clearing ? null : [...new Set(state.profiles
+      .filter((profile) => profile.institution.group === group.name)
+      .flatMap((profile) => [...profile.paperIds]))];
+    window.dispatchEvent(new CustomEvent("dit:landscape-topic-filter", {
+      detail: {
+        ids,
+        label: clearing ? "" : group.name,
+        source: clearing ? null : "institution",
+        cluster: null,
+      },
+    }));
   }
 
   function splitTreemap(items, x, y, width, height) {
@@ -724,14 +805,15 @@
     const treemapRect = elements.institutionTreemap.getBoundingClientRect();
     hideInstitutionTooltip();
     elements.institutionTreemap.replaceChildren(...layout.map((group) => {
-      const tile = document.createElement("div");
+      const tile = document.createElement("button");
       tile.className = "institution-tile";
+      tile.type = "button";
       const pixelWidth = group.width * Math.max(300, treemapRect.width) / 100;
       const pixelHeight = group.height * Math.max(150, treemapRect.height) / 100;
       tile.classList.toggle("compact", pixelWidth < 74 || pixelHeight < 30);
       tile.classList.toggle("tiny", pixelWidth < 28 || pixelHeight < 17);
-      tile.setAttribute("role", "listitem");
-      tile.tabIndex = 0;
+      tile.classList.toggle("active", state.activeInstitutionGroup === group.name);
+      tile.setAttribute("aria-pressed", String(state.activeInstitutionGroup === group.name));
       tile.style.left = `${group.x}%`;
       tile.style.top = `${group.y}%`;
       tile.style.width = `${group.width}%`;
@@ -741,7 +823,7 @@
       const abbreviation = institutionAbbreviation(label);
       const fullNameFits = pixelHeight >= 34 && pixelWidth >= Math.min(210, label.length * 5.3 + 12);
       const shortNameFits = pixelHeight >= 20 && pixelWidth >= abbreviation.length * 5.6 + 8;
-      tile.setAttribute("aria-label", `${label}, ${t("authors.authorCount", { count: group.count })}`);
+      tile.setAttribute("aria-label", `${label}, ${t("authors.authorCount", { count: group.count })}. ${t(state.activeInstitutionGroup === group.name ? "authors.institutionClearAction" : "authors.institutionFilterAction")}`);
       if (fullNameFits || shortNameFits) {
         const name = document.createElement("strong");
         name.textContent = fullNameFits ? label : abbreviation;
@@ -760,6 +842,7 @@
       tile.addEventListener("mouseleave", hideInstitutionTooltip);
       tile.addEventListener("focus", () => showInstitutionTooltip(null, tile, group, authors, resolvedCount));
       tile.addEventListener("blur", hideInstitutionTooltip);
+      tile.addEventListener("click", () => toggleInstitutionFilter(group));
       return tile;
     }));
   }
@@ -771,6 +854,7 @@
     let nearest = null;
     let distance = Infinity;
     state.nodes.forEach((node) => {
+      if (!isNodeActive(node)) return;
       const point = screenPosition(node);
       const nextDistance = Math.hypot(point.x - x, point.y - y);
       if (nextDistance < distance && nextDistance < 16) {
@@ -878,9 +962,7 @@
 
   function setExternalFilter(ids) {
     state.externalIds = Array.isArray(ids) ? new Set(ids) : null;
-    renderIndex();
-    if (state.selected !== null) selectAuthor(state.selected);
-    draw();
+    refreshFilteredView();
   }
 
   function setTimeRange(start, end) {
@@ -889,9 +971,7 @@
     if (Number.isFinite(from) && Number.isFinite(to)) {
       state.timeStart = from;
       state.timeEnd = to;
-      renderIndex();
-      if (state.selected !== null) selectAuthor(state.selected);
-      draw();
+      refreshFilteredView();
     }
   }
 
@@ -902,9 +982,7 @@
     if (days.length) {
       state.timeStart = Math.min(...days);
       state.timeEnd = Math.max(...days);
-      renderIndex();
-      if (state.selected !== null) selectAuthor(state.selected);
-      draw();
+      refreshFilteredView();
     }
   }
 
@@ -923,6 +1001,7 @@
 
   function resetFilters() {
     state.activeFilterName = null;
+    state.activeInstitutionGroup = null;
     state.search = "";
     elements.search.value = "";
     state.externalIds = null;
@@ -937,6 +1016,12 @@
     state.activeFilterName = null;
     renderIndex();
     draw();
+  }
+
+  function clearInstitutionFilter() {
+    if (state.activeInstitutionGroup === null) return;
+    state.activeInstitutionGroup = null;
+    renderInstitutionTreemap();
   }
 
   function themeChanged() {
@@ -1035,6 +1120,7 @@
   window.DiTAuthors = {
     init,
     clearAuthorFilter,
+    clearInstitutionFilter,
     fitView,
     resetFilters,
     setClusters,
