@@ -46,6 +46,16 @@
 
 VLM judge 不是严格 verifier。几何、物理、文字、计数和任务成功可以部分程序化，但覆盖有限。研究机会在多 verifier 组合、置信校准、对抗 reward hacking 和不确定性驱动的数据采样。
 
+### 9. Agent workflow 的异构延迟与动态预算分配
+
+一个具身 Agent 可能在同一次任务中调用 LLM/VLM planner、DiT action expert、视频 world model、reward/verifier 和安全执行器。这些阶段的计算形态、batch 机会和 deadline 完全不同。
+
+可做实验：固定闭环任务与总计算预算，对比永远直接执行、固定数量 world-model rollout 和不确定性驱动的自适应 rollout；同时报告成功率、超时率、过期动作、恢复次数和 GPU 成本。
+
+### 10. World model 在 planner 导向分布上的可靠性
+
+开环视频指标只测平均数据分布，真正的 planner 会主动搜索能改变决策的边界情形，甚至找到世界模型漏洞。需要以下游 decision regret、候选动作排序和不确定性校准为主的评测，而不是只看 FVD/FID。
+
 ## C. 应保持怀疑的问题
 
 ### 专家化架构是否值得部署

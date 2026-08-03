@@ -3,7 +3,7 @@
 这是一个面向研究阅读的 Diffusion Transformer（DiT）文献仓库，重点回答三个问题：
 
 1. 最近三年 DiT 社区在集中解决什么问题？
-2. RL、Agent/World Model、VLA/机器人控制、Omni/统一多模态怎样与 DiT 结合？
+2. RL、世界模型、具身智能/VLA、Agent workflow 和原生多模态怎样与 DiT 结合？
 3. 哪些结论适用于主流 Dense DiT，哪些只适用于研究型 MoE、特定系统或特定任务？
 
 ## 在线网站
@@ -15,7 +15,7 @@
 
 ### 聚类口径
 
-- 从 `topic_tags` 构造 TF-IDF 特征，并加入架构、视频、系统、RL、Agent/World Model、VLA/Robot Control、Omni 七类概念特征。
+- 从 `topic_tags` 构造 TF-IDF 特征，并加入架构、视频、系统、RL、世界模型/交互模拟、具身智能/机器人控制、原生多模态/Omni 七类概念特征。
 - 使用确定性初始化的 `k=7` cosine k-means；聚类名称由组内高频概念和标签自动生成。
 - 网站的上下两处主题筛选共用这 7 个自动聚类，不再另设一套人工分类口径。
 - 点图边和最近邻来自 cosine 相似度，布局使用前端 force simulation；位置用于探索相近问题，不代表论文质量或严格学科边界。
@@ -28,8 +28,8 @@
 - [视频、长上下文与流式生成](notes/02_video_long_context.md)
 - [推理、训练与系统效率](notes/03_efficiency_systems.md)
 - [RL、偏好对齐与可验证奖励](notes/04_rl_alignment.md)
-- [Agent、World Model、VLA 与机器人](notes/05_agent_world_robotics.md)
-- [Omni 与统一理解/生成](notes/06_omni_unified.md)
+- [世界模型、具身智能与 Agent workflow](notes/05_agent_world_robotics.md)
+- [原生多模态、Omni 与统一理解/生成](notes/06_omni_unified.md)
 - [开放问题与研究机会](notes/07_open_questions.md)
 - [结构化论文目录](catalog/papers.csv)
 - [PDF 分层索引](papers/README.md)
@@ -71,9 +71,9 @@ papers/
 2. **降低 token/attention 成本**：更强 VAE、线性/稀疏注意力、token routing、缓存、量化和多 GPU 并行成为共同主题。
 3. **视频走向长时、流式、交互**：block-causal、autoregressive diffusion、constant-memory state、self-forcing/causal distillation 都在解决训练—推理分布差异和长期漂移。
 4. **RL 从审美对齐走向能力训练**：GRPO/online RL 开始优化计数、文字、几何、物理与规则约束；同时 reward model 和 rollout 系统成为新瓶颈。
-5. **Agent 与 VLA 应分开看**：视频 DiT/world model 主要预测未来；VLA 的 diffusion/flow action expert 主要生成连续 action chunk。两者正在 WorldDiT/WLA 一类联合 world—action 模型中汇合。
+5. **World model、VLA 和 Agent workflow 应分开看**：world model 预测动作后的未来，VLA 生成连续 action chunk，Agent workflow 管理目标、记忆、候选动作、验证和恢复。三者在联合 world—action 模型和 model-based policy evaluation 中汇合。
 6. **VLA 的核心瓶颈是闭环延迟**：VLM prefill、视觉编码、多步 action denoising 与执行必须流水化；异步推理、cache、量化、推测验证和边缘 runtime 已形成独立系统主线。
-7. **Omni 有三种不同含义**：多条件输入、跨模态输出、理解—生成统一。近期更重要的是共享连续表示，而不是简单把更多输入拼进 MMDiT。
+7. **“原生多模态”比 Omni 命名更严格**：Transfusion、Show-o、MonoFormer、JanusFlow、OmniFlow 和 BLIP3-o 代表不同的共享骨干/目标；只是支持更多 condition 或 output 不等于原生统一。
 8. **架构持续分化**：Dense、single-stream、hybrid、RAE、pixel-space 与不同粒度的专家模型都在被探索；公开结果尚未收敛为单一路线。
 
 ## 同步 PDF
@@ -92,4 +92,4 @@ python3 scripts/sync_papers.py --check
 
 ## 更新日期
 
-2026-08-02（Asia/Singapore）
+2026-08-03（Asia/Singapore）

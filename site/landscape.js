@@ -47,7 +47,10 @@
       labelKey: "cluster.agent",
       tags: [
         "world-model", "world-action-model", "embodied-world-model", "future-prediction",
-        "interactive", "long-horizon", "planning", "language", "video-world-model",
+        "interactive", "interactive-world-model", "long-horizon", "planning", "video-world-model",
+        "world-foundation-model", "diffusion-world-model", "action-conditioned", "world-generation",
+        "latent-action", "game-engine", "spatial-memory", "policy-evaluation", "reactive-agent",
+        "agent-workflow", "llm-agent", "causal-rollout", "physical-ai", "dynamics",
       ],
     },
     vla: {
@@ -56,6 +59,8 @@
         "vla", "robotics", "robot-policy", "diffusion-policy", "flow-policy", "action-expert",
         "action", "action-chunking", "cross-embodiment", "tactile", "bimanual", "control",
         "real-time-control", "replanning", "policy-serving", "dual-system", "receding-horizon",
+        "embodied-ai", "generalist-policy", "navigation", "3d-representation", "visuomotor",
+        "sim-to-real", "trajectory-critic", "foundation-policy", "denoising-transformer",
       ],
     },
     omni: {
@@ -65,6 +70,9 @@
         "understanding", "perception", "unified-representation", "instruction", "any-to-any",
         "image-editing", "prior-preservation", "decoupled", "unified", "prediction",
         "discrete-diffusion", "cross-modal",
+        "native-multimodal", "autoregressive-diffusion", "autoregressive-flow", "multimodal-flow",
+        "understanding-generation", "single-transformer", "mixed-modality", "continuous-latent",
+        "image-text", "decoder-only", "unified-pretraining", "clip-latent", "representation-alignment",
       ],
     },
   };

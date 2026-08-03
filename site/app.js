@@ -1,5 +1,6 @@
-const DATA_URL = "./data/papers.csv";
-const ENGLISH_SUMMARIES_URL = "./data/summaries_en.json";
+const CATALOG_VERSION = "20260803-world-embodied-omni";
+const DATA_URL = `./data/papers.csv?v=${CATALOG_VERSION}`;
+const ENGLISH_SUMMARIES_URL = `./data/summaries_en.json?v=${CATALOG_VERSION}`;
 const EXPORT_COUNTER_URL = "https://api.counterapi.dev/v1/jasonchen9-dit-paper-landscape/paper-exports";
 const EXPORT_COUNT_CACHE_KEY = "dit-paper-export-count-cache";
 
@@ -732,8 +733,8 @@ async function initialize() {
   loadExportCount();
   try {
     const [response, englishSummaries] = await Promise.all([
-      fetch(DATA_URL),
-      fetch(ENGLISH_SUMMARIES_URL)
+      fetch(DATA_URL, { cache: "no-store" }),
+      fetch(ENGLISH_SUMMARIES_URL, { cache: "no-store" })
         .then((summariesResponse) => summariesResponse.ok ? summariesResponse.json() : {})
         .catch(() => ({})),
     ]);
