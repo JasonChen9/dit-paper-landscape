@@ -528,20 +528,26 @@
     };
   }
 
-  function zoomAt(screenX, screenY, factor) {
-    const currentScale = Math.max(0.001, state.view.scale);
+  function zoomAt(screenX, screenY, factor, smooth = false) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const animate = smooth && !reducedMotion;
+    const currentScale = Math.max(0.001, animate ? state.view.targetScale : state.view.scale);
+    const currentOffsetX = animate ? state.view.targetOffsetX : state.view.offsetX;
+    const currentOffsetY = animate ? state.view.targetOffsetY : state.view.offsetY;
     const minimumScale = state.view.fitScale * 0.7;
     const maximumScale = state.view.fitScale * 6;
     const nextScale = Math.max(minimumScale, Math.min(maximumScale, currentScale * factor));
     if (Math.abs(nextScale - currentScale) < 0.0001) return;
-    const worldX = (screenX - state.view.offsetX) / currentScale;
-    const worldY = (screenY - state.view.offsetY) / currentScale;
-    state.view.scale = nextScale;
-    state.view.offsetX = screenX - worldX * nextScale;
-    state.view.offsetY = screenY - worldY * nextScale;
-    state.view.targetScale = state.view.scale;
-    state.view.targetOffsetX = state.view.offsetX;
-    state.view.targetOffsetY = state.view.offsetY;
+    const worldX = (screenX - currentOffsetX) / currentScale;
+    const worldY = (screenY - currentOffsetY) / currentScale;
+    state.view.targetScale = nextScale;
+    state.view.targetOffsetX = screenX - worldX * nextScale;
+    state.view.targetOffsetY = screenY - worldY * nextScale;
+    if (!animate) {
+      state.view.scale = state.view.targetScale;
+      state.view.offsetX = state.view.targetOffsetX;
+      state.view.offsetY = state.view.targetOffsetY;
+    }
     state.view.manual = true;
     draw();
   }
@@ -1397,8 +1403,8 @@
     selectPaper(chooseInitialPaper());
     bindCanvas();
     elements.reset.addEventListener("click", () => resetFilters(true));
-    elements.zoomOut.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 0.8));
-    elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 1.25));
+    elements.zoomOut.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 0.8, true));
+    elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 1.25, true));
     elements.zoomFit.addEventListener("click", fitView);
     new ResizeObserver(() => {
       if (setDimensions()) {
