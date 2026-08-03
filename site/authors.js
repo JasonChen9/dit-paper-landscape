@@ -200,7 +200,7 @@
     const hue = profile.institution?.colorHue;
     if (Number.isFinite(hue)) {
       const dark = document.documentElement.dataset.theme === "dark";
-      return `hsl(${hue} 52% ${dark ? 62 : 42}%)`;
+      return `hsl(${hue} ${dark ? 38 : 52}% ${dark ? 34 : 42}%)`;
     }
     return state.institutionPalette[11] || state.palette[profile.cluster] || state.palette[0];
   }
@@ -429,6 +429,7 @@
     const styles = getComputedStyle(document.documentElement);
     const edgeColor = styles.getPropertyValue("--landscape-edge").trim();
     const labelColor = styles.getPropertyValue("--text").trim();
+    const dark = document.documentElement.dataset.theme === "dark";
     const zoomRatio = state.view.scale / Math.max(0.001, state.view.fitScale);
     context.clearRect(0, 0, state.width, state.height);
     const focusCandidate = state.hovered ?? state.selected;
@@ -449,8 +450,8 @@
       context.moveTo(a.x, a.y);
       context.lineTo(b.x, b.y);
       context.strokeStyle = highlighted ? state.palette[source.cluster] : edgeColor;
-      context.globalAlpha = highlighted ? 0.72 : 0.13 + edge.similarity * 0.18;
-      context.lineWidth = highlighted ? 1.6 : 0.75;
+      context.globalAlpha = highlighted ? 0.72 : (dark ? 0.08 + edge.similarity * 0.12 : 0.13 + edge.similarity * 0.18);
+      context.lineWidth = highlighted ? 1.6 : (dark ? 0.7 : 0.75);
       context.stroke();
     });
     state.nodes.forEach((node) => {
@@ -464,13 +465,13 @@
       context.beginPath();
       context.arc(point.x, point.y, radius, 0, Math.PI * 2);
       context.fillStyle = institutionColor(profile);
-      context.globalAlpha = 0.96;
+      context.globalAlpha = dark ? 0.9 : 0.96;
       context.fill();
       context.beginPath();
       context.arc(point.x, point.y, radius + 1.45, 0, Math.PI * 2);
-      context.lineWidth = 1.35;
+      context.lineWidth = dark ? 1.05 : 1.35;
       context.strokeStyle = state.palette[node.cluster] || state.palette[0];
-      context.globalAlpha = 0.88;
+      context.globalAlpha = dark ? 0.5 : 0.88;
       context.stroke();
       if (selected || hovered) {
         context.beginPath();

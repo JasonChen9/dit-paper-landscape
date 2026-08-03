@@ -9,6 +9,7 @@
   --muted: #555555;
   --faint: #828282;
   --border: rgba(0, 0, 0, 0.1);
+  --grid-line: rgba(0, 0, 0, 0.1);
   --accent: #b509ac;
   --accent-hover: #b509ac;
   --button-text: #ffffff;
@@ -48,6 +49,7 @@
   --muted: #c1c1c1;
   --faint: #999999;
   --border: #424246;
+  --grid-line: rgba(255, 255, 255, 0.075);
   --accent: #2698ba;
   --accent-hover: #5ab6d0;
   --button-text: #ffffff;
@@ -64,18 +66,19 @@
   --cluster-5: #df6b78;
   --cluster-6: #8da3b8;
   --cluster-7: #d3a44a;
-  --institution-1: #48a9df;
-  --institution-2: #ee854a;
-  --institution-3: #3fbf91;
-  --institution-4: #d17aad;
-  --institution-5: #e5ae39;
-  --institution-6: #7bb9dc;
-  --institution-7: #ad9582;
-  --institution-8: #9aaa64;
-  --institution-9: #aa8bd4;
-  --institution-10: #65aaa7;
-  --institution-11: #8f969b;
-  --institution-12: #62676b;
+  /* Muted institution fills keep white treemap labels at AA contrast. */
+  --institution-1: #39789a;
+  --institution-2: #a85f3b;
+  --institution-3: #35806b;
+  --institution-4: #985c7e;
+  --institution-5: #8a6b2f;
+  --institution-6: #51758a;
+  --institution-7: #766359;
+  --institution-8: #5f7049;
+  --institution-9: #6f5b8f;
+  --institution-10: #477675;
+  --institution-11: #6f777d;
+  --institution-12: #50565b;
 }
 
 * {
@@ -346,8 +349,8 @@ select:focus-visible {
   min-width: 0;
   border-bottom: 1px solid var(--border);
   background:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 44px 44px;
   background-position: -1px -1px;
 }
