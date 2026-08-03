@@ -6,9 +6,7 @@
 - 网站：<https://jasonchen9.github.io/dit-paper-landscape/>
 - 自动部署记录：<https://github.com/JasonChen9/dit-paper-landscape/actions/workflows/pages.yml>
 
-这是一个独立的 GitHub 项目站点，不会覆盖 `JasonChen9.github.io` 个人主页。
-
-## 最简单的浏览器维护方式
+## 在浏览器中更新论文
 
 1. 打开仓库中的 `catalog/papers.csv`。
 2. 点击右上角铅笔按钮 **Edit this file**。
@@ -46,15 +44,22 @@ arxiv_url = https://arxiv.org/abs/论文编号
 pdf_url   = https://arxiv.org/pdf/论文编号
 ```
 
-网站部署时读取 `catalog/papers.csv`，因此不需要把本地 PDF 上传到 GitHub。PDF 仍可以通过 `scripts/sync_papers.py` 下载到分类目录，供离线阅读。
+网站从 `catalog/papers.csv` 读取论文记录，并通过 `arxiv_url` 和 `pdf_url` 提供在线阅读入口。本地运行 `scripts/sync_papers.py` 可以把 PDF 下载到分类目录，供离线阅读。
 
-## 查看或手动重新部署
+## 查看部署状态
 
 1. 打开仓库的 **Actions**。
 2. 左侧选择 **Deploy GitHub Pages**。
-3. 点击 **Run workflow**，选择 `main`，再确认运行。
+3. 打开最新一次运行记录。
+4. 所有步骤显示绿色勾号后，刷新网站查看更新。
 
-正常更新不需要手动操作；只有网站没有自动刷新时才使用这个入口。
+## 手动重新部署
+
+1. 打开仓库的 **Actions**。
+2. 左侧选择 **Deploy GitHub Pages**。
+3. 点击 **Run workflow**。
+4. 选择 `main` 并确认运行。
+5. 等待运行记录显示绿色勾号，然后刷新网站。
 
 ## GitHub Pages 设置
 
@@ -64,7 +69,7 @@ pdf_url   = https://arxiv.org/pdf/论文编号
 Settings → Pages
 ```
 
-部署来源应显示为 **GitHub Actions**。不要把它改成个人主页仓库，也不要把本站文件复制到 `JasonChen9.github.io`。
+部署来源应显示为 **GitHub Actions**。
 
 ## 可选：使用独立域名
 
@@ -74,5 +79,4 @@ Settings → Pages
 2. 在仓库 **Settings → Pages → Custom domain** 填入 `papers.example.com`。
 3. 等待证书生成后勾选 **Enforce HTTPS**。
 
-不配置自定义域名时，继续使用项目站地址即可。
-
+当前项目站地址为 <https://jasonchen9.github.io/dit-paper-landscape/>。
