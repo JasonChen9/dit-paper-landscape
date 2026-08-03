@@ -3,7 +3,8 @@
 
 The author map uses the primary affiliation printed on an author's most recent
 key-author paper in the catalog. The script prefers paper-level arXiv HTML,
-falls back to ar5iv, and records provenance instead of guessing.
+falls back to ar5iv and the first PDF page, and records provenance instead of
+guessing.
 """
 
 from __future__ import annotations
@@ -16,6 +17,9 @@ import html
 import json
 from pathlib import Path
 import re
+import shutil
+import subprocess
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -28,6 +32,23 @@ CATALOG = ROOT / "catalog" / "papers.csv"
 OUTPUT = ROOT / "catalog" / "author_affiliations.json"
 CACHE = ROOT / "catalog" / "affiliation-cache.json"
 USER_AGENT = "Diffusion-Intelligence-Atlas/1.0 (public paper affiliation indexing)"
+PDF_PARSER_VERSION = 6
+
+PAPER_AUTHOR_OVERRIDES: dict[str, dict[str, tuple[str, str]]] = {
+    # Team-authored technical reports name the organization but not each person.
+    "2508.02324": {"Chenfei Wu": ("Alibaba Group", "medium")},
+    "2502.10248": {"Guoqing Ma": ("StepFun", "medium")},
+    "2606.17030": {"Jie Zhang": ("Alibaba Group", "medium")},
+    "2412.03603": {"Weijie Kong": ("Tencent", "medium")},
+    # The SoCC paper uses an author-by-affiliation grid instead of footnotes.
+    "socc25-diffusion-serving": {
+        "Yanying Lin": ("Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences", "high"),
+        "Kejiang Ye": ("Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences", "high"),
+    },
+    # These layouts state the affiliation in prose below the first-page columns.
+    "2509.24579": {"Linzhi Wu": ("Fudan University", "high")},
+    "2607.24665": {"Yanhao Jia": ("Nanyang Technological University", "high")},
+}
 
 SOURCE_URLS = (
     ("arXiv HTML", "https://arxiv.org/html/{paper_id}"),
@@ -45,6 +66,28 @@ INSTITUTION_ALIASES = {
     "MIT": "Massachusetts Institute of Technology",
     "MIT CSAIL": "Massachusetts Institute of Technology",
     "UIUC": "University of Illinois Urbana-Champaign",
+    "SJTU": "Shanghai Jiao Tong University",
+    "SII": "Shanghai Innovation Institute",
+    "HUST": "Huazhong University of Science and Technology",
+    "SCUT": "South China University of Technology",
+    "ECUST": "East China University of Science and Technology",
+    "SHU": "Shanghai University",
+    "NJUPT": "Nanjing University of Posts and Telecommunications",
+    "XYZ": "XYZ Embodied AI",
+    "XYZ Embodied AI": "XYZ Embodied AI",
+    "KAIST": "Korea Advanced Institute of Science and Technology",
+    "Apple AI/ML": "Apple",
+    "Li Auto Inc.": "Li Auto",
+    "Li Auto Inc": "Li Auto",
+    "ZhiCheng AI": "ZhiCheng AI",
+    "Current Robotics": "Current Robotics",
+    "Skywork AI": "Skywork AI",
+    "Kunlun Inc.": "Kunlun",
+    "Kunlun": "Kunlun",
+    "Li Auto": "Li Auto",
+    "Maitrix": "Maitrix",
+    "Qualcomm": "Qualcomm",
+    "StepFun": "StepFun",
     "UW": "University of Washington",
     "UCLA": "University of California, Los Angeles",
     "USC": "University of Southern California",
@@ -59,6 +102,8 @@ INSTITUTION_ALIASES = {
     "Bytedance": "ByteDance",
     "ByteDance Seed": "ByteDance",
     "Adobe Research": "Adobe",
+    "Salesforce AI": "Salesforce Research",
+    "Salesforce Research": "Salesforce Research",
     "Google Brain": "Google",
     "NVIDIA Research": "NVIDIA",
     "Shanghai AI Lab": "Shanghai AI Laboratory",
@@ -88,6 +133,29 @@ INSTITUTION_SUBSTRINGS = (
     ("tongyi lab", "Alibaba Group"),
     ("klingai", "Kuaishou"),
     ("oppo ai", "OPPO"),
+    ("salesforce ai", "Salesforce Research"),
+    ("salesforce research", "Salesforce Research"),
+    ("university of massachusetts amherst", "University of Massachusetts Amherst"),
+    ("adobe research", "Adobe"),
+    ("google research", "Google"),
+    ("ai framework and data technology", "Huawei"),
+    ("beijing academy of artificial in", "Beijing Academy of Artificial Intelligence"),
+    ("harbin institute of technology", "Harbin Institute of Technology"),
+    ("shanghai jiao tong university", "Shanghai Jiao Tong University"),
+    ("institute of computing technology, chinese academy of sciences", "Chinese Academy of Sciences"),
+    ("bnrist center", "Tsinghua University"),
+    ("thbi lab", "Tsinghua University"),
+    ("li auto inc", "Li Auto"),
+    ("maitrix.org", "Maitrix"),
+    ("siat, cas", "Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences"),
+    ("qualcomm ai research", "Qualcomm"),
+    ("bagel labs", "Bagel Labs"),
+    ("skywork ai", "Skywork AI"),
+    ("lightricks", "Lightricks"),
+    ("kunlun inc", "Kunlun"),
+    ("current robotics", "Current Robotics"),
+    ("kuaishou technology", "Kuaishou"),
+    ("school of computation, information", "Technical University of Munich"),
 )
 
 INSTITUTION_TERMS = (
@@ -98,6 +166,7 @@ INSTITUTION_TERMS = (
     "amazon", "apple", "alibaba", "bytedance", "tencent", "baidu", "huawei",
     "tesla", "moonshot", "stability ai", "runway", "waymo", "physical intelligence",
     "unitree", "xpeng", "hkust", "uiuc", "mit", "cmu", "uc berkeley", "ucla",
+    "salesforce", "oppo", "kuaishou", "meituan",
 )
 
 NON_AFFILIATION = (
@@ -146,13 +215,13 @@ def canonical_institution(value: str) -> str | None:
     for fragment, canonical in INSTITUTION_SUBSTRINGS:
         if fragment in lowered:
             return canonical
-    if not any(term in lowered for term in INSTITUTION_TERMS):
-        return None
     if candidate in INSTITUTION_ALIASES:
         return INSTITUTION_ALIASES[candidate]
     for alias, canonical in sorted(INSTITUTION_ALIASES.items(), key=lambda item: -len(item[0])):
         if normalized_name(candidate) == normalized_name(alias):
             return canonical
+    if not any(term in lowered for term in INSTITUTION_TERMS):
+        return None
     return candidate
 
 
@@ -308,17 +377,200 @@ def parse_affiliations(payload: bytes, row: dict[str, str]) -> dict[str, dict[st
     return {author: records[author] for author in key_author_names(row) if author in records}
 
 
-def fetch(url: str, retries: int = 1) -> bytes:
+def fetch(url: str, retries: int = 1, timeout: float = 18) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     for attempt in range(retries):
         try:
-            with urllib.request.urlopen(request, timeout=18) as response:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
                 return response.read()
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
             if attempt + 1 == retries:
                 raise exc
             time.sleep(1.5 * (attempt + 1))
     raise AssertionError("unreachable")
+
+
+def pdf_name_pattern(author: str) -> re.Pattern[str]:
+    parts = [re.escape(part) for part in re.split(r"\s+", compact(author)) if part]
+    return re.compile(r"\s+".join(parts), flags=re.IGNORECASE)
+
+
+def pdf_author_markers(text: str, author: str, all_authors: list[str]) -> tuple[bool, list[str]]:
+    """Return whether the author appears and its nearby footnote markers."""
+    match = pdf_name_pattern(author).search(text)
+    if not match:
+        return False, []
+    end = min(len(text), match.end() + 36)
+    for other in all_authors:
+        if normalized_name(other) == normalized_name(author):
+            continue
+        next_match = pdf_name_pattern(other).search(text, match.end())
+        if next_match:
+            end = min(end, next_match.start())
+    fragment = text[match.end():end]
+    markers = re.findall(r"(?<!\d)([1-9]\d?|[*†‡♢♦◊⋄§¶#])(?!\d)", fragment)
+    return True, list(dict.fromkeys(markers))
+
+
+def pdf_candidate_institution(value: str) -> str | None:
+    if re.search(r"https?://|www\.|github|project page|\bcode\s*:", value, flags=re.IGNORECASE):
+        return None
+    if ":" in value:
+        return None
+    if compact(value).casefold().startswith("all authors are with"):
+        return None
+    candidate = canonical_institution(value)
+    if not candidate:
+        return None
+    original = compact(value)
+    lowered = original.casefold()
+    known = any(fragment in lowered for fragment, _ in INSTITUTION_SUBSTRINGS)
+    known = known or any(normalized_name(original) == normalized_name(alias) for alias in INSTITUTION_ALIASES)
+    words = re.findall(r"[A-Za-zÀ-ÖØ-öø-ÿ][\wÀ-ÖØ-öø-ÿ.-]*", original)
+    capitalized = sum(word[0].isupper() or word.isupper() for word in words)
+    if not known and (not words or capitalized / len(words) < 0.45):
+        return None
+    return candidate if len(candidate.split()) <= 18 else None
+
+
+def pdf_cell_entries(
+    cell: str,
+    pending_markers: list[str],
+    allow_unmarked: bool,
+) -> list[tuple[str, list[str]]]:
+    """Extract numbered affiliations from one layout-preserved PDF text cell."""
+    value = compact(cell)
+    if not value:
+        return []
+    marker_matches = list(re.finditer(
+        r"(?:^|(?<=[\s,*†‡♢♦◊⋄§¶#]))([1-9]\d?|[†‡♢♦◊⋄§¶#])(?=\s*[A-Z])",
+        value,
+    ))
+    entries: list[tuple[str, list[str]]] = []
+    if marker_matches:
+        leading = pdf_candidate_institution(value[: marker_matches[0].start()])
+        if leading:
+            entries.append((leading, pending_markers.copy()))
+        for index, match in enumerate(marker_matches):
+            end = marker_matches[index + 1].start() if index + 1 < len(marker_matches) else len(value)
+            candidate = pdf_candidate_institution(value[match.end():end])
+            if candidate:
+                entries.append((candidate, [match.group(1)]))
+        return entries
+    if not allow_unmarked:
+        return []
+    candidate = pdf_candidate_institution(value)
+    if candidate:
+        entries.append((candidate, pending_markers.copy()))
+    return entries
+
+
+def pdf_affiliation_entries(text: str) -> list[tuple[str, list[str]]]:
+    entries: list[tuple[str, list[str]]] = []
+    pending_markers: list[str] = []
+    abstract_seen = False
+    for raw_line in text.splitlines():
+        cells = [cell for cell in re.split(r"\s{3,}", raw_line) if compact(cell)]
+        if not cells:
+            continue
+        marker_only = r"[1-9]\d?|[†‡♢♦◊⋄§¶#]"
+        marker_cells = [cell for cell in cells if re.fullmatch(rf"\s*(?:{marker_only})(?:\s*[,/]\s*(?:{marker_only}))*\s*", cell)]
+        content_cells = [cell for cell in cells if cell not in marker_cells]
+        if marker_cells:
+            pending_markers.extend(
+                marker
+                for cell in marker_cells
+                for marker in re.findall(marker_only, cell)
+            )
+        if not content_cells:
+            continue
+        line_entries: list[tuple[str, list[str]]] = []
+        align_markers = len(pending_markers) == len(content_cells) and len(content_cells) > 1
+        for index, cell in enumerate(content_cells):
+            cell_markers = [pending_markers[index]] if align_markers else pending_markers
+            allow_unmarked = not abstract_seen or compact(cell).casefold().startswith("all authors are with")
+            line_entries.extend(pdf_cell_entries(cell, cell_markers, allow_unmarked))
+        if line_entries:
+            entries.extend(line_entries)
+            pending_markers = []
+        if any(re.sub(r"[^a-z]", "", compact(cell).casefold()) == "abstract" for cell in cells):
+            abstract_seen = True
+    unique: list[tuple[str, list[str]]] = []
+    seen: set[tuple[str, tuple[str, ...]]] = set()
+    for institution, markers in entries:
+        key = (institution, tuple(markers))
+        if key not in seen:
+            unique.append((institution, markers))
+            seen.add(key)
+    return unique
+
+
+def parse_pdf_affiliations(text: str, row: dict[str, str]) -> dict[str, dict[str, object]]:
+    affiliations = pdf_affiliation_entries(text)
+    if not affiliations:
+        return {}
+    all_authors = catalog_authors(row)
+    valid_markers = {marker for _, markers in affiliations for marker in markers}
+    unique_institutions = list(dict.fromkeys(institution for institution, _ in affiliations))
+    records: dict[str, dict[str, object]] = {}
+    for author in key_author_names(row):
+        present, markers = pdf_author_markers(text, author, all_authors)
+        if not present:
+            continue
+        markers = [marker for marker in markers if marker in valid_markers]
+        matched = [institution for institution, aff_markers in affiliations if set(markers) & set(aff_markers)]
+        if not matched and len(unique_institutions) == 1:
+            matched = unique_institutions
+        if not matched:
+            continue
+        institutions = list(dict.fromkeys(matched))
+        records[author] = {
+            "primary": institutions[0],
+            "all": institutions,
+            "confidence": "high" if markers else "medium",
+        }
+    return records
+
+
+def pdf_first_page_text(
+    row: dict[str, str],
+    cache_entry: dict[str, object],
+    refresh: bool,
+) -> tuple[str, str | None]:
+    cached_text = cache_entry.get("pdf_first_page_text")
+    if not refresh and isinstance(cached_text, str) and cached_text.strip():
+        return cached_text, str(row.get("pdf_url") or "") or None
+    pdftotext = shutil.which("pdftotext")
+    pdf_url = str(row.get("pdf_url") or "").strip()
+    if not pdftotext or not pdf_url:
+        return "", pdf_url or None
+    try:
+        payload = fetch(pdf_url, retries=2, timeout=60)
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):
+        return "", pdf_url
+    if not payload.startswith(b"%PDF"):
+        return "", pdf_url
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as handle:
+            handle.write(payload)
+            temporary_path = Path(handle.name)
+        result = subprocess.run(
+            [pdftotext, "-f", "1", "-l", "1", "-layout", str(temporary_path), "-"],
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            timeout=45,
+        )
+        text = result.stdout.decode("utf-8", errors="replace") if result.returncode == 0 else ""
+    except (OSError, subprocess.TimeoutExpired):
+        text = ""
+    finally:
+        if temporary_path:
+            temporary_path.unlink(missing_ok=True)
+    if text.strip():
+        cache_entry["pdf_first_page_text"] = text
+    return text, pdf_url
 
 
 def openalex_records(row: dict[str, str]) -> dict[str, dict[str, object]]:
@@ -383,44 +635,87 @@ def paper_records(
     cached_only: bool = False,
 ) -> tuple[dict[str, dict[str, object]], str | None]:
     paper_id = row["arxiv_id"]
-    if not refresh and isinstance(cache.get(paper_id), dict) and cache[paper_id].get("authors"):
-        cached = cache[paper_id]
+    cache_entry = cache.setdefault(paper_id, {})
+    if not isinstance(cache_entry, dict):
+        cache_entry = {}
+        cache[paper_id] = cache_entry
+    cached_source = cache_entry.get("source")
+    records: dict[str, dict[str, object]] = {}
+    if not refresh and cache_entry.get("authors"):
         records = {
             author: normalized
-            for author, record in cached.get("authors", {}).items()
+            for author, record in cache_entry.get("authors", {}).items()
+            if not (
+                record.get("source") == "PDF first page"
+                and cache_entry.get("pdf_parser_version") != PDF_PARSER_VERSION
+            )
             if (normalized := recanonicalize_record(record)) is not None
         }
-        if records:
-            cache[paper_id]["authors"] = records
-            return records, cached.get("source")
-    skip_html = not refresh and isinstance(cache.get(paper_id), dict)
-    if cached_only and skip_html:
-        return {}, None
-    if not re.fullmatch(r"\d{4}\.\d{4,5}", paper_id):
-        cache[paper_id] = {"source": None, "authors": {}}
-        return {}, None
-    if not skip_html:
+        for record in records.values():
+            if cached_source and not record.get("source"):
+                record["source"] = cached_source
+        cache_entry["authors"] = records
+    targets = set(key_author_names(row))
+    if cached_only:
+        return records, str(cached_source) if cached_source else None
+    if targets.issubset(records):
+        return records, str(cached_source) if cached_source else None
+
+    sources_used = {str(record.get("source")) for record in records.values() if record.get("source")}
+
+    def merge(found: dict[str, dict[str, object]], source: str, source_url: str | None = None) -> None:
+        for author, record in found.items():
+            if author not in targets or author in records:
+                continue
+            normalized = recanonicalize_record(record)
+            if not normalized:
+                continue
+            normalized["source"] = source
+            if source_url and not normalized.get("source_url"):
+                normalized["source_url"] = source_url
+            records[author] = normalized
+            sources_used.add(source)
+
+    if re.fullmatch(r"\d{4}\.\d{4,5}", paper_id):
         for source, template in SOURCE_URLS:
             url = template.format(paper_id=paper_id)
             try:
-                records = parse_affiliations(fetch(url), row)
+                found = parse_affiliations(fetch(url), row)
             except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError):
                 continue
-            if records:
-                for record in records.values():
-                    record["source_url"] = url
-                cache[paper_id] = {"source": source, "authors": records}
-                return records, source
-    for source, resolver in (("OpenAlex", openalex_records), ("Semantic Scholar", semantic_scholar_records)):
-        try:
-            records = resolver(row)
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
-            continue
-        if records:
-            cache[paper_id] = {"source": source, "authors": records}
-            return records, source
-    cache[paper_id] = {"source": None, "authors": {}}
-    return {}, None
+            merge(found, source, url)
+            if targets.issubset(records):
+                break
+
+    if not targets.issubset(records):
+        text, pdf_url = pdf_first_page_text(row, cache_entry, refresh)
+        if text:
+            merge(parse_pdf_affiliations(text, row), "PDF first page", pdf_url)
+        cache_entry["pdf_parser_version"] = PDF_PARSER_VERSION
+
+    if not targets.issubset(records) and paper_id in PAPER_AUTHOR_OVERRIDES:
+        pdf_url = str(row.get("pdf_url") or "").strip() or None
+        curated = {
+            author: {"primary": institution, "all": [institution], "confidence": confidence}
+            for author, (institution, confidence) in PAPER_AUTHOR_OVERRIDES[paper_id].items()
+        }
+        merge(curated, "PDF author block (curated)", pdf_url)
+
+    if re.fullmatch(r"\d{4}\.\d{4,5}", paper_id) and not targets.issubset(records):
+        for source, resolver in (("OpenAlex", openalex_records), ("Semantic Scholar", semantic_scholar_records)):
+            try:
+                found = resolver(row)
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+                continue
+            merge(found, source)
+            if targets.issubset(records):
+                break
+
+    source_label = next(iter(sources_used)) if len(sources_used) == 1 else ("Mixed" if sources_used else None)
+    cache_entry["source"] = source_label
+    cache_entry["authors"] = records
+    cache_entry["last_attempt"] = date.today().isoformat()
+    return records, source_label
 
 
 def main() -> int:
@@ -455,7 +750,7 @@ def main() -> int:
                     "paper_id": row["arxiv_id"],
                     "paper_title": row["title"],
                     "published": row["published"],
-                    "source": source,
+                    "source": record.get("source") or source,
                 }
             if index % 12 == 0:
                 print(f"processed {index}/{len(rows)} papers; resolved {len(by_author)}/{len(all_key_authors)} authors", flush=True)

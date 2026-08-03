@@ -51,13 +51,16 @@
       "source_url": "https://arxiv.org/html/2510.11690"
     },
     "Bram Wallace": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Salesforce Research"
+      ],
+      "confidence": "high",
+      "paper_id": "2311.12908",
+      "paper_title": "Diffusion Model Alignment Using Direct Preference Optimization",
+      "primary": "Salesforce Research",
+      "published": "2023-11-21",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2311.12908"
     },
     "Chaorui Deng": {
       "all": [
@@ -72,13 +75,16 @@
       "source_url": "https://arxiv.org/html/2505.14683"
     },
     "Chenfei Wu": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Alibaba Group"
+      ],
+      "confidence": "medium",
+      "paper_id": "2508.02324",
+      "paper_title": "Qwen-Image Technical Report",
+      "primary": "Alibaba Group",
+      "published": "2025-08-04",
+      "source": "PDF author block (curated)",
+      "source_url": "https://arxiv.org/pdf/2508.02324"
     },
     "Cheng Chi": {
       "all": [
@@ -93,22 +99,29 @@
       "source_url": "https://arxiv.org/html/2303.04137"
     },
     "Cheng Lu": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2206.00927",
+      "paper_title": "DPM-Solver: A Fast ODE Solver for Diffusion Probabilistic Model Sampling in Around 10 Steps",
+      "primary": "Tsinghua University",
+      "published": "2022-06-02",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2206.00927"
     },
     "Chenyuan Wu": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Beijing Academy of Artificial Intelligence",
+        "University of Science and Technology of China"
+      ],
+      "confidence": "high",
+      "paper_id": "2506.18871",
+      "paper_title": "OmniGen2: Towards Instruction-Aligned Multimodal Generation",
+      "primary": "Beijing Academy of Artificial Intelligence",
+      "published": "2025-06-23",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2506.18871"
     },
     "Chi-Lam Cheang": {
       "all": [
@@ -123,13 +136,16 @@
       "source_url": "https://arxiv.org/html/2410.06158"
     },
     "Chongjian Ge": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Adobe"
+      ],
+      "confidence": "medium",
+      "paper_id": "2607.28611",
+      "paper_title": "Chimera: Designing and Chinchilla-Scaling Hybrid Visual Diffusion Transformers",
+      "primary": "Adobe",
+      "published": "2026-07-30",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2607.28611"
     },
     "Chunting Zhou": {
       "all": [
@@ -204,13 +220,16 @@
       "source_url": "https://arxiv.org/html/2501.18427"
     },
     "Fan Bao": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2303.06555",
+      "paper_title": "One Transformer Fits All Distributions in Multi-Modal Diffusion at Scale",
+      "primary": "Tsinghua University",
+      "published": "2023-03-12",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2303.06555"
     },
     "Feng Liu": {
       "all": [
@@ -249,22 +268,29 @@
       "source_url": "https://arxiv.org/html/2607.11136"
     },
     "Guoqing Ma": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "StepFun"
+      ],
+      "confidence": "medium",
+      "paper_id": "2502.10248",
+      "paper_title": "Step-Video-T2V Technical Report: The Practice, Challenges, and Future of Video Foundation Model",
+      "primary": "StepFun",
+      "published": "2025-02-14",
+      "source": "PDF author block (curated)",
+      "source_url": "https://arxiv.org/pdf/2502.10248"
     },
     "Guoyang Xia": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Li Auto",
+        "School of Artificial Intelligence, Beijing University of Posts and Telecommunications"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.01586",
+      "paper_title": "VLAFlow: A Unified Training Framework for Vision-Language-Action Models via Co-training and Future Latent Alignment",
+      "primary": "Li Auto",
+      "published": "2026-07-02",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2607.01586"
     },
     "Hanshuai Cui": {
       "all": [
@@ -291,13 +317,17 @@
       "source_url": "https://arxiv.org/html/2605.25550"
     },
     "Haotian Sun": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Apple",
+        "Georgia Institute of Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2410.02098",
+      "paper_title": "EC-DIT: Scaling Diffusion Transformers with Adaptive Expert-Choice Routing",
+      "primary": "Apple",
+      "published": "2024-10-02",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2410.02098"
     },
     "Haotong Bao": {
       "all": [
@@ -399,31 +429,40 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2010.02502"
     },
     "Jian Ma": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "OPPO"
+      ],
+      "confidence": "high",
+      "paper_id": "2503.06134",
+      "paper_title": "X2I: Seamless Integration of Multimodal Understanding into Diffusion Transformer via Attention Distillation",
+      "primary": "OPPO",
+      "published": "2025-03-08",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2503.06134"
     },
     "Jiannan Xiang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Maitrix"
+      ],
+      "confidence": "high",
+      "paper_id": "2406.09455",
+      "paper_title": "Pandora: Towards General World Model with Natural Language Actions and Video States",
+      "primary": "Maitrix",
+      "published": "2024-06-12",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2406.09455"
     },
     "Jianwen Xian": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Kuaishou"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.23264",
+      "paper_title": "X-Stage: An Overlooked Pipeline Stage for Communication-Computation Overlap in DiT Inference",
+      "primary": "Kuaishou",
+      "published": "2026-07-25",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.23264"
     },
     "Jiaqi Li": {
       "all": [
@@ -465,31 +504,42 @@
       "source_url": "https://arxiv.org/html/2304.05977"
     },
     "Jie Liu": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Chinese University of Hong Kong",
+        "Kuaishou",
+        "Shanghai AI Laboratory"
+      ],
+      "confidence": "high",
+      "paper_id": "2505.05470",
+      "paper_title": "Flow-GRPO: Training Flow Matching Models via Online RL",
+      "primary": "Chinese University of Hong Kong",
+      "published": "2025-05-08",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2505.05470"
     },
     "Jie Zhang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Alibaba Group"
+      ],
+      "confidence": "medium",
+      "paper_id": "2606.17030",
+      "paper_title": "Qwen-RobotWorld Technical Report: Unifying Embodied World Modeling through Language-Conditioned Video Generation",
+      "primary": "Alibaba Group",
+      "published": "2026-06-15",
+      "source": "PDF author block (curated)",
+      "source_url": "https://arxiv.org/pdf/2606.17030"
     },
     "Jingxuan Zhang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "The Ohio State University"
+      ],
+      "confidence": "high",
+      "paper_id": "2602.20309",
+      "paper_title": "QuantVLA: Scale-Calibrated Post-Training Quantization for Vision-Language-Action Models",
+      "primary": "The Ohio State University",
+      "published": "2026-02-23",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2602.20309"
     },
     "Jinheng Xie": {
       "all": [
@@ -578,13 +628,16 @@
       "source_url": "https://arxiv.org/html/2607.21553"
     },
     "Junyu Dai": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Alibaba Token Foundry"
+      ],
+      "confidence": "medium",
+      "paper_id": "2607.27011",
+      "paper_title": "Qwen-Audio-3.0-Gen-Preview Technical Report",
+      "primary": "Alibaba Token Foundry",
+      "published": "2026-07-29",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2607.27011"
     },
     "Kai Yang": {
       "all": [
@@ -624,13 +677,17 @@
       "source_url": "https://arxiv.org/html/2606.25473"
     },
     "Kaixiong Gong": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "The Chinese University of Hong Kong",
+        "Tencent"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.22531",
+      "paper_title": "Twins: Learn to Predict Unified Representations with Focal Loss",
+      "primary": "The Chinese University of Hong Kong",
+      "published": "2026-07-24",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2607.22531"
     },
     "Kaixuan Liu": {
       "all": [
@@ -645,13 +702,16 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2606.05558"
     },
     "Kejiang Ye": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences"
+      ],
+      "confidence": "high",
+      "paper_id": "socc25-diffusion-serving",
+      "paper_title": "Understanding Diffusion Model Serving in Production: A Top-Down Analysis of Workload, Scheduling, and Resource Efficiency",
+      "primary": "Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences",
+      "published": "2025-11-19",
+      "source": "PDF author block (curated)",
+      "source_url": "https://yanyinglin.github.io/assets/pdf/SoCC25.pdf"
     },
     "Kevin Black": {
       "all": [
@@ -679,13 +739,16 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2606.08094"
     },
     "Kimin Lee": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Google"
+      ],
+      "confidence": "high",
+      "paper_id": "2302.12192",
+      "paper_title": "Aligning Text-to-Image Models using Human Feedback",
+      "primary": "Google",
+      "published": "2023-02-23",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2302.12192"
     },
     "Liang Qiao": {
       "all": [
@@ -737,13 +800,16 @@
       "source_url": "https://arxiv.org/html/2604.08123"
     },
     "Linzhi Wu": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Fudan University"
+      ],
+      "confidence": "high",
+      "paper_id": "2509.24579",
+      "paper_title": "U-DiT Policy: U-shaped Diffusion Transformers for Robotic Manipulation",
+      "primary": "Fudan University",
+      "published": "2025-09-29",
+      "source": "PDF author block (curated)",
+      "source_url": "https://arxiv.org/pdf/2509.24579"
     },
     "Mingcheng Ye": {
       "all": [
@@ -758,22 +824,28 @@
       "source_url": "https://arxiv.org/html/2512.18254"
     },
     "Mohsen Ghafoorian": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Qualcomm"
+      ],
+      "confidence": "medium",
+      "paper_id": "2607.06173",
+      "paper_title": "MobileWan: Closing the Quality Gap for Mobile Video Diffusion",
+      "primary": "Qualcomm",
+      "published": "2026-07-07",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2607.06173"
     },
     "Mustafa Shukor": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Sorbonne University"
+      ],
+      "confidence": "medium",
+      "paper_id": "2506.01844",
+      "paper_title": "SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics",
+      "primary": "Sorbonne University",
+      "published": "2025-06-02",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2506.01844"
     },
     "Muyang Li": {
       "all": [
@@ -812,13 +884,17 @@
       "source_url": "https://api.semanticscholar.org/graph/v1/paper/ARXIV:2403.03206/authors?fields=name,affiliations"
     },
     "Peiqi Yin": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Huawei",
+        "The Chinese University of Hong Kong"
+      ],
+      "confidence": "high",
+      "paper_id": "2602.02204",
+      "paper_title": "vLLM-Omni: Fully Disaggregated Serving for Any-to-Any Multimodal Models",
+      "primary": "Huawei",
+      "published": "2026-02-02",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2602.02204"
     },
     "Peng Gao": {
       "all": [
@@ -870,13 +946,16 @@
       "source_url": "https://arxiv.org/html/2411.19650"
     },
     "Qizheng Yang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "University of Massachusetts Amherst"
+      ],
+      "confidence": "high",
+      "paper_id": "2411.15381",
+      "paper_title": "DiffServe: Efficiently Serving Text-to-Image Diffusion Models with Query-Aware Model Scaling",
+      "primary": "University of Massachusetts Amherst",
+      "published": "2024-11-22",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2411.15381"
     },
     "Robin Rombach": {
       "all": [
@@ -916,13 +995,16 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2606.19004"
     },
     "Ruiyi Ding": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Kuaishou"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.17572",
+      "paper_title": "JAGG: Jacobian-Aggregated Group Gradient for Efficient GRPO Training of Diffusion Models",
+      "primary": "Kuaishou",
+      "published": "2026-07-20",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2607.17572"
     },
     "Ruslan Sharifullin": {
       "all": [
@@ -949,13 +1031,16 @@
       "source_url": "https://arxiv.org/html/2607.06370"
     },
     "Sen Wang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Bagel Labs"
+      ],
+      "confidence": "medium",
+      "paper_id": "2607.23909",
+      "paper_title": "WorldDiT: A Unified Diffusion Architecture for World and Action Modeling",
+      "primary": "Bagel Labs",
+      "published": "2026-07-27",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2607.23909"
     },
     "Shengbang Tong": {
       "all": [
@@ -970,13 +1055,17 @@
       "source_url": "https://arxiv.org/html/2601.16208"
     },
     "Shenghai Yuan": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Peking University",
+        "ByteDance China"
+      ],
+      "confidence": "high",
+      "paper_id": "2603.04379",
+      "paper_title": "Helios: Real Real-Time Long Video Generation Model",
+      "primary": "Peking University",
+      "published": "2026-03-04",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2603.04379"
     },
     "Shengqu Cai": {
       "all": [
@@ -1039,31 +1128,40 @@
       "source_url": "https://arxiv.org/html/2508.08248"
     },
     "Sihyun Yu": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Korea Advanced Institute of Science and Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2410.06940",
+      "paper_title": "Representation Alignment for Generation: Training Diffusion Transformers Is Easier Than You Think",
+      "primary": "Korea Advanced Institute of Science and Technology",
+      "published": "2024-10-09",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2410.06940"
     },
     "Sijie Wang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Harbin Institute of Technology"
+      ],
+      "confidence": "medium",
+      "paper_id": "2511.12056",
+      "paper_title": "PipeDiT: Accelerating Diffusion Transformers in Video Generation with Task Pipelining and Model Decoupling",
+      "primary": "Harbin Institute of Technology",
+      "published": "2025-11-15",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2511.12056"
     },
     "Sohaib Ahmad": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "University of Massachusetts Amherst"
+      ],
+      "confidence": "high",
+      "paper_id": "2411.15381",
+      "paper_title": "DiffServe: Efficiently Serving Text-to-Image Diffusion Models with Query-Aware Model Scaling",
+      "primary": "University of Massachusetts Amherst",
+      "published": "2024-11-22",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2411.15381"
     },
     "Songming Liu": {
       "all": [
@@ -1114,13 +1212,16 @@
       "source_url": "https://api.semanticscholar.org/graph/v1/paper/ARXIV:2206.00364/authors?fields=name,affiliations"
     },
     "Tim Salimans": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Google"
+      ],
+      "confidence": "medium",
+      "paper_id": "2202.00512",
+      "paper_title": "Progressive Distillation for Fast Sampling of Diffusion Models",
+      "primary": "Google",
+      "published": "2022-02-01",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2202.00512"
     },
     "Tinghui Zhu": {
       "all": [
@@ -1147,13 +1248,16 @@
       "source_url": "https://arxiv.org/html/2506.05284"
     },
     "Travis Davies": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "ZhiCheng AI"
+      ],
+      "confidence": "high",
+      "paper_id": "2509.11865",
+      "paper_title": "Tenma: Robust Cross-Embodiment Robot Manipulation with Diffusion Transformer",
+      "primary": "ZhiCheng AI",
+      "published": "2025-09-15",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2509.11865"
     },
     "Tsung-Wei Ke": {
       "all": [
@@ -1168,31 +1272,42 @@
       "source_url": "https://arxiv.org/html/2402.10885"
     },
     "Weijie Kong": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Tencent"
+      ],
+      "confidence": "medium",
+      "paper_id": "2412.03603",
+      "paper_title": "HunyuanVideo: A Systematic Framework For Large Video Generative Models",
+      "primary": "Tencent",
+      "published": "2024-12-03",
+      "source": "PDF author block (curated)",
+      "source_url": "https://arxiv.org/pdf/2412.03603"
     },
     "Weijie Wang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Zhejiang University",
+        "Microsoft Research"
+      ],
+      "confidence": "high",
+      "paper_id": "2604.24764",
+      "paper_title": "World-R1: Reinforcing 3D Constraints for Text-to-Video Generation",
+      "primary": "Zhejiang University",
+      "published": "2026-04-27",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2604.24764"
     },
     "Weilun Feng": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Chinese Academy of Sciences",
+        "University of Chinese Academy of Sciences"
+      ],
+      "confidence": "high",
+      "paper_id": "2509.23681",
+      "paper_title": "QuantSparse: Comprehensively Compressing Video Diffusion Transformer with Model Quantization and Attention Sparsification",
+      "primary": "Chinese Academy of Sciences",
+      "published": "2025-09-28",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2509.23681"
     },
     "Wenqi Jiang": {
       "all": [
@@ -1231,13 +1346,16 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2212.09748"
     },
     "Xianglong He": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Skywork AI"
+      ],
+      "confidence": "high",
+      "paper_id": "2508.13009",
+      "paper_title": "Matrix-game 2.0: An open-source real-time and streaming interactive world model",
+      "primary": "Skywork AI",
+      "published": "2025-08-18",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2508.13009"
     },
     "Xiaofeng Mao": {
       "all": [
@@ -1325,13 +1443,18 @@
       "source_url": "https://arxiv.org/html/2607.11136"
     },
     "Xukun Li": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "XYZ Embodied AI",
+        "Beijing Academy of Artificial Intelligence",
+        "Technical University of Munich"
+      ],
+      "confidence": "high",
+      "paper_id": "2602.05513",
+      "paper_title": "DECO: Decoupled Multimodal Diffusion Transformer for Bimanual Dexterous Manipulation with a Plugin Tactile Adapter",
+      "primary": "XYZ Embodied AI",
+      "published": "2026-02-05",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2602.05513"
     },
     "Xun Huang": {
       "all": [
@@ -1371,13 +1494,16 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2011.13456"
     },
     "Yanhao Jia": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Nanyang Technological University"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.24665",
+      "paper_title": "MMOE: Modernizing Diffusion Transformers with Efficient Expert Design",
+      "primary": "Nanyang Technological University",
+      "published": "2026-07-27",
+      "source": "PDF author block (curated)",
+      "source_url": "https://arxiv.org/pdf/2607.24665"
     },
     "Yanjie Ze": {
       "all": [
@@ -1392,22 +1518,29 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2403.03954"
     },
     "Yantai Yang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Shanghai Jiao Tong University",
+        "Harbin Institute of Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2506.10100",
+      "paper_title": "EfficientVLA: Training-Free Acceleration and Compression for Vision-Language-Action Models",
+      "primary": "Shanghai Jiao Tong University",
+      "published": "2025-06-11",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2506.10100"
     },
     "Yanying Lin": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences"
+      ],
+      "confidence": "high",
+      "paper_id": "socc25-diffusion-serving",
+      "paper_title": "Understanding Diffusion Model Serving in Production: A Top-Down Analysis of Workload, Scheduling, and Resource Efficiency",
+      "primary": "Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences",
+      "published": "2025-11-19",
+      "source": "PDF author block (curated)",
+      "source_url": "https://yanyinglin.github.io/assets/pdf/SoCC25.pdf"
     },
     "Yaoru Li": {
       "all": [
@@ -1448,22 +1581,29 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2210.02747"
     },
     "Yaxuan Li": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Current Robotics"
+      ],
+      "confidence": "high",
+      "paper_id": "2604.22152",
+      "paper_title": "dWorldEval: Scalable Robotic Policy Evaluation via Discrete Diffusion World Model",
+      "primary": "Current Robotics",
+      "published": "2026-04-24",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2604.22152"
     },
     "Yi Yang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Shanghai Jiao Tong University",
+        "Shanghai Innovation Institute"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.05979",
+      "paper_title": "World-Language-Action Model for Unified World Modeling, Language Reasoning, and Action Synthesis",
+      "primary": "Shanghai Jiao Tong University",
+      "published": "2026-06-04",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2606.05979"
     },
     "Ying Fan": {
       "all": [
@@ -1491,13 +1631,16 @@
       "source_url": "https://arxiv.org/html/2411.07975"
     },
     "Yoav HaCohen": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Lightricks"
+      ],
+      "confidence": "high",
+      "paper_id": "2501.00103",
+      "paper_title": "LTX-Video: Realtime Video Latent Diffusion",
+      "primary": "Lightricks",
+      "published": "2024-12-30",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2501.00103"
     },
     "Yongsheng Yu": {
       "all": [
@@ -1564,13 +1707,17 @@
       "source_url": "https://ar5iv.labs.arxiv.org/html/2606.29501"
     },
     "Zeyue Xue": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "ByteDance",
+        "The University of Hong Kong"
+      ],
+      "confidence": "high",
+      "paper_id": "2505.07818",
+      "paper_title": "DanceGRPO: Unleashing GRPO on Visual Generation",
+      "primary": "ByteDance",
+      "published": "2025-05-12",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2505.07818"
     },
     "Zhaochong An": {
       "all": [
@@ -1599,13 +1746,16 @@
       "source_url": "https://arxiv.org/html/2607.23844"
     },
     "Zhengcong Fei": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Kunlun"
+      ],
+      "confidence": "high",
+      "paper_id": "2407.11633",
+      "paper_title": "Scaling Diffusion Transformers to 16 Billion Parameters",
+      "primary": "Kunlun",
+      "published": "2024-07-16",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2407.11633"
     },
     "Zhi Hou": {
       "all": [
@@ -1620,22 +1770,28 @@
       "source_url": "https://arxiv.org/html/2410.15959"
     },
     "Zhimin Li": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Tencent"
+      ],
+      "confidence": "medium",
+      "paper_id": "2405.08748",
+      "paper_title": "Hunyuan-DiT: A Powerful Multi-Resolution Diffusion Transformer with Fine-Grained Chinese Understanding",
+      "primary": "Tencent",
+      "published": "2024-05-14",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2405.08748"
     },
     "Zhuoyi Yang": {
-      "all": [],
-      "confidence": "unresolved",
-      "paper_id": null,
-      "paper_title": null,
-      "primary": "Unknown",
-      "published": null,
-      "source": null
+      "all": [
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2408.06072",
+      "paper_title": "CogVideoX: Text-to-Video Diffusion Models with An Expert Transformer",
+      "primary": "Tsinghua University",
+      "published": "2024-08-12",
+      "source": "PDF first page",
+      "source_url": "https://arxiv.org/pdf/2408.06072"
     },
     "Zhuoyuan Wu": {
       "all": [
@@ -1652,27 +1808,40 @@
   },
   "generated_at": "2026-08-03",
   "institution_counts": {
-    "Adobe": 4,
-    "Alibaba Group": 1,
+    "Adobe": 5,
+    "Alibaba Group": 3,
+    "Alibaba Token Foundry": 1,
+    "Apple": 1,
+    "Bagel Labs": 1,
     "Baidu": 1,
+    "Beijing Academy of Artificial Intelligence": 1,
     "Beijing Institute of Technology": 1,
     "Beijing Normal University": 1,
-    "ByteDance": 2,
+    "ByteDance": 3,
     "Carnegie Mellon University": 1,
-    "Chinese Academy of Sciences": 1,
-    "Chinese University of Hong Kong": 1,
+    "Chinese Academy of Sciences": 2,
+    "Chinese University of Hong Kong": 2,
     "Columbia University": 1,
+    "Current Robotics": 1,
     "Emory University": 1,
-    "Fudan University": 2,
-    "Google": 4,
+    "Fudan University": 3,
+    "Google": 6,
     "Google DeepMind": 2,
+    "Harbin Institute of Technology": 1,
     "Heidelberg University": 1,
     "Hong Kong University of Science and Technology": 6,
     "Hong Kong University of Science and Technology (Guangzhou)": 3,
+    "Huawei": 1,
     "Indian Institute of Science Education and Research Bhopal": 1,
     "Institute of Science Tokyo": 1,
     "JD.com": 1,
+    "Korea Advanced Institute of Science and Technology": 1,
+    "Kuaishou": 2,
+    "Kunlun": 1,
+    "Li Auto": 1,
+    "Lightricks": 1,
     "Ludwig Maximilian University of Munich": 1,
+    "Maitrix": 1,
     "Massachusetts Institute of Technology": 1,
     "Max Planck Institute for Intelligent Systems": 1,
     "Meta AI": 2,
@@ -1680,35 +1849,46 @@
     "Monash University": 1,
     "NVIDIA": 5,
     "Nanjing University": 1,
+    "Nanyang Technological University": 1,
     "National University of Singapore": 1,
     "New York University": 4,
-    "Peking University": 2,
+    "OPPO": 1,
+    "Peking University": 3,
     "Physical Intelligence": 1,
     "Princeton University": 1,
+    "Qualcomm": 1,
     "Renmin University of China": 1,
-    "Salesforce Research": 1,
+    "Salesforce Research": 2,
     "Shanghai AI Laboratory": 4,
-    "Shanghai Jiao Tong University": 4,
+    "Shanghai Jiao Tong University": 6,
     "Shanghai Qizhi Institute": 1,
     "Shengshu Technology": 2,
+    "Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences": 2,
+    "Skywork AI": 1,
+    "Sorbonne University": 1,
     "Stanford University": 5,
+    "StepFun": 1,
     "Sun Yat-sen University": 1,
-    "Tencent": 2,
+    "Tencent": 4,
+    "The Chinese University of Hong Kong": 1,
+    "The Ohio State University": 1,
     "The University of Hong Kong": 1,
-    "Tsinghua University": 5,
+    "Tsinghua University": 8,
     "University of California, Berkeley": 2,
     "University of California, Davis": 1,
     "University of California, Los Angeles": 1,
     "University of Chinese Academy of Sciences": 1,
     "University of Geneva": 1,
     "University of Illinois Urbana-Champaign": 2,
+    "University of Massachusetts Amherst": 2,
     "University of Oxford": 1,
     "University of Science and Technology of China": 1,
     "University of Texas at Austin": 2,
     "University of Toronto": 1,
     "University of Waterloo": 1,
-    "Unknown": 47,
-    "Zhejiang University": 1
+    "XYZ Embodied AI": 1,
+    "Zhejiang University": 2,
+    "ZhiCheng AI": 1
   },
   "selection_rule": "Primary affiliation on the latest resolved key-author paper in the catalog"
 }
