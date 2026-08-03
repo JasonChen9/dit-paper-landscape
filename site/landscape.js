@@ -114,8 +114,6 @@
     palette: [],
     animationToken: 0,
     viewAnimationFrame: null,
-    hoverFocus: null,
-    hoverEnergy: 0,
     timeMin: null,
     timeMax: null,
     timeStart: null,
@@ -824,28 +822,12 @@
         if (handoffStart === null) handoffStart = timestamp;
         const handoffProgress = Math.min(1, (timestamp - handoffStart) / handoffDuration);
         const handoffBlend = 1 - Math.pow(1 - handoffProgress, 3);
-        if (state.hovered !== null) {
-          state.hoverEnergy += (1 - state.hoverEnergy) * 0.2;
-        } else {
-          state.hoverEnergy *= Math.pow(0.955, elapsed / frameInterval);
-        }
-        if (state.hoverEnergy < 0.01) {
-          state.hoverEnergy = 0;
-          state.hoverFocus = null;
-        }
-
         state.nodes.forEach((node) => {
-          const similarity = state.hoverFocus === null
-            ? 0
-            : state.similarities[state.hoverFocus][node.index];
-          const proximity = node.index === state.hoverFocus ? 1 : similarity;
-          const activation = state.hoverEnergy * proximity;
           // Keep ambient motion in screen space. Without compensating for the
           // camera scale, zooming in also magnifies each node's drift and makes
           // the map appear to accelerate.
-          const amplitude = node.driftAmplitude * (1 + activation * 0.95)
-            / Math.max(0.001, state.view.scale);
-          node.driftPhase += motionElapsed * node.driftSpeed * (1 + activation * 0.45);
+          const amplitude = node.driftAmplitude / Math.max(0.001, state.view.scale);
+          node.driftPhase += motionElapsed * node.driftSpeed;
           const phase = node.driftPhase;
           node.x = node.anchorX + Math.sin(phase) * amplitude * handoffBlend;
           node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72 * handoffBlend;
@@ -1276,10 +1258,6 @@
       }
       const { node, x, y } = pointerNode(event);
       state.hovered = node?.index ?? null;
-      if (node) {
-        state.hoverFocus = node.index;
-        state.hoverEnergy = 1;
-      }
       elements.canvas.style.cursor = node ? "pointer" : "grab";
       if (node) {
         const paper = state.papers[node.index];
@@ -1371,8 +1349,6 @@
     state.activeCluster = null;
     state.activeTag = null;
     state.hovered = null;
-    state.hoverFocus = null;
-    state.hoverEnergy = 0;
     state.timeStart = state.timeMin;
     state.timeEnd = state.timeMax;
     renderTimeDensity();
