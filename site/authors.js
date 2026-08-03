@@ -951,8 +951,11 @@
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         state.nodes.forEach((node) => {
           node.driftPhase += elapsed * node.driftSpeed;
-          node.x = node.anchorX + Math.sin(node.driftPhase) * node.driftAmplitude;
-          node.y = node.anchorY + Math.cos(node.driftPhase * 0.81) * node.driftAmplitude * 0.72;
+          // Express drift amplitude in screen pixels so zooming changes the
+          // amount of detail, not the perceived motion speed.
+          const amplitude = node.driftAmplitude / Math.max(0.001, state.view.scale);
+          node.x = node.anchorX + Math.sin(node.driftPhase) * amplitude;
+          node.y = node.anchorY + Math.cos(node.driftPhase * 0.81) * amplitude * 0.72;
         });
         draw();
       }

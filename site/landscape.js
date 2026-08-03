@@ -78,6 +78,7 @@
   };
 
   const CLUSTER_COUNT = 7;
+  const DEFAULT_VIEW_SCALE = 1.25;
   const state = {
     papers: [],
     paperDays: [],
@@ -496,7 +497,7 @@
     startAmbientMotion(token);
   }
 
-  function updateViewTarget(immediate = false, force = false) {
+  function updateViewTarget(immediate = false, force = false, scaleFactor = DEFAULT_VIEW_SCALE) {
     if (!state.nodes.length) return;
     const padding = 82;
     const minX = Math.min(...state.nodes.map((node) => node.x)) - padding;
@@ -518,9 +519,9 @@
     state.view.fitOffsetX = state.width / 2 - centerX * scale;
     state.view.fitOffsetY = state.height / 2 - centerY * scale;
     if (state.view.manual && !force) return;
-    state.view.targetScale = scale;
-    state.view.targetOffsetX = state.view.fitOffsetX;
-    state.view.targetOffsetY = state.view.fitOffsetY;
+    state.view.targetScale = scale * scaleFactor;
+    state.view.targetOffsetX = state.width / 2 - centerX * state.view.targetScale;
+    state.view.targetOffsetY = state.height / 2 - centerY * state.view.targetScale;
     if (immediate || !state.view.initialized) {
       state.view.scale = state.view.targetScale;
       state.view.offsetX = state.view.targetOffsetX;
@@ -609,7 +610,7 @@
   function fitView() {
     state.view.manual = false;
     const immediate = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    updateViewTarget(immediate, true);
+    updateViewTarget(immediate, true, 1);
     draw();
     if (!immediate) startViewAnimation();
   }
@@ -839,7 +840,11 @@
             : state.similarities[state.hoverFocus][node.index];
           const proximity = node.index === state.hoverFocus ? 1 : similarity;
           const activation = state.hoverEnergy * proximity;
-          const amplitude = node.driftAmplitude * (1 + activation * 0.95);
+          // Keep ambient motion in screen space. Without compensating for the
+          // camera scale, zooming in also magnifies each node's drift and makes
+          // the map appear to accelerate.
+          const amplitude = node.driftAmplitude * (1 + activation * 0.95)
+            / Math.max(0.001, state.view.scale);
           node.driftPhase += motionElapsed * node.driftSpeed * (1 + activation * 0.45);
           const phase = node.driftPhase;
           node.x = node.anchorX + Math.sin(phase) * amplitude * handoffBlend;
@@ -1512,7 +1517,7 @@
     selectPaper(chooseInitialPaper());
     bindCanvas();
     elements.zoomOut.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 0.8, true));
-    elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 1.25, true));
+    elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, DEFAULT_VIEW_SCALE, true));
     elements.zoomFit.addEventListener("click", fitView);
     new ResizeObserver(() => {
       if (setDimensions()) {
