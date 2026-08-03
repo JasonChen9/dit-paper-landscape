@@ -10,6 +10,8 @@
         "foundation", "foundation-model", "image", "text-rendering", "editing", "conversion",
         "ddpm", "score-sde", "continuous-time", "training-objective", "rectified-flow",
         "flow-matching", "straight-path", "training-design", "noise-schedule",
+        "mmdit", "linear-attention", "efficient-architecture", "training-efficiency",
+        "high-resolution", "weak-to-strong", "interpolant", "self-supervision", "text-to-image",
       ],
     },
     video: {
@@ -17,6 +19,7 @@
       tags: [
         "video", "long-video", "streaming", "avatar", "real-time", "audio-driven", "mobile",
         "4d-consistency", "3d-constraint", "causal", "autoregressive", "world-consistency",
+        "spatiotemporal", "3d-vae", "text-to-video", "video-foundation-model",
       ],
     },
     systems: {
@@ -27,6 +30,8 @@
         "inference", "compression", "efficiency", "engine", "speculation", "sequence-parallel",
         "training", "block-wise", "hierarchical", "memory-management", "auto-configuration",
         "sampling", "implicit-process", "ode-solver", "few-step", "distillation", "guidance",
+        "patch-parallel", "hybrid-parallel", "stage-graph", "disaggregation", "latency",
+        "deployment", "runtime", "edge-deployment", "token-pruning", "benchmark",
       ],
     },
     rl: {
@@ -41,22 +46,30 @@
     agent: {
       labelKey: "cluster.agent",
       tags: [
-        "robotics", "diffusion-policy", "cross-embodiment", "tactile", "bimanual", "world-model",
-        "action", "interactive", "long-horizon", "language", "u-shape", "cross-embodiment",
+        "world-model", "world-action-model", "embodied-world-model", "future-prediction",
+        "interactive", "long-horizon", "planning", "language", "video-world-model",
+      ],
+    },
+    vla: {
+      labelKey: "cluster.vla",
+      tags: [
+        "vla", "robotics", "robot-policy", "diffusion-policy", "flow-policy", "action-expert",
+        "action", "action-chunking", "cross-embodiment", "tactile", "bimanual", "control",
+        "real-time-control", "replanning", "policy-serving", "dual-system", "receding-horizon",
       ],
     },
     omni: {
       labelKey: "cluster.omni",
       tags: [
-        "omni", "multimodal", "multi-output", "audio", "synchronization", "interleaved",
-        "understanding", "generation", "perception", "unified-representation", "instruction",
+        "omni", "multi-output", "audio", "synchronization", "interleaved", "tri-modal",
+        "understanding", "perception", "unified-representation", "instruction", "any-to-any",
         "image-editing", "prior-preservation", "decoupled", "unified", "prediction",
-        "discrete-diffusion",
+        "discrete-diffusion", "cross-modal",
       ],
     },
   };
 
-  const CLUSTER_COUNT = 6;
+  const CLUSTER_COUNT = 7;
   const state = {
     papers: [],
     paperDays: [],

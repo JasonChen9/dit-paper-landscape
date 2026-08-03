@@ -41,11 +41,26 @@
 
 ### 多 GPU 推理与 serving
 
+- [DistriFusion](https://arxiv.org/abs/2402.19481)：以 patch 并行和跨步特征复用建立高分辨率分布式 diffusion 基线。
+- [PipeFusion](https://arxiv.org/abs/2405.14430)：在 patch 粒度把去噪过程组成 pipeline，目标是重叠计算和通信。
+- [xDiT](https://arxiv.org/abs/2411.01738)：把 sequence、tensor 和 pipeline 并行组合成大规模 DiT 推理引擎。
 - [SwiftFusion](https://arxiv.org/abs/2601.20273)：长序列 DiT 的可扩展 sequence parallel。
 - [PipeDiT](https://arxiv.org/abs/2511.12056)：任务流水和模型解耦，填补 denoising 阶段空泡。
 - [GF-DiT](https://arxiv.org/abs/2606.13501)：在 serving 层调度不同并行策略。
 - [Xema](https://arxiv.org/abs/2607.11136)：根据请求模板的离线显存轨迹，只在短暂峰值区间实施最小必要的显存缓解；静态张量布局减少碎片，并由离线规划器联合选择并行、并发和显存策略。
 - [X-Stage](https://arxiv.org/abs/2607.23264)：让发送端 remote-store 与下一层计算重叠，补足只优化接收/collective 侧的遗漏阶段。
+
+### VLA 与混合 workflow serving
+
+- [vLLM-Omni](https://arxiv.org/abs/2602.02204)：用 stage graph 表示 VLM/LLM、DiT action expert 和其他模态组件，每个阶段独立 batching、GPU 分配和路由。它解决的是混合模型服务，不是机器人上的整个闭环控制器。
+- [VLA-Perf](https://arxiv.org/abs/2602.18397)：把长视频、模型架构、异步推理、端/边/云部署统一到延迟模型中。
+- [EfficientVLA](https://arxiv.org/abs/2506.10100)：联合裁剪 VLM 层、视觉 token 和缓存 action head，提醒优化必须覆盖全 pipeline。
+- [QuantVLA](https://arxiv.org/abs/2602.20309)：针对 VLM 与 DiT action head 的数值尺度做训练后量化。
+- [Realtime-VLA FLASH](https://arxiv.org/abs/2605.13778)：用 draft—verify—fallback 降低高频重规划中完整 VLA 调用的比例。
+- [vla.cpp](https://arxiv.org/abs/2606.08094)：把多种 VLM 和 diffusion/flow action head 放进轻量 C++ runtime，面向 batch-1 和边缘设备。
+- [ActionCache](https://arxiv.org/abs/2607.06370)：从历史相似观测检索中间 action，用于热启动 flow denoising。
+
+VLA 不是简单的“vLLM + DiT”同机拼接。它的关键路径是视觉编码/VLM prefill → 动作条件缓存 → 多步 DiT/flow action expert → action chunk 执行 → 新观测触发重规划。通用 serving engine 可以处理前三段，但实时控制还要处理 deadline、过期 action、安全回退和控制器连续性。
 
 ## 回答“DiT 计算高，通信瓶颈真的大吗”
 

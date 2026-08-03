@@ -22,6 +22,12 @@
 
 | 论文 | 主要问题 | 我的判断 |
 |---|---|---|
+| [PixArt-α](https://arxiv.org/abs/2310.00426) / [PixArt-Σ](https://arxiv.org/abs/2403.04692) | 低成本训练与 4K 分辨率迁移 | 说明数据质量、分阶段训练和分辨率 curriculum 可以比单纯扩大模型更高效 |
+| [SiT](https://arxiv.org/abs/2401.08740) | diffusion / flow 目标如何统一 | 把主干架构与连续时间生成路径解耦，是理解后续 flow DiT 的关键基线 |
+| [Stable Diffusion 3](https://arxiv.org/abs/2403.03206) | MMDiT 与 rectified-flow scaling | 文本/图像 token 分开参数、共同交互的模式已影响多个主流基础模型 |
+| [Hunyuan-DiT](https://arxiv.org/abs/2405.08748) / [Lumina-T2X](https://arxiv.org/abs/2405.05945) | 多语言、多分辨率与多模态扩展 | 代表 2024 年大型开源 DiT 从单一图像 benchmark 走向通用生成主干 |
+| [REPA](https://arxiv.org/abs/2410.06940) | DiT 中间表示的语义质量 | 说明生成训练的效率问题不只在采样器，也在表征学习本身 |
+| [SANA](https://arxiv.org/abs/2410.10629) / [SANA 1.5](https://arxiv.org/abs/2501.18427) | 线性注意力与训练/推理期 scaling | 代表“降 token + 改 attention + 轻条件编码”的联合效率路线 |
 | [Qwen-Image](https://arxiv.org/abs/2508.02324) | 复杂文字渲染、生成编辑统一 | 证明数据、文本编码和后训练仍可比“新 block”更决定上限 |
 | [Seedream 4.0](https://arxiv.org/abs/2509.20427) | 多图参考与生成编辑统一 | 代表产品级多条件图像模型，而非单纯架构论文 |
 | [RAE](https://arxiv.org/abs/2510.11690) | 用语义表征编码器替代 VAE | 近期最值得跟踪的基础变量之一 |

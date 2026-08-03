@@ -24,6 +24,7 @@
   --cluster-4: #9563a8;
   --cluster-5: #c84f5f;
   --cluster-6: #687d92;
+  --cluster-7: #b07a22;
 }
 
 :root[data-theme="dark"] {
@@ -50,6 +51,7 @@
   --cluster-4: #b783ca;
   --cluster-5: #df6b78;
   --cluster-6: #8da3b8;
+  --cluster-7: #d3a44a;
 }
 
 * {

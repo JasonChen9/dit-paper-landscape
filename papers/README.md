@@ -1,6 +1,6 @@
 # PDF 分层索引
 
-本地目录共保存 76 篇已校验的 arXiv PDF。PDF 被 Git 忽略；GitHub 浏览器阅读请使用在线网站或中文笔记中的 arXiv 链接。论文只存放在一个主分类中；跨主题关系和中文解读见 `../notes/`，可检索元数据见 `../catalog/papers.csv`。
+结构化目录当前收录 113 篇；其中本地目录已保存 76 篇校验过的 arXiv PDF，新增论文先以 arXiv/PDF 在线链接纳入网站。PDF 被 Git 忽略；GitHub 浏览器阅读请使用在线网站或中文笔记中的原始链接。论文只存放在一个主分类中；跨主题关系和中文解读见 `../notes/`，可检索元数据见 `../catalog/papers.csv`。
 
 ```text
 papers/

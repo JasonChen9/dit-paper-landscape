@@ -6,6 +6,8 @@
 
 [Video Diffusion Models](https://arxiv.org/abs/2204.03458) 是这条路线的重要背景锚点：它先在 U-Net diffusion 中系统化时空因子化、条件生成和视频评测；后来的 video DiT 改变了 backbone 和扩展方式，但继承了相同的长序列、时空一致性与采样成本问题。
 
+2023—2025 年的基础链现已纳入主图：[W.A.L.T.](https://arxiv.org/abs/2312.06662) 和 [Latte](https://arxiv.org/abs/2401.03048) 确立 latent video Transformer 的时空分解基线；[CogVideoX](https://arxiv.org/abs/2408.06072) 与 [HunyuanVideo](https://arxiv.org/abs/2412.03603) 展示大规模开源视频 DiT；[LTX-Video](https://arxiv.org/abs/2501.00103) 把高压缩 latent 与实时性放到核心；[Step-Video-T2V](https://arxiv.org/abs/2502.10248) 则补齐数据、分布式训练和评测的全栈视角。
+
 ## 三组问题
 
 ### 1. 降低每段视频的成本

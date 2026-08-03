@@ -1,6 +1,6 @@
 # 最近三年 DiT 研究版图
 
-> 统计窗口：2023-08-02—2026-08-02。精选 60 篇窗口内论文，另列 16 篇更早的历史锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
+> 统计窗口：2023-08-02—2026-08-02。精选 96 篇窗口内论文，另列 17 篇更早的历史锚点。它是“问题结构采样”，不是 arXiv 关键词穷举。
 
 ## 一句话判断
 
@@ -10,15 +10,16 @@ DiT 的研究重心已经从“Transformer 能否替代 U-Net”转向“如何�
 
 依据 [Diffusion Models: A Comprehensive Survey of Methods and Applications](https://arxiv.org/abs/2209.00796) 回查后，主图谱补入 20 篇对 DiT 有直接方法意义的前置工作：DDPM / Score SDE 的生成基础，LDM 的 latent 与条件接口，DDIM / EDM / DPM-Solver / Progressive Distillation 的训练采样设计，Flow Matching / Rectified Flow 的连续流目标，Video Diffusion Models 的视频起点，以及 One Transformer Fits All、MMaDA 和早期 diffusion RL / preference alignment。纯垂直应用、普通 Transformer、扩散语言模型中的非多模态工作不纳入。
 
-## 六条主线
+## 七条主线
 
 | 主线 | 社区正在解决什么 | 代表工作 |
 |---|---|---|
-| 表示与架构 | VAE latent 是否限制语义和细节；高维 RAE latent 如何扩散；单流、像素空间和混合模块怎样扩展 | RAE、Scaling RAE DiT、PixelDiT、Z-Image、Chimera |
-| 视频与长上下文 | token 数爆炸、长时漂移、训练—推理不一致、流式状态和音画/动作一致性 | SANA-Video、Helios、Causal-rCM、SANA-Video 2.0 |
-| 系统效率 | 缓存误差、显存峰值与碎片、量化与稀疏协同、sequence parallel 通信、多 GPU 调度与 kernel 落地 | QuantSparse、FlashOmni、SwiftFusion、GF-DiT、Xema、X-Stage |
+| 表示与架构 | 从 latent、flow 目标、多模态交互到线性注意力如何联合扩展 | PixArt-α/Σ、SiT、Stable Diffusion 3、SANA、REPA、RAE |
+| 视频与长上下文 | token 数爆炸、长时漂移、训练—推理不一致、流式状态和音画/动作一致性 | W.A.L.T.、Latte、CogVideoX、HunyuanVideo、LTX-Video、SANA-Video |
+| 系统效率 | 缓存误差、显存峰值与碎片、量化与稀疏协同、sequence parallel 通信、多 GPU 调度与混合模型 serving | DistriFusion、PipeFusion、xDiT、TeaCache、vLLM-Omni、Xema、X-Stage |
 | RL 与奖励 | 从审美偏好扩展到文字、几何、3D/4D、物理和规则等可验证能力；降低 rollout 和 reward 成本 | DiffusionNFT、World-R1、VideoRLVR、DiT-Reward、JAGG |
-| Agent / World Model | DiT 既可作为动作 policy，也可作为未来视频/世界预测器；开始尝试联合 world + action | Tenma、DECO、Qwen-RobotWorld、AlayaWorld、WorldDiT |
+| Agent / World Model | 用 action-conditioned video/latent 预测未来，并向联合 world + action 建模发展 | Qwen-RobotWorld、AlayaWorld、WLA、WorldDiT |
+| VLA / 机器人控制 | VLM 语义主干如何与 diffusion/flow action expert 协同；如何实时生成 action chunk | Diffusion Policy、π0/π0.5、CogACT、DexVLA、GR00T N1、VLAFlow |
 | Omni / 统一模型 | 从“多条件图像生成”走向多输出、交错生成以及理解—生成共享连续表示 | 3MDiT、Loom、UniDDT、MMDiff、UniGP、Twins |
 
 ## 各方向成熟度
@@ -30,6 +31,7 @@ DiT 的研究重心已经从“Transformer 能否替代 U-Net”转向“如何�
 | 缓存、量化、并行、调度 | 很高 | 中 | 收益强依赖模型、硬件、分辨率和 batch |
 | DiT RL 后训练 | 很高 | 中低 | 目标明确，但 rollout、奖励和稳定性仍贵 |
 | World Model + Action | 很高 | 低到中 | demo 进展快，闭环长时可靠性不足 |
+| Diffusion / Flow VLA | 很高 | 中 | action expert 已成为主流连续动作头，实时部署正快速成熟 |
 | Omni 理解—生成统一 | 高 | 低到中 | “统一”的定义尚不一致 |
 | 专家化 DiT | 中 | 低 | 存在不同路由粒度，公开部署资料仍少 |
 
@@ -40,7 +42,8 @@ flowchart LR
   D["DiT / Flow backbone"] --> R["RL 后训练"]
   R --> RC["可验证约束：文字、计数、3D/4D、规则"]
   D --> P["Diffusion policy"]
-  P --> A["连续动作序列"]
+  P --> VLA["VLA action expert"]
+  VLA --> A["连续 action chunk"]
   D --> W["Video / world model"]
   W --> F["未来状态或未来像素"]
   A --> W
@@ -51,7 +54,7 @@ flowchart LR
   O --> U["理解—生成共享表示"]
 ```
 
-RL 是训练方法，Agent 是闭环使用方式，Omni 是模型输入/输出与表示的统一范围；它们不是三种互斥架构。一个 DiT world model 可以同时通过 RL 后训练、给 Agent 做规划，并接受多模态 Omni 条件。
+RL 是训练方法，Agent 是闭环使用方式，VLA 是感知—语言—动作策略接口，Omni 是输入/输出与表示的统一范围；它们不是互斥架构。一个 DiT world model 可以通过 RL 后训练、给 Agent 做规划，再由 VLA action expert 生成连续动作。
 
 ## 阅读顺序
 
