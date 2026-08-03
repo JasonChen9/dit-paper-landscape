@@ -1,6 +1,11 @@
-const CATALOG_VERSION = "20260803-author-landscape-v1";
-const DATA_URL = `./data/papers.csv?v=${CATALOG_VERSION}`;
-const ENGLISH_SUMMARIES_URL = `./data/summaries_en.json?v=${CATALOG_VERSION}`;
+const CATALOG_VERSION = "20260803-precomputed-landscape-v3";
+const DEPLOY_ASSET_VERSION = document.querySelector('meta[name="deploy-version"]')?.content;
+const DATA_VERSION = DEPLOY_ASSET_VERSION && !DEPLOY_ASSET_VERSION.startsWith("__")
+  ? DEPLOY_ASSET_VERSION
+  : CATALOG_VERSION;
+const DATA_URL = `./data/papers.csv?v=${DATA_VERSION}`;
+const ENGLISH_SUMMARIES_URL = `./data/summaries_en.json?v=${DATA_VERSION}`;
+const PRECOMPUTED_LANDSCAPE_URL = `./data/landscape.json?v=${DATA_VERSION}`;
 const DEPLOY_VERSION_URL = "./version.json";
 const DEPLOY_CHECK_INTERVAL_MS = 15000;
 const EXPORT_COUNTER_URL = "https://api.counterapi.dev/v1/jasonchen9-dit-paper-landscape/paper-exports";
@@ -167,6 +172,16 @@ function parseCSV(text) {
   return rows
     .filter((values) => values.some(Boolean))
     .map((values) => Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""])));
+}
+
+function catalogSignature(papers) {
+  const value = papers.map((paper) => [paper.arxiv_id, paper.topic_tags, paper.key_authors].join("\t")).join("\n");
+  let hash = 2166136261;
+  for (const char of value) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, "0");
 }
 
 function normalize(value) {
@@ -832,24 +847,30 @@ async function initialize() {
   loadExportCount();
   startDeployVersionMonitor();
   try {
-    const [response, englishSummaries] = await Promise.all([
+    const [response, englishSummaries, precomputedLandscape] = await Promise.all([
       fetch(DATA_URL, { cache: "no-store" }),
       fetch(ENGLISH_SUMMARIES_URL, { cache: "no-store" })
         .then((summariesResponse) => summariesResponse.ok ? summariesResponse.json() : {})
         .catch(() => ({})),
+      fetch(PRECOMPUTED_LANDSCAPE_URL, { cache: "force-cache" })
+        .then((landscapeResponse) => landscapeResponse.ok ? landscapeResponse.json() : null)
+        .catch(() => null),
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     state.papers = parseCSV(await response.text()).map((paper) => ({
       ...paper,
       summary_en: englishSummaries[paper.arxiv_id] ?? "",
     }));
+    const usablePrecomputedLandscape = precomputedLandscape?.catalogSignature === catalogSignature(state.papers)
+      ? precomputedLandscape
+      : null;
     readURLState();
     bindEvents();
     elements.total.textContent = state.papers.length;
     elements.windowCount.textContent = state.papers.filter((paper) => paper.window === "in-window").length;
     render();
-    window.DiTLandscape?.init(state.papers);
-    window.DiTAuthors?.init(state.papers);
+    window.DiTLandscape?.init(state.papers, usablePrecomputedLandscape);
+    window.DiTAuthors?.init(state.papers, usablePrecomputedLandscape);
     syncLandscapeTimeFilter();
     syncLandscapeListFilter();
     setLandscapeMode(state.mapMode, { updateHistory: false });

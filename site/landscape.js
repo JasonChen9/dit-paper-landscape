@@ -120,6 +120,7 @@
     timeStart: null,
     timeEnd: null,
     externalIds: null,
+    precomputedPositions: null,
   };
 
   const elements = {};
@@ -460,11 +461,16 @@
       const cluster = state.clusters[index];
       const target = state.clusterTargets[cluster];
       const rank = clusterRanks[cluster]++;
+      const precomputed = state.precomputedPositions?.[index];
       const angle = rank * goldenAngle + hashNumber(`${paper.arxiv_id}:a`) * 0.42;
       const fillRatio = Math.sqrt((rank + 0.65) / Math.max(1, target.count));
       const distance = target.radius * 0.8 * fillRatio;
-      const x = target.x + Math.cos(angle) * distance;
-      const y = target.y + Math.sin(angle) * distance;
+      const x = Number.isFinite(precomputed?.x)
+        ? precomputed.x * state.virtualWidth
+        : target.x + Math.cos(angle) * distance;
+      const y = Number.isFinite(precomputed?.y)
+        ? precomputed.y * state.virtualHeight
+        : target.y + Math.sin(angle) * distance;
       return {
         index,
         cluster,
@@ -481,6 +487,13 @@
       };
     });
     updateViewTarget(true);
+  }
+
+  function startPrecomputedLayout() {
+    const token = ++state.animationToken;
+    captureAnchors();
+    draw();
+    startAmbientMotion(token);
   }
 
   function updateViewTarget(immediate = false, force = false) {
@@ -1391,7 +1404,23 @@
     }
   }
 
-  function init(papers) {
+  function validPrecomputed(papers, payload) {
+    return payload?.algorithmVersion === 1
+      && Array.isArray(payload.paperIds)
+      && payload.paperIds.length === papers.length
+      && payload.paperIds.every((id, index) => id === papers[index].arxiv_id)
+      && Array.isArray(payload.paper?.clusters)
+      && payload.paper.clusters.length === papers.length
+      && Array.isArray(payload.paper?.similarities)
+      && payload.paper.similarities.length === papers.length
+      && Array.isArray(payload.paper?.clusterInfo)
+      && payload.paper.clusterInfo.length === CLUSTER_COUNT
+      && Array.isArray(payload.paper?.edges)
+      && Array.isArray(payload.paper?.positions)
+      && payload.paper.positions.length === papers.length;
+  }
+
+  function init(papers, precomputedPayload = null) {
     if (!papers?.length || state.papers.length) return;
     Object.assign(elements, {
       canvas: document.querySelector("#landscape-canvas"),
@@ -1419,13 +1448,23 @@
     elements.context = elements.canvas.getContext("2d");
     state.papers = papers;
     initializeTimeFilter();
-    const model = buildVectors(papers);
-    state.tags = model.documents;
-    state.vectors = model.vectors;
-    state.clusters = clusterVectors(model.vectors, model.documents);
-    state.similarities = buildSimilarityMatrix(model.vectors);
-    state.clusterInfo = describeClusters(papers, model.documents, state.clusters);
-    state.edges = buildEdges(state.similarities, state.clusters);
+    const usePrecomputed = validPrecomputed(papers, precomputedPayload);
+    document.documentElement.dataset.landscapeData = usePrecomputed ? "precomputed" : "client";
+    if (usePrecomputed) {
+      state.clusters = precomputedPayload.paper.clusters;
+      state.similarities = precomputedPayload.paper.similarities;
+      state.clusterInfo = precomputedPayload.paper.clusterInfo;
+      state.edges = precomputedPayload.paper.edges;
+      state.precomputedPositions = precomputedPayload.paper.positions;
+    } else {
+      const model = buildVectors(papers);
+      state.tags = model.documents;
+      state.vectors = model.vectors;
+      state.clusters = clusterVectors(model.vectors, model.documents);
+      state.similarities = buildSimilarityMatrix(model.vectors);
+      state.clusterInfo = describeClusters(papers, model.documents, state.clusters);
+      state.edges = buildEdges(state.similarities, state.clusters);
+    }
     readPalette();
     setDimensions();
     initializeNodes();
@@ -1441,10 +1480,12 @@
     new ResizeObserver(() => {
       if (setDimensions()) {
         initializeNodes();
-        runSimulation();
+        if (state.precomputedPositions) startPrecomputedLayout();
+        else runSimulation();
       }
     }).observe(elements.plot);
-    runSimulation();
+    if (state.precomputedPositions) startPrecomputedLayout();
+    else runSimulation();
   }
 
   function themeChanged() {

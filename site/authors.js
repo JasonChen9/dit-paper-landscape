@@ -35,6 +35,7 @@
     viewAnimationFrame: null,
     animationToken: 0,
     search: "",
+    precomputedPositions: null,
   };
   const elements = {};
 
@@ -65,7 +66,7 @@
     return (hash >>> 0) / 4294967295;
   }
 
-  function buildProfiles() {
+  function buildProfiles({ computeSimilarity = true } = {}) {
     const profiles = new Map();
     state.papers.forEach((paper, paperIndex) => {
       const tags = splitValues(paper.topic_tags).map((tag) => tag.toLowerCase());
@@ -96,7 +97,7 @@
       (left, right) => right.papers.length - left.papers.length || left.name.localeCompare(right.name, "en"),
     );
     updateProfileClusters();
-    buildSimilarityModel();
+    if (computeSimilarity) buildSimilarityModel();
   }
 
   function updateProfileClusters() {
@@ -192,8 +193,13 @@
       const radius = Math.min(state.virtualHeight * 0.21, Math.max(120, Math.sqrt(count) * 36));
       const distance = radius * 0.84 * Math.sqrt((rank + 0.65) / count);
       const [slotX, slotY] = slots[profile.cluster];
-      const x = state.virtualWidth * slotX + Math.cos(angle) * distance;
-      const y = state.virtualHeight * slotY + Math.sin(angle) * distance;
+      const precomputed = state.precomputedPositions?.[index];
+      const x = Number.isFinite(precomputed?.x)
+        ? precomputed.x * state.virtualWidth
+        : state.virtualWidth * slotX + Math.cos(angle) * distance;
+      const y = Number.isFinite(precomputed?.y)
+        ? precomputed.y * state.virtualHeight
+        : state.virtualHeight * slotY + Math.sin(angle) * distance;
       return {
         index, cluster: profile.cluster, x, y, anchorX: x, anchorY: y, vx: 0, vy: 0,
         driftPhase: hashNumber(`${profile.name}:phase`) * Math.PI * 2,
@@ -201,7 +207,9 @@
         driftAmplitude: 2.8 + hashNumber(`${profile.name}:amplitude`) * 1.8,
       };
     });
-    for (let iteration = 0; iteration < 110; iteration += 1) forceStep(slots);
+    if (!state.precomputedPositions) {
+      for (let iteration = 0; iteration < 110; iteration += 1) forceStep(slots);
+    }
     state.nodes.forEach((node) => { node.anchorX = node.x; node.anchorY = node.y; });
     updateViewTarget(true, true);
   }
@@ -372,9 +380,11 @@
     const styles = getComputedStyle(document.documentElement);
     const edgeColor = styles.getPropertyValue("--landscape-edge").trim();
     const labelColor = styles.getPropertyValue("--text").trim();
+    const zoomRatio = state.view.scale / Math.max(0.001, state.view.fitScale);
     context.clearRect(0, 0, state.width, state.height);
     const focus = state.hovered ?? state.selected;
     const neighbors = new Set(focus === null ? [] : nearestAuthors(focus, 5).map(({ candidate }) => candidate));
+    const labelBoxes = [];
     state.edges.forEach((edge) => {
       const source = state.nodes[edge.source];
       const target = state.nodes[edge.target];
@@ -410,13 +420,35 @@
         context.globalAlpha = active ? 0.94 : 0.25;
         context.stroke();
       }
-      if (active && (selected || hovered || profile.papers.length >= 3)) {
+      const showLabel = selected
+        || hovered
+        || profile.papers.length >= 3
+        || (zoomRatio >= 1.4 && profile.papers.length >= 2)
+        || zoomRatio >= 1.9;
+      if (active && showLabel) {
+        const fontSize = selected ? 12 : 10;
+        const fontWeight = selected ? 600 : 500;
+        const align = point.x > state.width - 130 ? "right" : "left";
+        const labelX = point.x + (align === "right" ? -radius - 6 : radius + 6);
+        context.font = `${fontWeight} ${fontSize}px Roboto, sans-serif`;
+        const textWidth = context.measureText(profile.name).width;
+        const box = {
+          left: align === "right" ? labelX - textWidth : labelX,
+          right: align === "right" ? labelX : labelX + textWidth,
+          top: point.y - fontSize * 0.62,
+          bottom: point.y + fontSize * 0.62,
+        };
+        const overlaps = labelBoxes.some((placed) => !(box.right + 4 < placed.left
+          || box.left - 4 > placed.right
+          || box.bottom + 3 < placed.top
+          || box.top - 3 > placed.bottom));
+        if (overlaps && !selected && !hovered) return;
+        labelBoxes.push(box);
         context.fillStyle = labelColor;
         context.globalAlpha = selected || hovered ? 1 : 0.72;
-        context.font = `${selected ? 600 : 500} ${selected ? 12 : 10}px Roboto, sans-serif`;
-        context.textAlign = point.x > state.width - 130 ? "right" : "left";
+        context.textAlign = align;
         context.textBaseline = "middle";
-        context.fillText(profile.name, point.x + (context.textAlign === "right" ? -radius - 6 : radius + 6), point.y);
+        context.fillText(profile.name, labelX, point.y);
       }
     });
     context.globalAlpha = 1;
@@ -710,7 +742,18 @@
     if (state.selected !== null) selectAuthor(state.selected);
   }
 
-  function init(papers) {
+  function validPrecomputed(papers, payload) {
+    return payload?.algorithmVersion === 1
+      && Array.isArray(payload.paperIds)
+      && payload.paperIds.length === papers.length
+      && payload.paperIds.every((id, index) => id === papers[index].arxiv_id)
+      && Array.isArray(payload.authors?.names)
+      && Array.isArray(payload.authors?.similarities)
+      && Array.isArray(payload.authors?.edges)
+      && Array.isArray(payload.authors?.positions);
+  }
+
+  function init(papers, precomputedPayload = null) {
     if (!papers?.length || state.papers.length) return;
     Object.assign(elements, {
       canvas: document.querySelector("#author-landscape-canvas"),
@@ -728,7 +771,21 @@
     if (Object.values(elements).some((element) => !element)) return;
     elements.context = elements.canvas.getContext("2d");
     state.papers = papers;
-    buildProfiles();
+    const usePrecomputed = validPrecomputed(papers, precomputedPayload);
+    buildProfiles({ computeSimilarity: !usePrecomputed });
+    const authorDataMatches = usePrecomputed
+      && precomputedPayload.authors.names.length === state.profiles.length
+      && precomputedPayload.authors.names.every((name, index) => name === state.profiles[index].name)
+      && precomputedPayload.authors.similarities.length === state.profiles.length
+      && precomputedPayload.authors.positions.length === state.profiles.length;
+    document.documentElement.dataset.authorData = authorDataMatches ? "precomputed" : "client";
+    if (authorDataMatches) {
+      state.similarities = precomputedPayload.authors.similarities;
+      state.edges = precomputedPayload.authors.edges;
+      state.precomputedPositions = precomputedPayload.authors.positions;
+    } else if (usePrecomputed) {
+      buildSimilarityModel();
+    }
     readPalette();
     setDimensions();
     initializeNodes();

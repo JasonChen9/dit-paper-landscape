@@ -29,6 +29,7 @@ git pull
 ```bash
 python3 scripts/enrich_authors.py
 python3 scripts/sync_papers.py --check
+node scripts/build_landscape_data.mjs catalog/papers.csv /tmp/landscape.json
 git add catalog README.md notes site
 git commit -m "Update paper catalog"
 git push
