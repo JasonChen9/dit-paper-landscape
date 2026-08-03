@@ -112,6 +112,7 @@
     },
     palette: [],
     animationToken: 0,
+    viewAnimationFrame: null,
     hoverFocus: null,
     hoverEnergy: 0,
     timeMin: null,
@@ -521,6 +522,35 @@
     state.view.offsetY += (state.view.targetOffsetY - state.view.offsetY) * amount;
   }
 
+  function startViewAnimation() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      state.view.scale = state.view.targetScale;
+      state.view.offsetX = state.view.targetOffsetX;
+      state.view.offsetY = state.view.targetOffsetY;
+      draw();
+      return;
+    }
+    if (state.viewAnimationFrame !== null) return;
+
+    const frame = () => {
+      easeView(0.16);
+      const settled = Math.abs(state.view.targetScale - state.view.scale) < 0.0002
+        && Math.abs(state.view.targetOffsetX - state.view.offsetX) < 0.05
+        && Math.abs(state.view.targetOffsetY - state.view.offsetY) < 0.05;
+      if (settled) {
+        state.view.scale = state.view.targetScale;
+        state.view.offsetX = state.view.targetOffsetX;
+        state.view.offsetY = state.view.targetOffsetY;
+        state.viewAnimationFrame = null;
+        draw();
+        return;
+      }
+      draw();
+      state.viewAnimationFrame = requestAnimationFrame(frame);
+    };
+    state.viewAnimationFrame = requestAnimationFrame(frame);
+  }
+
   function screenPosition(node) {
     return {
       x: node.x * state.view.scale + state.view.offsetX,
@@ -550,6 +580,7 @@
     }
     state.view.manual = true;
     draw();
+    if (animate) startViewAnimation();
   }
 
   function panView(deltaX, deltaY) {
@@ -567,6 +598,7 @@
     const immediate = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     updateViewTarget(immediate, true);
     draw();
+    if (!immediate) startViewAnimation();
   }
 
   function softWallForce(position, maximum) {
@@ -763,7 +795,6 @@
           node.x = node.anchorX + Math.sin(phase) * amplitude * handoffBlend;
           node.y = node.anchorY + Math.cos(phase * 0.83) * amplitude * 0.72 * handoffBlend;
         });
-        easeView(0.12);
         draw();
       }
       requestAnimationFrame(frame);
