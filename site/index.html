@@ -57,7 +57,7 @@
         <div class="landscape-heading">
           <div>
             <h2 id="landscape-title" data-i18n="landscape.title">research landscape</h2>
-            <p id="landscape-description" class="section-note" data-i18n="landscape.description">Papers are positioned by tag similarity: nearby nodes tend to address related questions. Colors show the seven topic clusters used throughout the site, and more titles appear progressively as you zoom in. Select a cluster, tag, or date range to update the whole view. Pinch or use the mouse wheel to zoom; drag or use two-finger scrolling to pan.</p>
+            <p id="landscape-description" class="section-note" data-i18n="landscape.description">Papers are positioned from SPECTER embeddings of their titles and full abstracts, with UMAP preserving local semantic neighborhoods. Colors show seven interpretable research topics, while distance and links reflect semantic similarity. Select a topic, tag, or date range to update the whole view. Pinch or use the mouse wheel to zoom; drag or use two-finger scrolling to pan.</p>
           </div>
           <div class="landscape-actions">
             <div class="landscape-mode-toggle" role="group" aria-label="Landscape view" data-i18n-aria-label="landscape.modeAria">
@@ -151,7 +151,7 @@
               <div id="cluster-legend" class="cluster-legend"></div>
             </div>
             <div id="landscape-selection" class="landscape-selection" aria-live="polite">
-              <p class="landscape-placeholder" data-i18n="cluster.loading">Computing paper similarities…</p>
+              <p class="landscape-placeholder" data-i18n="cluster.loading">Loading the research map…</p>
             </div>
           </aside>
 
@@ -304,7 +304,7 @@
           </article>
           <article>
             <h3 data-i18n="about.sourcesHeading">Sources &amp; maintenance</h3>
-            <p data-i18n="about.sourcesBody">Metadata is checked against conference pages and arXiv. PDF links point to the original source; the structured catalog and research notes are maintained on GitHub.</p>
+            <p data-i18n="about.sourcesBody">Metadata and full English abstracts are checked against arXiv or the original paper. Chinese abstracts are translated with GPT-5.6-sol and cached in the catalog. Semantic embeddings and the map are rebuilt when the catalog changes.</p>
           </article>
         </div>
       </section>

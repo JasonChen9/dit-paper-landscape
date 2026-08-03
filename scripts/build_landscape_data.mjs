@@ -8,18 +8,30 @@ const [
   catalogPath = "catalog/papers.csv",
   outputPath = "site/data/landscape.json",
   affiliationsPath = "catalog/author_affiliations.json",
+  semanticPath = "catalog/semantic_landscape.json",
 ] = process.argv;
 const CLUSTER_COUNT = 7;
 const TOP_INSTITUTION_PALETTE_SIZE = 10;
 const FAMILIES = {
+  foundation: [
+    "ddpm", "score-sde", "continuous-time", "training-objective", "rectified-flow",
+    "flow-matching", "straight-path", "training-design", "noise-schedule", "weak-to-strong",
+    "interpolant", "sampling", "implicit-process", "ode-solver", "few-step", "distillation",
+    "guidance", "self-supervision",
+  ],
   architecture: [
     "rae", "latent", "representation", "pixel-space", "tokenization", "single-stream",
     "hybrid-architecture", "scaling-law", "moe", "routing", "expert-design", "scaling",
     "foundation", "foundation-model", "image", "text-rendering", "editing", "conversion",
-    "ddpm", "score-sde", "continuous-time", "training-objective", "rectified-flow",
-    "flow-matching", "straight-path", "training-design", "noise-schedule", "mmdit",
+    "mmdit",
     "linear-attention", "efficient-architecture", "training-efficiency", "high-resolution",
-    "weak-to-strong", "interpolant", "self-supervision", "text-to-image",
+    "text-to-image", "omni", "multi-output", "audio", "synchronization", "interleaved",
+    "tri-modal", "understanding", "perception", "unified-representation", "instruction",
+    "any-to-any", "image-editing", "prior-preservation", "decoupled", "unified", "prediction",
+    "discrete-diffusion", "cross-modal", "native-multimodal", "autoregressive-diffusion",
+    "autoregressive-flow", "multimodal-flow", "understanding-generation", "single-transformer",
+    "mixed-modality", "continuous-latent", "image-text", "decoder-only", "unified-pretraining",
+    "clip-latent", "representation-alignment",
   ],
   video: [
     "video", "long-video", "streaming", "avatar", "real-time", "audio-driven", "mobile",
@@ -31,7 +43,6 @@ const FAMILIES = {
     "pipeline", "serving", "scheduling", "communication", "overlap", "load-balancing",
     "inference", "compression", "efficiency", "engine", "speculation", "sequence-parallel",
     "training", "block-wise", "hierarchical", "memory-management", "auto-configuration",
-    "sampling", "implicit-process", "ode-solver", "few-step", "distillation", "guidance",
     "patch-parallel", "hybrid-parallel", "stage-graph", "disaggregation", "latency",
     "deployment", "runtime", "edge-deployment", "token-pruning", "benchmark",
   ],
@@ -41,7 +52,7 @@ const FAMILIES = {
     "4d-consistency", "reasoning", "visual-generation", "flow-matching", "dpo",
     "preference", "human-feedback", "policy-gradient", "kl-regularization", "reward-free",
   ],
-  agent: [
+  world: [
     "world-model", "world-action-model", "embodied-world-model", "future-prediction",
     "interactive", "interactive-world-model", "long-horizon", "planning", "video-world-model",
     "world-foundation-model", "diffusion-world-model", "action-conditioned", "world-generation",
@@ -54,15 +65,6 @@ const FAMILIES = {
     "real-time-control", "replanning", "policy-serving", "dual-system", "receding-horizon",
     "embodied-ai", "generalist-policy", "navigation", "3d-representation", "visuomotor",
     "sim-to-real", "trajectory-critic", "foundation-policy", "denoising-transformer",
-  ],
-  omni: [
-    "omni", "multi-output", "audio", "synchronization", "interleaved", "tri-modal",
-    "understanding", "perception", "unified-representation", "instruction", "any-to-any",
-    "image-editing", "prior-preservation", "decoupled", "unified", "prediction",
-    "discrete-diffusion", "cross-modal", "native-multimodal", "autoregressive-diffusion",
-    "autoregressive-flow", "multimodal-flow", "understanding-generation", "single-transformer",
-    "mixed-modality", "continuous-latent", "image-text", "decoder-only", "unified-pretraining",
-    "clip-latent", "representation-alignment",
   ],
 };
 
@@ -330,7 +332,7 @@ function parseKeyAuthors(paper) {
   }).filter(({ name }) => name);
 }
 
-function authorModel(papers, paperClusters, affiliationRecords = {}) {
+function authorModel(papers, paperClusters, affiliationRecords = {}, paperSimilarities = null) {
   const map = new Map();
   papers.forEach((paper, paperIndex) => {
     const tags = paperTags(paper);
@@ -396,11 +398,20 @@ function authorModel(papers, paperClusters, affiliationRecords = {}) {
   const similarities = vectors.map((vector, left) => vectors.map((other, right) => {
     if (left === right) return 1;
     const sharedPaper = profiles[left].papers.some(({ paper }) => profiles[right].paperIds.has(paper.arxiv_id));
+    if (paperSimilarities) {
+      const leftPapers = profiles[left].papers.map(({ paperIndex }) => paperIndex);
+      const rightPapers = profiles[right].papers.map(({ paperIndex }) => paperIndex);
+      const leftToRight = leftPapers.reduce((sum, source) =>
+        sum + Math.max(...rightPapers.map((target) => paperSimilarities[source][target])), 0) / leftPapers.length;
+      const rightToLeft = rightPapers.reduce((sum, source) =>
+        sum + Math.max(...leftPapers.map((target) => paperSimilarities[source][target])), 0) / rightPapers.length;
+      return Math.min(1, (leftToRight + rightToLeft) / 2 + (sharedPaper ? 0.08 : 0));
+    }
     return Math.min(1, dot(vector, other) + (sharedPaper ? 0.3 : 0));
   }));
   const edgeMap = new Map();
   similarities.forEach((row, source) => row.map((similarity, target) => ({ target, similarity }))
-    .filter(({ target, similarity }) => target !== source && similarity >= 0.1)
+    .filter(({ target, similarity }) => target !== source && similarity >= (paperSimilarities ? 0.38 : 0.1))
     .sort((left, right) => right.similarity - left.similarity).slice(0, 3)
     .forEach(({ target, similarity }) => {
       const left = Math.min(source, target); const right = Math.max(source, target); const key = `${left}:${right}`;
@@ -460,20 +471,39 @@ if (!papers.length) throw new Error(`No papers found in ${catalogPath}`);
 const affiliationPayload = fs.existsSync(affiliationsPath)
   ? JSON.parse(fs.readFileSync(affiliationsPath, "utf8"))
   : { authors: {} };
-const paperModel = buildPaperVectors(papers);
-const clusters = clusterVectors(paperModel.vectors, paperModel.documents);
-const similarities = similarityMatrix(paperModel.vectors);
-const clusterInfo = describeClusters(papers, paperModel.documents, clusters);
-const edges = buildPaperEdges(similarities, clusters);
+const semanticPayload = fs.existsSync(semanticPath)
+  ? JSON.parse(fs.readFileSync(semanticPath, "utf8"))
+  : null;
+const semanticValid = semanticPayload?.schemaVersion === 1
+  && Array.isArray(semanticPayload.paperIds)
+  && semanticPayload.paperIds.length === papers.length
+  && semanticPayload.paperIds.every((id, index) => id === papers[index].arxiv_id)
+  && Array.isArray(semanticPayload.paper?.clusters)
+  && semanticPayload.paper.clusters.length === papers.length
+  && Array.isArray(semanticPayload.paper?.similarities)
+  && semanticPayload.paper.similarities.length === papers.length
+  && Array.isArray(semanticPayload.paper?.clusterInfo)
+  && semanticPayload.paper.clusterInfo.length === CLUSTER_COUNT
+  && Array.isArray(semanticPayload.paper?.edges)
+  && Array.isArray(semanticPayload.paper?.positions)
+  && semanticPayload.paper.positions.length === papers.length;
+const paperModel = semanticValid ? null : buildPaperVectors(papers);
+const clusters = semanticValid ? semanticPayload.paper.clusters : clusterVectors(paperModel.vectors, paperModel.documents);
+const similarities = semanticValid ? semanticPayload.paper.similarities : similarityMatrix(paperModel.vectors);
+const clusterInfo = semanticValid ? semanticPayload.paper.clusterInfo : describeClusters(papers, paperModel.documents, clusters);
+const edges = semanticValid ? semanticPayload.paper.edges : buildPaperEdges(similarities, clusters);
+const positions = semanticValid ? semanticPayload.paper.positions : paperLayout(papers, clusters, clusterInfo, edges);
 const output = roundNumbers({
-  algorithmVersion: 1,
+  algorithmVersion: semanticValid ? 2 : 1,
+  similarityModel: semanticValid ? semanticPayload.model : "tag-tfidf",
+  semanticCorpusSignature: semanticValid ? semanticPayload.corpusSignature : null,
   generatedAt: new Date().toISOString(),
   catalogSignature: catalogSignature(papers),
   paperIds: papers.map((paper) => paper.arxiv_id),
-  paper: { clusters, similarities, clusterInfo, edges, positions: paperLayout(papers, clusters, clusterInfo, edges) },
-  authors: authorModel(papers, clusters, affiliationPayload.authors || {}),
+  paper: { clusters, similarities, clusterInfo, edges, positions },
+  authors: authorModel(papers, clusters, affiliationPayload.authors || {}, semanticValid ? similarities : null),
 });
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, `${JSON.stringify(output)}\n`);
 const sizeKiB = Math.round(fs.statSync(outputPath).size / 1024);
-console.log(`precomputed ${papers.length} papers, ${output.authors.names.length} authors -> ${outputPath} (${sizeKiB} KiB)`);
+console.log(`precomputed ${papers.length} papers with ${semanticValid ? "SPECTER" : "tag TF-IDF"}, ${output.authors.names.length} authors -> ${outputPath} (${sizeKiB} KiB)`);

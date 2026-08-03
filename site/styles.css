@@ -1387,19 +1387,50 @@ kbd {
   gap: 7px;
 }
 
-.card-links a {
+.card-links a,
+.card-links button {
   padding: 3px 8px;
   border: 1px solid var(--accent);
   border-radius: 3px;
+  background: transparent;
   color: var(--accent);
+  font-family: inherit;
   font-size: 0.7rem;
   font-weight: 500;
+  line-height: inherit;
 }
 
-.card-links a:hover {
+.card-links a:hover,
+.card-links button:hover,
+.card-links button.active {
   background: var(--accent);
   color: var(--button-text);
   text-decoration: none;
+}
+
+.paper-abstract {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-left: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.paper-abstract[hidden] {
+  display: none;
+}
+
+.paper-abstract-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.83rem;
+  line-height: 1.65;
+}
+
+.paper-abstract-source {
+  display: inline-block;
+  margin-top: 9px;
+  color: var(--faint);
+  font-size: 0.68rem;
 }
 
 .pagination {

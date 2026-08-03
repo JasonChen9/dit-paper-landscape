@@ -11,18 +11,17 @@
 - 网站：<https://jasonchen9.github.io/dit-paper-landscape/>
 - GitHub 操作说明：[GITHUB_GUIDE.md](GITHUB_GUIDE.md)
 
-网站直接读取 `catalog/papers.csv`，支持标题、作者与摘要搜索、主题与 DiT 关系筛选，并将论文来源页和 PDF 显示为浏览器可点击链接。网站默认使用英文，可在顶部切换中文；中文研究摘要保存在 `papers.csv`，对应英文摘要保存在 `catalog/summaries_en.json`。主图可在论文主题图和关键作者图之间切换；时间、主题、作者和下方论文列表使用同一筛选状态。作者统计只包含第一作者、论文明确标注的共同第一作者和通讯作者，完整作者列表仍用于展示与搜索。论文列表默认每页显示 12 篇，也可切换为 24 或 48 篇；当前子集可导出为 Markdown 或独立 HTML，且不受分页影响。
+网站直接读取 `catalog/papers.csv`，支持标题、作者、主题与完整摘要搜索，并将论文来源页和 PDF 显示为浏览器可点击链接。每篇论文可在卡片内展开完整 abstract；网站默认使用英文，切换中文后显示缓存的 GPT-5.6-sol 全文翻译。人工撰写的一句话导读仍单独保留。主图可在论文主题图和关键作者图之间切换；时间、主题、作者和下方论文列表使用同一筛选状态。作者统计只包含第一作者、论文明确标注的共同第一作者和通讯作者，完整作者列表仍用于展示与搜索。论文列表默认每页显示 12 篇，也可切换为 24 或 48 篇；当前子集可导出为 Markdown 或独立 HTML，且不受分页影响。
 
-### 聚类口径
+### 分类与相似度口径
 
-- 从 `topic_tags` 构造 TF-IDF 特征，并加入架构、视频、系统、RL、世界模型/交互模拟、具身智能/机器人控制、原生多模态/Omni 七类概念特征。
-- 使用确定性初始化的 `k=7` cosine k-means；聚类名称由组内高频概念和标签自动生成。
-- 网站的上下两处主题筛选共用这 7 个自动聚类，不再另设一套人工分类口径。
-- 点图边和最近邻来自 cosine 相似度。布局在独立虚拟画布中运行 force simulation，用柔性边界避免节点贴边，按聚类论文数分配空间，再将整体包围盒平滑适配到可见区域。支持以指针为中心的滚轮/捏合缩放、双指或拖拽平移和 Fit 复位。位置用于探索相近问题，不代表论文质量或严格学科边界。
-- 作者图聚合每位关键作者论文的 `topic_tags`，标签词频使用 `1 + log(count)`，再乘跨作者 IDF、做 L2 归一化并计算 cosine similarity；两位关键作者若共同署名同一篇论文，相似度额外增加 `0.3`（上限为 1）。每位作者最多保留三条不低于 `0.1` 的最近邻边。节点大小表示关键作者论文数，颜色取该作者的主要论文聚类。论文图默认高亮原始 DiT，作者图默认高亮关键作者论文数最多的人；默认高亮不会自动筛选列表。
-- 两张图的 TF-IDF、cosine 相似度、聚类、连边和初始布局在 GitHub Pages 部署时预计算为 `landscape.json`。浏览器直接加载结果，只负责筛选、绘制、缩放和低速漂浮；预计算文件缺失或与目录版本不一致时才回退到浏览器计算。
+- 156 篇论文的标题与完整英文 abstract 使用 `allenai/specter` 生成学术文献 embedding。比较 `k=5–10` 后，`k=7` 的 cosine silhouette 最高（0.2506；`k=5` 为 0.2485）。5 类会合并视频与世界模型，也无法单独保留 RL；8 类以上开始把 VLA 和系统方向切成过小碎片。因此采用 7 个可解释主题：基础方法/目标/采样、架构/表示/统一生成、视频、系统效率、RL/对齐、世界模型、具身智能/VLA。
+- 分类负责稳定、可解释的颜色；论文连线来自校准后的 SPECTER cosine similarity，二维位置由 UMAP 生成。分类与空间邻近相关，但不会被强制设为同一个结果。完整诊断见 `notes/SEMANTIC_ANALYSIS.md`。
+- 网站上下只使用这一套 7 类主题筛选。`topic_tags` 继续用于词云、检索和解释，而不再决定主图几何位置。
+- 语义位置保存在大型虚拟画布中，并在可见区域内平滑 Fit；支持以指针为中心的滚轮/捏合缩放、双指或拖拽平移和 Fit 复位。位置用于探索相近问题，不代表论文质量或严格学科边界。
+- 作者相似度由双方关键作者论文的语义近邻聚合得到，共同署名提供少量加权；节点大小表示关键作者论文数，颜色表示单位，细外圈表示主要论文主题。论文图默认高亮原始 DiT，作者图默认高亮关键作者论文数最多的人；默认高亮不会自动筛选列表。
+- abstract、embedding、相似度、聚类、连边和初始布局都在维护或部署阶段生成。浏览器直接加载静态结果，只负责筛选、绘制、缩放和低速漂浮；语义文件缺失或与目录版本不一致时才回退到标签方法。
 - GitHub Pages 每次部署会生成 commit 版本文件；已打开的页面每 15 秒检查一次，发现新版后保留当前筛选参数并自动刷新。
-- 该方法刻意保持轻量和可解释。若以后加入论文摘要 embedding，可升级为 UMAP/SPECTER 等语义聚类。
 
 ## 快速入口
 
@@ -35,6 +34,8 @@
 - [原生多模态、Omni 与统一理解/生成](notes/06_omni_unified.md)
 - [开放问题与研究机会](notes/07_open_questions.md)
 - [结构化论文目录](catalog/papers.csv)
+- [双语完整摘要](catalog/abstracts.json)
+- [语义分析报告](notes/SEMANTIC_ANALYSIS.md)
 - [PDF 分层索引](papers/README.md)
 - [维护指南](CONTRIBUTING.md)
 - [GitHub 与网站维护指南](GITHUB_GUIDE.md)
@@ -92,6 +93,18 @@ python3 scripts/sync_papers.py
 ```bash
 python3 scripts/sync_papers.py --check
 ```
+
+## 更新摘要与语义地图
+
+```bash
+python3 scripts/enrich_abstracts.py --require-chinese
+python3 -m venv tmp/semantic-venv
+tmp/semantic-venv/bin/python -m pip install -r requirements-semantic.txt
+tmp/semantic-venv/bin/python scripts/analyze_semantic_landscape.py
+node scripts/build_landscape_data.mjs catalog/papers.csv site/data/landscape.json catalog/author_affiliations.json catalog/semantic_landscape.json
+```
+
+`scripts/analyze_semantic_landscape.py` 需要 PyTorch、Transformers、scikit-learn 与 UMAP；模型与 embedding 缓存在被忽略的 `tmp/` 中，提交到仓库的是可直接部署的语义结果。
 
 ## 更新日期
 

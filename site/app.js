@@ -1,10 +1,11 @@
-const CATALOG_VERSION = "20260803-institution-map-v4";
+const CATALOG_VERSION = "20260803-bilingual-abstracts-v1";
 const DEPLOY_ASSET_VERSION = document.querySelector('meta[name="deploy-version"]')?.content;
 const DATA_VERSION = DEPLOY_ASSET_VERSION && !DEPLOY_ASSET_VERSION.startsWith("__")
   ? DEPLOY_ASSET_VERSION
   : CATALOG_VERSION;
 const DATA_URL = `./data/papers.csv?v=${DATA_VERSION}`;
 const ENGLISH_SUMMARIES_URL = `./data/summaries_en.json?v=${DATA_VERSION}`;
+const ABSTRACTS_URL = `./data/abstracts.json?v=${DATA_VERSION}`;
 const PRECOMPUTED_LANDSCAPE_URL = `./data/landscape.json?v=${DATA_VERSION}`;
 const DEPLOY_VERSION_URL = "./version.json";
 const DEPLOY_CHECK_INTERVAL_MS = 15000;
@@ -41,6 +42,8 @@ const sortLabel = (value) => t(SORT_KEYS[value] ?? value);
 
 const state = {
   papers: [],
+  abstracts: new Map(),
+  expandedAbstracts: new Set(),
   clusters: [],
   paperClusterLabels: new Map(),
   query: "",
@@ -217,6 +220,8 @@ function matchesPaper(paper, { includeTopic = true, includeTime = true } = {}) {
       paper.topic_tags,
       paper.summary_en,
       paper.summary_zh,
+      paper.abstract_en,
+      paper.abstract_zh,
       clusterLabelForPaper(paper),
       relationLabel(paper.dit_relation),
     ].join(" "),
@@ -356,6 +361,46 @@ function createPaperCard(paper) {
 
   const links = createElement("div", "card-links");
   links.append(createLink(`${paper.source_label || "arXiv"} ↗`, paper.arxiv_url), createLink(t("paper.pdf"), paper.pdf_url));
+
+  const abstractRecord = state.abstracts.get(paper.arxiv_id);
+  const abstractText = window.DiTI18n.language === "zh"
+    ? abstractRecord?.zh || abstractRecord?.en
+    : abstractRecord?.en;
+  const expanded = state.expandedAbstracts.has(paper.arxiv_id);
+  if (abstractText) {
+    const panelId = `abstract-${paper.arxiv_id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+    const toggle = createElement("button", "abstract-toggle", t(expanded ? "paper.abstractHide" : "paper.abstract"));
+    toggle.type = "button";
+    toggle.setAttribute("aria-expanded", String(expanded));
+    toggle.setAttribute("aria-controls", panelId);
+    toggle.classList.toggle("active", expanded);
+
+    const panel = createElement("div", "paper-abstract");
+    panel.id = panelId;
+    panel.hidden = !expanded;
+    panel.append(createElement("p", "paper-abstract-text", abstractText));
+    const provenance = createLink(
+      t(window.DiTI18n.language === "zh" ? "paper.abstractTranslation" : "paper.abstractSource", {
+        source: abstractRecord.source,
+      }),
+      abstractRecord.source_url,
+      "paper-abstract-source",
+    );
+    panel.append(provenance);
+
+    toggle.addEventListener("click", () => {
+      const nextExpanded = !state.expandedAbstracts.has(paper.arxiv_id);
+      if (nextExpanded) state.expandedAbstracts.add(paper.arxiv_id);
+      else state.expandedAbstracts.delete(paper.arxiv_id);
+      panel.hidden = !nextExpanded;
+      toggle.classList.toggle("active", nextExpanded);
+      toggle.setAttribute("aria-expanded", String(nextExpanded));
+      toggle.textContent = t(nextExpanded ? "paper.abstractHide" : "paper.abstract");
+    });
+    links.append(toggle);
+    card.append(meta, heading, fullTitle, authors, summary, tags, links, panel);
+    return card;
+  }
 
   card.append(meta, heading, fullTitle, authors, summary, tags, links);
   return card;
@@ -854,20 +899,29 @@ async function initialize() {
   loadExportCount();
   startDeployVersionMonitor();
   try {
-    const [response, englishSummaries, precomputedLandscape] = await Promise.all([
+    const [response, englishSummaries, abstractsPayload, precomputedLandscape] = await Promise.all([
       fetch(DATA_URL, { cache: "no-store" }),
       fetch(ENGLISH_SUMMARIES_URL, { cache: "no-store" })
         .then((summariesResponse) => summariesResponse.ok ? summariesResponse.json() : {})
         .catch(() => ({})),
+      fetch(ABSTRACTS_URL, { cache: "force-cache" })
+        .then((abstractsResponse) => abstractsResponse.ok ? abstractsResponse.json() : { papers: {} })
+        .catch(() => ({ papers: {} })),
       fetch(PRECOMPUTED_LANDSCAPE_URL, { cache: "force-cache" })
         .then((landscapeResponse) => landscapeResponse.ok ? landscapeResponse.json() : null)
         .catch(() => null),
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.papers = parseCSV(await response.text()).map((paper) => ({
-      ...paper,
-      summary_en: englishSummaries[paper.arxiv_id] ?? "",
-    }));
+    state.abstracts = new Map(Object.entries(abstractsPayload.papers ?? {}));
+    state.papers = parseCSV(await response.text()).map((paper) => {
+      const abstract = state.abstracts.get(paper.arxiv_id) ?? {};
+      return {
+        ...paper,
+        summary_en: englishSummaries[paper.arxiv_id] ?? "",
+        abstract_en: abstract.en ?? "",
+        abstract_zh: abstract.zh ?? "",
+      };
+    });
     const usablePrecomputedLandscape = precomputedLandscape?.catalogSignature === catalogSignature(state.papers)
       ? precomputedLandscape
       : null;

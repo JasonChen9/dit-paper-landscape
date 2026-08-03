@@ -2,16 +2,29 @@
   const t = (key, values) => window.DiTI18n.t(key, values);
 
   const FAMILIES = {
+    foundation: {
+      labelKey: "cluster.foundation",
+      tags: [
+        "ddpm", "score-sde", "continuous-time", "training-objective", "rectified-flow",
+        "flow-matching", "straight-path", "training-design", "noise-schedule", "weak-to-strong",
+        "interpolant", "sampling", "implicit-process", "ode-solver", "few-step", "distillation",
+        "guidance", "self-supervision",
+      ],
+    },
     architecture: {
       labelKey: "cluster.architecture",
       tags: [
         "rae", "latent", "representation", "pixel-space", "tokenization", "single-stream",
         "hybrid-architecture", "scaling-law", "moe", "routing", "expert-design", "scaling",
         "foundation", "foundation-model", "image", "text-rendering", "editing", "conversion",
-        "ddpm", "score-sde", "continuous-time", "training-objective", "rectified-flow",
-        "flow-matching", "straight-path", "training-design", "noise-schedule",
         "mmdit", "linear-attention", "efficient-architecture", "training-efficiency",
-        "high-resolution", "weak-to-strong", "interpolant", "self-supervision", "text-to-image",
+        "high-resolution", "text-to-image", "omni", "multi-output", "audio", "synchronization",
+        "interleaved", "tri-modal", "understanding", "perception", "unified-representation",
+        "instruction", "any-to-any", "image-editing", "prior-preservation", "decoupled", "unified",
+        "prediction", "discrete-diffusion", "cross-modal", "native-multimodal",
+        "autoregressive-diffusion", "autoregressive-flow", "multimodal-flow",
+        "understanding-generation", "single-transformer", "mixed-modality", "continuous-latent",
+        "image-text", "decoder-only", "unified-pretraining", "clip-latent", "representation-alignment",
       ],
     },
     video: {
@@ -29,7 +42,6 @@
         "pipeline", "serving", "scheduling", "communication", "overlap", "load-balancing",
         "inference", "compression", "efficiency", "engine", "speculation", "sequence-parallel",
         "training", "block-wise", "hierarchical", "memory-management", "auto-configuration",
-        "sampling", "implicit-process", "ode-solver", "few-step", "distillation", "guidance",
         "patch-parallel", "hybrid-parallel", "stage-graph", "disaggregation", "latency",
         "deployment", "runtime", "edge-deployment", "token-pruning", "benchmark",
       ],
@@ -43,8 +55,8 @@
         "dpo", "preference", "human-feedback", "policy-gradient", "kl-regularization", "reward-free",
       ],
     },
-    agent: {
-      labelKey: "cluster.agent",
+    world: {
+      labelKey: "cluster.world",
       tags: [
         "world-model", "world-action-model", "embodied-world-model", "future-prediction",
         "interactive", "interactive-world-model", "long-horizon", "planning", "video-world-model",
@@ -61,18 +73,6 @@
         "real-time-control", "replanning", "policy-serving", "dual-system", "receding-horizon",
         "embodied-ai", "generalist-policy", "navigation", "3d-representation", "visuomotor",
         "sim-to-real", "trajectory-critic", "foundation-policy", "denoising-transformer",
-      ],
-    },
-    omni: {
-      labelKey: "cluster.omni",
-      tags: [
-        "omni", "multi-output", "audio", "synchronization", "interleaved", "tri-modal",
-        "understanding", "perception", "unified-representation", "instruction", "any-to-any",
-        "image-editing", "prior-preservation", "decoupled", "unified", "prediction",
-        "discrete-diffusion", "cross-modal",
-        "native-multimodal", "autoregressive-diffusion", "autoregressive-flow", "multimodal-flow",
-        "understanding-generation", "single-transformer", "mixed-modality", "continuous-latent",
-        "image-text", "decoder-only", "unified-pretraining", "clip-latent", "representation-alignment",
       ],
     },
   };
@@ -1442,7 +1442,7 @@
   }
 
   function validPrecomputed(papers, payload) {
-    return payload?.algorithmVersion === 1
+    return [1, 2].includes(payload?.algorithmVersion)
       && Array.isArray(payload.paperIds)
       && payload.paperIds.length === papers.length
       && payload.paperIds.every((id, index) => id === papers[index].arxiv_id)

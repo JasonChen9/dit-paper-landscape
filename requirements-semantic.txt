@@ -1,0 +1,6 @@
+numpy>=2.0,<3
+scipy>=1.13,<2
+scikit-learn>=1.6,<2
+torch>=2.5,<3
+transformers>=4.45,<5
+umap-learn>=0.5.7,<0.6

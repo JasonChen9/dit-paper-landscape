@@ -1037,7 +1037,7 @@
   }
 
   function validPrecomputed(papers, payload) {
-    return payload?.algorithmVersion === 1
+    return [1, 2].includes(payload?.algorithmVersion)
       && Array.isArray(payload.paperIds)
       && payload.paperIds.length === papers.length
       && payload.paperIds.every((id, index) => id === papers[index].arxiv_id)
