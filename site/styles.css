@@ -1409,14 +1409,40 @@ kbd {
 }
 
 .paper-abstract {
-  margin-top: 14px;
-  padding: 14px 16px;
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  padding: 0 16px;
   border-left: 2px solid var(--accent);
+  border-left-color: transparent;
   background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    grid-template-rows 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-top 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease,
+    border-color 180ms ease,
+    visibility 0s linear 280ms;
 }
 
-.paper-abstract[hidden] {
-  display: none;
+.paper-abstract.is-open {
+  grid-template-rows: 1fr;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-left-color: var(--accent);
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.paper-abstract-inner {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .paper-abstract-text {

@@ -369,7 +369,7 @@ function createPaperCard(paper) {
   const expanded = state.expandedAbstracts.has(paper.arxiv_id);
   if (abstractText) {
     const panelId = `abstract-${paper.arxiv_id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
-    const toggle = createElement("button", "abstract-toggle", t(expanded ? "paper.abstractHide" : "paper.abstract"));
+    const toggle = createElement("button", "abstract-toggle", t("paper.abstract"));
     toggle.type = "button";
     toggle.setAttribute("aria-expanded", String(expanded));
     toggle.setAttribute("aria-controls", panelId);
@@ -377,8 +377,11 @@ function createPaperCard(paper) {
 
     const panel = createElement("div", "paper-abstract");
     panel.id = panelId;
-    panel.hidden = !expanded;
-    panel.append(createElement("p", "paper-abstract-text", abstractText));
+    panel.classList.toggle("is-open", expanded);
+    panel.setAttribute("aria-hidden", String(!expanded));
+    panel.inert = !expanded;
+    const panelInner = createElement("div", "paper-abstract-inner");
+    panelInner.append(createElement("p", "paper-abstract-text", abstractText));
     const provenance = createLink(
       t(window.DiTI18n.language === "zh" ? "paper.abstractTranslation" : "paper.abstractSource", {
         source: abstractRecord.source,
@@ -386,16 +389,51 @@ function createPaperCard(paper) {
       abstractRecord.source_url,
       "paper-abstract-source",
     );
-    panel.append(provenance);
+    panelInner.append(provenance);
+    panel.append(panelInner);
 
-    toggle.addEventListener("click", () => {
-      const nextExpanded = !state.expandedAbstracts.has(paper.arxiv_id);
-      if (nextExpanded) state.expandedAbstracts.add(paper.arxiv_id);
-      else state.expandedAbstracts.delete(paper.arxiv_id);
-      panel.hidden = !nextExpanded;
+    let closeTimer = null;
+    const canHover = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const setExpanded = (nextExpanded, persist = false) => {
+      if (closeTimer !== null) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+      if (persist) {
+        if (nextExpanded) state.expandedAbstracts.add(paper.arxiv_id);
+        else state.expandedAbstracts.delete(paper.arxiv_id);
+      }
+      panel.classList.toggle("is-open", nextExpanded);
+      panel.setAttribute("aria-hidden", String(!nextExpanded));
+      panel.inert = !nextExpanded;
       toggle.classList.toggle("active", nextExpanded);
       toggle.setAttribute("aria-expanded", String(nextExpanded));
-      toggle.textContent = t(nextExpanded ? "paper.abstractHide" : "paper.abstract");
+    };
+    const scheduleClose = (preserveFocusedContent = false) => {
+      if (!canHover()) return;
+      if (closeTimer !== null) clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(() => {
+        const focusWithin = preserveFocusedContent
+          && (toggle === document.activeElement || panel.contains(document.activeElement));
+        if (!toggle.matches(":hover") && !panel.matches(":hover") && !focusWithin) setExpanded(false);
+      }, 110);
+    };
+
+    toggle.addEventListener("pointerenter", () => {
+      if (canHover()) setExpanded(true);
+    });
+    toggle.addEventListener("pointerleave", () => scheduleClose(false));
+    panel.addEventListener("pointerenter", () => {
+      if (canHover()) setExpanded(true);
+    });
+    panel.addEventListener("pointerleave", () => scheduleClose(false));
+    toggle.addEventListener("focus", () => setExpanded(true));
+    toggle.addEventListener("blur", () => scheduleClose(true));
+    panel.addEventListener("focusin", () => setExpanded(true));
+    panel.addEventListener("focusout", () => scheduleClose(true));
+    toggle.addEventListener("click", () => {
+      if (canHover()) return;
+      setExpanded(!state.expandedAbstracts.has(paper.arxiv_id), true);
     });
     links.append(toggle);
     card.append(meta, heading, fullTitle, authors, summary, tags, links, panel);
