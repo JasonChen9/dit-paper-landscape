@@ -697,6 +697,7 @@
     const rootStyles = getComputedStyle(document.documentElement);
     const edgeColor = rootStyles.getPropertyValue("--landscape-edge").trim();
     const labelColor = rootStyles.getPropertyValue("--text").trim();
+    const zoomRatio = state.view.scale / Math.max(0.001, state.view.fitScale);
     context.clearRect(0, 0, state.width, state.height);
     const focus = state.hovered ?? state.selected;
     const focusNeighbors = new Set(
@@ -723,12 +724,18 @@
       context.stroke();
     }
 
+    const degrees = new Array(state.nodes.length).fill(0);
+    state.edges.forEach((edge) => {
+      degrees[edge.source] += 1;
+      degrees[edge.target] += 1;
+    });
+    const labelCandidates = [];
     state.nodes.forEach((node) => {
       const point = screenPosition(node);
       const active = isNodeActive(node);
       const selected = state.selected === node.index;
       const hovered = state.hovered === node.index;
-      const degree = state.edges.filter((edge) => edge.source === node.index || edge.target === node.index).length;
+      const degree = degrees[node.index];
       const radius = (selected ? 7.5 : hovered ? 6.8 : 4.3) + Math.min(1.8, degree * 0.12);
       context.beginPath();
       context.arc(point.x, point.y, radius, 0, Math.PI * 2);
@@ -741,18 +748,48 @@
         context.lineWidth = 1.5;
         context.stroke();
       }
-      if ((selected || hovered) && active) {
-        const paper = state.papers[node.index];
-        context.globalAlpha = 1;
-        context.fillStyle = labelColor;
-        context.font = "500 12px Roboto, sans-serif";
-        const label = paper.short_title;
-        const labelWidth = context.measureText(label).width;
-        const x = Math.min(state.width - labelWidth - 7, point.x + 10);
-        const y = Math.max(14, point.y - 10);
-        context.fillText(label, x, y);
-      }
+      const showLabel = selected
+        || hovered
+        || zoomRatio >= 1.9
+        || (zoomRatio >= 1.6 && degree >= 4)
+        || (zoomRatio >= 1.35 && degree >= 6);
+      const inViewport = point.x >= 0 && point.x <= state.width && point.y >= 0 && point.y <= state.height;
+      if (active && showLabel && inViewport) labelCandidates.push({ node, point, selected, hovered, degree, radius });
     });
+
+    const labelBoxes = [];
+    labelCandidates
+      .sort((left, right) => Number(right.selected) - Number(left.selected)
+        || Number(right.hovered) - Number(left.hovered)
+        || right.degree - left.degree
+        || left.node.index - right.node.index)
+      .forEach(({ node, point, selected, hovered, radius }) => {
+        const label = state.papers[node.index].short_title;
+        const fontSize = selected ? 12 : 10;
+        const fontWeight = selected ? 600 : 500;
+        const align = point.x > state.width - 150 ? "right" : "left";
+        const labelX = point.x + (align === "right" ? -radius - 6 : radius + 6);
+        const labelY = Math.max(fontSize, Math.min(state.height - fontSize, point.y));
+        context.font = `${fontWeight} ${fontSize}px Roboto, sans-serif`;
+        const textWidth = context.measureText(label).width;
+        const box = {
+          left: align === "right" ? labelX - textWidth : labelX,
+          right: align === "right" ? labelX : labelX + textWidth,
+          top: labelY - fontSize * 0.62,
+          bottom: labelY + fontSize * 0.62,
+        };
+        const overlaps = labelBoxes.some((placed) => !(box.right + 4 < placed.left
+          || box.left - 4 > placed.right
+          || box.bottom + 3 < placed.top
+          || box.top - 3 > placed.bottom));
+        if (overlaps && !selected && !hovered) return;
+        labelBoxes.push(box);
+        context.globalAlpha = selected || hovered ? 1 : 0.76;
+        context.fillStyle = labelColor;
+        context.textAlign = align;
+        context.textBaseline = "middle";
+        context.fillText(label, labelX, labelY);
+      });
     context.globalAlpha = 1;
   }
 

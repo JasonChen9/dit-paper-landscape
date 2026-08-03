@@ -425,7 +425,8 @@
         || profile.papers.length >= 3
         || (zoomRatio >= 1.4 && profile.papers.length >= 2)
         || zoomRatio >= 1.9;
-      if (active && showLabel) {
+      const inViewport = point.x >= 0 && point.x <= state.width && point.y >= 0 && point.y <= state.height;
+      if (active && showLabel && inViewport) {
         const fontSize = selected ? 12 : 10;
         const fontWeight = selected ? 600 : 500;
         const align = point.x > state.width - 130 ? "right" : "left";
