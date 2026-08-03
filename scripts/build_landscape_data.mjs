@@ -3,8 +3,14 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const [, , catalogPath = "catalog/papers.csv", outputPath = "site/data/landscape.json"] = process.argv;
+const [
+  , ,
+  catalogPath = "catalog/papers.csv",
+  outputPath = "site/data/landscape.json",
+  affiliationsPath = "catalog/author_affiliations.json",
+] = process.argv;
 const CLUSTER_COUNT = 7;
+const TOP_INSTITUTION_PALETTE_SIZE = 10;
 const FAMILIES = {
   architecture: [
     "rae", "latent", "representation", "pixel-space", "tokenization", "single-stream",
@@ -324,7 +330,7 @@ function parseKeyAuthors(paper) {
   }).filter(({ name }) => name);
 }
 
-function authorModel(papers, paperClusters) {
+function authorModel(papers, paperClusters, affiliationRecords = {}) {
   const map = new Map();
   papers.forEach((paper, paperIndex) => {
     const tags = paperTags(paper);
@@ -340,6 +346,41 @@ function authorModel(papers, paperClusters) {
   const profiles = [...map.values()].sort((left, right) => right.papers.length - left.papers.length || left.name.localeCompare(right.name, "en"));
   profiles.forEach((profile) => {
     profile.cluster = [...profile.clusterCounts.entries()].sort((left, right) => right[1] - left[1] || left[0] - right[0])[0]?.[0] ?? 0;
+    const affiliation = affiliationRecords[profile.name] || {};
+    profile.affiliation = {
+      primary: affiliation.primary || "Unknown",
+      all: Array.isArray(affiliation.all) ? affiliation.all : [],
+      confidence: affiliation.confidence || "unresolved",
+      paperId: affiliation.paper_id || null,
+      published: affiliation.published || null,
+      source: affiliation.source || null,
+      sourceUrl: affiliation.source_url || null,
+    };
+  });
+  const institutionCounts = new Map();
+  profiles.forEach((profile) => {
+    const institution = profile.affiliation.primary;
+    institutionCounts.set(institution, (institutionCounts.get(institution) || 0) + 1);
+  });
+  const institutions = [...institutionCounts.entries()]
+    .filter(([institution]) => institution !== "Unknown")
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "en"))
+    .map(([institution]) => institution);
+  const institutionGroups = institutions.map((name, index) => ({
+    name,
+    count: institutionCounts.get(name) || 0,
+    colorIndex: index < TOP_INSTITUTION_PALETTE_SIZE ? index : null,
+    colorHue: Math.round(hashNumber(`institution:${name}`) * 359),
+    kind: "institution",
+  }));
+  const unknownCount = institutionCounts.get("Unknown") || 0;
+  if (unknownCount) institutionGroups.push({ name: "Unknown", count: unknownCount, colorIndex: 11, colorHue: null, kind: "unknown" });
+  const groupByName = new Map(institutionGroups.map((group) => [group.name, group]));
+  profiles.forEach((profile) => {
+    const groupName = profile.affiliation.primary;
+    profile.affiliation.group = groupName;
+    profile.affiliation.colorIndex = groupByName.get(groupName)?.colorIndex ?? null;
+    profile.affiliation.colorHue = groupByName.get(groupName)?.colorHue ?? null;
   });
   const vocabulary = [...new Set(profiles.flatMap((profile) => [...profile.tagCounts.keys()]))].sort();
   const frequencies = new Map(vocabulary.map((tag) => [tag, 0]));
@@ -399,6 +440,8 @@ function authorModel(papers, paperClusters) {
   }
   return {
     names: profiles.map((profile) => profile.name),
+    institutions: profiles.map((profile) => profile.affiliation),
+    institutionGroups,
     similarities,
     edges,
     positions: nodes.map((node) => ({ x: node.x / width, y: node.y / height, cluster: node.cluster })),
@@ -414,6 +457,9 @@ function roundNumbers(value) {
 
 const papers = parseCSV(fs.readFileSync(catalogPath, "utf8"));
 if (!papers.length) throw new Error(`No papers found in ${catalogPath}`);
+const affiliationPayload = fs.existsSync(affiliationsPath)
+  ? JSON.parse(fs.readFileSync(affiliationsPath, "utf8"))
+  : { authors: {} };
 const paperModel = buildPaperVectors(papers);
 const clusters = clusterVectors(paperModel.vectors, paperModel.documents);
 const similarities = similarityMatrix(paperModel.vectors);
@@ -425,7 +471,7 @@ const output = roundNumbers({
   catalogSignature: catalogSignature(papers),
   paperIds: papers.map((paper) => paper.arxiv_id),
   paper: { clusters, similarities, clusterInfo, edges, positions: paperLayout(papers, clusters, clusterInfo, edges) },
-  authors: authorModel(papers, clusters),
+  authors: authorModel(papers, clusters, affiliationPayload.authors || {}),
 });
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, `${JSON.stringify(output)}\n`);

@@ -85,7 +85,7 @@
               width="900"
               height="520"
               role="img"
-              aria-label="Research map of first, co-first, and corresponding authors."
+              aria-label="Research map of key authors colored by institution."
               data-i18n-aria-label="authors.canvasAria"
               aria-describedby="landscape-description"
             ></canvas>
@@ -157,8 +157,9 @@
 
           <aside id="author-landscape-sidebar" class="landscape-sidebar" aria-label="Author index scope and selected author" data-i18n-aria-label="authors.sidebarAria" hidden>
             <div>
-              <h3 data-i18n="authors.heading">key-author map</h3>
-              <p class="author-scope-note" data-i18n="authors.scope">Counts include first authors, explicitly marked co-first authors, and corresponding authors.</p>
+              <h3 data-i18n="authors.heading">institution mix</h3>
+              <p class="author-scope-note" data-i18n="authors.scope">Authors include first, explicitly marked co-first, and corresponding authors. Institution follows the latest resolved key-author paper.</p>
+              <div id="institution-treemap" class="institution-treemap" role="list" aria-label="Authors by institution" data-i18n-aria-label="authors.institutionAria"></div>
               <p id="author-map-count" class="author-map-count"></p>
             </div>
             <div id="author-landscape-selection" class="landscape-selection" aria-live="polite">

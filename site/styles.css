@@ -25,6 +25,18 @@
   --cluster-5: #c84f5f;
   --cluster-6: #687d92;
   --cluster-7: #b07a22;
+  --institution-1: #0072b2;
+  --institution-2: #d55e00;
+  --institution-3: #009e73;
+  --institution-4: #a64d79;
+  --institution-5: #d89000;
+  --institution-6: #4a90b8;
+  --institution-7: #7f6d5f;
+  --institution-8: #6f7d3c;
+  --institution-9: #7656a3;
+  --institution-10: #2f7f7b;
+  --institution-11: #929292;
+  --institution-12: #c8c8c8;
 }
 
 :root[data-theme="dark"] {
@@ -52,6 +64,18 @@
   --cluster-5: #df6b78;
   --cluster-6: #8da3b8;
   --cluster-7: #d3a44a;
+  --institution-1: #48a9df;
+  --institution-2: #ee854a;
+  --institution-3: #3fbf91;
+  --institution-4: #d17aad;
+  --institution-5: #e5ae39;
+  --institution-6: #7bb9dc;
+  --institution-7: #ad9582;
+  --institution-8: #9aaa64;
+  --institution-9: #aa8bd4;
+  --institution-10: #65aaa7;
+  --institution-11: #8f969b;
+  --institution-12: #62676b;
 }
 
 * {
@@ -696,6 +720,61 @@ select:focus-visible {
   color: var(--accent);
 }
 
+.institution-treemap {
+  position: relative;
+  width: 100%;
+  height: 158px;
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface-hover);
+}
+
+.institution-tile {
+  position: absolute;
+  min-width: 2px;
+  min-height: 2px;
+  padding: 5px 6px;
+  overflow: hidden;
+  border: 1px solid var(--surface);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.institution-tile strong,
+.institution-tile span {
+  display: block;
+  overflow: hidden;
+  line-height: 1.18;
+  text-overflow: ellipsis;
+}
+
+.institution-tile strong {
+  max-height: 2.36em;
+  font-size: 0.64rem;
+  font-weight: 500;
+}
+
+.institution-tile.compact {
+  padding: 2px 3px;
+}
+
+.institution-tile.compact strong,
+.institution-tile.tiny span {
+  display: none;
+}
+
+.institution-tile span {
+  margin-top: 2px;
+  font-size: 0.6rem;
+  font-weight: 500;
+}
+
+.selection-affiliation {
+  color: var(--muted);
+}
+
 .neighbor-list a {
   display: block;
   padding: 3px 0;
@@ -825,6 +904,7 @@ select:focus-visible {
 }
 
 .author-index-entry strong {
+  flex: 1 1 auto;
   overflow: hidden;
   font-weight: 400;
   text-overflow: ellipsis;
@@ -834,6 +914,14 @@ select:focus-visible {
 .author-index-entry span {
   color: var(--faint);
   font-variant-numeric: tabular-nums;
+}
+
+.author-index-entry .author-institution-swatch {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  align-self: center;
+  border-radius: 50%;
 }
 
 .author-index-entry:hover,

@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 catalog/arxiv-cache.json
+catalog/affiliation-cache.json
 papers/**/*.part
 # PDF 保留在本地，由 catalog/papers.csv + sync_papers.py 可重复获取。
 # 若需要把二进制发布到远端，请改用 Git LFS 或对象存储。

@@ -9,6 +9,8 @@
     edges: [],
     nodes: [],
     palette: [],
+    institutionPalette: [],
+    institutionGroups: [],
     selected: null,
     hovered: null,
     activeFilterName: null,
@@ -80,6 +82,14 @@
             roleCounts: new Map(),
             clusterCounts: new Map(),
             cluster: 0,
+            institution: {
+              primary: "Unknown",
+              all: [],
+              group: "Unknown",
+              colorIndex: 11,
+              colorHue: null,
+              confidence: "unresolved",
+            },
           });
         }
         const profile = profiles.get(name);
@@ -155,6 +165,21 @@
   function readPalette() {
     const styles = getComputedStyle(document.documentElement);
     state.palette = Array.from({ length: CLUSTER_COUNT }, (_, index) => styles.getPropertyValue(`--cluster-${index + 1}`).trim());
+    state.institutionPalette = Array.from({ length: 12 }, (_, index) =>
+      styles.getPropertyValue(`--institution-${index + 1}`).trim());
+  }
+
+  function institutionColor(profile) {
+    const colorIndex = profile.institution?.colorIndex;
+    if (Number.isInteger(colorIndex) && state.institutionPalette[colorIndex]) {
+      return state.institutionPalette[colorIndex];
+    }
+    const hue = profile.institution?.colorHue;
+    if (Number.isFinite(hue)) {
+      const dark = document.documentElement.dataset.theme === "dark";
+      return `hsl(${hue} 52% ${dark ? 62 : 42}%)`;
+    }
+    return state.institutionPalette[11] || state.palette[profile.cluster] || state.palette[0];
   }
 
   function setDimensions() {
@@ -411,10 +436,18 @@
       const radius = (selected ? 8.4 : hovered ? 7.2 : 4.4) + Math.min(4, Math.sqrt(profile.papers.length) * 1.25);
       context.beginPath();
       context.arc(point.x, point.y, radius, 0, Math.PI * 2);
-      context.fillStyle = state.palette[node.cluster] || state.palette[0];
+      context.fillStyle = institutionColor(profile);
       context.globalAlpha = active ? 0.96 : 0.09;
       context.fill();
+      context.beginPath();
+      context.arc(point.x, point.y, radius + 1.45, 0, Math.PI * 2);
+      context.lineWidth = 1.35;
+      context.strokeStyle = state.palette[node.cluster] || state.palette[0];
+      context.globalAlpha = active ? 0.88 : 0.08;
+      context.stroke();
       if (selected || hovered) {
+        context.beginPath();
+        context.arc(point.x, point.y, radius + 3.1, 0, Math.PI * 2);
         context.lineWidth = selected ? 2 : 1.4;
         context.strokeStyle = labelColor;
         context.globalAlpha = active ? 0.94 : 0.25;
@@ -477,6 +510,9 @@
     eyebrow.textContent = t(papers.length === 1 ? "authors.paperCountOne" : "authors.paperCount", { count: papers.length });
     const title = document.createElement("h3");
     title.textContent = profile.name;
+    const affiliation = document.createElement("p");
+    affiliation.className = "selection-affiliation";
+    affiliation.textContent = t("authors.affiliation", { institution: profile.institution.primary });
     const roles = document.createElement("p");
     roles.textContent = [...profile.roleCounts.entries()]
       .sort((left, right) => right[1] - left[1])
@@ -508,7 +544,7 @@
       button.addEventListener("click", () => selectAuthor(candidate));
       related.append(button);
     });
-    elements.selection.append(eyebrow, title, roles, tags, paperHeading, list, relatedHeading, related);
+    elements.selection.append(eyebrow, title, affiliation, roles, tags, paperHeading, list, relatedHeading, related);
     renderIndex();
     draw();
   }
@@ -540,11 +576,16 @@
       button.className = "author-index-entry";
       button.classList.toggle("active", state.activeFilterName === profile.name);
       button.setAttribute("aria-pressed", String(state.activeFilterName === profile.name));
+      button.title = `${profile.name} · ${profile.institution.primary}`;
+      const swatch = document.createElement("span");
+      swatch.className = "author-institution-swatch";
+      swatch.style.backgroundColor = institutionColor(profile);
+      swatch.setAttribute("aria-hidden", "true");
       const name = document.createElement("strong");
       name.textContent = profile.name;
       const total = document.createElement("span");
       total.textContent = String(count);
-      button.append(name, total);
+      button.append(swatch, name, total);
       button.addEventListener("click", () => toggleAuthor(index));
       return button;
     }));
@@ -556,6 +597,78 @@
       return papers.length;
     }).length;
     elements.mapCount.textContent = t("authors.mapCount", { authors: availableAuthors, papers: availablePaperIds.size });
+    renderInstitutionTreemap();
+  }
+
+  function institutionGroupLabel(group) {
+    if (group.kind === "other") return t("authors.institutionOther");
+    if (group.kind === "unknown") return t("authors.institutionUnknown");
+    return group.name;
+  }
+
+  function splitTreemap(items, x, y, width, height) {
+    if (!items.length) return [];
+    if (items.length === 1) return [{ ...items[0], x, y, width, height }];
+    const total = items.reduce((sum, item) => sum + item.count, 0);
+    let leftTotal = 0;
+    let split = 1;
+    for (let index = 0; index < items.length - 1; index += 1) {
+      const next = leftTotal + items[index].count;
+      if (Math.abs(total / 2 - next) <= Math.abs(total / 2 - leftTotal) || index === 0) {
+        leftTotal = next;
+        split = index + 1;
+      } else {
+        break;
+      }
+    }
+    const ratio = Math.max(0.08, Math.min(0.92, leftTotal / total));
+    if (width >= height) {
+      const firstWidth = width * ratio;
+      return [
+        ...splitTreemap(items.slice(0, split), x, y, firstWidth, height),
+        ...splitTreemap(items.slice(split), x + firstWidth, y, width - firstWidth, height),
+      ];
+    }
+    const firstHeight = height * ratio;
+    return [
+      ...splitTreemap(items.slice(0, split), x, y, width, firstHeight),
+      ...splitTreemap(items.slice(split), x, y + firstHeight, width, height - firstHeight),
+    ];
+  }
+
+  function renderInstitutionTreemap() {
+    if (!elements.institutionTreemap) return;
+    const counts = new Map(state.institutionGroups.map((group) => [group.name, 0]));
+    state.profiles.forEach((profile) => {
+      if (availablePapers(profile).length) {
+        const group = profile.institution.group || "Unknown";
+        counts.set(group, (counts.get(group) || 0) + 1);
+      }
+    });
+    const items = state.institutionGroups.map((group) => ({ ...group, count: counts.get(group.name) || 0 }))
+      .filter((group) => group.count > 0)
+      .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name, "en"));
+    const layout = splitTreemap(items, 0, 0, 100, 100);
+    elements.institutionTreemap.replaceChildren(...layout.map((group) => {
+      const tile = document.createElement("div");
+      tile.className = "institution-tile";
+      tile.classList.toggle("compact", group.width < 9 || group.height < 11);
+      tile.classList.toggle("tiny", group.width < 4.5 || group.height < 5.5);
+      tile.setAttribute("role", "listitem");
+      tile.style.left = `${group.x}%`;
+      tile.style.top = `${group.y}%`;
+      tile.style.width = `${group.width}%`;
+      tile.style.height = `${group.height}%`;
+      tile.style.backgroundColor = institutionColor({ institution: group, cluster: 0 });
+      const label = institutionGroupLabel(group);
+      tile.title = `${label} · ${t("authors.authorCount", { count: group.count })}`;
+      const name = document.createElement("strong");
+      name.textContent = label;
+      const count = document.createElement("span");
+      count.textContent = String(group.count);
+      tile.append(name, count);
+      return tile;
+    }));
   }
 
   function pointerNode(event) {
@@ -595,7 +708,7 @@
       elements.canvas.style.cursor = node ? "pointer" : "grab";
       if (node) {
         const profile = state.profiles[node.index];
-        elements.tooltip.textContent = `${profile.name} · ${t(profile.papers.length === 1 ? "authors.paperCountOne" : "authors.paperCount", { count: profile.papers.length })}`;
+        elements.tooltip.textContent = `${profile.name} · ${profile.institution.primary} · ${t(profile.papers.length === 1 ? "authors.paperCountOne" : "authors.paperCount", { count: profile.papers.length })}`;
         elements.tooltip.style.left = `${Math.min(state.width - 225, x + 12)}px`;
         elements.tooltip.style.top = `${Math.max(8, y - 28)}px`;
         elements.tooltip.hidden = false;
@@ -735,6 +848,7 @@
 
   function themeChanged() {
     readPalette();
+    renderInstitutionTreemap();
     draw();
   }
 
@@ -749,6 +863,8 @@
       && payload.paperIds.length === papers.length
       && payload.paperIds.every((id, index) => id === papers[index].arxiv_id)
       && Array.isArray(payload.authors?.names)
+      && Array.isArray(payload.authors?.institutions)
+      && Array.isArray(payload.authors?.institutionGroups)
       && Array.isArray(payload.authors?.similarities)
       && Array.isArray(payload.authors?.edges)
       && Array.isArray(payload.authors?.positions);
@@ -762,6 +878,7 @@
       tooltip: document.querySelector("#author-landscape-tooltip"),
       selection: document.querySelector("#author-landscape-selection"),
       mapCount: document.querySelector("#author-map-count"),
+      institutionTreemap: document.querySelector("#institution-treemap"),
       index: document.querySelector("#author-index"),
       indexCount: document.querySelector("#author-index-count"),
       search: document.querySelector("#author-search-input"),
@@ -777,15 +894,23 @@
     const authorDataMatches = usePrecomputed
       && precomputedPayload.authors.names.length === state.profiles.length
       && precomputedPayload.authors.names.every((name, index) => name === state.profiles[index].name)
+      && precomputedPayload.authors.institutions.length === state.profiles.length
       && precomputedPayload.authors.similarities.length === state.profiles.length
       && precomputedPayload.authors.positions.length === state.profiles.length;
     document.documentElement.dataset.authorData = authorDataMatches ? "precomputed" : "client";
     if (authorDataMatches) {
+      state.institutionGroups = precomputedPayload.authors.institutionGroups;
+      state.profiles.forEach((profile, index) => {
+        profile.institution = precomputedPayload.authors.institutions[index];
+      });
       state.similarities = precomputedPayload.authors.similarities;
       state.edges = precomputedPayload.authors.edges;
       state.precomputedPositions = precomputedPayload.authors.positions;
     } else if (usePrecomputed) {
       buildSimilarityModel();
+    }
+    if (!state.institutionGroups.length) {
+      state.institutionGroups = [{ name: "Unknown", count: state.profiles.length, colorIndex: 11, colorHue: null, kind: "unknown" }];
     }
     readPalette();
     setDimensions();

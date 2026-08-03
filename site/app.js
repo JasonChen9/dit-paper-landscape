@@ -1,4 +1,4 @@
-const CATALOG_VERSION = "20260803-precomputed-landscape-v3";
+const CATALOG_VERSION = "20260803-institution-map-v4";
 const DEPLOY_ASSET_VERSION = document.querySelector('meta[name="deploy-version"]')?.content;
 const DATA_VERSION = DEPLOY_ASSET_VERSION && !DEPLOY_ASSET_VERSION.startsWith("__")
   ? DEPLOY_ASSET_VERSION

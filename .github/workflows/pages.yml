@@ -6,6 +6,7 @@ on:
     paths:
       - "site/**"
       - "catalog/papers.csv"
+      - "catalog/author_affiliations.json"
       - "catalog/summaries_en.json"
       - "scripts/build_landscape_data.mjs"
       - ".github/workflows/pages.yml"
@@ -38,7 +39,7 @@ jobs:
           cp -R site/. _site/
           cp catalog/papers.csv _site/data/papers.csv
           cp catalog/summaries_en.json _site/data/summaries_en.json
-          node scripts/build_landscape_data.mjs catalog/papers.csv _site/data/landscape.json
+          node scripts/build_landscape_data.mjs catalog/papers.csv _site/data/landscape.json catalog/author_affiliations.json
           sed -i "s/__DEPLOY_VERSION__/$DEPLOY_VERSION/g" _site/index.html
           printf '{"version":"%s"}\n' "$DEPLOY_VERSION" > _site/version.json
 

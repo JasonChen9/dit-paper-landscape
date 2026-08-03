@@ -1,0 +1,1714 @@
+{
+  "authors": {
+    "Agrim Gupta": {
+      "all": [
+        "Stanford University",
+        "Google",
+        "Georgia Institute of Technology"
+      ],
+      "confidence": "medium",
+      "paper_id": "2312.06662",
+      "paper_title": "Photorealistic Video Generation with Diffusion Models",
+      "primary": "Stanford University",
+      "published": "2023-12-11",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2312.06662"
+    },
+    "Ajay Sridhar": {
+      "all": [
+        "University of California, Berkeley"
+      ],
+      "confidence": "high",
+      "paper_id": "2310.07896",
+      "paper_title": "NoMaD: Goal Masked Diffusion Policies for Navigation and Exploration",
+      "primary": "University of California, Berkeley",
+      "published": "2023-10-11",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2310.07896"
+    },
+    "Anmol Agarwal": {
+      "all": [
+        "Indian Institute of Science Education and Research Bhopal"
+      ],
+      "confidence": "high",
+      "paper_id": "2603.00825",
+      "paper_title": "COMBAT: Conditional World Models for Behavioral Agent Training",
+      "primary": "Indian Institute of Science Education and Research Bhopal",
+      "published": "2026-02-28",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2603.00825"
+    },
+    "Boyang Zheng": {
+      "all": [
+        "New York University"
+      ],
+      "confidence": "high",
+      "paper_id": "2510.11690",
+      "paper_title": "Diffusion Transformers with Representation Autoencoders",
+      "primary": "New York University",
+      "published": "2025-10-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2510.11690"
+    },
+    "Bram Wallace": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Chaorui Deng": {
+      "all": [
+        "ByteDance"
+      ],
+      "confidence": "high",
+      "paper_id": "2505.14683",
+      "paper_title": "Emerging Properties in Unified Multimodal Pretraining",
+      "primary": "ByteDance",
+      "published": "2025-05-20",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2505.14683"
+    },
+    "Chenfei Wu": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Cheng Chi": {
+      "all": [
+        "Columbia University"
+      ],
+      "confidence": "high",
+      "paper_id": "2303.04137",
+      "paper_title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+      "primary": "Columbia University",
+      "published": "2023-03-07",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2303.04137"
+    },
+    "Cheng Lu": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Chenyuan Wu": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Chi-Lam Cheang": {
+      "all": [
+        "ByteDance"
+      ],
+      "confidence": "high",
+      "paper_id": "2410.06158",
+      "paper_title": "GR-2: A Generative Video-Language-Action Model with Web-Scale Knowledge for Robot Manipulation",
+      "primary": "ByteDance",
+      "published": "2024-10-08",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2410.06158"
+    },
+    "Chongjian Ge": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Chunting Zhou": {
+      "all": [
+        "Meta AI"
+      ],
+      "confidence": "high",
+      "paper_id": "2408.11039",
+      "paper_title": "Transfusion: Predict the Next Token and Diffuse Images with One Multi-Modal Model",
+      "primary": "Meta AI",
+      "published": "2024-08-20",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2408.11039"
+    },
+    "Chuyang Zhao": {
+      "all": [
+        "Baidu"
+      ],
+      "confidence": "high",
+      "paper_id": "2409.16280",
+      "paper_title": "MonoFormer: One Transformer for Both Diffusion and Autoregression",
+      "primary": "Baidu",
+      "published": "2024-09-24",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2409.16280"
+    },
+    "Dani Valevski": {
+      "all": [
+        "Google DeepMind"
+      ],
+      "confidence": "high",
+      "paper_id": "2408.14837",
+      "paper_title": "Diffusion Models Are Real-Time Game Engines",
+      "primary": "Google DeepMind",
+      "published": "2024-08-27",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2408.14837"
+    },
+    "Desen Sun": {
+      "all": [
+        "University of Waterloo"
+      ],
+      "confidence": "high",
+      "paper_id": "2501.09253",
+      "paper_title": "PATCHEDSERVE: A Patch Management Framework for SLO-Optimized Hybrid Resolution Diffusion Serving",
+      "primary": "University of Waterloo",
+      "published": "2025-01-16",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2501.09253"
+    },
+    "Eloi Alonso": {
+      "all": [
+        "University of Geneva"
+      ],
+      "confidence": "medium",
+      "paper_id": "2405.12399",
+      "paper_title": "Diffusion for World Modeling: Visual Details Matter in Atari",
+      "primary": "University of Geneva",
+      "published": "2024-05-20",
+      "source": "Semantic Scholar",
+      "source_url": "https://api.semanticscholar.org/graph/v1/paper/ARXIV:2405.12399/authors?fields=name,affiliations"
+    },
+    "Enze Xie": {
+      "all": [
+        "NVIDIA"
+      ],
+      "confidence": "high",
+      "paper_id": "2501.18427",
+      "paper_title": "SANA 1.5: Efficient Scaling of Training-Time and Inference-Time Compute in Linear Diffusion Transformer",
+      "primary": "NVIDIA",
+      "published": "2025-01-30",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2501.18427"
+    },
+    "Fan Bao": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Feng Liu": {
+      "all": [
+        "University of Chinese Academy of Sciences"
+      ],
+      "confidence": "high",
+      "paper_id": "2411.19108",
+      "paper_title": "Timestep Embedding Tells: It's Time to Cache for Video Diffusion Model",
+      "primary": "University of Chinese Academy of Sciences",
+      "published": "2024-11-28",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2411.19108"
+    },
+    "Fu-Yun Wang": {
+      "all": [
+        "Chinese University of Hong Kong"
+      ],
+      "confidence": "high",
+      "paper_id": "2410.07303",
+      "paper_title": "Rectified Diffusion: Straightness Is Not Your Need in Rectified Flow",
+      "primary": "Chinese University of Hong Kong",
+      "published": "2024-10-09",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2410.07303"
+    },
+    "Guangyu Xiang": {
+      "all": [
+        "Hong Kong University of Science and Technology (Guangzhou)"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.11136",
+      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "primary": "Hong Kong University of Science and Technology (Guangzhou)",
+      "published": "2026-07-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.11136"
+    },
+    "Guoqing Ma": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Guoyang Xia": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Hanshuai Cui": {
+      "all": [
+        "Beijing Normal University"
+      ],
+      "confidence": "high",
+      "paper_id": "2509.13789",
+      "paper_title": "BWCache: Accelerating Video Diffusion Transformers through Block-Wise Caching",
+      "primary": "Beijing Normal University",
+      "published": "2025-09-17",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2509.13789"
+    },
+    "Hantian Zha": {
+      "all": [
+        "Renmin University of China"
+      ],
+      "confidence": "high",
+      "paper_id": "2605.25550",
+      "paper_title": "DisagFusion: Asynchronous Pipeline Parallelism and Elastic Scheduling for Disaggregated Diffusion Serving",
+      "primary": "Renmin University of China",
+      "published": "2026-05-25",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2605.25550"
+    },
+    "Haotian Sun": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Haotong Bao": {
+      "all": [
+        "Shanghai Jiao Tong University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.19271",
+      "paper_title": "TurboServe: Serving Streaming Video Generation Efficiently and Economically",
+      "primary": "Shanghai Jiao Tong University",
+      "published": "2026-06-17",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.19271"
+    },
+    "Haoxu Wang": {
+      "all": [
+        "Shengshu Technology",
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.19271",
+      "paper_title": "TurboServe: Serving Streaming Video Generation Efficiently and Economically",
+      "primary": "Shengshu Technology",
+      "published": "2026-06-17",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.19271"
+    },
+    "Jake Bruce": {
+      "all": [
+        "Google DeepMind"
+      ],
+      "confidence": "high",
+      "paper_id": "2402.15391",
+      "paper_title": "Genie: Generative Interactive Environments",
+      "primary": "Google DeepMind",
+      "published": "2024-02-23",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2402.15391"
+    },
+    "Jiacheng Liu": {
+      "all": [
+        "Shanghai Jiao Tong University",
+        "Shandong University"
+      ],
+      "confidence": "high",
+      "paper_id": "2509.11628",
+      "paper_title": "SpeCa: Accelerating Diffusion Transformers with Speculative Feature Caching",
+      "primary": "Shanghai Jiao Tong University",
+      "published": "2025-09-15",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2509.11628"
+    },
+    "Jiacheng Yang": {
+      "all": [
+        "University of Toronto"
+      ],
+      "confidence": "high",
+      "paper_id": "2601.20273",
+      "paper_title": "SwiftFusion: Scalable Sequence Parallelism for Distributed Inference of Diffusion Transformers on GPUs",
+      "primary": "University of Toronto",
+      "published": "2026-01-28",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2601.20273"
+    },
+    "Jiacheng Ye": {
+      "all": [
+        "The University of Hong Kong"
+      ],
+      "confidence": "high",
+      "paper_id": "2512.22615",
+      "paper_title": "Dream-VL & Dream-VLA: Open Vision-Language and Vision-Language-Action Models with Diffusion Language Model Backbone",
+      "primary": "The University of Hong Kong",
+      "published": "2025-12-27",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2512.22615"
+    },
+    "Jiahui Niu": {
+      "all": [
+        "Chinese Academy of Sciences",
+        "University of Chinese Academy of Sciences"
+      ],
+      "confidence": "high",
+      "paper_id": "2605.13778",
+      "paper_title": "Realtime-VLA FLASH: Speculative Inference Framework for Diffusion-based VLAs",
+      "primary": "Chinese Academy of Sciences",
+      "published": "2026-05-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2605.13778"
+    },
+    "Jiaming Song": {
+      "all": [
+        "Stanford University"
+      ],
+      "confidence": "high",
+      "paper_id": "2010.02502",
+      "paper_title": "Denoising Diffusion Implicit Models",
+      "primary": "Stanford University",
+      "published": "2020-10-06",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2010.02502"
+    },
+    "Jian Ma": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Jiannan Xiang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Jianwen Xian": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Jiaqi Li": {
+      "all": [
+        "Tencent",
+        "Huazhong University of Science and Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2506.17201",
+      "paper_title": "Hunyuan-GameCraft: High-dynamic Interactive Game Video Generation with Hybrid History Condition",
+      "primary": "Tencent",
+      "published": "2025-06-20",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2506.17201"
+    },
+    "Jiarui Fang": {
+      "all": [
+        "Tencent",
+        "Tencent & Huazhong University of Science and Technology China",
+        "Tencent & The University of Hong Kong China"
+      ],
+      "confidence": "medium",
+      "paper_id": "2411.01738",
+      "paper_title": "xDiT: an Inference Engine for Diffusion Transformers (DiTs) with Massive Parallelism",
+      "primary": "Tencent",
+      "published": "2024-11-04",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2411.01738"
+    },
+    "Jiazheng Xu": {
+      "all": [
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2304.05977",
+      "paper_title": "ImageReward: Learning and Evaluating Human Preferences for Text-to-Image Generation",
+      "primary": "Tsinghua University",
+      "published": "2023-04-12",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2304.05977"
+    },
+    "Jie Liu": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Jie Zhang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Jingxuan Zhang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Jinheng Xie": {
+      "all": [
+        "National University of Singapore"
+      ],
+      "confidence": "high",
+      "paper_id": "2408.12528",
+      "paper_title": "Show-o: One Single Transformer to Unify Multimodal Understanding and Generation",
+      "primary": "National University of Singapore",
+      "published": "2024-08-22",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2408.12528"
+    },
+    "Jintao Zhang": {
+      "all": [
+        "Shengshu Technology",
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.19271",
+      "paper_title": "TurboServe: Serving Streaming Video Generation Efficiently and Economically",
+      "primary": "Shengshu Technology",
+      "published": "2026-06-17",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.19271"
+    },
+    "Jiuhai Chen": {
+      "all": [
+        "Salesforce Research",
+        "University of Maryland"
+      ],
+      "confidence": "high",
+      "paper_id": "2505.09568",
+      "paper_title": "BLIP3-o: A Family of Fully Open Unified Multimodal Models-Architecture, Training and Dataset",
+      "primary": "Salesforce Research",
+      "published": "2025-05-14",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2505.09568"
+    },
+    "Jonathan Ho": {
+      "all": [
+        "Google"
+      ],
+      "confidence": "medium",
+      "paper_id": "2207.12598",
+      "paper_title": "Classifier-Free Diffusion Guidance",
+      "primary": "Google",
+      "published": "2022-07-26",
+      "source": "Semantic Scholar",
+      "source_url": "https://api.semanticscholar.org/graph/v1/paper/ARXIV:2207.12598/authors?fields=name,affiliations"
+    },
+    "Julian Quevedo": {
+      "all": [
+        "New York University"
+      ],
+      "confidence": "high",
+      "paper_id": "2506.00613",
+      "paper_title": "WorldGym: World Model as An Environment for Policy Evaluation",
+      "primary": "New York University",
+      "published": "2025-05-31",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2506.00613"
+    },
+    "Junjie Wen": {
+      "all": [
+        "Midea Group"
+      ],
+      "confidence": "high",
+      "paper_id": "2509.25681",
+      "paper_title": "dVLA: Diffusion Vision-Language-Action Model with Multimodal Chain-of-Thought",
+      "primary": "Midea Group",
+      "published": "2025-09-30",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2509.25681"
+    },
+    "Junsong Chen": {
+      "all": [
+        "NVIDIA"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.21553",
+      "paper_title": "SANA-Video 2.0: Hybrid Linear Attention with Attention Residuals for Efficient Video Generation",
+      "primary": "NVIDIA",
+      "published": "2026-07-23",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.21553"
+    },
+    "Junyu Dai": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Kai Yang": {
+      "all": [
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2311.13231",
+      "paper_title": "Using Human Feedback to Fine-tune Diffusion Models without Any Reward Model",
+      "primary": "Tsinghua University",
+      "published": "2023-11-22",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2311.13231"
+    },
+    "Kai Zhang": {
+      "all": [
+        "Adobe"
+      ],
+      "confidence": "high",
+      "paper_id": "2508.06001",
+      "paper_title": "KnapFormer: An Online Load Balancer for Efficient Diffusion Transformers Training",
+      "primary": "Adobe",
+      "published": "2025-08-08",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2508.06001"
+    },
+    "Kaiwen Zheng": {
+      "all": [
+        "Tsinghua University",
+        "NVIDIA"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.25473",
+      "paper_title": "Causal-rCM: A Unified Teacher-Forcing and Self-Forcing Open Recipe for Autoregressive Diffusion Distillation in Streaming Video Generation and Interactive World Models",
+      "primary": "Tsinghua University",
+      "published": "2026-06-24",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.25473"
+    },
+    "Kaixiong Gong": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Kaixuan Liu": {
+      "all": [
+        "Emory University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.05558",
+      "paper_title": "Autoregressive Diffusion World Models for Off-Policy Evaluation of LLM Agents",
+      "primary": "Emory University",
+      "published": "2026-06-04",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2606.05558"
+    },
+    "Kejiang Ye": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Kevin Black": {
+      "all": [
+        "Physical Intelligence"
+      ],
+      "confidence": "high",
+      "paper_id": "2410.24164",
+      "paper_title": "π0: A Vision-Language-Action Flow Model for General Robot Control",
+      "primary": "Physical Intelligence",
+      "published": "2024-10-31",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2410.24164"
+    },
+    "Khanh D. Nguyen": {
+      "all": [
+        "Max Planck Institute for Intelligent Systems",
+        "University of Stuttgart, Germany German Research Center for Artificial Intelligence"
+      ],
+      "confidence": "medium",
+      "paper_id": "2606.08094",
+      "paper_title": "vla.cpp: A Unified Inference Runtime for Vision-Language-Action Models",
+      "primary": "Max Planck Institute for Intelligent Systems",
+      "published": "2026-06-06",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2606.08094"
+    },
+    "Kimin Lee": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Liang Qiao": {
+      "all": [
+        "University of Science and Technology of China"
+      ],
+      "confidence": "high",
+      "paper_id": "2509.25401",
+      "paper_title": "FlashOmni: A Unified Sparse Attention Engine for Diffusion Transformers",
+      "primary": "University of Science and Technology of China",
+      "published": "2025-09-29",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2509.25401"
+    },
+    "Lin Zhang": {
+      "all": [
+        "Hong Kong University of Science and Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.11136",
+      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "primary": "Hong Kong University of Science and Technology",
+      "published": "2026-07-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.11136"
+    },
+    "Ling Yang": {
+      "all": [
+        "Princeton University",
+        "ByteDance"
+      ],
+      "confidence": "high",
+      "paper_id": "2505.15809",
+      "paper_title": "MMaDA: Multimodal Large Diffusion Language Models",
+      "primary": "Princeton University",
+      "published": "2025-05-21",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2505.15809"
+    },
+    "Lingyun Yang": {
+      "all": [
+        "Hong Kong University of Science and Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2604.08123",
+      "paper_title": "LegoDiffusion: Micro-Serving Text-to-Image Diffusion Workflows",
+      "primary": "Hong Kong University of Science and Technology",
+      "published": "2026-04-09",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2604.08123"
+    },
+    "Linzhi Wu": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Mingcheng Ye": {
+      "all": [
+        "Beijing Institute of Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2512.18254",
+      "paper_title": "Loom: Diffusion-Transformer for Interleaved Generation",
+      "primary": "Beijing Institute of Technology",
+      "published": "2025-12-20",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2512.18254"
+    },
+    "Mohsen Ghafoorian": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Mustafa Shukor": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Muyang Li": {
+      "all": [
+        "Massachusetts Institute of Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2402.19481",
+      "paper_title": "DistriFusion: Distributed Parallel Inference for High-Resolution Diffusion Models",
+      "primary": "Massachusetts Institute of Technology",
+      "published": "2024-02-29",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2402.19481"
+    },
+    "Nanye Ma": {
+      "all": [
+        "New York University"
+      ],
+      "confidence": "high",
+      "paper_id": "2401.08740",
+      "paper_title": "SiT: Exploring Flow and Diffusion-based Generative Models with Scalable Interpolant Transformers",
+      "primary": "New York University",
+      "published": "2024-01-16",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2401.08740"
+    },
+    "Patrick Esser": {
+      "all": [
+        "Heidelberg University"
+      ],
+      "confidence": "medium",
+      "paper_id": "2403.03206",
+      "paper_title": "Scaling Rectified Flow Transformers for High-Resolution Image Synthesis",
+      "primary": "Heidelberg University",
+      "published": "2024-03-05",
+      "source": "Semantic Scholar",
+      "source_url": "https://api.semanticscholar.org/graph/v1/paper/ARXIV:2403.03206/authors?fields=name,affiliations"
+    },
+    "Peiqi Yin": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Peng Gao": {
+      "all": [
+        "Shanghai AI Laboratory"
+      ],
+      "confidence": "high",
+      "paper_id": "2405.05945",
+      "paper_title": "Lumina-T2X: Transforming Text into Any Modality, Resolution, and Duration via Flow-based Large Diffusion Transformers",
+      "primary": "Shanghai AI Laboratory",
+      "published": "2024-05-09",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2405.05945"
+    },
+    "Ping He": {
+      "all": [
+        "University of Illinois Urbana-Champaign",
+        "Vanderbilt University"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.12121",
+      "paper_title": "FlashDiff: Efficient Regional Execution and Scheduling for Diffusion Model Serving",
+      "primary": "University of Illinois Urbana-Champaign",
+      "published": "2026-07-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.12121"
+    },
+    "Qin Guo": {
+      "all": [
+        "Hong Kong University of Science and Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.30332",
+      "paper_title": "UniGP: Taming Diffusion Transformer for Prior-Preserved Unified Generation and Perception",
+      "primary": "Hong Kong University of Science and Technology",
+      "published": "2026-06-29",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.30332"
+    },
+    "Qixiu Li": {
+      "all": [
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2411.19650",
+      "paper_title": "CogACT: A Foundational Vision-Language-Action Model for Synergizing Cognition and Action in Robotic Manipulation",
+      "primary": "Tsinghua University",
+      "published": "2024-11-29",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2411.19650"
+    },
+    "Qizheng Yang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Robin Rombach": {
+      "all": [
+        "Ludwig Maximilian University of Munich"
+      ],
+      "confidence": "high",
+      "paper_id": "2112.10752",
+      "paper_title": "High-Resolution Image Synthesis with Latent Diffusion Models",
+      "primary": "Ludwig Maximilian University of Munich",
+      "published": "2021-12-20",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2112.10752"
+    },
+    "Ruili Feng": {
+      "all": [
+        "Alibaba Group"
+      ],
+      "confidence": "high",
+      "paper_id": "2412.03568",
+      "paper_title": "The Matrix: Infinite-Horizon World Generation with Real-Time Moving Control",
+      "primary": "Alibaba Group",
+      "published": "2024-12-04",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2412.03568"
+    },
+    "Ruiqi Lai": {
+      "all": [
+        "Hong Kong University of Science and Technology",
+        "Alibaba Group[0.3em]"
+      ],
+      "confidence": "medium",
+      "paper_id": "2606.19004",
+      "paper_title": "Spotlight: Synergizing Seed Exploration and Spot GPUs for DiT RL Post-Training",
+      "primary": "Hong Kong University of Science and Technology",
+      "published": "2026-06-17",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2606.19004"
+    },
+    "Ruiyi Ding": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Ruslan Sharifullin": {
+      "all": [
+        "Stanford University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.12987",
+      "paper_title": "Diffusion Transformer World-Action Model for AV Scene Prediction",
+      "primary": "Stanford University",
+      "published": "2026-06-11",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.12987"
+    },
+    "Ryuji Oi": {
+      "all": [
+        "Institute of Science Tokyo"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.06370",
+      "paper_title": "Training-Free Acceleration for Vision-Language-Action Models with Action Caching and Refinement",
+      "primary": "Institute of Science Tokyo",
+      "published": "2026-07-07",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.06370"
+    },
+    "Sen Wang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Shengbang Tong": {
+      "all": [
+        "New York University"
+      ],
+      "confidence": "high",
+      "paper_id": "2601.16208",
+      "paper_title": "Scaling Text-to-Image Diffusion Transformers with Representation Autoencoders",
+      "primary": "New York University",
+      "published": "2026-01-22",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2601.16208"
+    },
+    "Shenghai Yuan": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Shengqu Cai": {
+      "all": [
+        "Stanford University"
+      ],
+      "confidence": "medium",
+      "paper_id": "2508.21058",
+      "paper_title": "Mixture of Contexts for Long Video Generation",
+      "primary": "Stanford University",
+      "published": "2025-08-28",
+      "source": "Semantic Scholar",
+      "source_url": "https://api.semanticscholar.org/graph/v1/paper/ARXIV:2508.21058/authors?fields=name,affiliations"
+    },
+    "Shuai Wang": {
+      "all": [
+        "Nanjing University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.16255",
+      "paper_title": "UniDDT: Unifying Multimodal Understanding and Generation with Decoupled Diffusion Transformer",
+      "primary": "Nanjing University",
+      "published": "2026-06-15",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.16255"
+    },
+    "Shubham Agarwal": {
+      "all": [
+        "Adobe"
+      ],
+      "confidence": "high",
+      "paper_id": "2312.04429",
+      "paper_title": "Approximate Caching for Efficiently Serving Diffusion Models",
+      "primary": "Adobe",
+      "published": "2023-12-07",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2312.04429"
+    },
+    "Shufan Li": {
+      "all": [
+        "University of California, Los Angeles"
+      ],
+      "confidence": "high",
+      "paper_id": "2412.01169",
+      "paper_title": "OmniFlow: Any-to-Any Generation with Multi-Modal Rectified Flows",
+      "primary": "University of California, Los Angeles",
+      "published": "2024-12-02",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2412.01169"
+    },
+    "Shuyuan Tu": {
+      "all": [
+        "Fudan University"
+      ],
+      "confidence": "high",
+      "paper_id": "2508.08248",
+      "paper_title": "StableAvatar: Infinite-Length Audio-Driven Avatar Video Generation",
+      "primary": "Fudan University",
+      "published": "2025-08-11",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2508.08248"
+    },
+    "Sihyun Yu": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Sijie Wang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Sohaib Ahmad": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Songming Liu": {
+      "all": [
+        "Tsinghua University"
+      ],
+      "confidence": "medium",
+      "paper_id": "2410.07864",
+      "paper_title": "RDT-1B: a Diffusion Foundation Model for Bimanual Manipulation",
+      "primary": "Tsinghua University",
+      "published": "2024-10-10",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2410.07864"
+    },
+    "Subrata Mitra": {
+      "all": [
+        "Adobe"
+      ],
+      "confidence": "high",
+      "paper_id": "2312.04429",
+      "paper_title": "Approximate Caching for Efficiently Serving Diffusion Models",
+      "primary": "Adobe",
+      "published": "2023-12-07",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2312.04429"
+    },
+    "Suyi Li": {
+      "all": [
+        "Hong Kong University of Science and Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.26566",
+      "paper_title": "ServerlessT2I: Efficient Text-to-Image Workflow Serving on a Serverless Platform",
+      "primary": "Hong Kong University of Science and Technology",
+      "published": "2026-07-29",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.26566"
+    },
+    "Tero Karras": {
+      "all": [
+        "NVIDIA"
+      ],
+      "confidence": "medium",
+      "paper_id": "2206.00364",
+      "paper_title": "Elucidating the Design Space of Diffusion-Based Generative Models",
+      "primary": "NVIDIA",
+      "published": "2022-06-01",
+      "source": "Semantic Scholar",
+      "source_url": "https://api.semanticscholar.org/graph/v1/paper/ARXIV:2206.00364/authors?fields=name,affiliations"
+    },
+    "Tim Salimans": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Tinghui Zhu": {
+      "all": [
+        "University of California, Davis"
+      ],
+      "confidence": "high",
+      "paper_id": "2605.15458",
+      "paper_title": "Video Models Can Reason with Verifiable Rewards",
+      "primary": "University of California, Davis",
+      "published": "2026-05-14",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2605.15458"
+    },
+    "Tong Wu": {
+      "all": [
+        "Stanford University"
+      ],
+      "confidence": "high",
+      "paper_id": "2506.05284",
+      "paper_title": "Video World Models with Long-term Spatial Memory",
+      "primary": "Stanford University",
+      "published": "2025-06-05",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2506.05284"
+    },
+    "Travis Davies": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Tsung-Wei Ke": {
+      "all": [
+        "Carnegie Mellon University"
+      ],
+      "confidence": "high",
+      "paper_id": "2402.10885",
+      "paper_title": "3D Diffuser Actor: Policy Diffusion with 3D Scene Representations",
+      "primary": "Carnegie Mellon University",
+      "published": "2024-02-16",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2402.10885"
+    },
+    "Weijie Kong": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Weijie Wang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Weilun Feng": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Wenqi Jiang": {
+      "all": [
+        "NVIDIA"
+      ],
+      "confidence": "high",
+      "paper_id": "2602.18397",
+      "paper_title": "How Fast Can I Run My VLA? Demystifying VLA Inference Performance with VLA-Perf",
+      "primary": "NVIDIA",
+      "published": "2026-02-20",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2602.18397"
+    },
+    "Wenzhe Cai": {
+      "all": [
+        "Shanghai AI Laboratory"
+      ],
+      "confidence": "high",
+      "paper_id": "2505.08712",
+      "paper_title": "NavDP: Learning Sim-to-Real Navigation Diffusion Policy with Privileged Information Guidance",
+      "primary": "Shanghai AI Laboratory",
+      "published": "2025-05-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2505.08712"
+    },
+    "William Peebles": {
+      "all": [
+        "University of California, Berkeley"
+      ],
+      "confidence": "high",
+      "paper_id": "2212.09748",
+      "paper_title": "Scalable Diffusion Models with Transformers",
+      "primary": "University of California, Berkeley",
+      "published": "2022-12-19",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2212.09748"
+    },
+    "Xianglong He": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Xiaofeng Mao": {
+      "all": [
+        "Shanghai AI Laboratory",
+        "Fudan University"
+      ],
+      "confidence": "high",
+      "paper_id": "2512.22096",
+      "paper_title": "Yume-1.5: A Text-Controlled Interactive World Generation Model",
+      "primary": "Shanghai AI Laboratory",
+      "published": "2025-12-26",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2512.22096"
+    },
+    "Xiaowen Chu": {
+      "all": [
+        "Hong Kong University of Science and Technology (Guangzhou)"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.11136",
+      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "primary": "Hong Kong University of Science and Technology (Guangzhou)",
+      "published": "2026-07-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.11136"
+    },
+    "Xiaoxiao Jiang": {
+      "all": [
+        "Hong Kong University of Science and Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.26566",
+      "paper_title": "ServerlessT2I: Efficient Text-to-Image Workflow Serving on a Serverless Platform",
+      "primary": "Hong Kong University of Science and Technology",
+      "published": "2026-07-29",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.26566"
+    },
+    "Xin Ma": {
+      "all": [
+        "Monash University"
+      ],
+      "confidence": "high",
+      "paper_id": "2401.03048",
+      "paper_title": "Latte: Latent Diffusion Transformer for Video Generation",
+      "primary": "Monash University",
+      "published": "2024-01-05",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2401.03048"
+    },
+    "Xingchao Liu": {
+      "all": [
+        "University of Texas at Austin"
+      ],
+      "confidence": "high",
+      "paper_id": "2209.03003",
+      "paper_title": "Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow",
+      "primary": "University of Texas at Austin",
+      "published": "2022-09-07",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2209.03003"
+    },
+    "Xinwei Qiang": {
+      "all": [
+        "Shanghai Jiao Tong University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.13501",
+      "paper_title": "GF-DiT: Scheduling Parallelism for Diffusion Transformer Serving",
+      "primary": "Shanghai Jiao Tong University",
+      "published": "2026-06-11",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.13501"
+    },
+    "Xueze Kang": {
+      "all": [
+        "Hong Kong University of Science and Technology (Guangzhou)"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.11136",
+      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "primary": "Hong Kong University of Science and Technology (Guangzhou)",
+      "published": "2026-07-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.11136"
+    },
+    "Xukun Li": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Xun Huang": {
+      "all": [
+        "Adobe"
+      ],
+      "confidence": "high",
+      "paper_id": "2506.08009",
+      "paper_title": "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion",
+      "primary": "Adobe",
+      "published": "2025-06-09",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2506.08009"
+    },
+    "Yagmur Akarken": {
+      "all": [
+        "University of Oxford"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.16673",
+      "paper_title": "MMDiff: Extending Diffusion Transformers for Multi-Modal Generation",
+      "primary": "University of Oxford",
+      "published": "2026-06-15",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2606.16673"
+    },
+    "Yang Song": {
+      "all": [
+        "Google",
+        "Work partially done during an internship at Google Brain"
+      ],
+      "confidence": "medium",
+      "paper_id": "2011.13456",
+      "paper_title": "Score-Based Generative Modeling through Stochastic Differential Equations",
+      "primary": "Google",
+      "published": "2020-11-26",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2011.13456"
+    },
+    "Yanhao Jia": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Yanjie Ze": {
+      "all": [
+        "Shanghai Qizhi Institute"
+      ],
+      "confidence": "high",
+      "paper_id": "2403.03954",
+      "paper_title": "3D Diffusion Policy: Generalizable Visuomotor Policy Learning via Simple 3D Representations",
+      "primary": "Shanghai Qizhi Institute",
+      "published": "2024-03-06",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2403.03954"
+    },
+    "Yantai Yang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Yanying Lin": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Yaoru Li": {
+      "all": [
+        "Zhejiang University",
+        "Huawei"
+      ],
+      "confidence": "high",
+      "paper_id": "2511.21780",
+      "paper_title": "3MDiT: Unified Tri-Modal Diffusion Transformer for Text-Driven Synchronized Audio-Video Generation",
+      "primary": "Zhejiang University",
+      "published": "2025-11-26",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2511.21780"
+    },
+    "Yaqi Qiao": {
+      "all": [
+        "University of Illinois Urbana-Champaign"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.12121",
+      "paper_title": "FlashDiff: Efficient Regional Execution and Scheduling for Diffusion Model Serving",
+      "primary": "University of Illinois Urbana-Champaign",
+      "published": "2026-07-13",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.12121"
+    },
+    "Yaron Lipman": {
+      "all": [
+        "Meta AI",
+        "Weizmann Institute of Science"
+      ],
+      "confidence": "high",
+      "paper_id": "2210.02747",
+      "paper_title": "Flow Matching for Generative Modeling",
+      "primary": "Meta AI",
+      "published": "2022-10-06",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2210.02747"
+    },
+    "Yaxuan Li": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Yi Yang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Ying Fan": {
+      "all": [
+        "Google",
+        "University of Wisconsin-Madison"
+      ],
+      "confidence": "high",
+      "paper_id": "2305.16381",
+      "paper_title": "DPOK: Reinforcement Learning for Fine-tuning Text-to-Image Diffusion Models",
+      "primary": "Google",
+      "published": "2023-05-25",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2305.16381"
+    },
+    "Yiyang Ma": {
+      "all": [
+        "Peking University"
+      ],
+      "confidence": "high",
+      "paper_id": "2411.07975",
+      "paper_title": "JanusFlow: Harmonizing Autoregression and Rectified Flow for Unified Multimodal Understanding and Generation",
+      "primary": "Peking University",
+      "published": "2024-11-12",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2411.07975"
+    },
+    "Yoav HaCohen": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Yongsheng Yu": {
+      "all": [
+        "NVIDIA",
+        "University of Rochester"
+      ],
+      "confidence": "high",
+      "paper_id": "2511.20645",
+      "paper_title": "PixelDiT: Pixel Diffusion Transformers for Image Generation",
+      "primary": "NVIDIA",
+      "published": "2025-11-25",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2511.20645"
+    },
+    "Youhe Jiang": {
+      "all": [
+        "Shanghai Jiao Tong University",
+        "Shengshu Technology"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.19271",
+      "paper_title": "TurboServe: Serving Streaming Video Generation Efficiently and Economically",
+      "primary": "Shanghai Jiao Tong University",
+      "published": "2026-06-17",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.19271"
+    },
+    "Youwei Zheng": {
+      "all": [
+        "Sun Yat-sen University",
+        "ByteDance Intelligent Creation"
+      ],
+      "confidence": "high",
+      "paper_id": "2510.09094",
+      "paper_title": "Dense2MoE: Restructuring Diffusion Transformer to MoE for Efficient Text-to-Image Generation",
+      "primary": "Sun Yat-sen University",
+      "published": "2025-10-10",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2510.09094"
+    },
+    "Yuanming Yang": {
+      "all": [
+        "JD.com",
+        "Tsinghua University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.23626",
+      "paper_title": "DiT-Reward: Generative Representations for Text-to-Image Reward Modeling",
+      "primary": "JD.com",
+      "published": "2026-06-22",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.23626"
+    },
+    "Ze Huang": {
+      "all": [
+        "Fudan University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.29501",
+      "paper_title": "Learning Transferable Dynamics Priors from Action to World Modeling",
+      "primary": "Fudan University",
+      "published": "2026-06-28",
+      "source": "ar5iv",
+      "source_url": "https://ar5iv.labs.arxiv.org/html/2606.29501"
+    },
+    "Zeyue Xue": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Zhaochong An": {
+      "all": [
+        "Google",
+        "University of Oxford",
+        "University of Copenhagen"
+      ],
+      "confidence": "medium",
+      "paper_id": "2603.26599",
+      "paper_title": "VGGRPO: Towards World-Consistent Video Generation with 4D Latent Reward",
+      "primary": "Google",
+      "published": "2026-03-27",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2603.26599"
+    },
+    "Zhaoyuan He": {
+      "all": [
+        "University of Texas at Austin"
+      ],
+      "confidence": "high",
+      "paper_id": "2607.23844",
+      "paper_title": "OmniCache: Multidimensional Hierarchical Feature Caching For Diffusion Models",
+      "primary": "University of Texas at Austin",
+      "published": "2026-07-26",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2607.23844"
+    },
+    "Zhengcong Fei": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Zhi Hou": {
+      "all": [
+        "Shanghai AI Laboratory"
+      ],
+      "confidence": "high",
+      "paper_id": "2410.15959",
+      "paper_title": "Diffusion Transformer Policy",
+      "primary": "Shanghai AI Laboratory",
+      "published": "2024-10-21",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2410.15959"
+    },
+    "Zhimin Li": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Zhuoyi Yang": {
+      "all": [],
+      "confidence": "unresolved",
+      "paper_id": null,
+      "paper_title": null,
+      "primary": "Unknown",
+      "published": null,
+      "source": null
+    },
+    "Zhuoyuan Wu": {
+      "all": [
+        "Peking University"
+      ],
+      "confidence": "high",
+      "paper_id": "2606.04463",
+      "paper_title": "OSCAR: Omni-Embodiment Action-Conditioned World Model for Robotics",
+      "primary": "Peking University",
+      "published": "2026-06-03",
+      "source": "arXiv HTML",
+      "source_url": "https://arxiv.org/html/2606.04463"
+    }
+  },
+  "generated_at": "2026-08-03",
+  "institution_counts": {
+    "Adobe": 4,
+    "Alibaba Group": 1,
+    "Baidu": 1,
+    "Beijing Institute of Technology": 1,
+    "Beijing Normal University": 1,
+    "ByteDance": 2,
+    "Carnegie Mellon University": 1,
+    "Chinese Academy of Sciences": 1,
+    "Chinese University of Hong Kong": 1,
+    "Columbia University": 1,
+    "Emory University": 1,
+    "Fudan University": 2,
+    "Google": 4,
+    "Google DeepMind": 2,
+    "Heidelberg University": 1,
+    "Hong Kong University of Science and Technology": 6,
+    "Hong Kong University of Science and Technology (Guangzhou)": 3,
+    "Indian Institute of Science Education and Research Bhopal": 1,
+    "Institute of Science Tokyo": 1,
+    "JD.com": 1,
+    "Ludwig Maximilian University of Munich": 1,
+    "Massachusetts Institute of Technology": 1,
+    "Max Planck Institute for Intelligent Systems": 1,
+    "Meta AI": 2,
+    "Midea Group": 1,
+    "Monash University": 1,
+    "NVIDIA": 5,
+    "Nanjing University": 1,
+    "National University of Singapore": 1,
+    "New York University": 4,
+    "Peking University": 2,
+    "Physical Intelligence": 1,
+    "Princeton University": 1,
+    "Renmin University of China": 1,
+    "Salesforce Research": 1,
+    "Shanghai AI Laboratory": 4,
+    "Shanghai Jiao Tong University": 4,
+    "Shanghai Qizhi Institute": 1,
+    "Shengshu Technology": 2,
+    "Stanford University": 5,
+    "Sun Yat-sen University": 1,
+    "Tencent": 2,
+    "The University of Hong Kong": 1,
+    "Tsinghua University": 5,
+    "University of California, Berkeley": 2,
+    "University of California, Davis": 1,
+    "University of California, Los Angeles": 1,
+    "University of Chinese Academy of Sciences": 1,
+    "University of Geneva": 1,
+    "University of Illinois Urbana-Champaign": 2,
+    "University of Oxford": 1,
+    "University of Science and Technology of China": 1,
+    "University of Texas at Austin": 2,
+    "University of Toronto": 1,
+    "University of Waterloo": 1,
+    "Unknown": 47,
+    "Zhejiang University": 1
+  },
+  "selection_rule": "Primary affiliation on the latest resolved key-author paper in the catalog"
+}

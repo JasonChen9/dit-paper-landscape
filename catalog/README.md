@@ -24,6 +24,12 @@
 
 `key_authors` 只统计第一作者、论文明确标注的共同第一作者和通讯作者。角色使用 `first`、`co-first`、`corresponding`，同一作者兼具多个角色时用 `+` 连接，例如 `Suyi Li|co-first+corresponding`。未明确标注共一或通讯时不从作者顺序推断。
 
+## 作者单位
+
+`author_affiliations.json` 是作者图的单位快照。每位作者取目录中最新一篇已成功解析的关键作者论文，使用论文署名处列出的第一个单位作为主单位，并保留论文、日期和来源。无法可靠匹配时标记为 `Unknown`。
+
+新增或更新论文后运行 `python3 scripts/enrich_affiliations.py`，然后运行地图预计算脚本。单位信息在部署时写入 `landscape.json`，访问者打开网站时不会重新抓取或解析单位数据。
+
 ## 分类原则
 
 一篇论文只选择一个主目录，避免重复保存 PDF；跨主题关系由 Markdown 链接表达。例如 WorldDiT 主目录是 Agent/World Model，同时在视频和 Omni 笔记中交叉讨论。
