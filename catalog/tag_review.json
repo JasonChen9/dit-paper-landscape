@@ -1,0 +1,4222 @@
+{
+  "updated_at": "2026-10-30",
+  "scope": "Per-paper tag review for imported papers, including supplemental additions; historical before-statistics refer to the original 346-paper review.",
+  "stats": {
+    "paper_count": 362,
+    "reviewed_new_papers": 206,
+    "before_unique_tag_sets": 171,
+    "after_unique_tag_sets": 347,
+    "before_identical_tag_pairs": 1401,
+    "after_identical_tag_pairs": 0,
+    "example_similarity_checks": [
+      {
+        "left": "GAE",
+        "right": "Qwen2.5-VL",
+        "before": 1.0,
+        "after": 0
+      },
+      {
+        "left": "Chandy–Lamport",
+        "right": "PEARL",
+        "before": 1.0,
+        "after": 0
+      },
+      {
+        "left": "Horvitz–Thompson 1952",
+        "right": "PPO",
+        "before": 1.0,
+        "after": 0
+      }
+    ],
+    "remaining_identical_tag_groups": [
+      [
+        "Aligning T2I",
+        "ImageReward"
+      ]
+    ],
+    "similarity_model": "tag-tfidf"
+  },
+  "papers": {
+    "2508.03680": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "agents",
+        "tool-use",
+        "credit-assignment",
+        "disaggregation"
+      ],
+      "reason": "分离智能体执行与训练，以统一转移接口和分层信用分配构造学习样本；未据此声称弹性或容错。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2508.03680"
+      ]
+    },
+    "2608.17528": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "agents",
+        "agent-harness",
+        "model-proxy",
+        "loss-normalization",
+        "coding-agent"
+      ],
+      "reason": "模型端点代理连接原生运行框架与训练，重点包括样本构造及损失归一化。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.17528"
+      ]
+    },
+    "2505.24298": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "asynchronous-training",
+        "ppo",
+        "policy-staleness",
+        "load-balancing",
+        "rollout"
+      ],
+      "reason": "生成与训练异步推进，并用负载平衡及调整后的PPO处理旧策略样本。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2505.24298",
+        "https://papers.neurips.cc/paper_files/paper/2025/hash/33c00862bfa29ac72ecf630a41e19352-Abstract-Conference.html"
+      ]
+    },
+    "2603.13019": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "agents",
+        "tool-use",
+        "resource-sharing",
+        "elasticity",
+        "scheduling"
+      ],
+      "reason": "按动作粒度共享外部工具与环境资源，结合异构资源的弹性编排。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.13019"
+      ]
+    },
+    "2608.14635": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "agents",
+        "fault-tolerance",
+        "checkpointing",
+        "environment-recovery",
+        "state-consistency"
+      ],
+      "reason": "联合恢复生成进程与容器状态，保持已提交交互前缀的一致性。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.14635"
+      ]
+    },
+    "2609.36899": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "rollout",
+        "scheduling",
+        "heterogeneous-hardware",
+        "batching",
+        "tail-latency",
+        "cache-migration"
+      ],
+      "reason": "用节奏控制、长尾集中和延后绑定的缓存准备重塑异构生成负载。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.36899"
+      ]
+    },
+    "chandy-lamport": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "distributed-snapshot",
+        "consistent-cut",
+        "message-passing",
+        "checkpointing",
+        "stable-property-detection"
+      ],
+      "reason": "用标记记录进程与在途消息的一致全局状态，是分布式快照算法而非RL论文。",
+      "evidence_urls": [
+        "https://research.cs.wisc.edu/areas/os/Qual/papers/snapshots.pdf"
+      ]
+    },
+    "2606.24369": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "diffusion",
+        "pipeline",
+        "parallelism",
+        "disaggregation",
+        "heterogeneous-hardware",
+        "bounded-staleness"
+      ],
+      "reason": "结合扩散生成轴与时间步并行、训练器辅助采样及受限异步来减少训练空隙。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.24369"
+      ]
+    },
+    "2604.26256": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "asynchronous-training",
+        "policy-versioning",
+        "bounded-staleness",
+        "trajectory-consistency",
+        "scheduling"
+      ],
+      "reason": "并存多个策略版本组织生成，在轨迹一致性和有界陈旧度约束下减少长尾气泡。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.26256"
+      ]
+    },
+    "dynarl": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "scheduling",
+        "hypergraph",
+        "resource-allocation",
+        "state-migration",
+        "dynamic-routing"
+      ],
+      "reason": "动态超图表达训练流水线，通过迁移接口与路由协调在线资源重分配。",
+      "evidence_urls": [
+        "https://www.usenix.org/conference/osdi26/presentation/wang-yuanqing"
+      ]
+    },
+    "gcr": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "checkpointing",
+        "incremental-checkpoint",
+        "shadow-execution",
+        "dirty-tracking",
+        "fault-tolerance"
+      ],
+      "reason": "以CPU影子执行和脏模板识别变化状态，降低GPU程序增量检查点成本。",
+      "evidence_urls": [
+        "https://www.usenix.org/conference/fast26/presentation/zeng"
+      ]
+    },
+    "2510.12633": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "weight-synchronization",
+        "parameter-relay",
+        "rollout",
+        "load-balancing",
+        "asynchronous-training"
+      ],
+      "reason": "分布式参数中继与细粒度同步配合长尾轨迹重打包，减少生成等待。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2510.12633",
+        "https://i.cs.hku.hk/~cwu/papers/gmsheng-eurosys26.pdf",
+        "https://2026.eurosys.org/papers.html"
+      ]
+    },
+    "2610.08430": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "weight-synchronization",
+        "delta-encoding",
+        "lossless-compression",
+        "version-consistency",
+        "model-loading",
+        "fault-tolerance"
+      ],
+      "reason": "通过XOR及覆盖增量、原生加载器和联合版本提交恢复与完整权重更新逐位相同的状态。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.08430"
+      ]
+    },
+    "2609.35158": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "rollout",
+        "resource-sharing",
+        "prefill-decode-disaggregation",
+        "scheduling",
+        "role-switching"
+      ],
+      "reason": "联合选择预填充解码配置和训练卡借用，并把角色切换成本纳入决策。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.35158"
+      ]
+    },
+    "2510.19225": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "rollout",
+        "spot-gpu",
+        "elasticity",
+        "weight-synchronization",
+        "state-migration"
+      ],
+      "reason": "将生成卸载到机会GPU，用拉取式权重传输及细粒度响应迁移应对回收。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2510.19225",
+        "https://www.usenix.org/conference/nsdi26/presentation/wu-yongji"
+      ]
+    },
+    "2512.22492": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "fault-tolerance",
+        "failure-isolation",
+        "hot-standby",
+        "weight-synchronization",
+        "point-to-point-communication"
+      ],
+      "reason": "按失败角色局部恢复，利用生成侧热备及动态点对点连接避免全作业重启。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2512.22492"
+      ]
+    },
+    "rollart": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "disaggregation",
+        "heterogeneous-hardware",
+        "trajectory-scheduling",
+        "serverless",
+        "bounded-staleness"
+      ],
+      "reason": "按阶段硬件亲和性部署并独立推进轨迹，结合无服务器奖励和受限陈旧度同步。",
+      "evidence_urls": [
+        "https://www.usenix.org/conference/osdi26/presentation/gao"
+      ]
+    },
+    "2605.06534": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "rollout",
+        "elasticity",
+        "gpu-sharing",
+        "slo",
+        "weight-synchronization"
+      ],
+      "reason": "在保护在线服务SLO的同时借用服务GPU，协同调度生成并优化跨集群权重传输。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.06534"
+      ]
+    },
+    "spotcheck": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "spot-instance",
+        "nested-virtualization",
+        "live-migration",
+        "availability",
+        "resource-pooling"
+      ],
+      "reason": "用嵌套虚拟机、有界在线迁移和服务器池屏蔽竞价实例回收，不是RL专用方法。",
+      "evidence_urls": [
+        "https://doi.org/10.1145/2741948.2741953",
+        "https://people.cs.pitt.edu/~stl86/papers/eurosys15.pdf"
+      ]
+    },
+    "2601.09083": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "rollout",
+        "speculative-decoding",
+        "tree-cache",
+        "run-ahead-execution",
+        "on-policy"
+      ],
+      "reason": "将历史延续树作为当前策略的投机草稿，利用空隙提前生成并保持采样分布。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2601.09083"
+      ]
+    },
+    "2601.12784": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "asynchronous-training",
+        "policy-staleness",
+        "trajectory-lifecycle",
+        "parameter-server",
+        "scheduling"
+      ],
+      "reason": "用轨迹生命周期协议与轨迹/参数服务器解耦执行，并实施陈旧度感知协调。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2601.12784"
+      ]
+    },
+    "2610.03286": {
+      "previous_tags": [
+        "rl",
+        "systems",
+        "elasticity",
+        "fault-tolerance",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "trajectory-scheduling",
+        "admission-control",
+        "kv-cache",
+        "sandbox",
+        "copy-on-write",
+        "critical-path"
+      ],
+      "reason": "优先完成可解锁训练的轨迹组，同时管理KV驻留并共享沙箱页面。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.03286"
+      ]
+    },
+    "2608.00881": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "agents",
+        "tool-use",
+        "speculative-execution",
+        "branch-isolation",
+        "state-validation",
+        "latency"
+      ],
+      "reason": "预测观察并在隔离分支执行动作，联合验证动作及来源状态后再复用结果。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.00881"
+      ]
+    },
+    "2609.18849": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "agents",
+        "tool-use",
+        "progress-feedback",
+        "kv-cache",
+        "prefetching",
+        "serving"
+      ],
+      "reason": "工具运行中暴露进度及临近结束信号，帮助决定KV保留和预取时机。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.18849"
+      ]
+    },
+    "2507.01663": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "disaggregation",
+        "dataflow",
+        "streaming-storage",
+        "asynchronous-training",
+        "bounded-staleness"
+      ],
+      "reason": "以分布式流式存储和传输连接独立阶段，在陈旧度约束下重叠生产与消费。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2507.01663"
+      ]
+    },
+    "2405.16444": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "retrieval-augmented-generation",
+        "kv-cache",
+        "cache-composition",
+        "selective-recomputation",
+        "pipeline"
+      ],
+      "reason": "组合非前缀文档缓存，选择性重算跨片段交互并与缓存读取重叠。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2405.16444",
+        "https://2025.eurosys.org/awards.html"
+      ]
+    },
+    "2601.22705": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "agents",
+        "serving",
+        "kv-cache",
+        "admission-control",
+        "concurrency-control",
+        "cache-thrashing"
+      ],
+      "reason": "根据共享缓存拥塞动态限制活跃智能体数量，避免多轮执行中的缓存抖动。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2601.22705",
+        "https://proceedings.mlr.press/v306/chen26fs.html"
+      ]
+    },
+    "2410.01228": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "online-offline-colocation",
+        "token-scheduling",
+        "layer-preemption",
+        "kv-cache",
+        "slo"
+      ],
+      "reason": "利用细粒度标记调度和逐层抢占，让离线执行使用在线服务的短暂空隙。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2410.01228",
+        "https://proceedings.mlr.press/v306/qiao26i.html"
+      ]
+    },
+    "2609.31551": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "multimodal",
+        "serving",
+        "microbatching",
+        "prefill-offload",
+        "sm-partitioning",
+        "pipeline"
+      ],
+      "reason": "将视觉编码作为流量控制点，联合微批次、预填充卸载和计算单元分区。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.31551"
+      ]
+    },
+    "2610.19822": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "multi-model",
+        "weight-offload",
+        "kv-cache",
+        "prefetching",
+        "transfer-scheduling",
+        "partial-residency"
+      ],
+      "reason": "统一竞争权重分片与会话KV的显存预算，利用调用意图安排预取及可抢占传输。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.19822"
+      ]
+    },
+    "2609.03335": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "workflow",
+        "cost-model",
+        "operator-fusion",
+        "model-placement",
+        "model-lifecycle",
+        "scheduling"
+      ],
+      "reason": "从逻辑依赖构造物理执行方案，联合模型加载、融合、放置和次序优化延迟。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.03335"
+      ]
+    },
+    "2507.07966": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "video-understanding",
+        "long-context",
+        "sequence-parallel",
+        "embedding-reuse",
+        "training-data"
+      ],
+      "reason": "长视频推理数据和两阶段训练配合MR-SP，复用视觉嵌入并并行处理长序列。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2507.07966",
+        "https://proceedings.neurips.cc/paper_files/paper/2025/hash/fc2865a2fdd5fd401050d37ee4946850-Abstract-Conference.html"
+      ]
+    },
+    "2606.12688": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "composite-model",
+        "dataflow",
+        "control-flow",
+        "model-placement",
+        "distributed-runtime"
+      ],
+      "reason": "Walk Graph统一表示复合模型的数据与循环控制流，并由分布式运行时执行。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.12688"
+      ]
+    },
+    "2609.32395": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "language-model",
+        "memory-architecture",
+        "block-local-encoding",
+        "cross-attention",
+        "cache-composition",
+        "editable-memory"
+      ],
+      "reason": "通过独立记忆块编码与交叉注意力读取改变模型架构，使记忆可组合和删除。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.32395"
+      ]
+    },
+    "2407.00079": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "prefill-decode-disaggregation",
+        "kv-cache",
+        "tiered-memory",
+        "scheduling",
+        "admission-control"
+      ],
+      "reason": "分离预填充与解码，以CPU和SSD构建分层缓存并实施缓存感知调度及拒收。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2407.00079",
+        "https://www.usenix.org/conference/fast25/presentation/qin"
+      ]
+    },
+    "2603.18897": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "agents",
+        "tool-use",
+        "speculative-execution",
+        "tool-prediction",
+        "result-validation",
+        "scheduling"
+      ],
+      "reason": "预测重复工具调用并提前执行，确认结果后交付并协调工具与返回请求。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.18897"
+      ]
+    },
+    "2505.04021": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "multi-model",
+        "gpu-sharing",
+        "memory-ballooning",
+        "virtual-memory",
+        "kv-cache"
+      ],
+      "reason": "通过显存气球与虚实分离的KV分配，在模型之间统一时间及空间共享。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2505.04021",
+        "https://www.usenix.org/conference/osdi26/presentation/yu-shan"
+      ]
+    },
+    "2509.24381": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "multimodal",
+        "serving",
+        "encoder-disaggregation",
+        "pipeline",
+        "token-budget",
+        "scheduling"
+      ],
+      "reason": "按细粒度编码就绪推进单请求，同时用token预算协调跨请求流水。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2509.24381"
+      ]
+    },
+    "2610.15186": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "retrieval-augmented-generation",
+        "kv-cache",
+        "cache-composition",
+        "causal-dependency",
+        "suffix-recomputation",
+        "behavior-preservation"
+      ],
+      "reason": "以完整预填充为参考，从文档边界重算因果后缀，验证非前缀复用的修复范围。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.15186"
+      ]
+    },
+    "2312.07104": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "structured-generation",
+        "prefix-sharing",
+        "kv-cache",
+        "radix-tree",
+        "constrained-decoding"
+      ],
+      "reason": "以程序前端表达控制流，用RadixAttention共享前缀并加速结构化输出。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2312.07104",
+        "https://proceedings.neurips.cc/paper_files/paper/2024/hash/724be4472168f31ba1c9ac630f15dec8-Abstract-Conference.html"
+      ]
+    },
+    "2311.15566": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "spot-gpu",
+        "elasticity",
+        "model-parallelism",
+        "state-migration",
+        "preemption"
+      ],
+      "reason": "随机会实例变化调整模型并行，利用回收预告期保存并迁移推理进度。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2311.15566",
+        "https://asplos-conference.org/asplos2024/main-program/index.html"
+      ]
+    },
+    "2510.18586": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "agents",
+        "serving",
+        "kv-cache",
+        "offloading",
+        "prefetching",
+        "memory-allocation",
+        "critical-path"
+      ],
+      "reason": "在工具等待期间卸载与预测上传KV，以依赖图优先级分配会话显存。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2510.18586",
+        "https://github.com/pku-lemonade/TokenCake/blob/main/README.md"
+      ]
+    },
+    "2309.06180": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "paged-attention",
+        "kv-cache",
+        "memory-management",
+        "memory-sharing",
+        "batching"
+      ],
+      "reason": "把KV分块映射到非连续存储，减少碎片与重复复制以扩大有效服务批量。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2309.06180",
+        "https://doi.org/10.1145/3600006.3613165"
+      ]
+    },
+    "2610.09307": {
+      "previous_tags": [
+        "serving",
+        "systems",
+        "cache",
+        "multimodal",
+        "supporting-method"
+      ],
+      "tags": [
+        "multimodal",
+        "serving",
+        "stage-graph",
+        "disaggregation",
+        "streaming",
+        "session-state",
+        "data-transfer"
+      ],
+      "reason": "统一编排专用阶段引擎和副本池，以独立数据通路支持流式请求与会话控制。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.09307"
+      ]
+    },
+    "2604.09073": {
+      "previous_tags": [
+        "diffusion",
+        "dit",
+        "serving",
+        "inference"
+      ],
+      "tags": [
+        "diffusion",
+        "dvfs",
+        "energy-efficiency",
+        "fault-tolerance",
+        "rollback",
+        "error-sensitivity"
+      ],
+      "reason": "按网络块及去噪步的错误敏感性调节电压频率，并用回滚纠正关键错误。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.09073"
+      ]
+    },
+    "2604.04335": {
+      "previous_tags": [
+        "diffusion",
+        "dit",
+        "serving",
+        "inference"
+      ],
+      "tags": [
+        "diffusion",
+        "serving",
+        "preemption",
+        "sequence-parallel",
+        "dynamic-batching",
+        "slo",
+        "elasticity"
+      ],
+      "reason": "利用扩散步边界联合视频抢占、弹性并行与批处理，满足混合图像视频的服务目标。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.04335"
+      ]
+    },
+    "2509.04719": {
+      "previous_tags": [
+        "diffusion",
+        "dit",
+        "serving",
+        "inference"
+      ],
+      "tags": [
+        "diffusion",
+        "heterogeneous-hardware",
+        "patch-parallel",
+        "load-balancing",
+        "adaptive-steps",
+        "straggler-mitigation"
+      ],
+      "reason": "同时调整非均匀patch分配与慢卡去噪步数，不能整体标为固定协议并行。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2509.04719"
+      ]
+    },
+    "2503.06923": {
+      "previous_tags": [
+        "diffusion",
+        "dit",
+        "serving",
+        "inference"
+      ],
+      "tags": [
+        "diffusion",
+        "feature-caching",
+        "feature-prediction",
+        "taylor-expansion",
+        "temporal-redundancy",
+        "approximate-inference"
+      ],
+      "reason": "用历史特征差分近似高阶导数，预测后续去噪特征以减少完整前向。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2503.06923",
+        "https://openaccess.thecvf.com/content/ICCV2025/html/Liu_From_Reusing_to_Forecasting_Accelerating_Diffusion_Models_with_TaylorSeers_ICCV_2025_paper.html"
+      ]
+    },
+    "2606.10135": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "world-model",
+        "bidirectional-attention",
+        "autoregressive",
+        "action-conditioned",
+        "distribution-matching-distillation"
+      ],
+      "reason": "保留生成片段内部全注意力，用控制微调和少步分布匹配蒸馏构造交互世界模型。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.10135"
+      ]
+    },
+    "2609.32540": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "autoregressive",
+        "kv-cache",
+        "pipeline",
+        "denoising",
+        "clean-anchor"
+      ],
+      "reason": "复用去噪中的分阶段KV并提前生成稀疏干净锚点，以稳定跨片段流水。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.32540"
+      ]
+    },
+    "2602.10825": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "autoregressive",
+        "feature-caching",
+        "adaptive-recomputation",
+        "kv-compression",
+        "approximate-inference"
+      ],
+      "reason": "按片段分别决定特征复用，并结合历史KV的重要性与冗余压缩。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2602.10825"
+      ]
+    },
+    "2605.09681": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "autoregressive",
+        "kv-cache",
+        "attention-head",
+        "structured-pruning",
+        "dynamic-pruning"
+      ],
+      "reason": "按注意力头功能划分静态和动态组，分别裁剪历史KV而非统一删除。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.09681"
+      ]
+    },
+    "2610.36729": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "world-model",
+        "action-conditioned",
+        "causal-attention",
+        "variable-length",
+        "prompt-enhancement",
+        "distillation"
+      ],
+      "reason": "动作感知因果注意力区分长期描述与局部动作条件，配合提示增强和蒸馏生成可变长片段。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.36729"
+      ]
+    },
+    "2607.07534": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "world-model",
+        "action-conditioned",
+        "causal-pretraining",
+        "distillation",
+        "interactive",
+        "multi-agent"
+      ],
+      "reason": "因果预训练与蒸馏支持持续交互，加入pilot/director、文本事件和多人接口。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2607.07534"
+      ]
+    },
+    "2606.05773": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "world-model",
+        "robotics",
+        "policy-evaluation",
+        "closed-loop",
+        "action-conditioned",
+        "multi-view",
+        "action-chunking"
+      ],
+      "reason": "按VLA动作块生成多视角观察，用成功和失败执行轨迹训练闭环策略评测模型。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.05773"
+      ]
+    },
+    "2609.38597": {
+      "previous_tags": [
+        "multimodal",
+        "unified",
+        "understanding",
+        "generation"
+      ],
+      "tags": [
+        "multimodal",
+        "understanding-generation",
+        "pixel-space",
+        "encoder-free",
+        "spatiotemporal",
+        "flow-matching",
+        "shared-attention"
+      ],
+      "reason": "图像patch与视频tubelet直接进入共享骨干，联合文本预测和像素空间生成。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.38597"
+      ]
+    },
+    "2511.07399": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "streaming",
+        "serving",
+        "slo",
+        "batching",
+        "pipeline",
+        "kv-cache"
+      ],
+      "reason": "以SLO感知批次和块调度、滚动KV及跨去噪步/层流水实现交互视频流。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2511.07399",
+        "https://proceedings.mlsys.org/paper_files/paper/2026/hash/698cfaf72a208aef2e78bcac55b74328-Abstract-Conference.html"
+      ]
+    },
+    "2605.30351": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "autoregressive",
+        "kv-compression",
+        "low-rank",
+        "latent-attention",
+        "rotary-position-embedding"
+      ],
+      "reason": "以共享低秩内容潜变量及解耦三维位置键替代逐头KV，并研究训练适应。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.30351"
+      ]
+    },
+    "2609.34606": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "world-model",
+        "linear-attention",
+        "sparse-attention",
+        "tiered-memory",
+        "kv-cache",
+        "kernel"
+      ],
+      "reason": "联合线性全局与逐头稀疏注意力，组织分层语义缓存页面并设计执行内核。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.34606"
+      ]
+    },
+    "2605.22718": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "world-model",
+        "kv-cache",
+        "history-retrieval",
+        "token-compression",
+        "camera-conditioning"
+      ],
+      "reason": "按相机和动作对应关系检索旧片段，并按key相似性压缩片段内历史。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.22718"
+      ]
+    },
+    "2607.10389": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "world-model",
+        "serving",
+        "state-migration",
+        "state-consistency",
+        "admission-control",
+        "lossless-compression",
+        "elasticity"
+      ],
+      "reason": "在片段边界迁移并校验完整会话状态，约束网络准入并保持受控配置下的一致性。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2607.10389"
+      ]
+    },
+    "2610.35529": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "world-model",
+        "kv-cache",
+        "tiered-memory",
+        "quantization",
+        "prefetching",
+        "pose-prediction",
+        "positional-encoding"
+      ],
+      "reason": "量化KV横跨设备、主机与存储，以姿态预测预取、后台写回及位置处理支持长会话。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.35529"
+      ]
+    },
+    "2608.07408": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "video",
+        "world-model",
+        "long-term-memory",
+        "virtual-position",
+        "memory-compression",
+        "rotary-position-embedding"
+      ],
+      "reason": "给压缩历史分配训练范围内的虚拟位置，修复长时检索和位置相位问题。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.07408"
+      ]
+    },
+    "2604.20289": {
+      "previous_tags": [
+        "video",
+        "world-model",
+        "inference",
+        "cache"
+      ],
+      "tags": [
+        "world-model",
+        "autoregressive",
+        "feature-caching",
+        "adaptive-recomputation",
+        "action-conditioned",
+        "approximate-inference",
+        "cache-update"
+      ],
+      "reason": "按结构和动作指纹跨片段复用块残差，但完整执行干净历史缓存的更新前向。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.20289"
+      ]
+    },
+    "2608.00337": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "robotics",
+        "serving",
+        "action-chunking",
+        "batching",
+        "scheduling",
+        "action-queue"
+      ],
+      "reason": "跟踪各机器人剩余动作队列，按消耗速度和补充紧迫性选择推理批次。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.00337"
+      ]
+    },
+    "2610.05062": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "benchmark",
+        "latency",
+        "energy-efficiency",
+        "edge-deployment",
+        "frequency-scaling"
+      ],
+      "reason": "刻画四种VLA在边缘和板载设备的时延、能耗与频率调节取舍，属于负载研究。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.05062"
+      ]
+    },
+    "2609.34792": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "dual-frequency",
+        "block-causal-attention",
+        "kv-cache",
+        "gated-adapter",
+        "long-horizon"
+      ],
+      "reason": "以分块因果缓存、双频率记忆和门控适配器支持长期记忆与快速动作重规划。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.34792"
+      ]
+    },
+    "2512.20188": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "asynchronous-inference",
+        "latent-buffer",
+        "whole-body-control",
+        "action-tokenization",
+        "joint-training"
+      ],
+      "reason": "潜表示缓冲连接慢速语义与快速全身控制路径，并进行动作标记化和联合训练。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2512.20188"
+      ]
+    },
+    "2506.01953": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "dual-system",
+        "parameter-sharing",
+        "asynchronous-inference",
+        "co-training"
+      ],
+      "reason": "通过部分参数共享及双感知协同训练，在统一模型中协调快执行与慢推理。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2506.01953",
+        "https://openreview.net/pdf/a69b5a0fb05a1e5009d25d054e59a97fcc5a4d0d.pdf"
+      ]
+    },
+    "2605.11381": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "robotics",
+        "serving",
+        "scheduling",
+        "action-execution",
+        "action-chunking",
+        "closed-loop-control"
+      ],
+      "reason": "把动作块生成和执行循环作为调度对象，结合执行阶段状态服务机器人群。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.11381"
+      ]
+    },
+    "2406.09246": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "action-tokenization",
+        "cross-embodiment",
+        "parameter-efficient-finetuning",
+        "quantization",
+        "visual-representation"
+      ],
+      "reason": "研究基于视觉语言骨干的动作token策略，以及跨机器人数据、低秩适配和量化部署。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2406.09246",
+        "https://proceedings.mlr.press/v270/",
+        "https://proceedings.mlr.press/v270/kim25c.html"
+      ]
+    },
+    "2609.12075": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "serving",
+        "multi-model",
+        "stream-colocation",
+        "sm-allocation",
+        "deadline-scheduling"
+      ],
+      "reason": "同GPU双流分别执行VLM与动作扩散，按SM配额和剩余SLO时间调度多模型请求。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.12075"
+      ]
+    },
+    "2607.01088": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "robotics",
+        "serving",
+        "declarative-interface",
+        "model-placement",
+        "batching",
+        "resource-planning"
+      ],
+      "reason": "以机器人感知接口表达工厂目标，联合规划模型放置、频率与批量服务。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2607.01088"
+      ]
+    },
+    "2603.28565": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "flow-matching",
+        "streaming",
+        "adaptive-observation",
+        "asynchronous-pipeline"
+      ],
+      "reason": "用动作流轨迹与显著性驱动的提前观察替代固定逐块节奏，并异步重叠执行阶段。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.28565"
+      ]
+    },
+    "2602.01100": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "completion-state-gating",
+        "subtask-switching",
+        "flow-matching",
+        "goal-conditioning"
+      ],
+      "reason": "仅在子任务切换时更新推理目标，以完成状态门控和稳定目标条件驱动动作头。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2602.01100"
+      ]
+    },
+    "2607.15621": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "autonomous-driving",
+        "vla",
+        "asynchronous-inference",
+        "kv-cache",
+        "staleness-aware-training",
+        "dual-frequency"
+      ],
+      "reason": "在闭环驾驶中结合慢VLM缓存和快速动作专家，并训练模型适应缓存陈旧度。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2607.15621"
+      ]
+    },
+    "2502.02175": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "inference",
+        "control"
+      ],
+      "tags": [
+        "vla",
+        "kv-cache",
+        "token-caching",
+        "temporal-redundancy",
+        "selective-recomputation",
+        "attention"
+      ],
+      "reason": "复用低变化视觉token的KV并重算任务敏感区域，按层注意力调整缓存比例。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2502.02175",
+        "https://proceedings.neurips.cc/paper_files/paper/2025/hash/f062da1973ac9ac61fc6d44dd7fa309f-Abstract-Conference.html"
+      ]
+    },
+    "1910.02653": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "training",
+        "activation-checkpointing",
+        "rematerialization",
+        "mixed-integer-programming",
+        "memory-scheduling"
+      ],
+      "reason": "用混合整数规划和实测成本模型选择训练图中张量保存与重计算的计划。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/1910.02653",
+        "https://proceedings.mlsys.org/paper_files/paper/2020/hash/0b816ae8f06f8dd3543dc3d9ef196cab-Abstract.html"
+      ]
+    },
+    "2604.04780": {
+      "previous_tags": [
+        "multimodal",
+        "unified",
+        "understanding",
+        "generation"
+      ],
+      "tags": [
+        "unified-multimodal",
+        "degraded-image-understanding",
+        "visual-reasoning",
+        "latent-bridge",
+        "grpo",
+        "joint-training"
+      ],
+      "reason": "学习先生成后回答的流程，用潜表示桥与交错GRPO联合优化视觉修复和文本回答。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.04780"
+      ]
+    },
+    "2311.11822": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "differential-privacy",
+        "training",
+        "gradient-clipping",
+        "zero-sharding",
+        "mixed-precision",
+        "distributed-training"
+      ],
+      "reason": "重组隐私优化与ZeRO分片的执行协作，处理大规模参数的裁剪、精度与分布式开销。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2311.11822",
+        "https://openreview.net/attachment?id=VGacNNZfgo&name=pdf"
+      ]
+    },
+    "2006.09616": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "training",
+        "rematerialization",
+        "online-eviction",
+        "dynamic-computation-graph",
+        "memory-management"
+      ],
+      "reason": "以张量元数据驱动在线贪心驱逐和按需重计算，支持动态执行图的内存管理。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2006.09616",
+        "https://openreview.net/pdf?id=Vfs_2RnOD0H"
+      ]
+    },
+    "fastdp-bk": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "differential-privacy",
+        "per-sample-gradients",
+        "gradient-clipping",
+        "backpropagation",
+        "memory-efficiency"
+      ],
+      "reason": "借助反向传播记账与因子结构降低逐样本梯度裁剪的时间和存储成本。",
+      "evidence_urls": [
+        "https://proceedings.mlr.press/v202/bu23a.html"
+      ]
+    },
+    "flexrl": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "vlm",
+        "rl",
+        "training",
+        "data-preprocessing",
+        "sequence-partitioning",
+        "load-balancing"
+      ],
+      "reason": "分散视觉预处理并异步物化数据，按成本切分序列以平衡多模态RL训练负载。",
+      "evidence_urls": [
+        "https://proceedings.iclr.cc/paper_files/paper/2026/file/8cb31912235561112339f04903657f72-Paper-Conference.pdf"
+      ]
+    },
+    "1506.02438": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "advantage-estimation",
+        "variance-reduction",
+        "temporal-difference",
+        "trust-region",
+        "continuous-control"
+      ],
+      "reason": "通过指数加权TD残差估计优势，分析偏差方差取舍并用于信赖域连续控制。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/1506.02438",
+        "https://arxiv.org/pdf/1506.02438"
+      ]
+    },
+    "2101.06983": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "contrastive-learning",
+        "training",
+        "gradient-caching",
+        "activation-recomputation",
+        "large-batch"
+      ],
+      "reason": "缓存表示层梯度，再分小批重算编码器反传，从而支持显存受限的大批对比学习。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2101.06983",
+        "https://aclanthology.org/2021.repl4nlp-1.31/"
+      ]
+    },
+    "megascale-data": {
+      "previous_tags": [],
+      "tags": [
+        "training",
+        "dataloader",
+        "data-preprocessing",
+        "multisource-data",
+        "partitioning",
+        "load-balancing"
+      ],
+      "reason": "以分离式加载和自动分区优化多来源训练的数据供应。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2504.09844",
+        "https://2026.eurosys.org/papers.html"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2606.01143": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "training",
+        "prefix-sharing",
+        "kv-cache",
+        "gradient-accumulation",
+        "activation-offload"
+      ],
+      "reason": "共享前缀前向并累计后缀KV梯度后反传前缀，按生命周期卸载不活跃训练状态。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.01143"
+      ]
+    },
+    "2608.25683": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "training",
+        "prefix-sharing",
+        "kv-cache",
+        "load-balancing",
+        "variable-block-caching"
+      ],
+      "reason": "针对更新期已知数据联合前缀共享调度、分布式负载平衡和可变块KV管理。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.25683"
+      ]
+    },
+    "2502.13923": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "vlm",
+        "dynamic-resolution",
+        "video-understanding",
+        "temporal-localization",
+        "window-attention",
+        "spatial-grounding"
+      ],
+      "reason": "模型设计重点是动态视觉分辨率、视频时间建模、视觉窗口注意力与空间定位。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2502.13923"
+      ]
+    },
+    "2608.14498": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "vlm",
+        "rl",
+        "spatial-sharing",
+        "memory-management",
+        "weight-layout",
+        "parallelism"
+      ],
+      "reason": "按生成与训练阶段生命周期共享显存，并协调不同并行度所需的权重布局。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.14498"
+      ]
+    },
+    "2608.12146": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "moe",
+        "rl",
+        "expert-placement",
+        "microbatch-scheduling",
+        "replay-guided-planning",
+        "load-balancing"
+      ],
+      "reason": "利用回放路由轨迹联合安排微批次和专家放置，保持逻辑路由并控制峰值负载。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.12146"
+      ]
+    },
+    "1511.08486": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "distributed-training",
+        "communication",
+        "sufficient-factors",
+        "rank-one-updates",
+        "matrix-reconstruction"
+      ],
+      "reason": "广播秩一更新的充分因子，并由工作器本地恢复矩阵更新以减少通信量。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/1511.08486",
+        "https://proceedings.mlr.press/r14/university16a.html"
+      ]
+    },
+    "2610.16691": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "video",
+        "rl",
+        "reward-separable-training",
+        "loss-independent-backpropagation",
+        "dependency-scheduling",
+        "trajectory-replay"
+      ],
+      "reason": "奖励可分离训练和损失无关反传打破阶段屏障，并合并轨迹回放与重排数据依赖。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.16691"
+      ]
+    },
+    "2610.05935": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "grpo",
+        "on-policy-distillation",
+        "early-backpropagation",
+        "tool-latency-overlap",
+        "gradient-equivalence"
+      ],
+      "reason": "在轨迹奖励或教师评分局部就绪时提前反传，保持原目标与策略版本的梯度含义。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.05935"
+      ]
+    },
+    "2610.33581": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "image-synthesis",
+        "vae-decoding",
+        "latent-shortcut",
+        "tiled-decoding",
+        "normalization-sharing"
+      ],
+      "reason": "以学习的潜空间捷径减少RGB往返，并共享归一化统计减少最终块解码重叠。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.33581"
+      ]
+    },
+    "2401.10241": {
+      "previous_tags": [
+        "training",
+        "memory",
+        "systems",
+        "supporting-method"
+      ],
+      "tags": [
+        "pipeline-parallelism",
+        "training",
+        "backward-decomposition",
+        "bubble-elimination",
+        "memory-constrained-scheduling"
+      ],
+      "reason": "把输入梯度与参数梯度计算分开排程，在内存约束下减少同步流水气泡。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2401.10241",
+        "https://openreview.net/pdf?id=tuzTN0eIO5"
+      ]
+    },
+    "2605.19481": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "serverless",
+        "mig",
+        "host-resident-weights",
+        "nvlink-c2c",
+        "chunking",
+        "bandwidth-control"
+      ],
+      "reason": "权重驻留CPU并经NVLink-C2C读取，协调MIG放置、输入分块与共享链路控制。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.19481"
+      ]
+    },
+    "2608.03537": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "kernel-fusion",
+        "tensor-compiler",
+        "memory-intensive-subgraphs",
+        "matrix-multiplication",
+        "automatic-code-generation"
+      ],
+      "reason": "编译器将复杂内存操作子图与计算密集核联合融合，并支持连续矩阵乘模式。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.03537"
+      ]
+    },
+    "2608.14376": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "llm-inference",
+        "deterministic-inference",
+        "padding",
+        "isolated-prefill",
+        "cuda-graphs"
+      ],
+      "reason": "通过固定解码批次形状和padding保持内核位置不变性，并隔离prefill执行、使用CUDA图。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.14376"
+      ]
+    },
+    "2604.10180": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "inference",
+        "heterogeneous-gpus",
+        "kernel-disaggregation",
+        "dependency-graph",
+        "communication-overlap",
+        "adaptive-scheduling"
+      ],
+      "reason": "从IR提取内核依赖并跨异构GPU调度，用流水化重叠通信和轻量在线适配。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.10180"
+      ]
+    },
+    "2508.08448": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "multi-tenancy",
+        "resource-isolation",
+        "resource-management",
+        "scheduling",
+        "position-paper"
+      ],
+      "reason": "讨论GPU多任务的资源管理和隔离不足，提出类似操作系统的管理层研究方向。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2508.08448"
+      ]
+    },
+    "grape": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "runtime",
+        "cuda-graphs",
+        "alias-prediction",
+        "metadata-compression",
+        "predication",
+        "dynamic-control-flow"
+      ],
+      "reason": "通过别名预测、图元数据压缩和谓词化控制流，使动态图执行更高效。",
+      "evidence_urls": [
+        "https://www.amazon.science/publications/grape-practical-and-efficient-graph-based-executions-for-dynamic-deep-neural-networks-on-gpus",
+        "https://doi.org/10.1145/3613424.3614248",
+        "https://cdn.amazon.science/be/be/9047c7a445239fd94e24160e1e10/grape-practical-and-efficient-graph-based-executions-for-dynamic-deep-neural-networks-on-gpus.pdf"
+      ]
+    },
+    "2007.01277": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "kernel-fusion",
+        "horizontal-fusion",
+        "thread-level-parallelism",
+        "latency-hiding",
+        "synchronization"
+      ],
+      "reason": "将独立内核横向融合到不同线程区间，保留同步语义并增加线程级并行和延迟隐藏。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2007.01277",
+        "https://conf.researchr.org/details/cgo-2022/cgo-2022-main-conference/2/Automatic-Horizontal-Fusion-for-GPU-Kernels"
+      ]
+    },
+    "mccs": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "communication",
+        "collective-communication",
+        "multi-tenancy",
+        "communication-service",
+        "qos",
+        "traffic-engineering",
+        "dynamic-algorithms"
+      ],
+      "reason": "把集合通信上移为云服务，统一协调多租户算法、服务质量和网络流量策略。",
+      "evidence_urls": [
+        "https://conferences.sigcomm.org/sigcomm/2024/accepted-papers/"
+      ]
+    },
+    "2609.13585": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "kernel-fusion",
+        "persistent-kernels",
+        "multi-node",
+        "communication-overlap",
+        "tile-pipelining",
+        "rdma"
+      ],
+      "reason": "研究跨GPU和节点的融合执行，以tile粒度协调计算、机内传输与RDMA通信。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.13585"
+      ]
+    },
+    "2512.22219": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "persistent-kernels",
+        "tensor-compiler",
+        "sm-task-graph",
+        "decentralized-scheduling",
+        "software-pipelining",
+        "communication-overlap"
+      ],
+      "reason": "把张量程序编译为SM级任务图，在持久mega-kernel内去中心化调度跨算子任务。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2512.22219",
+        "https://www.usenix.org/conference/osdi26/presentation/cheng"
+      ]
+    },
+    "orion": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "serving",
+        "operator-scheduling",
+        "resource-profiling",
+        "priority-scheduling",
+        "interference-management",
+        "qos"
+      ],
+      "reason": "依据算子计算与内存需求安排提交，限制后台任务对高优先级推理的干扰。",
+      "evidence_urls": [
+        "https://fotstrt.github.io/publication/2024-orion",
+        "https://systems.ethz.ch/news-and-events/news/2024/04/foteini-strati-gives-a-talk-at-the-eurosys24-conference-about-orion.html"
+      ]
+    },
+    "singe": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "warp-specialization",
+        "domain-specific-language",
+        "producer-consumer",
+        "named-barriers",
+        "register-pressure"
+      ],
+      "reason": "DSL编译器将子计算分配给不同warp，并用命名barrier构造生产消费同步。",
+      "evidence_urls": [
+        "https://legion.stanford.edu/pdfs/singe2014.pdf"
+      ]
+    },
+    "2610.07098": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "communication",
+        "collective-communication",
+        "tensor-memory-accelerator",
+        "all-reduce",
+        "all-gather",
+        "reduce-scatter",
+        "communication-overlap"
+      ],
+      "reason": "用TMA异步数据搬运与归约流水降低节点内集合通信的线程资源占用。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.07098"
+      ]
+    },
+    "tacker": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "kernel-fusion",
+        "tensor-cuda-core-fusion",
+        "latency-prediction",
+        "qos",
+        "dynamic-scheduling"
+      ],
+      "reason": "结合Tensor与CUDA核融合、时延预测及QoS管理动态决定是否执行融合内核。",
+      "evidence_urls": [
+        "https://ieeexplore.ieee.org/document/9773253/"
+      ]
+    },
+    "2510.14719": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "tensor-compiler",
+        "warp-specialization",
+        "asynchronous-references",
+        "producer-consumer",
+        "software-pipelining",
+        "automatic-synchronization"
+      ],
+      "reason": "以异步引用IR自动划分生产消费warp，并生成数据交互和流水同步。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2510.14719",
+        "https://2026.cgo.org/details/cgo-2026-papers/35/Tawa-Automatic-Warp-Specialization-for-Modern-GPUs-with-Asynchronous-References"
+      ]
+    },
+    "turbobus": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "communication",
+        "pcie-bandwidth-pooling",
+        "scale-up-interconnect",
+        "gpu-relaying",
+        "bidirectional-transfer",
+        "fair-scheduling"
+      ],
+      "reason": "通过相邻GPU中继汇聚PCIe带宽，安排双向传输并兼顾公平与完成时间。",
+      "evidence_urls": [
+        "https://conferences.sigcomm.org/sigcomm/2026/program/papers/"
+      ]
+    },
+    "2512.18134": {
+      "previous_tags": [
+        "gpu",
+        "systems",
+        "parallelism",
+        "communication",
+        "supporting-method"
+      ],
+      "tags": [
+        "kernel",
+        "tensor-compiler",
+        "software-pipelining",
+        "warp-specialization",
+        "constraint-solving",
+        "resource-constrained-scheduling"
+      ],
+      "reason": "将SWP与WS统一成资源约束优化问题，以通用求解器推导支持程序类的最优调度。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2512.18134",
+        "https://www.usenix.org/conference/osdi26/presentation/soi"
+      ]
+    },
+    "2403.03208": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "statistical-inference",
+        "active-labeling",
+        "prediction-powered-inference",
+        "inverse-probability-weighting",
+        "confidence-intervals"
+      ],
+      "reason": "依预测不确定性主动分配标签，并用入样概率校正保持统计区间和检验有效性。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2403.03208",
+        "https://proceedings.mlr.press/v235/zrnic24a.html"
+      ]
+    },
+    "2311.14768": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "diffusion",
+        "adaptive-step-selection",
+        "policy-gradient",
+        "text-to-image",
+        "quality-latency-tradeoff"
+      ],
+      "reason": "训练轻量步数选择器，根据每个文本请求在去噪计算量与生成质量之间选择。",
+      "evidence_urls": [
+        "https://ojs.aaai.org/index.php/AAAI/article/view/33075",
+        "https://arxiv.org/abs/2311.14768"
+      ]
+    },
+    "2610.22263": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "policy-gradient",
+        "importance-sampling",
+        "score-centering",
+        "covariance-estimation",
+        "variance-reduction"
+      ],
+      "reason": "研究概率比正则化后基线与分数中心化的不同作用，区分序列和token重要性采样。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.22263"
+      ]
+    },
+    "2610.28409": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "llm-agent",
+        "rl",
+        "budget-conditioning",
+        "reward-design",
+        "multi-turn-reasoning"
+      ],
+      "reason": "比较超预算惩罚奖励，让单个多轮智能体策略适应不同测试时资源约束。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.28409"
+      ]
+    },
+    "2609.32444": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "llm",
+        "rl",
+        "training-inference-mismatch",
+        "importance-sampling",
+        "confidence-aware-clipping",
+        "bias-variance-tradeoff"
+      ],
+      "reason": "以logit位移分析训练推理引擎差异，按token置信度校准截断重要性采样。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.32444"
+      ]
+    },
+    "2503.14476": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "llm",
+        "decoupled-clipping",
+        "dynamic-sampling",
+        "token-level-loss",
+        "length-reward"
+      ],
+      "reason": "结合解耦裁剪、动态采样、token级策略损失和长输出奖励处理改进规模化RL。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2503.14476",
+        "https://proceedings.neurips.cc/paper_files/paper/2025/hash/a4277440d50f1f15d2cb4c14f7e0c0d2-Abstract-Conference.html"
+      ]
+    },
+    "2305.13301": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "diffusion",
+        "rl",
+        "policy-gradient",
+        "denoising-mdp",
+        "reward-optimization"
+      ],
+      "reason": "将去噪链建模为多步决策过程，用策略梯度优化最终图像奖励。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2305.13301",
+        "https://proceedings.iclr.cc/paper_files/paper/2024/hash/14f75513f0f1ca01de1e826b52e6b840-Abstract-Conference.html"
+      ]
+    },
+    "2601.18543": {
+      "previous_tags": [
+        "agents",
+        "image",
+        "generation",
+        "rl",
+        "feedback"
+      ],
+      "tags": [
+        "text-to-image",
+        "llm-agent",
+        "tool-use",
+        "self-reflection",
+        "rl",
+        "reward-design"
+      ],
+      "reason": "通过工具调用与反思监督训练及联合奖励强化学习，实现多轮图像生成改进。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2601.18543"
+      ]
+    },
+    "2605.17969": {
+      "previous_tags": [
+        "agents",
+        "image",
+        "generation",
+        "rl",
+        "feedback"
+      ],
+      "tags": [
+        "image-generation",
+        "llm-agent",
+        "state-aware-policy",
+        "trajectory-reward",
+        "rl",
+        "iterative-refinement"
+      ],
+      "reason": "按当前生成状态选择动作，以轨迹峰值、质量保持和效率奖励训练多轮生成策略。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.17969"
+      ]
+    },
+    "greensmith-variance-reduction": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "policy-gradient",
+        "variance-reduction",
+        "control-variates",
+        "baseline-selection",
+        "actor-critic",
+        "finite-sample-analysis"
+      ],
+      "reason": "统一分析baseline与actor-critic的梯度方差，并给出最优选择及样本误差界。",
+      "evidence_urls": [
+        "https://www.jmlr.org/papers/v5/greensmith04a.html",
+        "https://www.jmlr.org/papers/v5/greensmith04a.html"
+      ]
+    },
+    "horvitz-thompson": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "survey-sampling",
+        "inverse-probability-weighting",
+        "sampling-without-replacement",
+        "unbiased-estimation",
+        "variance-estimation"
+      ],
+      "reason": "研究有限总体非放回抽样，依据入样概率倒数构造总体量和抽样方差估计。",
+      "evidence_urls": [
+        "https://doi.org/10.1080/01621459.1952.10483446",
+        "https://doi.org/10.1080/01621459.1952.10483446"
+      ]
+    },
+    "2503.05696": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "multi-fidelity",
+        "policy-gradient",
+        "control-variates",
+        "variance-reduction",
+        "sim-to-real"
+      ],
+      "reason": "把大量低保真梯度作为控制变量，减少目标环境策略梯度的方差并保持无偏性。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2503.05696",
+        "https://xinjie-liu.github.io/mfpg-rl/",
+        "https://openreview.net/pdf?id=zAo0L7Dcqt"
+      ]
+    },
+    "2610.02505": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "ppo",
+        "multi-fidelity",
+        "control-variates",
+        "sample-allocation",
+        "uncertainty-estimation"
+      ],
+      "reason": "面向PPO重设跨保真采样与优势控制变量，并在固定预算下分配高低保真数据。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.02505"
+      ]
+    },
+    "2606.01985": {
+      "previous_tags": [
+        "agents",
+        "image",
+        "generation",
+        "rl",
+        "feedback"
+      ],
+      "tags": [
+        "image-editing",
+        "multi-turn",
+        "flow-matching",
+        "rl",
+        "trajectory-advantage",
+        "reward-aggregation"
+      ],
+      "reason": "聚合多轮编辑奖励和轨迹优势，联合优化逐轮流匹配更新与最终编辑目标。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.01985"
+      ]
+    },
+    "2507.06961": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "off-policy-evaluation",
+        "missing-not-at-random",
+        "inverse-probability-weighting",
+        "policy-value-estimation",
+        "statistical-inference"
+      ],
+      "reason": "研究缺失日志下的策略价值估计及统计推断，不是策略梯度优化。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2507.06961"
+      ]
+    },
+    "2609.36830": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "llm-post-training",
+        "asynchronous-training",
+        "policy-staleness",
+        "rollout-selection",
+        "queue-aware-control"
+      ],
+      "reason": "区分生成和等待中的策略滞后，以生成池状态控制拒收与轨迹优先级。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.36830"
+      ]
+    },
+    "1707.06347": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "policy-gradient",
+        "clipped-surrogate-objective",
+        "kl-regularization",
+        "minibatch-optimization"
+      ],
+      "reason": "PPO以概率比裁剪或KL惩罚约束策略更新，并复用批次进行多轮优化。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/1707.06347"
+      ]
+    },
+    "reinforce": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "policy-gradient",
+        "score-function-estimator",
+        "stochastic-neural-networks",
+        "reward-weighted-learning"
+      ],
+      "reason": "通过随机输出的对数概率梯度和奖励形成统计梯度更新。",
+      "evidence_urls": [
+        "https://doi.org/10.1007/BF00992696"
+      ]
+    },
+    "2511.08991": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "active-statistical-inference",
+        "robust-optimization",
+        "uncertainty-guided-sampling",
+        "uniform-sampling",
+        "sampling-budget"
+      ],
+      "reason": "针对不可靠不确定性分数，在主动采样与均匀采样间进行稳健权衡；不是RL。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2511.08991",
+        "https://proceedings.neurips.cc/paper_files/paper/2025/hash/6389470564214983604d1ac81631c2c5-Abstract-Conference.html"
+      ]
+    },
+    "2610.22282": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "diffusion-post-training",
+        "attention-routing",
+        "paired-rollouts",
+        "reward-difference-advantage",
+        "image-generation",
+        "video-generation"
+      ],
+      "reason": "训练中采样注意力路由并配对共享提示与噪声的轨迹，以奖励差构造优势。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.22282"
+      ]
+    },
+    "2609.14636": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "llm-agents",
+        "on-policy-distillation",
+        "rollout-truncation",
+        "teacher-confidence",
+        "prefix-reuse",
+        "rollout-restart"
+      ],
+      "reason": "用教师信号决定停止与前缀重启，核心是在线策略蒸馏的采样规则。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.14636"
+      ]
+    },
+    "2606.11119": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "llm-agents",
+        "rollout-budget-allocation",
+        "tree-search",
+        "conditional-success-prediction",
+        "verifiable-rewards"
+      ],
+      "reason": "根据提示及中间前缀的成功率预测，为可产生对比回报的树分支分配采样预算。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.11119",
+        "https://aclanthology.org/2026.emnlp-main.1610/"
+      ]
+    },
+    "2410.01679": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "llm-reasoning",
+        "credit-assignment",
+        "monte-carlo-returns",
+        "prefix-branching",
+        "policy-optimization"
+      ],
+      "reason": "利用中间推理前缀的重复续写估计回报，改进PPO训练中的信用分配。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2410.01679",
+        "https://proceedings.mlr.press/v267/kazemnejad25a.html"
+      ]
+    },
+    "2609.25297": {
+      "previous_tags": [
+        "rl",
+        "sampling",
+        "policy-gradient",
+        "supporting-method"
+      ],
+      "tags": [
+        "rl",
+        "prioritized-experience-replay",
+        "selection-bias-correction",
+        "stochastic-transitions",
+        "bellman-targets",
+        "within-group-sampling"
+      ],
+      "reason": "纠正相同状态动作组内按已实现误差抽样造成的结果分布偏差。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.25297"
+      ]
+    },
+    "accuracy-congestion": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "service-queues",
+        "sequential-information-acquisition",
+        "optimal-stopping",
+        "congestion-control",
+        "accuracy-latency-tradeoff"
+      ],
+      "reason": "分析拥塞下顺序获取线索与停止判断的策略，平衡判断准确性与等待代价。",
+      "evidence_urls": [
+        "https://people.duke.edu/~psun/bio/AccuracyCongestion_7_9_09.pdf"
+      ]
+    },
+    "akella-kumar": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "production-control",
+        "inventory-control",
+        "markov-jump-processes",
+        "stochastic-optimal-control",
+        "threshold-policies"
+      ],
+      "reason": "针对随机故障设备推导生产率的库存阈值控制策略。",
+      "evidence_urls": [
+        "https://doi.org/10.1109/TAC.1986.1104206",
+        "https://academicweb.nd.edu/~lemmon/courses/ee565/papertopics/akella-kumar.pdf"
+      ]
+    },
+    "dai-lin-max-pressure-2005": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "stochastic-processing-networks",
+        "maximum-pressure-policies",
+        "queue-based-scheduling",
+        "throughput-optimality",
+        "resource-allocation"
+      ],
+      "reason": "以本地及下游缓冲区压力分配服务能力，并在给定条件下证明吞吐最优。",
+      "evidence_urls": [
+        "https://doi.org/10.1287/opre.1040.0170",
+        "https://people.orie.cornell.edu/jdai/publications/daiLin05.pdf"
+      ]
+    },
+    "dai-lin-max-pressure-2008": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "stochastic-processing-networks",
+        "maximum-pressure-policies",
+        "heavy-traffic-analysis",
+        "state-space-collapse",
+        "quadratic-holding-cost"
+      ],
+      "reason": "研究重负载极限与状态空间坍缩，证明工作量和二次持有成本的渐近性质。",
+      "evidence_urls": [
+        "https://doi.org/10.1214/08-AAP522",
+        "https://people.orie.cornell.edu/jdai/publications/05present.html"
+      ]
+    },
+    "2012.11702": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "coflow-scheduling",
+        "dependency-graphs",
+        "approximation-algorithms",
+        "weighted-completion-time",
+        "network-scheduling"
+      ],
+      "reason": "针对具有阶段依赖的coflow提出带近似保证的作业级调度算法。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2012.11702",
+        "https://www.ee.columbia.edu/~jghaderi/publications_topic.html"
+      ]
+    },
+    "erlang-r": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "reentrant-queues",
+        "time-varying-arrivals",
+        "healthcare-staffing",
+        "fluid-approximation",
+        "diffusion-approximation",
+        "modified-offered-load"
+      ],
+      "reason": "以回返顾客的两站队列和时变近似计算医疗服务人员配置。",
+      "evidence_urls": [
+        "https://pubsonline.informs.org/doi/10.1287/msom.2013.0474"
+      ]
+    },
+    "feng-liu-scheduling": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "real-time-scheduling",
+        "imprecise-computation",
+        "end-to-end-deadlines",
+        "error-propagation",
+        "processor-time-allocation"
+      ],
+      "reason": "为带输入误差传播的复合任务分配处理器时间，满足期限并优化输出误差。",
+      "evidence_urls": [
+        "https://synergy.cs.vt.edu/pubs/papers/feng-ieeetose1997-schedulingrts.pdf"
+      ]
+    },
+    "johnson-flow-shop": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "flow-shop-scheduling",
+        "job-sequencing",
+        "makespan-minimization",
+        "setup-times",
+        "two-machine-scheduling"
+      ],
+      "reason": "推导含准备时间的两机及受限三机流水车间最优作业顺序。",
+      "evidence_urls": [
+        "https://onlinelibrary.wiley.com/doi/10.1002/nav.3800010110"
+      ]
+    },
+    "partial-predictions-scheduling": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "non-clairvoyant-scheduling",
+        "learning-augmented-algorithms",
+        "partial-predictions",
+        "competitive-analysis",
+        "robustness-consistency-tradeoff"
+      ],
+      "reason": "研究仅部分作业具有时长预测时的调度保证与预测预算权衡。",
+      "evidence_urls": [
+        "https://proceedings.mlr.press/v235/benomar24a.html"
+      ]
+    },
+    "2509.19662": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "non-clairvoyant-scheduling",
+        "progress-feedback",
+        "learning-augmented-algorithms",
+        "competitive-analysis",
+        "stochastic-progress-models"
+      ],
+      "reason": "以持续进度反馈而非完整预知时长辅助调度，分析对抗和随机模型。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2509.19662",
+        "https://proceedings.neurips.cc/paper_files/paper/2025/hash/868f2266086530b2c71006ea1908b14a-Abstract-Conference.html"
+      ]
+    },
+    "production-of-service": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "service-networks",
+        "rework",
+        "quality-effort-allocation",
+        "workload-optimization",
+        "brownian-hitting-times"
+      ],
+      "reason": "建模质量投入对服务时间和返工的联合影响，并优化两站网络工作量成本。",
+      "evidence_urls": [
+        "https://pubsonline.informs.org/doi/10.1287/stsy.2025.0111"
+      ]
+    },
+    "when-to-use-speedup": {
+      "previous_tags": [
+        "scheduling",
+        "statistics",
+        "queueing",
+        "supporting-method"
+      ],
+      "tags": [
+        "service-queues",
+        "reentrant-service",
+        "state-dependent-service-rates",
+        "fluid-analysis",
+        "congestion-control",
+        "equilibrium-analysis"
+      ],
+      "reason": "研究提速导致回返概率变化时的拥塞反馈与长期均衡。",
+      "evidence_urls": [
+        "https://doi.org/10.1287/opre.2014.1258",
+        "https://business.columbia.edu/sites/default/files-efs/pubfiles/19227/Chan_When_Use_Speedup.pdf"
+      ]
+    },
+    "2304.13705": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "bimanual-manipulation",
+        "imitation-learning",
+        "action-chunking",
+        "teleoperation",
+        "low-cost-hardware"
+      ],
+      "reason": "ACT学习动作序列，ALOHA提供低成本双臂示教硬件；本文不是语言条件VLA。",
+      "evidence_urls": [
+        "https://www.roboticsproceedings.org/rss19/p016.html",
+        "https://arxiv.org/abs/2304.13705"
+      ]
+    },
+    "2209.07753": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "language-conditioned-control",
+        "code-generation",
+        "programmatic-policies",
+        "spatial-reasoning",
+        "tool-use"
+      ],
+      "reason": "语言模型生成调用感知和控制接口的程序，不是动作分块生成模型。",
+      "evidence_urls": [
+        "https://www.ieee-ras.org/ras-congratulates-the-honorees-at-the-icra-2023-awards-ceremony/",
+        "https://arxiv.org/abs/2209.07753"
+      ]
+    },
+    "2609.14858": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "program-search",
+        "recursive-self-improvement",
+        "search-tree-replay",
+        "exploration-strategy-optimization",
+        "code-generation",
+        "fixed-model-inference"
+      ],
+      "reason": "固定模型通过历史搜索树回放修改探索代码，提升发现预算效率；不是机器人世界模型。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.14858"
+      ]
+    },
+    "2602.15922": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "world-action-model",
+        "video-diffusion",
+        "joint-video-action-generation",
+        "zero-shot-control",
+        "cross-embodiment-transfer"
+      ],
+      "reason": "以预训练视频扩散骨干联合生成未来视频与动作，评估零样本控制和跨本体迁移。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2602.15922"
+      ]
+    },
+    "2603.16666": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "world-action-model",
+        "video-action-cotraining",
+        "action-only-inference",
+        "future-prediction-ablation",
+        "inference-acceleration"
+      ],
+      "reason": "保留视频训练监督而在推理时省去未来视频生成，分离训练想象与推理想象的收益。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.16666"
+      ]
+    },
+    "2507.21053": {
+      "previous_tags": [
+        "robotics",
+        "rl",
+        "policy-optimization"
+      ],
+      "tags": [
+        "rl",
+        "flow-matching",
+        "policy-gradient",
+        "clipped-surrogate-objective",
+        "multimodal-action-distributions",
+        "continuous-control"
+      ],
+      "reason": "以流匹配损失构造PPO式比例代理，优化连续动作策略；代理不是精确似然比。",
+      "evidence_urls": [
+        "https://openreview.net/pdf?id=eoEmoKoQpJ",
+        "https://arxiv.org/abs/2507.21053"
+      ]
+    },
+    "gaponet": {
+      "previous_tags": [
+        "robotics",
+        "simulation",
+        "sim-to-real"
+      ],
+      "tags": [
+        "robotics",
+        "humanoid-control",
+        "sim-to-real",
+        "neural-operators",
+        "dynamics-compensation",
+        "payload-adaptation"
+      ],
+      "reason": "根据关节历史与负载预测非线性动作补偿，改进人形机器人的轨迹跟踪。",
+      "evidence_urls": [
+        "https://openreview.net/pdf/762e6a1f8cf0b199cc1b4e08c84df9398a63d99d.pdf",
+        "https://openreview.net/forum?id=Zi1oawm4cA"
+      ]
+    },
+    "2609.05588": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "world-action-model",
+        "visual-planning",
+        "inverse-dynamics",
+        "control-oriented-tokenization",
+        "cross-embodiment-transfer"
+      ],
+      "reason": "用控制导向表征、单步视觉规划及逆动力学，将动作兼容未来用于操控。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.05588"
+      ]
+    },
+    "2412.08442": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "multimodal-agents",
+        "robotics",
+        "gui-control",
+        "action-tokenization",
+        "cross-embodiment-learning",
+        "online-rl"
+      ],
+      "reason": "统一多域动作表示并结合成功轨迹训练和在线RL，覆盖机器人、游戏及界面。",
+      "evidence_urls": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Szot_From_Multimodal_LLMs_to_Generalist_Embodied_Agents_Methods_and_Lessons_CVPR_2025_paper.html",
+        "https://arxiv.org/abs/2412.08442"
+      ]
+    },
+    "2410.04444": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "llm-agents",
+        "recursive-self-improvement",
+        "self-modifying-code",
+        "agent-workflows",
+        "objective-driven-search"
+      ],
+      "reason": "让语言模型递归修改自身代理逻辑和行为，未以机器人控制或策略梯度为核心。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2410.04444",
+        "https://aclanthology.org/2025.acl-long.1354/"
+      ]
+    },
+    "2604.14268": {
+      "previous_tags": [
+        "robotics",
+        "simulation",
+        "sim-to-real"
+      ],
+      "tags": [
+        "3d-world-generation",
+        "3d-reconstruction",
+        "gaussian-splatting",
+        "panorama-generation",
+        "memory-based-expansion",
+        "interactive-rendering"
+      ],
+      "reason": "通过全景生成、轨迹规划与记忆扩展构建可渲染3D世界；不是Hy-Nomas的因果视频动力学路线。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.14268"
+      ]
+    },
+    "2606.01458": {
+      "previous_tags": [
+        "robotics",
+        "simulation",
+        "sim-to-real"
+      ],
+      "tags": [
+        "robotics",
+        "vla",
+        "humanoid-loco-manipulation",
+        "gaussian-splatting",
+        "synthetic-demonstrations",
+        "appearance-augmentation",
+        "sim-to-real"
+      ],
+      "reason": "在高斯场景中自动生成示教并重渲染外观，用于无需遥操作的VLA微调与迁移。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.01458"
+      ]
+    },
+    "2601.21998": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "world-action-model",
+        "joint-video-action-generation",
+        "causal-modeling",
+        "mixture-of-transformers",
+        "asynchronous-control"
+      ],
+      "reason": "共享视觉动作潜空间并遵守时序因果，采用异步闭环推理吸收新观察。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2601.21998"
+      ]
+    },
+    "2607.08639": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "video-action-pretraining",
+        "semantic-action-tokenization",
+        "causal-modeling",
+        "sparse-experts",
+        "asynchronous-control"
+      ],
+      "reason": "从头进行因果视频动作预训练，结合语义表征和稀疏专家以支持新观察闭环控制。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2607.08639"
+      ]
+    },
+    "2606.18208": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "world-model",
+        "recurrent-transformer",
+        "parameter-sharing",
+        "adaptive-computation",
+        "latent-state-refinement"
+      ],
+      "reason": "循环共享Transformer块细化环境潜状态，并按预测复杂度分配计算深度。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.18208"
+      ]
+    },
+    "2608.30821": {
+      "previous_tags": [
+        "robotics",
+        "simulation",
+        "sim-to-real"
+      ],
+      "tags": [
+        "real-to-sim",
+        "scene-reconstruction",
+        "scene-graphs",
+        "object-asset-generation",
+        "gui-placement",
+        "vision-language-agents"
+      ],
+      "reason": "解析场景图、生成完整对象资产，再以视觉语言代理多轮操作界面完成摆放。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.30821"
+      ]
+    },
+    "2502.13130": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "multimodal-agents",
+        "robotics",
+        "gui-control",
+        "action-grounding",
+        "visual-planning",
+        "multimodal-pretraining"
+      ],
+      "reason": "通过Set-of-Mark和Trace-of-Mark统一数字及物理环境中的动作落点与规划监督。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2502.13130",
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Yang_Magma_A_Foundation_Model_for_Multimodal_AI_Agents_CVPR_2025_paper.html"
+      ]
+    },
+    "2609.06396": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "recursive-self-improvement",
+        "training-data-generation",
+        "agent-workflow-optimization",
+        "model-adaptation",
+        "improvement-loop-composition"
+      ],
+      "reason": "组合数据、执行框架与模型三个自改进算子，并调整顺序与提案策略。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.06396"
+      ]
+    },
+    "2508.15755": {
+      "previous_tags": [
+        "robotics",
+        "simulation",
+        "sim-to-real"
+      ],
+      "tags": [
+        "robotics",
+        "neural-dynamics",
+        "contact-modeling",
+        "robot-simulation",
+        "sim-to-real",
+        "long-horizon-stability"
+      ],
+      "reason": "以机器人中心神经动力学和接触求解组件替换解析模拟部件，评估长时稳定性与迁移。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2508.15755"
+      ]
+    },
+    "2509.02322": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "multimodal-agents",
+        "robotics",
+        "gui-control",
+        "heterogeneous-experts",
+        "layerwise-parameter-sharing",
+        "unified-action-space"
+      ],
+      "reason": "浅层共享、深层异构专家缓解GUI与具身任务负迁移，并统一动作空间。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2509.02322"
+      ]
+    },
+    "2502.19645": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "vla",
+        "parallel-action-decoding",
+        "action-chunking",
+        "continuous-actions",
+        "l1-regression",
+        "fine-tuning"
+      ],
+      "reason": "OFT实证组合并行解码、动作分块与连续L1回归，优化VLA微调的速度及成功率。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2502.19645",
+        "https://roboticsproceedings.org/rss21/p017.html"
+      ]
+    },
+    "2610.07922": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "world-action-model",
+        "causal-video-backbone",
+        "mixture-of-transformers",
+        "inverse-dynamics",
+        "counterfactual-supervision",
+        "composable-generation"
+      ],
+      "reason": "在共同骨干上比较不同视频动作生成顺序，并研究反事实监督与逆动力学。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2610.07922"
+      ]
+    },
+    "2509.15965": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "rl",
+        "distributed-training",
+        "workflow-compilation",
+        "elastic-pipelines",
+        "context-switching",
+        "adaptive-communication",
+        "profiling-guided-scheduling"
+      ],
+      "reason": "将推理与具身RL的宏观工作流变为微观执行流，优化资源排布和通信。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2509.15965",
+        "https://www.usenix.org/conference/osdi26/presentation/yu-chao"
+      ]
+    },
+    "2602.07837": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "online-policy-learning",
+        "asynchronous-training",
+        "cloud-edge-coordination",
+        "multi-robot-learning",
+        "persistent-replay",
+        "hardware-abstraction"
+      ],
+      "reason": "以硬件抽象、异步训练和持久回放支持真实多机器人在线学习。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2602.07837",
+        "https://roboticsproceedings.org/rss22/p037.html"
+      ]
+    },
+    "2607.14187": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "multimodal-reasoning",
+        "visual-planning",
+        "subgoal-decomposition",
+        "future-state-prediction",
+        "video-demonstrations"
+      ],
+      "reason": "将视频分解为语言视觉计划并联合训练推理和状态想象，不应模板化标动作分块。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2607.14187"
+      ]
+    },
+    "2502.05171": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "language-models",
+        "latent-reasoning",
+        "recurrent-depth",
+        "parameter-sharing",
+        "test-time-compute"
+      ],
+      "reason": "通过循环共享隐层增加测试时计算深度，不依赖显式长思维链或机器人场景。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2502.05171",
+        "https://proceedings.nips.cc/paper_files/paper/2025/hash/3b01972cf31e6fa0fe29e4b8b5c2a0a1-Abstract-Conference.html"
+      ]
+    },
+    "2303.17651": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "language-models",
+        "self-feedback",
+        "iterative-refinement",
+        "training-free-inference",
+        "natural-language-feedback"
+      ],
+      "reason": "同一模型在推理时生成反馈并反复修订，无需额外训练或RL。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2303.17651",
+        "https://proceedings.neurips.cc/paper_files/paper/2023/hash/91edff07232fb1b55a505a9e9f6c0ff3-Abstract-Conference.html"
+      ]
+    },
+    "2509.09674": {
+      "previous_tags": [
+        "robotics",
+        "rl",
+        "policy-optimization"
+      ],
+      "tags": [
+        "robotics",
+        "vla",
+        "rl",
+        "distributed-rollouts",
+        "multi-environment-rendering",
+        "policy-optimization",
+        "exploration"
+      ],
+      "reason": "围绕VLA强化学习改造轨迹采样、并行环境渲染、训练损失及探索。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2509.09674"
+      ]
+    },
+    "2203.14465": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "language-models",
+        "reasoning",
+        "rationale-generation",
+        "self-training",
+        "answer-conditioned-rationalization",
+        "iterative-fine-tuning"
+      ],
+      "reason": "生成并筛选正确答案对应的推理链，利用答案条件重试后反复监督微调。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2203.14465",
+        "https://proceedings.neurips.cc/paper_files/paper/2022/hash/639a9a172c044fbb64175b5fad42e9a5-Abstract-Conference.html"
+      ]
+    },
+    "2310.02304": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "code-generation",
+        "recursive-self-improvement",
+        "program-search",
+        "self-modifying-code",
+        "fixed-model-inference"
+      ],
+      "reason": "固定语言模型权重，让代码改进器递归修改自身搜索策略。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2310.02304",
+        "https://openreview.net/pdf?id=46Zgqo4QIU"
+      ]
+    },
+    "1807.03819": {
+      "previous_tags": [
+        "agents",
+        "reasoning",
+        "self-improvement",
+        "supporting-method"
+      ],
+      "tags": [
+        "transformer-architecture",
+        "recurrent-depth",
+        "parameter-sharing",
+        "adaptive-computation",
+        "per-position-halting",
+        "algorithmic-generalization"
+      ],
+      "reason": "在深度方向反复执行共享注意力变换，并按序列位置自适应停止。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/1807.03819"
+      ]
+    },
+    "2605.01352": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "compute-graphics-concurrency",
+        "cuda-vulkan-interoperability",
+        "spatial-resource-partitioning",
+        "graphics-scheduling",
+        "deadline-aware-inference"
+      ],
+      "reason": "连接计算和图形调度域以控制空间资源共享，不是VLA动作学习算法。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.01352"
+      ]
+    },
+    "2603.22078": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "vla",
+        "world-action-model",
+        "robustness-evaluation",
+        "visual-perturbations",
+        "language-perturbations"
+      ],
+      "reason": "实证比较WAM与VLA在操控基准上的视觉和语言扰动稳健性。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.22078"
+      ]
+    },
+    "2608.01880": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "world-action-model",
+        "asynchronous-control",
+        "action-chunking",
+        "temporal-alignment",
+        "prefix-conditioned-generation",
+        "trajectory-smoothness"
+      ],
+      "reason": "比较动作块的同步异步衔接及前缀条件生成，核心问题是观测预测执行的时间对齐。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.01880"
+      ]
+    },
+    "2606.20781": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "survey",
+        "world-action-model",
+        "future-prediction",
+        "action-conditioned-generation",
+        "robotics",
+        "representation-compute-tradeoff"
+      ],
+      "reason": "综述世界动作模型的未来表征、模型组件及计算与动作监督成本权衡。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.20781"
+      ]
+    },
+    "2511.14759": {
+      "previous_tags": [
+        "robotics",
+        "rl",
+        "policy-optimization"
+      ],
+      "tags": [
+        "robotics",
+        "vla",
+        "rl",
+        "advantage-conditioning",
+        "offline-to-online-learning",
+        "expert-interventions",
+        "deployment-experience"
+      ],
+      "reason": "RECAP以优势条件策略统一离线数据、机器人在线经验及专家干预。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2511.14759"
+      ]
+    },
+    "2604.15483": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "vla",
+        "multimodal-conditioning",
+        "performance-metadata",
+        "subgoal-images",
+        "cross-embodiment-generalization",
+        "steerable-control"
+      ],
+      "reason": "以性能元信息、子目标图像等上下文训练可精细引导的通用机器人策略。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.15483"
+      ]
+    },
+    "2510.25889": {
+      "previous_tags": [
+        "robotics",
+        "rl",
+        "policy-optimization"
+      ],
+      "tags": [
+        "robotics",
+        "vla",
+        "online-rl",
+        "flow-matching",
+        "denoising-decision-process",
+        "learnable-exploration-noise",
+        "ode-sde-conversion"
+      ],
+      "reason": "为流式动作策略构造去噪决策过程与随机微分形式，以支持在线策略优化。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2510.25889"
+      ]
+    },
+    "2608.16885": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "robotics",
+        "hierarchical-control",
+        "world-model-guided-search",
+        "test-time-compute",
+        "execution-memory",
+        "subtask-planning",
+        "cross-embodiment-policy"
+      ],
+      "reason": "高层结合执行记忆和世界模型搜索选择子任务，低层跨本体策略负责执行。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.16885"
+      ]
+    },
+    "2606.01027": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "world-model"
+      ],
+      "tags": [
+        "robotics",
+        "world-action-model",
+        "joint-video-action-generation",
+        "action-conditioned-simulation",
+        "consistency-ranking",
+        "candidate-rectification",
+        "test-time-compute"
+      ],
+      "reason": "共享视频扩散骨干统一视频动作生成与动作条件模拟，并排序和修正候选动作。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.01027"
+      ]
+    },
+    "2603.11101": {
+      "previous_tags": [
+        "robotics",
+        "vla",
+        "action-chunking"
+      ],
+      "tags": [
+        "embodied-model-training",
+        "distributed-training",
+        "data-pipeline-optimization",
+        "sequence-packing",
+        "variable-length-attention",
+        "low-precision-training",
+        "storage-network-codesign"
+      ],
+      "reason": "协调千卡训练的数据、序列、注意力、精度及存储网络优化，不是统一动作分块机制。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.11101"
+      ]
+    },
+    "2608.01150": {
+      "previous_tags": [],
+      "tags": [
+        "training",
+        "image",
+        "video",
+        "context-parallelism",
+        "load-balancing",
+        "sequence-placement",
+        "communication",
+        "memory"
+      ],
+      "reason": "逐序列联合规划并行配置与 GPU 放置，并以合并注意力执行混合图像视频训练，标记具体系统对象。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.01150",
+        "https://arxiv.org/html/2608.01150v1"
+      ],
+      "review_kind": "supplemental-addition"
+    },
+    "2609.19242": {
+      "previous_tags": [],
+      "tags": [
+        "diffusion-language-model",
+        "block-parallelism",
+        "context-parallelism",
+        "clean-context",
+        "distributed-training",
+        "communication",
+        "activation-memory"
+      ],
+      "reason": "核心贡献是保持训练语义的分布式块并行执行与通信优化。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.19242",
+        "https://arxiv.org/html/2609.19242v1"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2605.18739": {
+      "previous_tags": [],
+      "tags": [
+        "long-video",
+        "autoregressive-diffusion",
+        "sequence-parallel",
+        "teacher-forcing",
+        "nvfp4",
+        "kv-cache",
+        "vae-decoding",
+        "quantization"
+      ],
+      "reason": "主要贡献覆盖长视频训练和推理的并行布局、数值精度及执行基础设施。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.18739",
+        "https://arxiv.org/html/2605.18739v2"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2505.13211": {
+      "previous_tags": [],
+      "tags": [
+        "video",
+        "autoregressive-diffusion",
+        "block-causal",
+        "chunk-wise-noise",
+        "streaming",
+        "packing",
+        "mask-aware-attention",
+        "kv-cache"
+      ],
+      "reason": "主要贡献是可流式、可逐块控制的大规模自回归视频生成模型与训练配方。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2505.13211",
+        "https://arxiv.org/html/2505.13211v1"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2511.00062": {
+      "previous_tags": [],
+      "tags": [
+        "world-model",
+        "physical-ai",
+        "flow-matching",
+        "video-generation",
+        "sim-to-real",
+        "model-merging",
+        "rl-post-training",
+        "synthetic-data"
+      ],
+      "reason": "核心目标是面向物理 AI 的可控世界模拟、视觉预测与仿真数据生成。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2511.00062",
+        "https://arxiv.org/html/2511.00062v2",
+        "https://research.nvidia.com/labs/cosmos-lab/cosmos-predict2.5/"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2504.08685": {
+      "previous_tags": [],
+      "tags": [
+        "video",
+        "diffusion-transformer",
+        "image-video-training",
+        "runtime-balance",
+        "activation-checkpointing",
+        "fused-kernel",
+        "data-curation",
+        "rlhf"
+      ],
+      "reason": "论文整体贡献是成本有效的视频生成基础模型及其数据、训练和系统配方。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2504.08685",
+        "https://arxiv.org/html/2504.08685v1",
+        "https://seaweed.video/"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2506.09113": {
+      "previous_tags": [],
+      "tags": [
+        "video",
+        "diffusion-transformer",
+        "multi-shot",
+        "image-to-video",
+        "video-rlhf",
+        "multi-stage-distillation",
+        "activation-checkpointing",
+        "runtime-balancing"
+      ],
+      "reason": "核心贡献是多镜头视频基础模型及其从数据、预训练到对齐和加速的整体配方。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2506.09113",
+        "https://arxiv.org/html/2506.09113v1",
+        "https://seed.bytedance.com/en/public_papers/seedance-1-0-exploring-the-boundaries-of-video-generation-models"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2510.10620": {
+      "previous_tags": [],
+      "tags": [
+        "long-context-training",
+        "dynamic-context-parallelism",
+        "attention-patterns",
+        "blockwise-partitioning",
+        "load-balancing",
+        "communication"
+      ],
+      "reason": "核心贡献是数据与计算分离放置的动态并行执行系统。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2510.10620",
+        "https://sigops.org/s/conferences/sosp/2025/schedule.html",
+        "https://arxiv.org/html/2510.10620v1"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2605.17923": {
+      "previous_tags": [],
+      "tags": [
+        "video",
+        "dit-training",
+        "adaptive-batching",
+        "compute-memory-constraints",
+        "load-balancing",
+        "layernorm-modulate-fusion"
+      ],
+      "reason": "主要贡献是训练负载管理与 GPU 算子执行优化。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2605.17923",
+        "https://arxiv.org/html/2605.17923v1"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2609.34318": {
+      "previous_tags": [],
+      "tags": [
+        "long-context-training",
+        "dynamic-context-parallelism",
+        "load-driven-scheduling",
+        "ulysses-ring",
+        "pipeline-bubbles",
+        "production-scale"
+      ],
+      "reason": "主要贡献是生产规模的动态并行调度与通信执行。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.34318",
+        "https://arxiv.org/html/2609.34318v1"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2510.18121": {
+      "previous_tags": [],
+      "tags": [
+        "long-context-training",
+        "core-attention-disaggregation",
+        "token-level-tasks",
+        "dynamic-rebatching",
+        "communication-overlap",
+        "load-balancing"
+      ],
+      "reason": "核心贡献是注意力分离执行、细粒度调度与通信重叠系统。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2510.18121",
+        "https://proceedings.mlsys.org/paper_files/paper/2026/hash/423b59ae02381f27862c21d1c41a5603-Abstract-Conference.html"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2412.01523": {
+      "previous_tags": [],
+      "tags": [
+        "llm-training",
+        "variable-length",
+        "flexible-sequence-parallelism",
+        "parallelism-planning",
+        "load-balancing",
+        "linear-programming"
+      ],
+      "reason": "核心贡献是面向变长训练负载的自适应并行规划系统。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2412.01523",
+        "https://www.asplos-conference.org/asplos2025/program.html",
+        "https://arxiv.org/html/2412.01523v3"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2412.07894": {
+      "previous_tags": [],
+      "tags": [
+        "llm-training",
+        "heterogeneous-parallelism",
+        "data-assignment",
+        "sequence-packing",
+        "load-balancing",
+        "dynamic-parallel-strategies"
+      ],
+      "reason": "主要贡献是并行执行策略与训练数据分配的系统协同优化。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2412.07894",
+        "https://2026.sigmod.org/sigmod_papers.shtml",
+        "https://arxiv.org/html/2412.07894v2"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2502.21231": {
+      "previous_tags": [],
+      "tags": [
+        "long-context-training",
+        "hybrid-data-parallelism",
+        "dynamic-mesh",
+        "data-aware-sharding",
+        "selective-offloading",
+        "parallelism-aware-scheduling"
+      ],
+      "reason": "核心贡献是大规模训练的动态并行网格、通信优化与调度系统。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2502.21231",
+        "https://conferences.sigcomm.org/sigcomm/2025/program/papers-info/",
+        "https://arxiv.org/html/2502.21231v1"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "2309.14509": {
+      "previous_tags": [],
+      "tags": [
+        "long-context-training",
+        "sequence-parallelism",
+        "attention-head-parallelism",
+        "all-to-all",
+        "communication-efficiency",
+        "distributed-attention"
+      ],
+      "reason": "核心贡献是长上下文训练的分布式注意力执行原语。",
+      "evidence_urls": [
+        "https://arxiv.org/abs/2309.14509",
+        "https://www.deepspeed.ai/tutorials/ds-sequence/",
+        "https://github.com/deepspeedai/DeepSpeed/blob/master/blogs/deepspeed-ulysses/README.md"
+      ],
+      "review_kind": "longvideolab-supplement"
+    },
+    "scalefusion": {
+      "previous_tags": [],
+      "tags": [
+        "video",
+        "dit",
+        "inference",
+        "sequence-parallelism",
+        "communication",
+        "overlap",
+        "spatial-temporal-attention"
+      ],
+      "reason": "核心贡献是跨机 DiT 推理的通信计算重叠与执行调度。",
+      "evidence_urls": [
+        "https://proceedings.mlsys.org/paper_files/paper/2025/hash/a2fe4bb50fc6f3564cee1551d6309fea-Abstract-Conference.html",
+        "https://proceedings.mlsys.org/paper_files/paper/2025/file/a2fe4bb50fc6f3564cee1551d6309fea-Paper-Conference.pdf"
+      ],
+      "review_kind": "longvideolab-supplement"
+    }
+  }
+}

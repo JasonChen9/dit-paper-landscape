@@ -1,6 +1,7 @@
 (() => {
   const t = (key, values) => window.DiTI18n.t(key, values);
-  const CLUSTER_COUNT = 7;
+  const TOPIC_ORDER = ["foundation", "architecture", "video", "systems", "rl", "world", "vla", "agent"];
+  const CLUSTER_COUNT = TOPIC_ORDER.length;
   const INSTITUTION_ABBREVIATIONS = new Map([
     ["Hong Kong University of Science and Technology", "HKUST"],
     ["Hong Kong University of Science and Technology (Guangzhou)", "HKUST(GZ)"],
@@ -36,6 +37,7 @@
     selected: null,
     hovered: null,
     activeFilterName: null,
+    viewBeforeAuthorFocus: null,
     activeInstitutionGroup: null,
     externalIds: null,
     timeStart: -Infinity,
@@ -60,11 +62,18 @@
     viewAnimationFrame: null,
     animationToken: 0,
     search: "",
+    mapSearchQuery: "",
+    mapSearchMatches: new Set(),
     precomputedPositions: null,
   };
   const elements = {};
 
-  function publishedDay(value) {
+  function publishedDay(value, end = false) {
+    if (/^\d{4}$/.test(value)) value += end ? "-12-31" : "-01-01";
+    else if (/^\d{4}-\d{2}$/.test(value)) {
+      const [year, month] = value.split("-").map(Number);
+      value += end ? `-${new Date(Date.UTC(year, month, 0)).getUTCDate()}` : "-01";
+    }
     return Math.floor(Date.parse(`${value}T00:00:00Z`) / 86400000);
   }
 
@@ -89,6 +98,22 @@
       hash = Math.imul(hash, 16777619);
     }
     return (hash >>> 0) / 4294967295;
+  }
+
+  function manualPaperClusters(papers) {
+    return new Map(papers.map((paper) => {
+      const topic = paper.primary_topic || paper.taxonomy?.primary_topic || "";
+      const index = TOPIC_ORDER.indexOf(topic);
+      if (index < 0) throw new Error(`Missing or invalid primary_topic for ${paper.arxiv_id}: ${topic}`);
+      return [paper.arxiv_id, index];
+    }));
+  }
+
+  function taxonomySignature(papers) {
+    const value = papers.map((paper) => [paper.arxiv_id, paper.primary_topic || paper.taxonomy?.primary_topic || ""].join("\t")).join("\n");
+    let hash = 2166136261;
+    for (const char of value) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); }
+    return (hash >>> 0).toString(16).padStart(8, "0");
   }
 
   function buildProfiles({ computeSimilarity = true } = {}) {
@@ -225,10 +250,69 @@
     return true;
   }
 
+  function validSavedCamera(camera) {
+    return camera && [camera.centerX, camera.centerY, camera.width, camera.height].every(Number.isFinite)
+      && camera.width > 0 && camera.height > 0;
+  }
+
+  function getViewState() {
+    if (!state.view.initialized || !state.nodes.length || !(state.view.scale > 0)) return null;
+    const { scale, offsetX, offsetY } = state.view;
+    return {
+      version: 1,
+      camera: {
+        centerX: (state.width / 2 - offsetX) / scale / state.virtualWidth,
+        centerY: (state.height / 2 - offsetY) / scale / state.virtualHeight,
+        width: state.width / scale / state.virtualWidth,
+        height: state.height / scale / state.virtualHeight,
+      },
+      selectedAuthor: state.profiles[state.selected]?.name || null,
+      activeFilterName: state.activeFilterName,
+      activeInstitutionGroup: state.activeInstitutionGroup,
+      viewBeforeAuthorFocus: state.viewBeforeAuthorFocus ? { ...state.viewBeforeAuthorFocus } : null,
+      search: state.search,
+    };
+  }
+
+  function restoreViewState(snapshot) {
+    if (snapshot?.version !== 1 || !validSavedCamera(snapshot.camera)
+      || !state.nodes.length || !elements.context) return false;
+    const camera = snapshot.camera;
+    const scale = Math.min(
+      state.width / (camera.width * state.virtualWidth),
+      state.height / (camera.height * state.virtualHeight),
+    );
+    if (!(scale > 0) || !Number.isFinite(scale)) return false;
+    const offsetX = state.width / 2 - camera.centerX * state.virtualWidth * scale;
+    const offsetY = state.height / 2 - camera.centerY * state.virtualHeight * scale;
+    if (![offsetX, offsetY].every(Number.isFinite)) return false;
+    if (state.viewAnimationFrame !== null) cancelAnimationFrame(state.viewAnimationFrame);
+    state.viewAnimationFrame = null;
+    Object.assign(state.view, {
+      scale, offsetX, offsetY, targetScale: scale, targetOffsetX: offsetX, targetOffsetY: offsetY,
+      initialized: true, manual: true,
+    });
+    state.activeFilterName = state.profiles.some((profile) => profile.name === snapshot.activeFilterName)
+      ? snapshot.activeFilterName : null;
+    state.activeInstitutionGroup = state.institutionGroups.some((group) => group.name === snapshot.activeInstitutionGroup)
+      ? snapshot.activeInstitutionGroup : null;
+    state.viewBeforeAuthorFocus = validSavedCamera(snapshot.viewBeforeAuthorFocus)
+      ? { ...snapshot.viewBeforeAuthorFocus, manual: Boolean(snapshot.viewBeforeAuthorFocus.manual) } : null;
+    state.search = typeof snapshot.search === "string" ? snapshot.search : "";
+    elements.search.value = state.search;
+    const selected = state.profiles.findIndex((profile) => profile.name === snapshot.selectedAuthor);
+    if (selected >= 0) selectAuthor(selected);
+    else renderIndex();
+    renderInstitutionTreemap();
+    draw();
+    // The application restores matching paper filters. Restoring a camera must not emit another filter.
+    return true;
+  }
+
   function initializeNodes() {
     const slots = [
-      [0.5, 0.27], [0.25, 0.31], [0.75, 0.31], [0.13, 0.72],
-      [0.38, 0.7], [0.63, 0.7], [0.87, 0.72],
+      [0.14, 0.28], [0.38, 0.28], [0.62, 0.28], [0.86, 0.28],
+      [0.14, 0.72], [0.38, 0.72], [0.62, 0.72], [0.86, 0.72],
     ];
     const clusterCounts = Array(CLUSTER_COUNT).fill(0);
     state.profiles.forEach((profile) => { clusterCounts[profile.cluster] += 1; });
@@ -397,6 +481,7 @@
 
   function fitView() {
     if (!state.nodes.some(isNodeActive)) return;
+    state.viewBeforeAuthorFocus = null;
     state.view.manual = false;
     const immediate = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     updateViewTarget(immediate, true);
@@ -407,13 +492,51 @@
   function availablePapers(profile) {
     return profile.papers.filter(({ paper }) => {
       const day = publishedDay(paper.published);
-      return day >= state.timeStart && day <= state.timeEnd
+      const timeMatch = Number.isFinite(day)
+        ? publishedDay(paper.published, true) >= state.timeStart && day <= state.timeEnd
+        : state.timeStart === -Infinity && state.timeEnd === Infinity;
+      return timeMatch
         && (state.externalIds === null || state.externalIds.has(paper.arxiv_id));
     });
   }
 
   function isNodeActive(node) {
     return availablePapers(state.profiles[node.index]).length > 0;
+  }
+
+  function normalizeMapSearch(value) {
+    return String(value || "").normalize("NFKC").toLocaleLowerCase().replace(/[-_/]+/g, " ").replace(/\s+/g, " ").trim();
+  }
+
+  function setMapSearch(query) {
+    state.mapSearchQuery = normalizeMapSearch(query);
+    state.mapSearchMatches = new Set();
+    const terms = state.mapSearchQuery.split(" ").filter(Boolean);
+    const results = [];
+    if (terms.length) state.nodes.forEach((node) => {
+      if (!isNodeActive(node)) return;
+      const profile = state.profiles[node.index];
+      const institutions = [profile.institution?.primary, ...(profile.institution?.all || []), profile.institution?.group].filter(Boolean);
+      const text = normalizeMapSearch([profile.name, ...institutions].join(" "));
+      if (!terms.every((term) => text.includes(term))) return;
+      state.mapSearchMatches.add(node.index);
+      results.push({ id: profile.name, title: profile.name, subtitle: [...new Set(institutions)].join(" · ") });
+    });
+    draw();
+    return results;
+  }
+
+  function locateSearchResult(id) {
+    const index = state.profiles.findIndex((profile) => profile.name === id);
+    const node = state.nodes[index];
+    if (!node || !isNodeActive(node) || !state.width || !state.height) return false;
+    state.view.targetScale = state.view.scale;
+    state.view.targetOffsetX = state.width / 2 - node.x * state.view.scale;
+    state.view.targetOffsetY = state.height / 2 - node.y * state.view.scale;
+    state.view.manual = true;
+    selectAuthor(index);
+    startViewAnimation();
+    return true;
   }
 
   function nearestAuthors(index, limit = 5) {
@@ -429,6 +552,7 @@
     const styles = getComputedStyle(document.documentElement);
     const edgeColor = styles.getPropertyValue("--landscape-edge").trim();
     const labelColor = styles.getPropertyValue("--text").trim();
+    const searchColor = styles.getPropertyValue("--accent").trim() || labelColor;
     const dark = document.documentElement.dataset.theme === "dark";
     const zoomRatio = state.view.scale / Math.max(0.001, state.view.fitScale);
     context.clearRect(0, 0, state.width, state.height);
@@ -436,6 +560,7 @@
     const focus = focusCandidate !== null && isNodeActive(state.nodes[focusCandidate]) ? focusCandidate : null;
     const neighbors = new Set(focus === null ? [] : nearestAuthors(focus, 5).map(({ candidate }) => candidate));
     const labelBoxes = [];
+    const labelCandidates = [];
     const activeCounts = state.profiles.map((profile) => availablePapers(profile).length);
     state.edges.forEach((edge) => {
       const active = activeCounts[edge.source] > 0 && activeCounts[edge.target] > 0;
@@ -451,6 +576,7 @@
       context.lineTo(b.x, b.y);
       context.strokeStyle = highlighted ? state.palette[source.cluster] : edgeColor;
       context.globalAlpha = highlighted ? 0.72 : (dark ? 0.08 + edge.similarity * 0.12 : 0.13 + edge.similarity * 0.18);
+      if (state.mapSearchQuery && !state.mapSearchMatches.has(edge.source) && !state.mapSearchMatches.has(edge.target)) context.globalAlpha *= 0.3;
       context.lineWidth = highlighted ? 1.6 : (dark ? 0.7 : 0.75);
       context.stroke();
     });
@@ -461,35 +587,52 @@
       if (!activeCount) return;
       const selected = node.index === state.selected;
       const hovered = node.index === state.hovered;
+      const matched = state.mapSearchMatches.has(node.index);
+      const searchOpacity = state.mapSearchQuery && !matched ? 0.25 : 1;
       const radius = (selected ? 8.4 : hovered ? 7.2 : 4.4) + Math.min(4, Math.sqrt(activeCount) * 1.25);
       context.beginPath();
       context.arc(point.x, point.y, radius, 0, Math.PI * 2);
       context.fillStyle = institutionColor(profile);
-      context.globalAlpha = dark ? 0.9 : 0.96;
+      context.globalAlpha = (dark ? 0.9 : 0.96) * searchOpacity;
       context.fill();
       context.beginPath();
       context.arc(point.x, point.y, radius + 1.45, 0, Math.PI * 2);
       context.lineWidth = dark ? 1.05 : 1.35;
       context.strokeStyle = state.palette[node.cluster] || state.palette[0];
-      context.globalAlpha = dark ? 0.5 : 0.88;
+      context.globalAlpha = (dark ? 0.5 : 0.88) * searchOpacity;
       context.stroke();
       if (selected || hovered) {
         context.beginPath();
         context.arc(point.x, point.y, radius + 3.1, 0, Math.PI * 2);
         context.lineWidth = selected ? 2 : 1.4;
         context.strokeStyle = labelColor;
-        context.globalAlpha = 0.94;
+        context.globalAlpha = 0.94 * searchOpacity;
+        context.stroke();
+      }
+      if (matched) {
+        context.beginPath();
+        context.arc(point.x, point.y, radius + 4.5, 0, Math.PI * 2);
+        context.lineWidth = 2.2;
+        context.strokeStyle = searchColor;
+        context.globalAlpha = 1;
         context.stroke();
       }
       const showLabel = selected
         || hovered
+        || matched
         || activeCount >= 3
         || (zoomRatio >= 1.4 && activeCount >= 2)
         || zoomRatio >= 1.9;
       const inViewport = point.x >= 0 && point.x <= state.width && point.y >= 0 && point.y <= state.height;
-      if (showLabel && inViewport) {
+      if (showLabel && inViewport) labelCandidates.push({ node, point, profile, selected, hovered, matched, searchOpacity, radius });
+    });
+    labelCandidates.sort((left, right) => Number(right.selected) - Number(left.selected)
+      || Number(right.hovered) - Number(left.hovered)
+      || Number(right.matched) - Number(left.matched)
+      || left.node.index - right.node.index)
+      .forEach(({ point, profile, selected, hovered, matched, searchOpacity, radius }) => {
         const fontSize = selected ? 12 : 10;
-        const fontWeight = selected ? 600 : 500;
+        const fontWeight = selected || matched ? 600 : 500;
         const align = point.x > state.width - 130 ? "right" : "left";
         const labelX = point.x + (align === "right" ? -radius - 6 : radius + 6);
         context.font = `${fontWeight} ${fontSize}px Roboto, sans-serif`;
@@ -507,12 +650,11 @@
         if (overlaps && !selected && !hovered) return;
         labelBoxes.push(box);
         context.fillStyle = labelColor;
-        context.globalAlpha = selected || hovered ? 1 : 0.72;
+        context.globalAlpha = (selected || hovered || matched ? 1 : 0.72) * searchOpacity;
         context.textAlign = align;
         context.textBaseline = "middle";
         context.fillText(profile.name, labelX, point.y);
-      }
-    });
+      });
     context.globalAlpha = 1;
   }
 
@@ -564,7 +706,7 @@
     list.className = "neighbor-list";
     papers.slice().sort((left, right) => right.paper.published.localeCompare(left.paper.published)).forEach(({ paper }) => {
       const link = document.createElement("a");
-      link.href = paper.arxiv_url;
+      link.href = paper.venue_url || paper.arxiv_url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.textContent = paper.short_title;
@@ -638,12 +780,43 @@
     }));
   }
 
+  function rememberAuthorView() {
+    const { scale, offsetX, offsetY, manual } = state.view;
+    // Store the visible region in layout coordinates so it also survives a resize.
+    state.viewBeforeAuthorFocus = {
+      centerX: (state.width / 2 - offsetX) / scale / state.virtualWidth,
+      centerY: (state.height / 2 - offsetY) / scale / state.virtualHeight,
+      width: state.width / scale / state.virtualWidth,
+      height: state.height / scale / state.virtualHeight,
+      manual,
+    };
+  }
+
+  function restoreAuthorView() {
+    const previous = state.viewBeforeAuthorFocus;
+    state.viewBeforeAuthorFocus = null;
+    if (!previous) return;
+    const scale = Math.min(
+      state.width / (previous.width * state.virtualWidth),
+      state.height / (previous.height * state.virtualHeight),
+    );
+    state.view.targetScale = scale;
+    state.view.targetOffsetX = state.width / 2 - previous.centerX * state.virtualWidth * scale;
+    state.view.targetOffsetY = state.height / 2 - previous.centerY * state.virtualHeight * scale;
+    state.view.manual = previous.manual;
+    startViewAnimation();
+  }
+
   function toggleAuthor(index) {
     const profile = state.profiles[index];
     const clearing = state.activeFilterName === profile.name;
+    // Switching between authors is one focus session; keep its original view.
+    if (!clearing && state.activeFilterName === null) rememberAuthorView();
     state.activeFilterName = clearing ? null : profile.name;
     selectAuthor(index);
     emitAuthorFilter(clearing ? null : profile);
+    // Filter listeners synchronously refit the graph. Restore after that update.
+    if (clearing) restoreAuthorView();
   }
 
   function renderIndex() {
@@ -965,8 +1138,12 @@
   }
 
   function setExternalFilter(ids) {
-    state.externalIds = Array.isArray(ids) ? new Set(ids) : null;
-    refreshFilteredView();
+    const nextIds = Array.isArray(ids) ? new Set(ids) : null;
+    const previousIds = state.externalIds;
+    const unchanged = previousIds === nextIds || (previousIds !== null && nextIds !== null
+      && previousIds.size === nextIds.size && [...nextIds].every((id) => previousIds.has(id)));
+    state.externalIds = nextIds;
+    refreshFilteredView({ refit: !unchanged });
   }
 
   function setTimeRange(start, end) {
@@ -981,7 +1158,13 @@
 
   function setTimePreset(preset) {
     if (!state.papers.length) return;
-    const selected = preset === "all" || preset === "custom" ? state.papers : state.papers.filter((paper) => paper.window === preset);
+    if (preset === "all" || preset === "custom") {
+      state.timeStart = -Infinity;
+      state.timeEnd = Infinity;
+      refreshFilteredView();
+      return;
+    }
+    const selected = state.papers.filter((paper) => paper.window === preset);
     const days = selected.map((paper) => publishedDay(paper.published)).filter(Number.isFinite);
     if (days.length) {
       state.timeStart = Math.min(...days);
@@ -991,10 +1174,18 @@
   }
 
   function setClusters(clusters) {
-    if (!Array.isArray(clusters)) return;
-    state.paperClusters = new Map();
-    clusters.forEach((cluster) => cluster.ids?.forEach((id) => state.paperClusters.set(id, Number(cluster.id))));
+    if (!Array.isArray(clusters) || !state.papers.length) return;
+    // The event refreshes labels/views; it cannot overwrite reviewed paper topics.
+    const nextClusters = manualPaperClusters(state.papers);
+    const unchanged = nextClusters.size === state.paperClusters.size
+      && [...nextClusters].every(([id, cluster]) => state.paperClusters.get(id) === cluster);
+    state.paperClusters = nextClusters;
     if (!state.profiles.length) return;
+    if (unchanged && state.nodes.length) {
+      renderIndex();
+      draw();
+      return;
+    }
     updateProfileClusters();
     setDimensions();
     initializeNodes();
@@ -1005,6 +1196,7 @@
 
   function resetFilters() {
     state.activeFilterName = null;
+    state.viewBeforeAuthorFocus = null;
     state.activeInstitutionGroup = null;
     state.search = "";
     elements.search.value = "";
@@ -1018,6 +1210,7 @@
   function clearAuthorFilter() {
     if (state.activeFilterName === null) return;
     state.activeFilterName = null;
+    state.viewBeforeAuthorFocus = null;
     renderIndex();
     draw();
   }
@@ -1040,7 +1233,9 @@
   }
 
   function validPrecomputed(papers, payload) {
-    return [1, 2].includes(payload?.algorithmVersion)
+    return payload?.algorithmVersion === 3
+      && payload.classificationModel === "editorial-primary-topic"
+      && payload.taxonomySignature === taxonomySignature(papers)
       && Array.isArray(payload.paperIds)
       && payload.paperIds.length === papers.length
       && payload.paperIds.every((id, index) => id === papers[index].arxiv_id)
@@ -1054,6 +1249,7 @@
 
   function init(papers, precomputedPayload = null) {
     if (!papers?.length || state.papers.length) return;
+    const paperClusters = manualPaperClusters(papers);
     Object.assign(elements, {
       canvas: document.querySelector("#author-landscape-canvas"),
       plot: document.querySelector("#landscape-plot"),
@@ -1072,6 +1268,7 @@
     if (Object.values(elements).some((element) => !element)) return;
     elements.context = elements.canvas.getContext("2d");
     state.papers = papers;
+    state.paperClusters = paperClusters;
     const usePrecomputed = validPrecomputed(papers, precomputedPayload);
     buildProfiles({ computeSimilarity: !usePrecomputed });
     const authorDataMatches = usePrecomputed
@@ -1079,7 +1276,9 @@
       && precomputedPayload.authors.names.every((name, index) => name === state.profiles[index].name)
       && precomputedPayload.authors.institutions.length === state.profiles.length
       && precomputedPayload.authors.similarities.length === state.profiles.length
-      && precomputedPayload.authors.positions.length === state.profiles.length;
+      && precomputedPayload.authors.positions.length === state.profiles.length
+      && precomputedPayload.authors.positions.every((position, index) =>
+        position.cluster === state.profiles[index].cluster && Number.isFinite(position.x) && Number.isFinite(position.y));
     document.documentElement.dataset.authorData = authorDataMatches ? "precomputed" : "client";
     if (authorDataMatches) {
       state.institutionGroups = precomputedPayload.authors.institutionGroups;
@@ -1109,8 +1308,10 @@
     elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, 1.25, true));
     elements.zoomFit.addEventListener("click", fitView);
     new ResizeObserver(() => {
+      const previousView = getViewState();
       if (setDimensions()) {
         initializeNodes();
+        if (previousView) restoreViewState(previousView);
         startAmbientMotion();
       }
       renderInstitutionTreemap();
@@ -1123,12 +1324,16 @@
 
   window.DiTAuthors = {
     init,
+    getViewState,
+    restoreViewState,
     clearAuthorFilter,
     clearInstitutionFilter,
     fitView,
     resetFilters,
     setClusters,
     setExternalFilter,
+    setMapSearch,
+    locateSearchResult,
     setTimePreset,
     setTimeRange,
     themeChanged,

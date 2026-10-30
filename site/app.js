@@ -1,4 +1,4 @@
-const CATALOG_VERSION = "20260803-bilingual-abstracts-v1";
+const CATALOG_VERSION = "20261030-editorial-taxonomy-v1";
 const DEPLOY_ASSET_VERSION = document.querySelector('meta[name="deploy-version"]')?.content;
 const DATA_VERSION = DEPLOY_ASSET_VERSION && !DEPLOY_ASSET_VERSION.startsWith("__")
   ? DEPLOY_ASSET_VERSION
@@ -6,6 +6,9 @@ const DATA_VERSION = DEPLOY_ASSET_VERSION && !DEPLOY_ASSET_VERSION.startsWith("_
 const DATA_URL = `./data/papers.csv?v=${DATA_VERSION}`;
 const ENGLISH_SUMMARIES_URL = `./data/summaries_en.json?v=${DATA_VERSION}`;
 const ABSTRACTS_URL = `./data/abstracts.json?v=${DATA_VERSION}`;
+const PAPER_DETAILS_URL = `./data/paper_details.json?v=${DATA_VERSION}`;
+const TAXONOMY_URL = `./data/taxonomy.json?v=${DATA_VERSION}`;
+const PAPER_TAXONOMY_URL = `./data/paper_taxonomy.json?v=${DATA_VERSION}`;
 const PRECOMPUTED_LANDSCAPE_URL = `./data/landscape.json?v=${DATA_VERSION}`;
 const DEPLOY_VERSION_URL = "./version.json";
 const DEPLOY_CHECK_INTERVAL_MS = 15000;
@@ -14,6 +17,90 @@ const EXPORT_COUNT_CACHE_KEY = "dit-paper-export-count-cache";
 let activeDeployVersion = null;
 let deployCheckTimer = null;
 let deployRefreshStarted = false;
+let personalLibraryReady = false;
+let selectedLibraryPaperId = null;
+try {
+  if (sessionStorage.getItem("dit-library-restore") === "1") history.scrollRestoration = "manual";
+} catch { /* The catalog remains usable when session storage is blocked. */ }
+
+async function restoreLibraryScroll(value) {
+  if (!value) return;
+  if (document.readyState !== "complete") await new Promise(resolve => window.addEventListener("load", resolve, {once:true}));
+  if (document.fonts?.ready) await document.fonts.ready;
+  requestAnimationFrame(() => window.scrollTo({top:Math.max(0, Number(value.scrollY) || 0), behavior:"instant"}));
+}
+
+function saveLibraryReturnState() {
+  try {
+    sessionStorage.setItem("dit-library-return", JSON.stringify({
+      url:location.pathname + location.search + location.hash, scrollY:window.scrollY,
+      topicIds:state.topicIds ? [...state.topicIds] : null, topicLabel:state.topicLabel,
+      topicSource:state.topicSource, mapSearchQuery:state.mapSearchQuery,
+      expandedAbstracts:[...state.expandedAbstracts],
+      topicView:window.DiTLandscape?.getViewState(), authorView:window.DiTAuthors?.getViewState(),
+    }));
+  } catch (error) { console.warn("Could not remember map position", error); }
+}
+
+function readLibraryReturnState() {
+  try {
+    if (sessionStorage.getItem("dit-library-restore") !== "1") return null;
+    sessionStorage.removeItem("dit-library-restore");
+    const value = JSON.parse(sessionStorage.getItem("dit-library-return") || "null");
+    if (!value || new URL(value.url, location.href).origin !== location.origin) return null;
+    return value;
+  } catch { return null; }
+}
+
+function applyLibraryReturnState(value) {
+  if (!value) return;
+  const valid = new Set(state.papers.map(paper => paper.arxiv_id));
+  if (["tag", "author", "institution"].includes(value.topicSource) && Array.isArray(value.topicIds)) {
+    state.topicIds = new Set(value.topicIds.filter(id => valid.has(id)));
+    state.topicSource = value.topicSource;
+    state.topicLabel = String(value.topicLabel || "");
+  }
+  state.expandedAbstracts = new Set((value.expandedAbstracts || []).filter(id => valid.has(id)));
+  state.mapSearchQuery = String(value.mapSearchQuery || "");
+  elements.mapSearchInput.value = state.mapSearchQuery;
+}
+
+function mountMapSaveButton() {
+  if (!personalLibraryReady || !selectedLibraryPaperId) return;
+  const paper = state.papers.find(paper => paper.arxiv_id === selectedLibraryPaperId);
+  const links = document.querySelector("#landscape-selection .selection-links");
+  if (!paper || !links || links.querySelector("[data-library-map-save]")) return;
+  const button = window.DiTLibraryUI.createSaveButton(paper, {store:window.DiTLibraryStore});
+  button.dataset.libraryMapSave = "true";
+  links.append(button);
+}
+
+function onPaperSelection(event) {
+  selectedLibraryPaperId = event.detail?.paperId;
+  mountMapSaveButton();
+}
+
+async function initializePersonalLibrary(aliases, returnState) {
+  const sidebar = document.querySelector("#library-sidebar");
+  try {
+    await window.DiTLibraryStore.init(aliases);
+    personalLibraryReady = true;
+    await window.DiTLibraryUI.initSidebar(sidebar, {
+      store:window.DiTLibraryStore, papers:state.papers, onNavigate:saveLibraryReturnState,
+    });
+    render();
+    mountMapSaveButton();
+    restoreLibraryScroll(returnState);
+  } catch (error) {
+    const show = () => { sidebar.textContent = window.DiTI18n.language === "zh"
+      ? "收藏存储暂时不可用。请检查浏览器的站点存储设置后刷新。"
+      : "Library storage is unavailable. Check browser site-storage settings and reload."; };
+    show();
+    window.addEventListener("dit:language-change", show);
+    console.error("Library unavailable", error);
+    restoreLibraryScroll(returnState);
+  }
+}
 
 const RELATION_KEYS = {
   direct: "relation.direct",
@@ -57,9 +144,14 @@ const state = {
   topicLabel: "",
   topicSource: null,
   mapMode: "topics",
+  mapSearchQuery: "",
+  mapSearchOpen: false,
   page: 1,
   pageSize: 12,
   initialized: false,
+  similarityModel: "tag-tfidf",
+  taxonomy: null,
+  facets: { domains: new Set(), layers: new Set(), collections: new Set() },
 };
 
 const elements = {
@@ -68,6 +160,8 @@ const elements = {
   window: document.querySelector("#window-select"),
   sort: document.querySelector("#sort-select"),
   categories: document.querySelector("#category-filters"),
+  facets: document.querySelector("#facet-filters"),
+  filterReset: document.querySelector("#filter-reset"),
   resultCount: document.querySelector("#result-count"),
   paperList: document.querySelector("#paper-list"),
   pagination: document.querySelector("#pagination"),
@@ -90,6 +184,11 @@ const elements = {
   windowCount: document.querySelector("#window-count"),
   modeTopics: document.querySelector("#landscape-mode-topics"),
   modeAuthors: document.querySelector("#landscape-mode-authors"),
+  mapSearch: document.querySelector("#map-search"),
+  mapSearchInput: document.querySelector("#map-search-input"),
+  mapSearchClear: document.querySelector("#map-search-clear"),
+  mapSearchStatus: document.querySelector("#map-search-status"),
+  mapSearchResults: document.querySelector("#map-search-results"),
   landscapeDescription: document.querySelector("#landscape-description"),
   topicCanvas: document.querySelector("#landscape-canvas"),
   authorCanvas: document.querySelector("#author-landscape-canvas"),
@@ -132,51 +231,6 @@ async function startDeployVersionMonitor() {
   deployCheckTimer = window.setInterval(checkForDeployUpdate, DEPLOY_CHECK_INTERVAL_MS);
 }
 
-function parseCSV(text) {
-  const rows = [];
-  let row = [];
-  let field = "";
-  let quoted = false;
-
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    const next = text[index + 1];
-
-    if (quoted) {
-      if (char === '"' && next === '"') {
-        field += '"';
-        index += 1;
-      } else if (char === '"') {
-        quoted = false;
-      } else {
-        field += char;
-      }
-    } else if (char === '"') {
-      quoted = true;
-    } else if (char === ",") {
-      row.push(field);
-      field = "";
-    } else if (char === "\n") {
-      row.push(field.replace(/\r$/, ""));
-      rows.push(row);
-      row = [];
-      field = "";
-    } else {
-      field += char;
-    }
-  }
-
-  if (field || row.length) {
-    row.push(field);
-    rows.push(row);
-  }
-
-  const headers = rows.shift();
-  return rows
-    .filter((values) => values.some(Boolean))
-    .map((values) => Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""])));
-}
-
 function catalogSignature(papers) {
   const value = papers.map((paper) => [paper.arxiv_id, paper.topic_tags, paper.key_authors].join("\t")).join("\n");
   let hash = 2166136261;
@@ -191,19 +245,69 @@ function normalize(value) {
   return value.toLocaleLowerCase("zh-CN").replace(/[-_/]/g, " ");
 }
 
+function taxonomySignature(papers) {
+  const value = papers.map((paper) => [paper.arxiv_id, paper.primary_topic || paper.taxonomy?.primary_topic || ""].join("\t")).join("\n");
+  let hash = 2166136261;
+  for (const char of value) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); }
+  return (hash >>> 0).toString(16).padStart(8, "0");
+}
+
+function localizedLabel(option) {
+  return option.label[window.DiTI18n.language] || option.label.en;
+}
+
+function facetValues(paper, dimension) {
+  const field = state.taxonomy.facets[dimension].field;
+  return dimension === "collections" ? paper.collection_tags.split(";").filter(Boolean) : paper.taxonomy[field];
+}
+
+function facetLabels(paper, dimension) {
+  const values = new Set(facetValues(paper, dimension));
+  return state.taxonomy.facets[dimension].options.filter((option) => values.has(option.id)).map(localizedLabel);
+}
+
 function clusterLabelForPaper(paper) {
-  return state.paperClusterLabels.get(paper.arxiv_id) ?? t("cluster.computing");
+  return t(`cluster.${paper.primary_topic}`);
 }
 
 function paperSummary(paper) {
   return window.DiTI18n.language === "zh" ? paper.summary_zh : paper.summary_en || paper.summary_zh;
 }
 
-function matchesPaper(paper, { includeTopic = true, includeTime = true } = {}) {
+const CARD_FIELDS = ["background", "challenge", "method", "result"];
+
+function paperDetails(paper) {
+  const language = window.DiTI18n.language;
+  return CARD_FIELDS.map((key) => ({ key, text: paper.details?.[key]?.[language] || "" }))
+    .filter(({ text }) => text);
+}
+
+function paperSource(paper) {
+  return { url: paper.venue_url || paper.arxiv_url, label: paper.venue_url ? paperVenue(paper) : paper.source_label || t("paper.source") };
+}
+
+function paperVenue(paper) {
+  if (paper.venue === "Publication venue unverified") return t("paper.venueUnknown");
+  if (paper.venue === "arXiv preprint") return t("paper.arxivPreprint");
+  return paper.venue;
+}
+
+function publicationBounds(value) {
+  if (/^\d{4}$/.test(value)) return [`${value}-01-01`, `${value}-12-31`];
+  if (/^\d{4}-\d{2}$/.test(value)) return [`${value}-01`, `${value}-31`];
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? [value, value] : null;
+}
+
+function matchesPaper(paper, { includeTopic = true, includePrimary = true, includeTime = true, excludeFacet = null } = {}) {
+  if (includePrimary && state.cluster !== "all" && paper.primary_topic !== state.taxonomy.topics[Number(state.cluster)]?.id) return false;
+  for (const [dimension, selected] of Object.entries(state.facets)) {
+    if (dimension !== excludeFacet && selected.size && !facetValues(paper, dimension).some((value) => selected.has(value))) return false;
+  }
   if (state.relation !== "all" && paper.dit_relation !== state.relation) return false;
   if (includeTime && state.window === "custom") {
     if (!state.customStart || !state.customEnd) return false;
-    if (paper.published < state.customStart || paper.published > state.customEnd) return false;
+    const bounds = publicationBounds(paper.published);
+    if (!bounds || bounds[1] < state.customStart || bounds[0] > state.customEnd) return false;
   } else if (includeTime && state.window !== "all" && paper.window !== state.window) {
     return false;
   }
@@ -212,16 +316,21 @@ function matchesPaper(paper, { includeTopic = true, includeTime = true } = {}) {
 
   const haystack = normalize(
     [
+      paper.arxiv_id,
       paper.short_title,
       paper.title,
+      paper.title_zh,
       paper.alternate_titles,
       paper.authors,
+      paper.alternate_titles,
       paper.venue,
       paper.topic_tags,
       paper.summary_en,
       paper.summary_zh,
       paper.abstract_en,
       paper.abstract_zh,
+      ...Object.keys(state.facets).flatMap((dimension) => facetLabels(paper, dimension)),
+      ...CARD_FIELDS.flatMap((key) => [paper.details?.[key]?.en, paper.details?.[key]?.zh]),
       clusterLabelForPaper(paper),
       relationLabel(paper.dit_relation),
     ].join(" "),
@@ -254,6 +363,7 @@ function syncLandscapeListFilter() {
   const ids = listControlledPaperIds();
   window.DiTLandscape?.setExternalFilter(ids);
   window.DiTAuthors?.setExternalFilter(ids);
+  renderMapSearch();
 }
 
 function clearTopicFilter() {
@@ -267,6 +377,11 @@ function clearTopicFilter() {
 }
 
 function resetAllFilters() {
+  state.mapSearchQuery = "";
+  state.mapSearchOpen = false;
+  elements.mapSearchInput.value = "";
+  window.DiTLandscape?.setMapSearch?.("");
+  window.DiTAuthors?.setMapSearch?.("");
   state.query = "";
   state.cluster = "all";
   state.relation = "all";
@@ -278,6 +393,7 @@ function resetAllFilters() {
   state.topicLabel = "";
   state.topicSource = null;
   state.page = 1;
+  Object.values(state.facets).forEach((selected) => selected.clear());
   elements.search.value = "";
   elements.relation.value = "all";
   elements.window.value = "all";
@@ -301,6 +417,7 @@ function syncLandscapeTimeFilter() {
 }
 
 function setLandscapeMode(mode, { updateHistory = true } = {}) {
+  const changed = state.mapMode !== (mode === "authors" ? "authors" : "topics");
   state.mapMode = mode === "authors" ? "authors" : "topics";
   const authors = state.mapMode === "authors";
   elements.modeTopics.classList.toggle("active", !authors);
@@ -316,9 +433,49 @@ function setLandscapeMode(mode, { updateHistory = true } = {}) {
   elements.topicCloudSection.hidden = authors;
   elements.bridgeSection.hidden = authors;
   elements.authorIndexSection.hidden = !authors;
-  elements.landscapeDescription.textContent = t(authors ? "authors.description" : "landscape.description");
-  if (authors) window.DiTAuthors?.fitView();
+  const tagMap = state.similarityModel === "tag-tfidf";
+  elements.landscapeDescription.textContent = t(authors
+    ? (tagMap ? "authors.descriptionTags" : "authors.description")
+    : (tagMap ? "landscape.descriptionTags" : "landscape.description"));
+  if (authors && changed) window.DiTAuthors?.fitView();
+  renderMapSearch();
   if (updateHistory) updateURL();
+}
+
+function mapSearchController() {
+  return state.mapMode === "authors" ? window.DiTAuthors : window.DiTLandscape;
+}
+
+function renderMapSearch() {
+  const query = state.mapSearchQuery.trim();
+  const matches = mapSearchController()?.setMapSearch?.(query) || [];
+  elements.mapSearchInput.placeholder = t(state.mapMode === "authors" ? "mapSearch.authors" : "mapSearch.papers");
+  elements.mapSearchClear.hidden = !query;
+  elements.mapSearchStatus.textContent = !query ? t("mapSearch.hint")
+    : matches.length ? t("mapSearch.matches", { count: matches.length }) : t("mapSearch.empty");
+  elements.mapSearchResults.replaceChildren();
+  elements.mapSearchResults.hidden = !query || !state.mapSearchOpen || !matches.length;
+  if (elements.mapSearchResults.hidden) return;
+  matches.slice(0, 8).forEach((match) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "map-search-result";
+    button.append(createElement("strong", "", match.title));
+    if (match.subtitle) button.append(createElement("small", "", match.subtitle));
+    button.addEventListener("click", () => {
+      mapSearchController()?.locateSearchResult?.(match.id);
+      state.mapSearchOpen = false;
+      renderMapSearch();
+      elements.mapSearchInput.focus({ preventScroll: true });
+      // Focus can reopen suggestions; keep them closed after choosing a result.
+      state.mapSearchOpen = false;
+      elements.mapSearchResults.hidden = true;
+    });
+    elements.mapSearchResults.append(button);
+  });
+  if (matches.length > 8) {
+    elements.mapSearchResults.append(createElement("p", "map-search-more", t("mapSearch.more", { count: matches.length })));
+  }
 }
 
 function createElement(tag, className, text) {
@@ -329,6 +486,7 @@ function createElement(tag, className, text) {
 }
 
 function createLink(label, url, className = "") {
+  if (!/^https?:\/\//i.test(url || "")) return createElement("span", className, label.replace(/ ↗$/, ""));
   const link = createElement("a", className, label);
   link.href = url;
   link.target = "_blank";
@@ -342,17 +500,34 @@ function createPaperCard(paper) {
   const meta = createElement("div", "paper-meta");
   meta.append(
     createElement("span", "relation-badge", relationLabel(paper.dit_relation)),
-    createElement("span", "", paper.published),
-    createElement("span", "", `· ${paper.venue}`),
+    createElement("span", "", paper.published || t("paper.dateUnknown")),
+    createElement("span", "", `· ${paperVenue(paper)}`),
   );
+  if (paper.venue_status?.startsWith("author-reported")) meta.append(createElement("span", "", `· ${t("paper.authorReported")}`));
 
   const heading = createElement("h3");
-  const titleLink = createLink(paper.short_title, paper.arxiv_url);
+  const source = paperSource(paper);
+  const titleLink = createLink(paper.short_title, source.url);
   heading.append(titleLink);
 
-  const fullTitle = createElement("p", "full-title", paper.title);
+  const fullTitle = createElement("p", "full-title", window.DiTI18n.language === "zh" && paper.title_zh
+    ? `${paper.title_zh} · ${paper.title}` : paper.title);
   const authors = createElement("p", "paper-authors", paper.authors);
-  const summary = createElement("p", "summary", paperSummary(paper));
+  const classification = createElement("div", "paper-classification");
+  const primary = createElement("span", "primary-topic-badge", clusterLabelForPaper(paper));
+  primary.title = paper.taxonomy.primary_reason[window.DiTI18n.language];
+  classification.append(primary);
+  const domains = facetLabels(paper, "domains");
+  const layers = facetLabels(paper, "layers");
+  if (domains.length) classification.append(createElement("span", "", `${t("facet.domains")}: ${domains.join(" / ")}`));
+  if (layers.length) classification.append(createElement("span", "", `${t("facet.layers")}: ${layers.join(" / ")}`));
+  const details = paperDetails(paper);
+  const summary = createElement(details.length ? "dl" : "p", details.length ? "paper-details" : "summary");
+  if (details.length) {
+    for (const { key, text } of details) {
+      summary.append(createElement("dt", "", t(`paper.${key}`)), createElement("dd", "", text));
+    }
+  } else summary.textContent = paperSummary(paper);
 
   const tags = createElement("ul", "tag-list");
   for (const tag of paper.topic_tags.split(";").filter(Boolean)) {
@@ -360,12 +535,14 @@ function createPaperCard(paper) {
   }
 
   const links = createElement("div", "card-links");
-  links.append(createLink(`${paper.source_label || "arXiv"} ↗`, paper.arxiv_url), createLink(t("paper.pdf"), paper.pdf_url));
+  links.append(createLink(`${source.label} ↗`, source.url));
+  if (paper.arxiv_url && paper.arxiv_url !== source.url) links.append(createLink(`${paper.source_label || t("paper.preprint")} ↗`, paper.arxiv_url));
+  if (paper.pdf_url) links.append(createLink(t("paper.pdf"), paper.pdf_url));
+  if (personalLibraryReady) links.append(window.DiTLibraryUI.createSaveButton(paper, {store:window.DiTLibraryStore}));
 
   const abstractRecord = state.abstracts.get(paper.arxiv_id);
-  const abstractText = window.DiTI18n.language === "zh"
-    ? abstractRecord?.zh || abstractRecord?.en
-    : abstractRecord?.en;
+  const abstractLanguage = window.DiTI18n.language === "zh" && abstractRecord?.zh_kind === "translation" ? "zh" : "en";
+  const abstractText = abstractRecord?.en_kind === "source-abstract" ? abstractRecord[abstractLanguage] : "";
   const expanded = state.expandedAbstracts.has(paper.arxiv_id);
   if (abstractText) {
     const panelId = `abstract-${paper.arxiv_id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
@@ -383,7 +560,7 @@ function createPaperCard(paper) {
     const panelInner = createElement("div", "paper-abstract-inner");
     panelInner.append(createElement("p", "paper-abstract-text", abstractText));
     const provenance = createLink(
-      t(window.DiTI18n.language === "zh" ? "paper.abstractTranslation" : "paper.abstractSource", {
+      t(abstractLanguage === "zh" ? "paper.abstractTranslation" : "paper.abstractSource", {
         source: abstractRecord.source,
       }),
       abstractRecord.source_url,
@@ -413,6 +590,7 @@ function createPaperCard(paper) {
       if (!canHover()) return;
       if (closeTimer !== null) clearTimeout(closeTimer);
       closeTimer = window.setTimeout(() => {
+        if (state.expandedAbstracts.has(paper.arxiv_id)) return;
         const focusWithin = preserveFocusedContent
           && (toggle === document.activeElement || panel.contains(document.activeElement));
         if (!toggle.matches(":hover") && !panel.matches(":hover") && !focusWithin) setExpanded(false);
@@ -432,22 +610,24 @@ function createPaperCard(paper) {
     panel.addEventListener("focusin", () => setExpanded(true));
     panel.addEventListener("focusout", () => scheduleClose(true));
     toggle.addEventListener("click", () => {
-      if (canHover()) return;
       setExpanded(!state.expandedAbstracts.has(paper.arxiv_id), true);
     });
     links.append(toggle);
-    card.append(meta, heading, fullTitle, authors, summary, tags, links, panel);
+    card.append(meta, heading, fullTitle, authors, classification, summary, tags, links, panel);
     return card;
   }
 
-  card.append(meta, heading, fullTitle, authors, summary, tags, links);
+  card.append(meta, heading, fullTitle, authors, classification, summary, tags, links);
   return card;
 }
 
 function updateURL() {
   const params = new URLSearchParams();
   if (state.query) params.set("q", state.query);
-  if (state.cluster !== "all") params.set("cluster", state.cluster);
+  if (state.cluster !== "all") params.set("topic", state.taxonomy.topics[Number(state.cluster)].id);
+  for (const [dimension, selected] of Object.entries(state.facets)) {
+    if (selected.size) params.set(dimension, [...selected].sort().join(","));
+  }
   if (state.relation !== "all") params.set("relation", state.relation);
   if (state.window !== "all") params.set("window", state.window);
   if (state.window === "custom" && state.customStart && state.customEnd) {
@@ -467,7 +647,7 @@ function filterDescription() {
     ? `${state.customStart} — ${state.customEnd}`
     : windowLabel(state.window);
   const parts = [
-    t("filterDesc.cluster", { value: state.topicSource === "cluster" ? state.topicLabel : t("filterDesc.allClusters") }),
+    t("filterDesc.cluster", { value: state.cluster === "all" ? t("filterDesc.allClusters") : localizedLabel(state.taxonomy.topics[Number(state.cluster)]) }),
     t("filterDesc.relation", { value: relationLabel(state.relation) }),
     t("filterDesc.time", { value: timeLabel }),
     t("filterDesc.sort", { value: sortLabel(state.sort) }),
@@ -476,123 +656,10 @@ function filterDescription() {
   if (state.topicSource === "author") parts.push(t("filterDesc.author", { value: state.topicLabel }));
   if (state.topicSource === "institution") parts.push(t("filterDesc.institution", { value: state.topicLabel }));
   if (state.query) parts.push(t("filterDesc.search", { value: state.query }));
+  for (const [dimension, selected] of Object.entries(state.facets)) {
+    if (selected.size) parts.push(`${t(`facet.${dimension}`)}: ${state.taxonomy.facets[dimension].options.filter((option) => selected.has(option.id)).map(localizedLabel).join(" / ")}`);
+  }
   return parts.join(window.DiTI18n.language === "zh" ? "；" : "; ");
-}
-
-function escapeMarkdown(value) {
-  return String(value ?? "").replace(/([\\[\]*_`])/g, "\\$1");
-}
-
-function escapeHTML(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function exportFilename(extension, count) {
-  const date = new Date().toISOString().slice(0, 10);
-  return `diffusion-intelligence-papers-${date}-${count}.${extension}`;
-}
-
-function downloadText(content, filename, mimeType) {
-  const blob = new Blob(["\ufeff", content], { type: `${mimeType};charset=utf-8` });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.append(link);
-  link.click();
-  link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-function markdownExport(papers) {
-  const generated = new Date().toISOString();
-  const separator = window.DiTI18n.language === "zh" ? "：" : ": ";
-  const sections = papers.map((paper, index) => {
-    const tags = paper.topic_tags.split(";").filter(Boolean).map((tag) => `\`${escapeMarkdown(tag)}\``).join(" · ");
-    return [
-      `## ${index + 1}. [${escapeMarkdown(paper.title)}](${paper.arxiv_url})`,
-      "",
-      `- ${t("export.shortTitle")}${separator}${escapeMarkdown(paper.short_title)}`,
-      `- ${t("export.authors")}${separator}${escapeMarkdown(paper.authors)}`,
-      `- ${t("export.keyAuthors")}${separator}${escapeMarkdown(paper.key_authors || "-")}`,
-      `- ${t("export.published")}${separator}${paper.published}`,
-      `- ${t("export.cluster")}${separator}${escapeMarkdown(clusterLabelForPaper(paper))}`,
-      `- ${t("export.relation")}${separator}${escapeMarkdown(relationLabel(paper.dit_relation))}`,
-      `- ${t("export.source")}${separator}${escapeMarkdown(paper.venue)}`,
-      `- ${t("export.tags")}${separator}${tags || "-"}`,
-      `- ${escapeMarkdown(paper.source_label || "arXiv")}${separator}[${paper.arxiv_url}](${paper.arxiv_url})`,
-      `- PDF${separator}[${paper.pdf_url}](${paper.pdf_url})`,
-      "",
-      escapeMarkdown(paperSummary(paper)),
-    ].join("\n");
-  });
-  return [
-    `# ${t("export.title")}`,
-    "",
-    `- ${t("export.paperCount", { count: papers.length })}`,
-    `- ${t("export.conditions", { value: escapeMarkdown(filterDescription()) })}`,
-    `- ${t("export.generated", { value: generated })}`,
-    "",
-    ...sections,
-    "",
-  ].join("\n");
-}
-
-function htmlExport(papers) {
-  const generated = new Date().toISOString();
-  const cards = papers.map((paper, index) => {
-    const tags = paper.topic_tags.split(";").filter(Boolean).map((tag) => `<li>${escapeHTML(tag)}</li>`).join("");
-    return `
-      <article>
-        <p class="meta">${index + 1} · ${escapeHTML(paper.published)} · ${escapeHTML(paper.venue)} · ${escapeHTML(relationLabel(paper.dit_relation))}</p>
-        <h2><a href="${escapeHTML(paper.arxiv_url)}">${escapeHTML(paper.title)}</a></h2>
-        <p class="short-title">${escapeHTML(paper.short_title)} · ${escapeHTML(clusterLabelForPaper(paper))}</p>
-        <p class="authors">${escapeHTML(paper.authors)}</p>
-        <p>${escapeHTML(paperSummary(paper))}</p>
-        <ul class="tags">${tags}</ul>
-        <p class="links"><a href="${escapeHTML(paper.arxiv_url)}">${escapeHTML(paper.source_label || "arXiv")}</a><a href="${escapeHTML(paper.pdf_url)}">PDF</a></p>
-      </article>`;
-  }).join("");
-
-  return `<!doctype html>
-<html lang="${window.DiTI18n.language === "zh" ? "zh-CN" : "en"}">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHTML(t("export.title"))}</title>
-  <style>
-    :root { color-scheme: light dark; --bg: #fff; --text: #242424; --muted: #6c757d; --border: #d9d9d9; --accent: #2698ba; --tag: #f3f5f6; }
-    @media (prefers-color-scheme: dark) { :root { --bg: #191919; --text: #e8e8e8; --muted: #a8a8a8; --border: #3b3b3b; --accent: #58b7d3; --tag: #25292b; } }
-    * { box-sizing: border-box; }
-    body { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; background: var(--bg); color: var(--text); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    header { padding-bottom: 24px; border-bottom: 1px solid var(--border); }
-    h1 { margin: 0 0 8px; font-size: 2rem; }
-    h2 { margin: 4px 0 5px; font-size: 1.2rem; line-height: 1.4; }
-    a { color: var(--accent); }
-    article { padding: 25px 0; border-bottom: 1px solid var(--border); }
-    .meta, .short-title, .authors, header p { margin: 0; color: var(--muted); font-size: .85rem; }
-    article > p { margin: 9px 0; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
-    .tags li { padding: 2px 7px; border: 1px solid var(--border); border-radius: 3px; background: var(--tag); font-size: .75rem; }
-    .links { display: flex; gap: 12px; }
-    @media print { body { max-width: none; padding: 0; } article { break-inside: avoid; } }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>${escapeHTML(t("export.title"))}</h1>
-    <p>${escapeHTML(t("export.paperCount", { count: papers.length }))}</p>
-    <p>${escapeHTML(filterDescription())}</p>
-    <p>${escapeHTML(t("export.generated", { value: generated }))}</p>
-  </header>
-  <main>${cards}</main>
-</body>
-</html>`;
 }
 
 function updateExportCount(value) {
@@ -631,13 +698,8 @@ function recordExport() {
 function exportCurrent(format) {
   const papers = filteredPapers();
   if (!papers.length) return;
-  if (format === "markdown") {
-    downloadText(markdownExport(papers), exportFilename("md", papers.length), "text/markdown");
-    elements.exportStatus.textContent = t(papers.length === 1 ? "export.successOne" : "export.success", { count: papers.length, format: "Markdown" });
-  } else {
-    downloadText(htmlExport(papers), exportFilename("html", papers.length), "text/html");
-    elements.exportStatus.textContent = t(papers.length === 1 ? "export.successOne" : "export.success", { count: papers.length, format: "HTML" });
-  }
+  const result = window.DiTExport.download(papers, format, {taxonomy:state.taxonomy, description:filterDescription()});
+  elements.exportStatus.textContent = t(papers.length === 1 ? "export.successOne" : "export.success", {count:papers.length, format:result.format});
   recordExport();
 }
 
@@ -736,8 +798,42 @@ function render() {
   renderPagination(filtered.length);
 
   renderClusterFilters();
+  renderFacetFilters();
   updateURL();
   syncLandscapeListFilter();
+}
+
+function renderFacetFilters() {
+  if (!state.taxonomy) return;
+  const groups = Object.entries(state.taxonomy.facets).map(([dimension, definition]) => {
+    const fieldset = createElement("fieldset", "facet-group");
+    fieldset.append(createElement("legend", "", t(`facet.${dimension}`)));
+    if (dimension === "layers") fieldset.append(createElement("p", "facet-note", t("taxonomy.layerHelp")));
+    const choices = createElement("div", "facet-options");
+    const available = state.papers.filter((paper) => matchesPaper(paper, { excludeFacet: dimension }));
+    for (const option of definition.options) {
+      const count = available.filter((paper) => facetValues(paper, dimension).includes(option.id)).length;
+      const selected = state.facets[dimension].has(option.id);
+      const button = createElement("button", "facet-option");
+      button.type = "button";
+      button.dataset.facet = dimension;
+      button.dataset.value = option.id;
+      button.setAttribute("aria-pressed", String(selected));
+      button.classList.toggle("active", selected);
+      button.append(document.createTextNode(localizedLabel(option)), createElement("span", "facet-count", String(count)));
+      button.addEventListener("click", () => {
+        if (selected) state.facets[dimension].delete(option.id);
+        else state.facets[dimension].add(option.id);
+        state.page = 1;
+        render();
+        elements.facets.querySelector(`[data-facet="${dimension}"][data-value="${option.id}"]`)?.focus({ preventScroll: true });
+      });
+      choices.append(button);
+    }
+    fieldset.append(choices);
+    return fieldset;
+  });
+  elements.facets.replaceChildren(...groups);
 }
 
 function renderClusterFilters() {
@@ -747,7 +843,7 @@ function renderClusterFilters() {
   }
   const availableIds = new Set(
     state.papers
-      .filter((paper) => matchesPaper(paper, { includeTopic: false }))
+      .filter((paper) => matchesPaper(paper, { includePrimary: false }))
       .map((paper) => paper.arxiv_id),
   );
   const choices = [
@@ -765,12 +861,7 @@ function renderClusterFilters() {
     button.append(document.createTextNode(cluster.name), createElement("span", "", String(count).padStart(2, "0")));
     button.addEventListener("click", () => {
       state.cluster = cluster.id;
-      state.topicIds = cluster.id === "all" ? null : new Set(cluster.ids);
-      state.topicLabel = cluster.id === "all" ? "" : cluster.name;
-      state.topicSource = cluster.id === "all" ? null : "cluster";
       state.page = 1;
-      window.DiTAuthors?.clearAuthorFilter?.();
-      window.DiTAuthors?.clearInstitutionFilter?.();
       window.DiTLandscape?.setClusterFilter(cluster.id === "all" ? null : Number(cluster.id));
       render();
     });
@@ -781,7 +872,13 @@ function renderClusterFilters() {
 
 function readURLState() {
   const params = new URLSearchParams(location.search);
-  state.cluster = params.get("cluster") ?? "all";
+  const topicIndex = state.taxonomy.topics.findIndex((topic) => topic.id === params.get("topic"));
+  const oldCluster = Number.parseInt(params.get("cluster"), 10);
+  state.cluster = topicIndex >= 0 ? String(topicIndex) : Number.isInteger(oldCluster) && oldCluster >= 0 && oldCluster < state.taxonomy.topics.length ? String(oldCluster) : "all";
+  for (const [dimension, definition] of Object.entries(state.taxonomy.facets)) {
+    const allowed = new Set(definition.options.map((option) => option.id));
+    state.facets[dimension] = new Set((params.get(dimension) || "").split(",").filter((value) => allowed.has(value)));
+  }
   const relation = params.get("relation");
   const windowValue = params.get("window");
   const customStart = params.get("from");
@@ -817,18 +914,55 @@ function applyClusterCatalog(clusters) {
   });
   const selected = clusters.find((cluster) => cluster.id === state.cluster);
   if (selected) {
-    state.topicIds = new Set(selected.ids);
-    state.topicLabel = selected.name;
-    state.topicSource = "cluster";
     window.DiTLandscape?.setClusterFilter(Number(selected.id));
-  } else if (state.topicSource !== "tag") {
-    clearTopicFilter();
+  } else {
+    state.cluster = "all";
+    window.DiTLandscape?.setClusterFilter(null);
   }
   render();
   window.DiTAuthors?.setClusters(clusters);
 }
 
 function bindEvents() {
+  window.addEventListener("dit:paper-selection", onPaperSelection);
+  elements.mapSearchInput.addEventListener("input", () => {
+    state.mapSearchQuery = elements.mapSearchInput.value;
+    state.mapSearchOpen = true;
+    renderMapSearch();
+  });
+  elements.mapSearchInput.addEventListener("focus", () => {
+    state.mapSearchOpen = true;
+    renderMapSearch();
+  });
+  elements.mapSearchClear.addEventListener("click", () => {
+    elements.mapSearchInput.value = "";
+    state.mapSearchQuery = "";
+    state.mapSearchOpen = false;
+    renderMapSearch();
+    elements.mapSearchInput.focus({ preventScroll: true });
+  });
+  elements.mapSearch.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      state.mapSearchOpen = false;
+      elements.mapSearchResults.hidden = true;
+      elements.mapSearchInput.focus({ preventScroll: true });
+      state.mapSearchOpen = false;
+      elements.mapSearchResults.hidden = true;
+      event.stopPropagation();
+    } else if (event.key === "ArrowDown" && event.target === elements.mapSearchInput) {
+      elements.mapSearchResults.querySelector("button")?.focus();
+      event.preventDefault();
+    } else if (event.key === "Enter" && event.target === elements.mapSearchInput && !elements.mapSearchResults.hidden) {
+      elements.mapSearchResults.querySelector("button")?.click();
+      event.preventDefault();
+    }
+  });
+  document.addEventListener("click", (event) => {
+    if (!elements.mapSearch.contains(event.target)) {
+      state.mapSearchOpen = false;
+      elements.mapSearchResults.hidden = true;
+    }
+  });
   elements.theme.addEventListener("click", () => {
     const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = theme;
@@ -885,11 +1019,18 @@ function bindEvents() {
     if (Array.isArray(event.detail?.clusters)) applyClusterCatalog(event.detail.clusters);
   });
   window.addEventListener("dit:landscape-topic-filter", (event) => {
-    const ids = event.detail?.ids;
-    state.topicIds = Array.isArray(ids) ? new Set(ids) : null;
-    state.topicLabel = event.detail?.label ?? "";
-    state.topicSource = event.detail?.source ?? null;
-    state.cluster = state.topicSource === "cluster" ? String(event.detail.cluster) : "all";
+    const { ids, label, source } = event.detail ?? {};
+    if (Object.prototype.hasOwnProperty.call(event.detail ?? {}, "tag")) {
+      state.cluster = Number.isInteger(event.detail.cluster) ? String(event.detail.cluster) : "all";
+    }
+    const secondary = ["tag", "author", "institution"].includes(source);
+    state.topicIds = secondary && Array.isArray(ids) ? new Set(ids) : null;
+    state.topicLabel = secondary ? label ?? "" : "";
+    state.topicSource = secondary ? source : null;
+    if (source === "author" || source === "institution") {
+      window.DiTLandscape?.clearTopicFilter();
+      window.DiTLandscape?.setClusterFilter(state.cluster === "all" ? null : Number(state.cluster));
+    }
     if (state.topicSource !== "author") window.DiTAuthors?.clearAuthorFilter?.();
     if (state.topicSource !== "institution") window.DiTAuthors?.clearInstitutionFilter?.();
     if (state.initialized) state.page = 1;
@@ -919,6 +1060,7 @@ function bindEvents() {
     setLandscapeMode(state.mapMode, { updateHistory: false });
   });
   elements.reset.addEventListener("click", resetAllFilters);
+  elements.filterReset.addEventListener("click", resetAllFilters);
   elements.landscapeReset.addEventListener("click", resetAllFilters);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !elements.exportMenuOptions.hidden) {
@@ -937,35 +1079,25 @@ async function initialize() {
   loadExportCount();
   startDeployVersionMonitor();
   try {
-    const [response, englishSummaries, abstractsPayload, precomputedLandscape] = await Promise.all([
-      fetch(DATA_URL, { cache: "no-store" }),
-      fetch(ENGLISH_SUMMARIES_URL, { cache: "no-store" })
-        .then((summariesResponse) => summariesResponse.ok ? summariesResponse.json() : {})
-        .catch(() => ({})),
-      fetch(ABSTRACTS_URL, { cache: "force-cache" })
-        .then((abstractsResponse) => abstractsResponse.ok ? abstractsResponse.json() : { papers: {} })
-        .catch(() => ({ papers: {} })),
-      fetch(PRECOMPUTED_LANDSCAPE_URL, { cache: "force-cache" })
-        .then((landscapeResponse) => landscapeResponse.ok ? landscapeResponse.json() : null)
-        .catch(() => null),
+    const [catalog, precomputedLandscape] = await Promise.all([
+      window.DiTCatalog.load(),
+      fetch(PRECOMPUTED_LANDSCAPE_URL, {cache:"force-cache"})
+        .then(response => response.ok ? response.json() : null).catch(() => null),
     ]);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.abstracts = new Map(Object.entries(abstractsPayload.papers ?? {}));
-    state.papers = parseCSV(await response.text()).map((paper) => {
-      const abstract = state.abstracts.get(paper.arxiv_id) ?? {};
-      return {
-        ...paper,
-        summary_en: englishSummaries[paper.arxiv_id] ?? "",
-        abstract_en: abstract.en ?? "",
-        abstract_zh: abstract.zh ?? "",
-      };
-    });
+    state.abstracts = new Map(Object.entries(catalog.abstracts));
+    state.taxonomy = catalog.taxonomy;
+    state.papers = catalog.papers;
     const usablePrecomputedLandscape = precomputedLandscape?.catalogSignature === catalogSignature(state.papers)
+      && precomputedLandscape?.taxonomySignature === taxonomySignature(state.papers)
       ? precomputedLandscape
       : null;
+    state.similarityModel = usablePrecomputedLandscape?.similarityModel || "tag-tfidf";
     readURLState();
+    const returnState = readLibraryReturnState();
+    applyLibraryReturnState(returnState);
     bindEvents();
     elements.total.textContent = state.papers.length;
+    document.querySelector("#topic-count").textContent = state.taxonomy.topics.length;
     elements.windowCount.textContent = state.papers.filter((paper) => paper.window === "in-window").length;
     render();
     window.DiTLandscape?.init(state.papers, usablePrecomputedLandscape);
@@ -974,6 +1106,16 @@ async function initialize() {
     syncLandscapeListFilter();
     setLandscapeMode(state.mapMode, { updateHistory: false });
     state.initialized = true;
+    if (returnState) {
+      window.DiTLandscape?.restoreViewState(returnState.topicView);
+      window.DiTAuthors?.restoreViewState(returnState.authorView);
+      requestAnimationFrame(() => {
+        window.DiTLandscape?.restoreViewState(returnState.topicView);
+        window.DiTAuthors?.restoreViewState(returnState.authorView);
+        window.scrollTo({top:Math.max(0, Number(returnState.scrollY) || 0), behavior:"instant"});
+      });
+    }
+    initializePersonalLibrary(catalog.aliases, returnState);
   } catch (error) {
     elements.resultCount.textContent = t("error.catalog");
     elements.empty.hidden = false;

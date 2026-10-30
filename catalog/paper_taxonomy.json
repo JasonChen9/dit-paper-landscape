@@ -1,0 +1,4795 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-30",
+  "classification_basis": {
+    "en": "Editorial classification by main contribution, with bilingual rationales based on the source-backed paper cards and abstracts.",
+    "zh": "按主要贡献逐篇确定主类，依据已核实来源的论文卡片与摘要，并保留中英文理由。"
+  },
+  "papers": {
+    "2006.11239": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Establishes the diffusion training objective and reverse generative process rather than an execution system.",
+        "zh": "核心贡献是扩散训练目标与反向生成过程，属于生成建模基础。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2010.02502": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Introduces a non-Markovian sampling formulation with accelerated deterministic trajectories.",
+        "zh": "主要贡献是非马尔可夫采样公式与确定性生成轨迹，属于采样基础方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2011.13456": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Unifies score-based generation through SDEs and a probability-flow ODE.",
+        "zh": "以随机微分方程和概率流常微分方程统一得分生成，属于理论与采样基础。"
+      },
+      "application_domains": [
+        "image",
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2112.10752": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Moves diffusion into autoencoder latents and adds conditioning interfaces, changing the model representation.",
+        "zh": "将扩散迁入自编码潜空间并设计条件接口，主要改变模型表示与架构。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2202.00512": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Develops a general teacher-to-student step-distillation procedure for diffusion samplers.",
+        "zh": "提出压缩扩散采样步数的通用逐级蒸馏方法，属于采样与学习基础。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2204.03458": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Extends diffusion modeling and conditional sampling to coherent video generation.",
+        "zh": "主要产物是面向视频的扩散建模与时空条件生成方法。"
+      },
+      "application_domains": [
+        "video",
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2206.00364": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Separates and improves diffusion training, preconditioning, and numerical sampling choices.",
+        "zh": "系统分析扩散训练、预条件与数值采样设计，贡献属于生成方法基础。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2206.00927": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Derives specialized high-order numerical updates for diffusion ODE sampling.",
+        "zh": "核心是扩散常微分方程的专用高阶数值求解方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2207.12598": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Defines classifier-free score guidance to control the sampling quality-diversity tradeoff.",
+        "zh": "通过条件与无条件得分组合定义采样引导，属于生成基础方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2209.03003": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Formulates vector-field learning and coupling rectification for efficient generative transport.",
+        "zh": "核心是生成传输的向量场学习与耦合整流公式，属于基础方法。"
+      },
+      "application_domains": [
+        "image",
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2210.02747": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Introduces simulation-free vector-field regression over conditional probability paths.",
+        "zh": "提出条件概率路径上的免模拟向量场回归，属于流生成基础目标。"
+      },
+      "application_domains": [
+        "image",
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2212.09748": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Replaces the diffusion U-Net with a latent-patch Transformer and studies architectural scaling.",
+        "zh": "以潜图块Transformer替换扩散骨干并研究规模规律，主要贡献是架构。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2302.12192": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Uses human-feedback rewards to optimize generator alignment rather than introducing a new backbone.",
+        "zh": "以人类反馈奖励优化生成器对齐，主问题是反馈学习与偏好对齐。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2303.06555": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Unifies multimodal diffusion through one Transformer and independent modality noise levels.",
+        "zh": "通过统一Transformer与模态独立噪声等级联合建模多模态，属于架构设计。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2304.05977": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Learns human-preference rewards and uses them to fine-tune diffusion generators.",
+        "zh": "主要研究人类偏好奖励建模及其生成器微调用途，属于对齐方向。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2305.16381": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Optimizes diffusion policies with reward gradients and KL-constrained online reinforcement learning.",
+        "zh": "以奖励梯度和KL约束在线优化扩散策略，主要贡献是强化学习方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2311.12908": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Reformulates preference optimization for diffusion models using pairwise feedback.",
+        "zh": "将成对偏好优化扩展到扩散模型，主要贡献是生成对齐目标。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2311.13231": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Directly optimizes denoising policies from preferences without a separate learned reward model.",
+        "zh": "直接从偏好优化去噪策略，属于反馈学习与对齐方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2407.02398": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Defines velocity-consistency constraints and multisegment objectives for flow learning.",
+        "zh": "定义速度一致性约束与多段流学习目标，属于生成基础方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2407.11633": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Designs shared and routed experts to scale diffusion Transformer capacity.",
+        "zh": "通过共享与路由专家扩展扩散Transformer容量，主贡献是稀疏架构。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2410.02098": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Uses expert-choice routing to allocate capacity according to text and image-patch complexity.",
+        "zh": "以专家选择路由适应文本与图块复杂度，主要改变扩散架构的容量分配。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2410.07303": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Revises the mathematical and training basis of diffusion rectification without requiring straight trajectories.",
+        "zh": "重新定义不依赖直线轨迹的扩散整流训练，属于生成方法基础。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2503.20314": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Presents a video-generation model family with coordinated representation, data, and training design.",
+        "zh": "交付视频生成模型系列及配套表示和训练方案，核心评估对象是视频能力。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2505.05470": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Adapts group-relative policy optimization to flow generators through stochastic rollout construction.",
+        "zh": "为流生成器构造随机轨迹并应用组相对策略优化，属于强化学习后训练。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2505.07818": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Extends group-relative reward optimization across visual-generation tasks and model families.",
+        "zh": "将组相对奖励优化扩展到多类视觉生成任务，主要贡献是强化学习方法。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2505.15809": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Builds a unified diffusion model for reasoning, understanding, and image generation.",
+        "zh": "核心产物是统一推理、理解与图像生成的多模态扩散模型。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2506.08009": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Changes autoregressive video training to match self-generated inference contexts.",
+        "zh": "围绕自生成上下文重设计自回归视频训练，主要解决视频生成的训练推理偏差。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2506.18871": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Combines separate text-image decoding with unified generation, editing, and contextual capabilities.",
+        "zh": "通过文本图像解码设计统一生成与编辑能力，主要贡献是多模态模型。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2508.02324": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Develops an image-generation and editing model with specialized representation and training design.",
+        "zh": "交付围绕文字渲染、生成与编辑设计的图像模型，主贡献是模型能力与表示。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2509.20427": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Integrates representation and model design into a unified multimodal image-generation and editing model.",
+        "zh": "以紧凑表示和模型设计统一多模态图像生成编辑，主要产物是生成模型。"
+      },
+      "application_domains": [
+        "image",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2510.09094": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Compresses existing dense diffusion models through sparse conversion and distillation to reduce inference cost.",
+        "zh": "将既有稠密扩散模型转换为稀疏模型以压低推理成本，主要贡献是部署压缩。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving"
+      ]
+    },
+    "2510.11690": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Replaces conventional diffusion latents with pretrained representation encoders and compatible decoding heads.",
+        "zh": "以预训练表征编码器及适配解码头重设扩散潜空间，属于表示与架构。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2511.20645": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Introduces coupled patch-level and pixel-level Transformers for direct pixel generation.",
+        "zh": "通过图块级与像素级Transformer实现直接像素生成，核心是架构设计。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2511.22699": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Develops a compact single-stream image-generation model and its accelerated variants.",
+        "zh": "交付紧凑单流图像生成模型及其变体，主要贡献是模型设计与能力。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2601.16208": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Evaluates and scales representation-autoencoder latent designs for text-to-image Transformers.",
+        "zh": "围绕表征自编码潜空间的设计与扩展研究图像模型，属于表示架构方向。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2607.24665": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Designs lightweight experts and residual routing to improve diffusion model capacity-cost tradeoffs.",
+        "zh": "设计轻量专家与残差路由以改进扩散容量成本比，主要贡献是专家架构。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2607.28611": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Combines attention, convolution, and experts into a hybrid visual diffusion architecture with scaling analysis.",
+        "zh": "组合注意力、卷积与专家并研究规模规律，主要产物是混合视觉扩散架构。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2508.08248": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Targets long audio-driven avatar videos with synchronized and temporally consistent generation.",
+        "zh": "主要解决音频驱动头像视频的长期同步与连续生成问题。"
+      },
+      "application_domains": [
+        "video",
+        "audio"
+      ],
+      "system_layers": []
+    },
+    "2508.21058": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Introduces historical-context retrieval for consistent long-video generation.",
+        "zh": "以历史上下文检索提升长视频生成一致性，主要评估对象是生成视频能力。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2509.24695": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Builds a block-autoregressive video model with linear attention and bounded historical state.",
+        "zh": "提出线性注意力与有界历史状态的块自回归视频模型，主产物是视频生成器。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2603.04379": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Co-designs history modeling, drift training, and sampling for real-time long-video generation.",
+        "zh": "联合历史建模、漂移训练与采样实现实时长视频，主要贡献是视频模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2606.25473": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Develops causal video distillation across teacher-forced and self-forced training, with a supporting attention JVP kernel.",
+        "zh": "主贡献是因果视频蒸馏训练方案，并专门设计配套注意力JVP内核。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "kernel"
+      ]
+    },
+    "2607.06173": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Creates a mobile-oriented recurrent video model through architectural adaptation and distillation.",
+        "zh": "通过架构改造与蒸馏形成移动端循环视频模型，主要产物仍是视频生成器。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2607.21553": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Designs hybrid attention and residual reuse within an efficient video-generation backbone.",
+        "zh": "主要设计混合注意力与特征复用的视频骨干，归入视频生成模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2508.06001": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Balances distributed diffusion training workloads using sequence-aware assignment and a parallelism cost model.",
+        "zh": "根据序列负载与并行代价分配分布式训练任务，主要贡献是训练系统负载均衡。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "cluster",
+        "communication"
+      ]
+    },
+    "2509.11628": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Accelerates existing diffusion inference by forecasting, verifying, and reusing intermediate features.",
+        "zh": "通过预测、验证与复用中间特征加速既有扩散推理，属于执行优化。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2509.13789": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Reduces video diffusion inference work through block-granularity feature caching.",
+        "zh": "通过块级特征缓存减少视频扩散推理计算，主贡献是缓存执行优化。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2509.23681": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Compresses existing video diffusion models using coordinated quantization and attention sparsification.",
+        "zh": "联合量化与注意力稀疏化压缩既有视频扩散模型，属于推理效率优化。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2509.25401": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Provides a unified sparse-attention execution engine and optimized projection kernels.",
+        "zh": "提供统一稀疏注意力执行引擎与投影内核，主要贡献是底层执行系统。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "kernel",
+        "runtime"
+      ]
+    },
+    "2511.12056": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Pipelines distributed video inference and coordinates separate DiT and VAE execution groups.",
+        "zh": "通过分布式流水与DiT、VAE执行组协作提升推理效率，属于执行系统。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2601.20273": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Optimizes topology-aware sequence parallelism and communication overlap for distributed inference.",
+        "zh": "优化拓扑感知序列并行及通信重叠，主要研究分布式推理执行。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "communication",
+        "runtime"
+      ]
+    },
+    "2606.13501": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Adapts request parallelism through asynchronous trajectory tasks and group-free collectives.",
+        "zh": "通过异步轨迹任务和无组集合通信动态调整请求并行度，属于服务调度系统。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2607.11136": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Optimizes memory layouts and serving configurations to improve SLO attainment.",
+        "zh": "联合优化内存布局与服务配置以提高SLO达成率，主要贡献是服务系统。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2607.23264": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Reschedules remote-store progress and compute bursts inside distributed accelerator kernels.",
+        "zh": "在分布式内核中协调远程写入推进与计算突发，主要贡献是通信计算重叠。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "kernel",
+        "communication"
+      ]
+    },
+    "2607.23844": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Combines several feature-cache granularities to skip redundant diffusion inference computation.",
+        "zh": "组合多粒度特征缓存以跳过冗余推理计算，属于执行与内存复用优化。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2509.16117": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Defines reward-driven improvement through a forward-process flow objective.",
+        "zh": "以正负奖励样本定义前向流优化方向，主要贡献是生成强化后训练目标。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2603.26599": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Uses geometric rewards in GRPO to improve video consistency.",
+        "zh": "通过几何奖励与GRPO优化视频一致性，主贡献是奖励驱动的策略学习。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2604.24764": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Reinforces three-dimensional consistency through reward design and flow-policy optimization.",
+        "zh": "通过奖励设计和流策略优化强化三维一致性，属于生成模型对齐与强化学习。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2605.15458": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Optimizes video trajectories with verifiable rewards and denoising-step-aware policy updates.",
+        "zh": "以可验证奖励和去噪阶段策略更新优化视频轨迹，主要贡献是强化学习方法。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2606.19004": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Coordinates seed exploration, spot resources, and elastic parallelism to reduce post-training cost.",
+        "zh": "协调种子探索、抢占式资源与弹性并行降低后训练成本，主贡献是训练系统。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "training",
+        "cluster",
+        "runtime"
+      ]
+    },
+    "2606.23626": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Builds a human-preference scorer from generative features for reward modeling and alignment.",
+        "zh": "利用生成特征构建人类偏好评分器，主问题是奖励建模与对齐。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2607.17572": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Reduces diffusion policy-training backward work by aggregating and interpolating Jacobian contributions.",
+        "zh": "通过雅可比聚合与插值减少策略训练反向计算，主要贡献是训练执行加速。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "training"
+      ]
+    },
+    "2509.11865": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Designs a cross-embodiment diffusion action policy and evaluates manipulation success.",
+        "zh": "设计跨本体扩散动作策略并以操控成功率验证，主要产物是机器人控制策略。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2509.24579": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Uses a U-shaped diffusion Transformer to improve visuomotor action prediction.",
+        "zh": "以U形扩散Transformer改善视觉运动动作预测，主要研究机器人策略。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2602.05513": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Integrates multimodal and tactile conditioning into a bimanual manipulation policy.",
+        "zh": "将多模态与触觉条件融入双臂操控策略，主要贡献是具身动作生成。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2606.05979": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Combines world prediction and language reasoning to improve executable robot action policies.",
+        "zh": "联合世界预测与语言推理改善可执行机器人动作，主要产物是控制策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2606.17030": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Builds an embodied world predictor evaluated on visual dynamics and multiview consistency.",
+        "zh": "构建具身环境预测模型并评估动态生成与多视角一致性，主贡献是世界建模。"
+      },
+      "application_domains": [
+        "video",
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2607.18367": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Models interactive state evolution over long horizons using structured history and geometry-aware memory.",
+        "zh": "以结构化历史和几何记忆建模长时交互状态演化，属于世界模型。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2607.23909": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Jointly predicts future frames and action chunks, with manipulation policy performance as the main evaluation.",
+        "zh": "联合预测未来帧与动作块，主要通过操控策略表现验证，归入机器人控制。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2511.21780": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Designs a tri-modal diffusion architecture for jointly aligned text, audio, and video generation.",
+        "zh": "为文本、音频与视频的同步生成设计三模态扩散架构。"
+      },
+      "application_domains": [
+        "video",
+        "audio",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2512.18254": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Adapts a unified model for coherent interleaved text-image generation rather than external tool scheduling.",
+        "zh": "改造统一模型以支持连贯图文交错生成，核心是多模态生成能力而非工具调度。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2606.16255": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Separates diffusion decoding from shared semantic encoding to unify understanding and generation.",
+        "zh": "分离扩散解码与共享语义编码以统一理解生成，主要贡献是模型架构。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2606.16673": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Adds lightweight heads to reuse diffusion features for dense perception and paired generation.",
+        "zh": "以轻量解码头复用扩散表征实现稠密感知与配对生成，属于模型表示设计。"
+      },
+      "application_domains": [
+        "image",
+        "spatial",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2606.30332": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Extends a shared diffusion architecture to jointly model generation and dense geometric perception.",
+        "zh": "扩展共享扩散架构以联合生成与稠密几何感知，主要贡献是统一模型。"
+      },
+      "application_domains": [
+        "image",
+        "spatial",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2607.22531": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Unifies semantic and reconstructive representations with a shared token grid and tailored regression loss.",
+        "zh": "以共享网格与适配损失统一语义和重构表征，主要贡献是表示设计。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2607.27011": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Combines a shared audio representation and DiT to support multiple conditioned audio-generation tasks.",
+        "zh": "以共享音频表征与DiT支持多种条件音频任务，主要产物是统一音频模型。"
+      },
+      "application_domains": [
+        "audio",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2310.00426": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Develops an efficient text-conditioned diffusion Transformer and staged model-training recipe.",
+        "zh": "交付高效文本条件扩散Transformer及阶段训练方案，主要贡献是生成模型设计。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2403.04692": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Extends the image model through weak-to-strong training and compressed attention representations.",
+        "zh": "通过弱到强训练与压缩注意力扩展图像模型，主要贡献是模型设计。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2401.08740": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Studies interpolants, objectives, and samplers while holding the Transformer architecture fixed.",
+        "zh": "固定Transformer架构研究插值路径、目标与采样器，属于生成基础方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2403.03206": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Introduces multimodal Transformer interactions and scaling design for high-resolution image synthesis.",
+        "zh": "设计多模态Transformer交互与规模扩展以生成高分辨率图像，属于模型架构。"
+      },
+      "application_domains": [
+        "image",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2405.08748": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Coordinates text encoding and Transformer design for bilingual and conversational image generation.",
+        "zh": "协调文本编码与Transformer设计支持双语及对话式图像生成，主要贡献是模型。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2405.05945": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Builds a common latent-token and Transformer architecture across generative modalities and lengths.",
+        "zh": "构建跨生成模态与时空长度的潜序列和Transformer架构，属于统一模型设计。"
+      },
+      "application_domains": [
+        "image",
+        "video",
+        "audio",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2410.06940": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "Introduces an auxiliary representation-alignment objective for training existing diffusion architectures.",
+        "zh": "为既有扩散架构提出辅助表征对齐训练目标，主要贡献是基础学习方法。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2410.10629": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Co-designs compressed representations and a linear-attention backbone for image generation.",
+        "zh": "联合压缩表示与线性注意力骨干设计图像生成模型，主要贡献是架构。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2501.18427": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Develops model-growth, pruning, and inference-scaling recipes around the SANA generator.",
+        "zh": "围绕SANA生成器设计模型增长、剪枝与推理扩展方案，主要产物是改进模型。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2312.06662": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Designs video representations and windowed diffusion attention for photorealistic video generation.",
+        "zh": "设计视频表示与窗口扩散注意力，主要解决高保真视频生成。"
+      },
+      "application_domains": [
+        "video",
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2401.03048": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Studies spatial-temporal latent Transformer designs specifically for video synthesis.",
+        "zh": "系统研究面向视频合成的时空潜Transformer设计，归入视频生成。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2408.06072": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Combines a video VAE, expert conditioning, and progressive training into a video-generation model.",
+        "zh": "将视频VAE、专家条件设计和渐进训练组合为视频生成模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2412.03603": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Presents an integrated large video-generation model and evaluates visual quality, motion, and prompt adherence.",
+        "zh": "交付大型视频生成模型并评估画质、运动与提示遵循，主贡献是视频能力。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2501.00103": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Co-designs video compression and denoising-decoder responsibilities to produce real-time video.",
+        "zh": "联合视频压缩与去噪解码职责设计实时生成模型，主要产物是视频生成器。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2502.10248": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "en": "Integrates representation, attention, training, and post-training into a large text-to-video generator.",
+        "zh": "联合表示、注意力与后训练形成大型文本生成视频模型，核心是视频生成能力。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2402.19481": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Accelerates distributed diffusion inference through displaced patch execution and overlapped feature exchange.",
+        "zh": "通过错位图块执行与特征交换重叠加速分布式扩散推理，属于执行系统。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2405.14430": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Combines patch and layer partitioning to reduce distributed diffusion inference communication and memory cost.",
+        "zh": "组合图块与层划分以降低分布式推理通信和内存成本，主要贡献是并行执行。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication",
+        "memory"
+      ]
+    },
+    "2411.01738": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Provides a configurable distributed inference engine combining several diffusion parallelism strategies.",
+        "zh": "提供可组合多种扩散并行策略的分布式推理引擎，属于运行时系统。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2411.19108": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Uses timestep-informed output variation estimates to skip diffusion computation through caching.",
+        "zh": "利用时间步信息估计输出变化并缓存复用，主要贡献是推理计算优化。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2602.02204": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Disaggregates multimodal stage graphs with independent batching, routing, and resource allocation.",
+        "zh": "将多模态阶段图拆分并独立批处理、路由与分配资源，主贡献是服务系统。"
+      },
+      "application_domains": [
+        "image",
+        "video",
+        "audio",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2303.04137": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Models conditional action trajectories with diffusion and evaluates closed-loop robot control.",
+        "zh": "用扩散建模条件动作轨迹并评估闭环控制，主要产物是机器人策略。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2410.15959": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Scales multimodal diffusion Transformers to generate executable end-effector action sequences.",
+        "zh": "扩展多模态扩散Transformer生成末端动作序列，主要研究具身控制策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2410.24164": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Combines VLM conditioning and flow-matching actions into a general robot policy.",
+        "zh": "将视觉语言条件与流匹配动作组合为通用机器人策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2411.19650": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Couples visual-language cognition to a diffusion action module for robotic manipulation.",
+        "zh": "连接视觉语言认知与扩散动作模块，主要贡献是机器人操控策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2502.05855": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Trains and adapts a large diffusion action expert for diverse robot embodiments and tasks.",
+        "zh": "训练并适配大型扩散动作专家以控制多种机器人，属于具身策略方法。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2503.14734": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Integrates visual-language interpretation and diffusion actions into a generalist humanoid policy.",
+        "zh": "联合视觉语言理解与扩散动作生成，主要产物是通用人形机器人策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2504.16054": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Uses heterogeneous co-training to improve robot policy generalization in unseen homes.",
+        "zh": "通过异构任务协同训练改善机器人在新家庭中的控制泛化，属于具身策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2506.01844": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Develops a compact robot policy, with a specifically designed asynchronous perception-action runtime.",
+        "zh": "主要产物是紧凑机器人策略，同时具体设计感知与动作异步执行栈。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": [
+        "runtime"
+      ]
+    },
+    "2506.10100": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Accelerates existing VLA inference through layer pruning, visual-token selection, and action-feature caching.",
+        "zh": "剪枝既有VLA层与视觉token并缓存动作特征，主要贡献是推理效率优化。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2509.25681": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Jointly models perception, reasoning, and actions to improve robot policy performance.",
+        "zh": "联合建模感知、推理与动作以改善机器人任务表现，主要产物是具身策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2512.22615": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Adapts a diffusion-language backbone into an action-generating robot policy evaluated on manipulation.",
+        "zh": "将扩散语言骨干适配为动作生成策略，并以操控能力为主要评估对象。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2602.18397": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Analyzes VLA inference cost across hardware and deployment networks using a performance model.",
+        "zh": "通过性能模型分析不同硬件与网络中的VLA推理成本，主要研究部署系统。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "communication"
+      ]
+    },
+    "2602.20309": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Reduces VLA deployment memory through calibrated post-training quantization.",
+        "zh": "通过校准式训练后量化降低VLA部署内存，主要贡献是推理压缩。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2605.13778": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Uses speculative action drafting and verification to reduce existing VLA inference latency.",
+        "zh": "以动作草稿、并行验证和回退降低既有VLA推理延迟，属于执行优化。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2606.08094": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Builds a portable VLA inference runtime with unified interfaces and optimized integer kernels.",
+        "zh": "构建统一接口与整数内核优化的跨硬件VLA推理运行时，属于系统贡献。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "kernel"
+      ]
+    },
+    "2607.01586": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Studies complementary language and future-latent supervision for transferable robot action policies.",
+        "zh": "研究语言与未来潜状态监督如何共同改善动作策略迁移，属于机器人策略学习。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2607.06370": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Caches and refines actions to accelerate repeated inference under similar multimodal contexts.",
+        "zh": "按相似多模态上下文缓存并细化动作，主要贡献是策略推理加速。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2310.07896": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Unifies goal-conditioned navigation and exploration in a diffusion action policy.",
+        "zh": "以扩散动作策略统一目标导航与探索，主要产物是移动机器人控制方法。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2402.10885": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Conditions action diffusion on three-dimensional scene features and evaluates robotic manipulation.",
+        "zh": "利用三维场景特征条件化动作扩散并评估操控，主贡献是具身策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "spatial",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2402.15391": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Learns latent actions and environment dynamics to generate controllable interactive worlds.",
+        "zh": "学习潜动作及环境动力学以生成可控交互世界，属于世界模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2403.03954": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Uses compact point-cloud representations to improve generalizable robot action diffusion.",
+        "zh": "以紧凑点云表征改善机器人动作扩散泛化，主要贡献是控制策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2405.12213": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Provides a pretrained cross-embodiment action policy adaptable to new robot interfaces.",
+        "zh": "交付可适配新机器人接口的跨本体预训练策略，属于具身控制。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2405.12399": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Learns diffusion environment dynamics and evaluates their utility for agent training and interactive simulation.",
+        "zh": "学习扩散环境动力学并验证智能体训练与交互仿真用途，主贡献是世界模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2406.09455": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Combines language and video modeling to predict interactive environments under textual actions.",
+        "zh": "联合语言与视频建模预测文本动作下的交互环境，属于世界模型。"
+      },
+      "application_domains": [
+        "video",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2408.11039": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Shares one Transformer across next-token language prediction and image diffusion.",
+        "zh": "用共享Transformer统一语言下一token预测与图像扩散，主要贡献是多模态架构。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2408.12528": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Unifies autoregressive understanding and discrete diffusion generation within one Transformer.",
+        "zh": "在单个Transformer中统一自回归理解与离散扩散生成，属于模型架构。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2408.14837": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Models action-conditioned game transitions and evaluates sustained interactive simulation.",
+        "zh": "建模动作条件游戏状态转移并评估持续交互仿真，主贡献是世界模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2409.16280": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Shares a Transformer backbone across diffusion and autoregressive generation objectives.",
+        "zh": "以共享骨干支持扩散与自回归目标，主要贡献是统一生成架构。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2410.06158": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Transfers web-video knowledge into a jointly trained video-action robot policy.",
+        "zh": "将网络视频知识迁入联合视频动作策略，主要评估机器人操控能力。"
+      },
+      "application_domains": [
+        "robotics",
+        "video",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2410.07864": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Combines scalable action diffusion and a unified physical action space for bimanual control.",
+        "zh": "以可扩展动作扩散和统一物理动作空间实现双臂控制，属于具身策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2411.07975": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Unifies autoregressive language and rectified-flow images with decoupled visual representations.",
+        "zh": "通过解耦视觉表征统一自回归语言与整流流图像生成，属于架构设计。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2412.01169": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Extends multimodal rectified flows and modality-specific components for any-to-any generation.",
+        "zh": "扩展多模态整流流与模态组件以支持任意模态互生成，主要贡献是统一模型。"
+      },
+      "application_domains": [
+        "image",
+        "audio",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2412.03568": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Builds a continuous visual simulator whose future states respond to movement controls.",
+        "zh": "构建未来状态响应移动控制的连续视觉模拟器，主要研究交互世界建模。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2501.03575": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Provides pretrained world models and adaptation tools for physical-environment prediction.",
+        "zh": "提供物理环境预测的世界模型及适配工具，主要产物是世界建模平台。"
+      },
+      "application_domains": [
+        "video",
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2503.06134": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Bridges multimodal understanding features into a diffusion generator through learned alignment and distillation.",
+        "zh": "通过学习式对齐与蒸馏将多模态理解接入扩散生成器，属于统一模型设计。"
+      },
+      "application_domains": [
+        "image",
+        "video",
+        "audio",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2505.08712": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Learns navigation trajectories and critics for transferable closed-loop robot control.",
+        "zh": "联合学习导航轨迹与评价器以支持跨环境控制，主要贡献是机器人导航策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2505.09568": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Designs a unified understanding-generation model around semantic features and staged pretraining.",
+        "zh": "围绕语义特征与阶段预训练构建理解生成统一模型，属于多模态架构。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2505.14683": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "Builds a shared decoder-only model for multimodal understanding, generation, and manipulation.",
+        "zh": "交付统一多模态理解、生成与图像操作的解码模型，主要贡献是模型架构。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2506.00613": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Simulates action-conditioned robot rollouts to evaluate existing policies and their relative performance.",
+        "zh": "通过动作条件轨迹仿真评估既有机器人策略，主要产物是世界模型评测环境。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2506.05284": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Adds geometric scene memory to preserve consistency when generated world trajectories revisit locations.",
+        "zh": "通过几何场景记忆保持世界轨迹重访一致性，主要贡献是持久环境建模。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2506.17201": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Models controllable game evolution from keyboard, mouse, and camera actions over extended histories.",
+        "zh": "根据键鼠与相机动作建模长期可控游戏演化，属于交互世界模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2508.13009": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Learns action-conditioned streaming dynamics for real-time interactive game worlds.",
+        "zh": "学习动作条件流式动力学以支持实时交互游戏世界，主贡献是世界模型。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2512.22096": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Combines movement controls and textual events in a persistent interactive world generator.",
+        "zh": "将移动控制与文本事件融入持续交互世界生成器，属于世界模型。"
+      },
+      "application_domains": [
+        "video",
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2603.00825": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Learns controllable environment and opponent behavior for closed-loop game simulation.",
+        "zh": "学习可控环境与对手行为以实现闭环游戏仿真，主贡献是世界建模。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2604.22152": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Uses discrete diffusion dynamics to simulate trajectories for robot policy evaluation.",
+        "zh": "利用离散扩散动力学模拟轨迹以评估机器人策略，属于世界模型。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2606.04463": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Predicts embodiment-conditioned visual dynamics and supports virtual policy evaluation.",
+        "zh": "预测跨本体动作条件视觉动力学并支持虚拟策略评估，主要贡献是世界模型。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2606.05558": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Models action-dependent environment transitions to evaluate language-agent policies off-policy.",
+        "zh": "建模动作相关环境转移以离策略评估语言智能体，主要产物是世界模型。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2606.12987": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Predicts future autonomous-driving visual states conditioned on actions and spatial context.",
+        "zh": "根据动作与空间上下文预测自动驾驶未来视觉状态，属于环境动力学建模。"
+      },
+      "application_domains": [
+        "video",
+        "robotics",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2606.29501": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "Learns transferable dynamics priors supporting both world simulation and downstream action policies.",
+        "zh": "学习可同时支持世界仿真与下游动作策略的动力学先验，主贡献是世界建模。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2312.04429": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Reduces diffusion serving cost through approximate reuse and replacement of intermediate noise states.",
+        "zh": "通过中间噪声状态的近似复用与替换降低服务成本，属于缓存服务系统。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2407.02031": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Coordinates control-network reuse, adapter loading, and latent parallelism for diffusion workflows.",
+        "zh": "协调控制网络复用、适配器加载与潜空间并行，主要贡献是扩散工作流服务。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2411.15381": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Selects model cascades and resource allocations according to query difficulty and serving load.",
+        "zh": "根据请求难度和服务负载选择模型级联与资源分配，主贡献是服务系统。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2501.09253": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Schedules and caches heterogeneous image requests at patch granularity to meet SLOs.",
+        "zh": "以图块粒度调度和缓存异构图像请求以满足SLO，属于服务执行优化。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2505.20600": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Combines mask-aware caching and continuous batching to improve image-editing serving efficiency.",
+        "zh": "联合掩码感知缓存与连续批处理提升图像编辑服务效率，主贡献是服务系统。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory"
+      ]
+    },
+    "socc25-diffusion-serving": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Analyzes production diffusion workloads and coordinates caching, scaling, and model-loading optimizations.",
+        "zh": "分析生产扩散负载并协调缓存、扩缩容与模型加载优化，主要研究服务系统。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "cluster",
+        "memory"
+      ]
+    },
+    "2604.08123": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Disaggregates diffusion workflows into independently scheduled and scaled model nodes.",
+        "zh": "将扩散工作流拆为独立调度与扩缩的模型节点，主要贡献是服务架构。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2605.25550": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Coordinates asynchronous stage pipelines and elastic instance allocation for disaggregated serving.",
+        "zh": "协调异步阶段流水与弹性副本分配，主贡献是分离式扩散服务系统。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2606.19271": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Manages streaming sessions through placement, autoscaling, offloading, and migration.",
+        "zh": "通过放置、扩缩容、卸载与迁移管理流式会话，主要研究视频服务系统。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2607.12121": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Combines approximate regional execution with affinity-aware scheduling to reuse released capacity.",
+        "zh": "联合近似区域执行与亲和调度以复用释放算力，主要贡献是生成服务效率。"
+      },
+      "application_domains": [
+        "image",
+        "video",
+        "audio"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2607.26566": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Builds serverless model functions with memory-backed data exchange and per-model scaling.",
+        "zh": "构建以内存数据面及逐模型扩缩为基础的无服务器生成工作流，属于服务系统。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2508.03680": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Separates agent execution from training through common transitions and integration interfaces.",
+        "zh": "通过统一转移数据和接口分离智能体执行与训练，主要产物是训练系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime"
+      ]
+    },
+    "2608.17528": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Connects native agent harnesses to reinforcement learning through an endpoint-proxy training framework.",
+        "zh": "以端点代理框架将原生智能体运行环境接入强化学习，主要贡献是训练系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime"
+      ]
+    },
+    "2505.24298": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Coordinates asynchronous rollout generation and optimization to improve training throughput under controlled staleness.",
+        "zh": "协调异步生成与优化并控制陈旧度以提升训练吞吐，主要贡献是训练系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2603.13019": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Schedules heterogeneous agent-training resources at action granularity.",
+        "zh": "以动作粒度调度异构智能体训练资源，主要解决系统资源效率问题。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2608.14635": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Restores worker and environment state consistently to accelerate agentic-training fault recovery.",
+        "zh": "一致恢复工作节点与环境状态以加速智能体训练故障恢复，属于可靠性系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2609.36899": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Reshapes rollout batches and worker assignments to improve heterogeneous accelerator utilization and tails.",
+        "zh": "调整生成批次与工作节点分配以改善异构利用率和尾延迟，属于训练生成系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "chandy-lamport": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Defines distributed process and channel snapshots for system-wide state recording and consistency.",
+        "zh": "定义进程与通道的分布式快照以记录全局状态，主要贡献是分布式系统算法。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime",
+        "communication"
+      ]
+    },
+    "2606.24369": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Coordinates diffusion parallelism and trainer-assisted sampling to reduce disaggregated training idle time.",
+        "zh": "协调扩散并行与训练器辅助采样以减少分离训练空闲，主要贡献是训练执行系统。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2604.26256": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Orchestrates streaming rollouts across policy versions to reduce asynchronous-training bubbles.",
+        "zh": "跨策略版本组织流式生成以降低异步训练气泡，主贡献是训练调度系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "dynarl": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Reallocates RL pipeline resources through hypergraph planning, routing, and migration interfaces.",
+        "zh": "通过超图规划、路由与迁移接口重分配RL流水资源，主要贡献是训练调度。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "gcr": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Accelerates GPU checkpoint and restore through state separation, shadow execution, and incremental buffer tracking.",
+        "zh": "通过状态分离、影子执行与增量缓冲跟踪加速GPU保存恢复，属于运行时系统。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2510.12633": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Combines distributed parameter relays and long-tail repacking to scale asynchronous RL training.",
+        "zh": "联合分布式参数中继与长尾轨迹重打包扩展异步RL训练，主要贡献是系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2610.08430": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Accelerates exact policy-weight refits through delta encoding, streaming, and in-place application.",
+        "zh": "通过差分编码、流式分发与原地应用加速精确权重刷新，属于训练通信系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "communication",
+        "memory"
+      ]
+    },
+    "2609.35158": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Adapts prefill-decode execution and trainer borrowing within an elastic RL resource budget.",
+        "zh": "在弹性RL预算内调整预填充解码执行与训练卡借用，主要贡献是资源调度。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2510.19225": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Uses preemptible rollout resources with weight transfer and response migration to lower RL training cost.",
+        "zh": "结合可抢占生成资源、权重传输与响应迁移降低RL成本，主要贡献是弹性训练系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2512.22492": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Coordinates role-specific recovery and dynamic reconnection to tolerate distributed RL failures.",
+        "zh": "以角色专用恢复及动态重连应对分布式RL故障，主贡献是训练可靠性系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "rollart": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Disaggregates agent-training stages and asynchronously coordinates trajectories, rewards, and policy versions.",
+        "zh": "分离智能体训练阶段并异步协调轨迹、奖励与策略版本，主要产物是训练系统。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2605.06534": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Its main contribution is rollout resource sharing and weight transfer while protecting serving SLOs.",
+        "zh": "主要贡献是保护服务SLO的生成资源共享与权重传输机制。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "serving",
+        "communication",
+        "cluster"
+      ]
+    },
+    "spotcheck": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It provides reliable spot-instance services through virtualization, live migration, and resource pooling.",
+        "zh": "以虚拟化、在线迁移和资源池管理提供竞价实例上的可靠服务。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2601.09083": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It accelerates existing RL rollouts through tree caching and speculative decoding while preserving the sampling distribution.",
+        "zh": "用树缓存和投机解码加速既有RL生成，并保持目标采样分布。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2601.12784": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Its core contribution is trajectory-lifecycle management and staleness-aware coordination of distributed training.",
+        "zh": "核心是轨迹生命周期与陈旧度感知的数据管理和执行协调。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2610.03286": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces end-to-end training delays through critical-group scheduling and sandbox resource sharing.",
+        "zh": "通过关键轨迹组调度和沙箱共享减少端到端训练等待。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2608.00881": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It optimizes agent execution through isolated speculation and state validation to reduce serving latency.",
+        "zh": "以隔离投机和状态验证降低智能体服务延迟，优化的是执行机制。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2609.18849": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It uses live tool progress to improve cache retention and prefetching decisions in serving systems.",
+        "zh": "把真实工具进度用于缓存保留和预取，改进服务系统的资源决策。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2507.01663": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It connects independent engines through streaming data and overlaps RL stages to improve training throughput.",
+        "zh": "用流式数据层连接独立引擎并重叠RL阶段，主要结果是训练吞吐。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2405.16444": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces RAG prefill costs through cache composition and selective recomputation.",
+        "zh": "通过缓存组合与选择性重算降低RAG预填充开销。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2601.22705": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It controls active-agent concurrency according to cache congestion, targeting admission control and stable throughput.",
+        "zh": "按缓存拥塞控制活跃智能体并发，核心是服务准入和吞吐稳定性。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2410.01228": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It improves co-serving efficiency through layer-level preemption and cache recovery.",
+        "zh": "以逐层抢占和缓存恢复共享在线离线资源，主要优化服务效率。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2609.31551": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It improves multimodal serving pipelines through encode-stage flow control and accelerator partitioning.",
+        "zh": "联合编码阶段流量控制与设备分区，改进多模态服务流水。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "video",
+        "audio"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2610.19822": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It jointly manages model weights and session KV within limited memory and schedules prefetching and transfers.",
+        "zh": "统一管理模型权重与会话KV的有限内存，并调度预取和传输。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "communication"
+      ]
+    },
+    "2609.03335": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It jointly plans workflow placement, execution order, and model lifecycles using execution-cost models.",
+        "zh": "按成本模型联合决定工作流放置、次序和模型生命周期。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2507.07966": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It develops long-video reasoning through data and two-stage learning, supported by dedicated MR-SP training infrastructure.",
+        "zh": "以数据和两阶段学习扩展长视频推理，MR-SP是配套训练基础设施。"
+      },
+      "application_domains": [
+        "video",
+        "multimodal",
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "communication"
+      ]
+    },
+    "2606.12688": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It serves composite models through a modular runtime that supports dynamic control flow.",
+        "zh": "用可表达动态控制流的模块化运行时服务复合模型。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "audio",
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2609.32395": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "It changes context representation through independent block encoding and cross-attention to make memory exactly composable.",
+        "zh": "通过块独立编码与交叉注意力改变上下文表示，使记忆可精确组合。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2407.00079": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It organizes disaggregated serving and admission scheduling around a tiered KV cache.",
+        "zh": "围绕分层KV缓存组织分离式服务和准入调度。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2603.18897": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It optimizes overlap between agent generation and tool waiting through speculative tool execution and validation.",
+        "zh": "提前执行并验证工具调用，优化智能体生成与工具等待的重叠。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2505.04021": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It enables multi-model resource sharing through memory ballooning and virtualized allocation.",
+        "zh": "以显存气球和虚实分离分配实现多模型资源共享。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2509.24381": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It coordinates intra-request and inter-request pipelines using encoder readiness to improve multimodal serving latency.",
+        "zh": "利用编码就绪事件协调请求内外流水，主要改进多模态服务延迟。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2610.15186": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It studies behavior-preserving non-prefix cache reuse and repairs state through causal suffix recomputation.",
+        "zh": "研究非前缀缓存的行为保持合同，并以因果后缀重算修复状态。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory"
+      ]
+    },
+    "2312.07104": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Its language frontend and cache runtime jointly accelerate structured language-model programs.",
+        "zh": "语言前端和缓存运行时共同加速结构化模型程序。"
+      },
+      "application_domains": [
+        "language",
+        "multimodal"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2311.15566": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It handles preemptible-instance reclamation through dynamic parallelism and inference-state migration.",
+        "zh": "动态重选并行配置并迁移推理状态，处理机会实例回收。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2510.18586": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It schedules KV offloading, prefetching, and memory allocation using agent dependencies.",
+        "zh": "按智能体依赖调度KV卸载、预取和显存分配。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2309.06180": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It increases serving capacity through paged KV allocation and attention execution that reduce fragmentation and copying.",
+        "zh": "用分页KV布局与注意力实现减少碎片和复制，提高服务容量。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "kernel"
+      ]
+    },
+    "2610.09307": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It unifies multimodal stage orchestration, data transfer, and long-lived session management.",
+        "zh": "统一多模态阶段编排、数据传输及长时会话管理。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "video",
+        "audio",
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "communication"
+      ]
+    },
+    "2604.09073": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It optimizes diffusion inference energy and reliability through sensitivity-aware hardware control and rollback.",
+        "zh": "按错误敏感性联合调节硬件运行和回滚，优化扩散推理的能耗与可靠性。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2604.04335": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It jointly manages preemption, batching, and elastic parallelism to meet heterogeneous diffusion-serving objectives.",
+        "zh": "联合抢占、批处理和弹性并行满足异构扩散请求的服务目标。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2509.04719": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It mitigates heterogeneous inference imbalance through nonuniform spatial partitioning and denoising-step adaptation.",
+        "zh": "通过非均匀空间划分与时间步调整缓解异构设备的推理负载失衡。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2503.06923": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It replaces selected forward passes with feature prediction, targeting the speed-quality tradeoff in approximate inference.",
+        "zh": "以特征预测替代部分前向，主要研究近似推理的速度质量取舍。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2606.10135": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It constructs action-controllable interactive video worlds, focusing on history handling and generation quality.",
+        "zh": "构造可受动作控制的交互视频世界模型，重点是因果历史与生成质量。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2609.32540": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces generation costs through in-flight KV reuse and cross-chunk pipeline scheduling.",
+        "zh": "复用去噪中的KV并安排跨片段流水，主要减少生成执行成本。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory",
+        "communication"
+      ]
+    },
+    "2602.10825": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces generation time and memory through chunk-adaptive feature caching and history compression.",
+        "zh": "按片段调整特征缓存与历史压缩，以降低生成时间和显存。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2605.09681": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It prunes caches by attention-head function to reduce inference storage and computation.",
+        "zh": "按注意力头功能裁剪缓存，主要目标是减少推理存储和计算。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2610.36729": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It maintains generated history while responding to text and camera actions, providing an interactive-world interface.",
+        "zh": "持续响应文本与相机动作并维护生成历史，主要接口是交互世界。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2607.07534": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It expands interactive-world generation through persistent state and diverse control interfaces.",
+        "zh": "通过持续状态和多种控制接口扩展交互世界的生成能力。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2606.05773": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It provides an environment model that generates observations from policy action chunks for closed-loop evaluation.",
+        "zh": "交付可按策略动作块生成观察的环境模型，用于闭环策略评估。"
+      },
+      "application_domains": [
+        "video",
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2609.38597": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "It unifies understanding and generation through a shared pixel-space backbone, contributing representation and architectural design.",
+        "zh": "以共享像素空间骨干统一理解与生成，主要创新是表示和模型结构。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "video",
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2511.07399": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It combines streaming batching, KV management, and multidimensional pipelines to meet interactive-generation SLOs.",
+        "zh": "联合流式批处理、KV管理和多维流水以满足交互生成SLO。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory",
+        "communication"
+      ]
+    },
+    "2605.30351": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "It redesigns and trains a low-rank KV representation for video attention rather than merely relocating caches.",
+        "zh": "重新设计并训练视频注意力的低秩KV表示，而非只调整缓存放置。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2609.34606": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It co-designs specialized kernels and hierarchical KV management to improve attention execution and storage efficiency.",
+        "zh": "以专用内核和分层KV协同实现高效注意力，核心是计算存储组织。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "kernel",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2605.22718": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It controls world-model inference costs through history retrieval and compression while evaluating revisit quality.",
+        "zh": "通过历史检索和压缩控制世界模型推理成本，并衡量重访质量。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2607.10389": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Its main contribution is exact migration, verification, and admission control for active world-model sessions.",
+        "zh": "主要贡献是活跃会话的精确状态迁移、传输校验与准入。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": [
+        "serving",
+        "communication",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2610.35529": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It supports long sessions within limited device memory through tiered caching, quantization, and prefetching.",
+        "zh": "通过分层缓存、量化和预取让长会话在有限设备内存中运行。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2608.07408": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It repairs long-term visual-memory addressability, primarily evaluating persistence and scene recall.",
+        "zh": "修复长期视觉记忆的可寻址性，主要评估持续性与场景回忆。"
+      },
+      "application_domains": [
+        "video",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2604.20289": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It accelerates world-model inference through cross-chunk residual reuse while protecting historical cache updates.",
+        "zh": "跨片段复用块残差并保护历史更新，主要目标是加速世界模型推理。"
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2608.00337": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It schedules shared policy serving by selecting batches according to robot action-queue consumption.",
+        "zh": "按机器人动作队列的消耗选择批次，核心是共享策略服务调度。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2610.05062": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It characterizes VLA execution bottlenecks through performance and closed-loop experiments to guide deployment design.",
+        "zh": "以性能和闭环实验刻画VLA执行瓶颈，产出是部署设计依据。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime"
+      ]
+    },
+    "2609.34792": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Its dual-frequency memory and visual adaptation directly improve robotic-policy replanning in dynamic manipulation.",
+        "zh": "双频记忆与视觉适配直接改善动态操作策略的重规划能力。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2512.20188": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It jointly trains fast-slow policies and whole-body action representations to deliver robot control.",
+        "zh": "联合训练快慢动作策略与全身动作表示，最终交付机器人控制。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2506.01953": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It embeds a fast action pathway within slow semantic reasoning to improve robot-policy capabilities.",
+        "zh": "将快速动作路径嵌入慢速语义模型，主要改进机器人策略能力。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2605.11381": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It uses action-execution state to schedule requests and edge-cloud routing, reducing task-level serving latency.",
+        "zh": "利用实际动作执行状态组织请求和边云分流，优化任务服务延迟。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2406.09246": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It learns executable actions from a vision-language backbone and evaluates robot generalization and adaptation.",
+        "zh": "以视觉语言骨干学习可执行动作，并评估机器人泛化与适配。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2609.12075": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It increases robot-serving capacity through accelerator sharing, SLO scheduling, and cross-GPU traffic management.",
+        "zh": "通过设备共享、SLO调度和跨GPU流量管理扩大机器人服务容量。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2607.01088": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It incorporates robot constraints into model placement and serving plans to optimize factory-wide resource use.",
+        "zh": "将机器人约束纳入模型放置和服务规划，主要优化工厂级资源使用。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2603.28565": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Its action-flow and observation mechanisms change policy generation to support continuous robot control.",
+        "zh": "新的动作流与观察机制改变策略生成方式，重点是连续机器人控制。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2602.01100": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It triggers reasoning from subtask-completion state and generates actions as an efficient manipulation policy.",
+        "zh": "按子任务完成状态触发推理并生成动作，主要交付高效操作策略。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2607.15621": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Its fast expert learns closed-loop driving from current visual observations and slower semantic state.",
+        "zh": "快速专家联合当前视觉与慢速语义状态学习闭环驾驶控制。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2502.02175": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces existing VLA inference costs through visual-token cache reuse and selective recomputation.",
+        "zh": "重用视觉token缓存并选择性重算，优化既有VLA的推理开销。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "memory"
+      ]
+    },
+    "1910.02653": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It turns tensor retention and recomputation into executable schedules that optimize training memory and cost.",
+        "zh": "将张量保存与重算组织成可执行调度，优化训练内存和成本。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "training",
+        "memory"
+      ]
+    },
+    "2604.04780": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "Its interleaved GRPO jointly optimizes visual generation and answers, making feedback-driven learning the central contribution.",
+        "zh": "通过交错GRPO联合优化视觉生成与回答，核心是反馈驱动的能力学习。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2311.11822": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reorganizes private optimization with ZeRO sharding to reduce training computation, communication, and storage overhead.",
+        "zh": "重组隐私优化与ZeRO分片的执行，减少训练计算、通信和存储开销。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "training",
+        "communication",
+        "memory"
+      ]
+    },
+    "2006.09616": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It manages tensor lifetimes through online eviction and rematerialization under training-memory constraints.",
+        "zh": "以在线驱逐和按需重算管理张量生命周期，解决训练显存约束。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory"
+      ]
+    },
+    "fastdp-bk": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reuses backward factors to implement existing private optimizers with lower per-example clipping costs.",
+        "zh": "复用反向因子实现既有隐私优化器，主要降低逐样本裁剪的执行成本。"
+      },
+      "application_domains": [
+        "image",
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "memory"
+      ]
+    },
+    "flexrl": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It jointly organizes visual preprocessing and sequence workloads to improve VLM training throughput.",
+        "zh": "协同组织视觉数据处理与序列负载分配，主要提高VLM训练吞吐。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "communication",
+        "cluster"
+      ]
+    },
+    "1506.02438": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It constructs advantage estimates to control policy-gradient bias and variance, contributing a learning method.",
+        "zh": "构造优势估计量以控制策略梯度的偏差与方差，属于学习方法。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2101.06983": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It separates contrastive-loss and encoder backpropagation to recover large-batch gradients through small-batch execution.",
+        "zh": "分离对比损失与编码器反传，以小批执行恢复大批目标梯度。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "memory"
+      ]
+    },
+    "megascale-data": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It improves multisource training-data delivery through disaggregated loading and automatic partitioning.",
+        "zh": "以分离式加载和自动分区优化多来源训练的数据供应。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2606.01143": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It shares prefix forwards and aggregates backward gradients to reduce redundant training computation and activation memory.",
+        "zh": "共享前缀前向并聚合其反向梯度，减少重复训练计算和激活占用。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "memory"
+      ]
+    },
+    "2608.25683": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It exploits fully visible training data for prefix reuse through scheduling and cache management.",
+        "zh": "利用训练期完整数据共享前缀，主要贡献是调度与缓存管理。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2502.13923": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "It expands a general vision-language backbone through visual representation and temporal-modeling design.",
+        "zh": "通过视觉表示和时间建模扩展通用视觉语言骨干的能力。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "video",
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2608.14498": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It organizes cross-phase memory and weight-layout sharing while preserving synchronous RL updates.",
+        "zh": "在保持同步RL协议下组织跨阶段显存和权重布局共享。"
+      },
+      "application_domains": [
+        "multimodal",
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2608.12146": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It jointly plans trajectory microbatches and expert placement to reduce MoE training resource peaks.",
+        "zh": "联合安排轨迹微批次与专家位置，降低MoE训练的执行峰值。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory"
+      ]
+    },
+    "1511.08486": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces distributed-learning communication by broadcasting sufficient factors that reconstruct model updates.",
+        "zh": "通过广播可恢复更新的充分因子减少分布式学习通信。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "training",
+        "communication"
+      ]
+    },
+    "2610.16691": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reschedules execution around actual reward and gradient dependencies to reduce video-RL training barriers.",
+        "zh": "按真实奖励和梯度依赖重排执行，以减少视频RL训练屏障。"
+      },
+      "application_domains": [
+        "video",
+        "multimodal"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2610.05935": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It computes ready gradients early while recovering the original synchronous update, contributing lossless execution acceleration.",
+        "zh": "提前计算已就绪的梯度并恢复原同步更新，主要贡献是无损执行加速。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2610.33581": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces high-resolution synthesis costs by optimizing representation conversion and tiled decoding in cascaded generation.",
+        "zh": "优化级联视觉生成中的表示转换与块解码，主要减少高分辨率执行开销。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2401.10241": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It fills pipeline gaps by separately scheduling backward tasks rather than changing the training objective.",
+        "zh": "分开调度两类反向任务以填充流水空隙，而非改变训练目标。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "training",
+        "runtime"
+      ]
+    },
+    "2605.19481": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It optimizes memory-constrained serving through host-resident weights, hybrid matrix multiplication, and feedback control.",
+        "zh": "联合主机权重、混合矩阵乘和反馈控制优化低显存服务。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "memory",
+        "kernel"
+      ]
+    },
+    "2608.03537": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It fuses complex memory-intensive subgraphs with compute kernels, contributing compiler and execution optimizations.",
+        "zh": "将复杂内存子图与计算内核融合，主要产出是编译和执行优化。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "compiler",
+        "kernel"
+      ]
+    },
+    "2608.14376": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It combines fixed shapes and kernel positional invariance to preserve deterministic inference while improving serving throughput.",
+        "zh": "通过固定形状和内核位置不变性兼顾推理确定性与服务吞吐。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "serving",
+        "runtime",
+        "kernel"
+      ]
+    },
+    "2604.10180": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It extracts kernel dependencies and schedules heterogeneous accelerators to optimize model-inference execution.",
+        "zh": "提取内核依赖并调度异构设备，优化模型推理的执行组织。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime",
+        "kernel",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2508.08448": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It develops requirements and a design agenda for GPU multitasking resource management.",
+        "zh": "提出GPU多任务资源管理需求与设计议程，属于运行时系统研究。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime"
+      ]
+    },
+    "grape": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It improves dynamic graph execution through copy elimination, metadata compression, and control-flow transformation.",
+        "zh": "优化动态图的复制、元数据和控制流执行，提升图运行效率。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime",
+        "compiler",
+        "memory"
+      ]
+    },
+    "2007.01277": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It fuses independent GPU kernels to exploit complementary resources at the compiler and execution levels.",
+        "zh": "融合独立GPU内核以利用互补资源，贡献在编译与底层执行。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "compiler",
+        "kernel"
+      ]
+    },
+    "mccs": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It manages collective communication as a shared service with coordinated multitenant network policies.",
+        "zh": "把集合通信作为共享服务管理，联合优化多租户网络策略。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "communication",
+        "cluster"
+      ]
+    },
+    "2609.13585": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It overlaps computation and inter-device transfers through fine-grained fused communication kernels.",
+        "zh": "以细粒度融合重叠计算和跨设备传输，主要优化通信内核执行。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "kernel",
+        "communication"
+      ]
+    },
+    "2512.22219": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It compiles SM task graphs and schedules them inside persistent kernels to optimize cross-operator inference.",
+        "zh": "编译SM任务图并在持久内核中调度，优化跨算子推理执行。"
+      },
+      "application_domains": [
+        "language",
+        "general"
+      ],
+      "system_layers": [
+        "compiler",
+        "runtime",
+        "kernel"
+      ]
+    },
+    "orion": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It coordinates colocated applications by operator resource needs and priorities to improve GPU sharing.",
+        "zh": "按算子资源需求和优先级协调共置应用，主要改进GPU共享。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime",
+        "serving",
+        "training"
+      ]
+    },
+    "singe": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It compiles domain programs into warp-specialized kernels with fine-grained synchronization.",
+        "zh": "从领域程序生成warp分工与细粒度同步，主要贡献是内核编译。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "compiler",
+        "kernel"
+      ]
+    },
+    "2610.07098": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It uses TMA to pipeline resource-efficient collectives, optimizing data movement and reduction.",
+        "zh": "利用TMA实现低资源集合通信流水，直接优化数据搬运和归约。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "communication",
+        "kernel"
+      ]
+    },
+    "tacker": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It selects kernel fusion using predicted benefits while preserving quality of service in shared execution.",
+        "zh": "按预测收益选择内核融合并维护服务质量，属于共享执行管理。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "runtime",
+        "kernel"
+      ]
+    },
+    "2510.14719": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It automatically generates warp specialization and pipeline synchronization from an asynchronous-reference intermediate representation.",
+        "zh": "以异步引用中间表示自动生成warp分工与流水同步。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "compiler",
+        "kernel"
+      ]
+    },
+    "turbobus": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It accelerates model loading and offload transfers through neighboring-GPU relays and bandwidth scheduling.",
+        "zh": "通过邻接GPU中继和带宽调度加速模型加载及卸载传输。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "communication",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2512.18134": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It solves resource-constrained loop schedules to generate software pipelines and warp-specialized kernels.",
+        "zh": "求解资源约束下的循环调度，产物是软件流水和warp特化编译方案。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": [
+        "compiler",
+        "kernel"
+      ]
+    },
+    "2403.03208": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It studies valid statistical estimation and confidence intervals under active labeling rather than a particular policy-training algorithm.",
+        "zh": "研究主动标注下的统计估计与置信区间有效性，而非特定策略训练。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2311.14768": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It reduces diffusion inference costs through instance-specific step selection, using RL to learn the acceleration policy.",
+        "zh": "用实例级步数选择减少扩散推理成本，RL是优化这一加速策略的工具。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "runtime"
+      ]
+    },
+    "2610.22263": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It analyzes bias and variance of policy-gradient centering methods to improve policy-update estimation.",
+        "zh": "分析策略梯度中两类中心化的偏差与方差，直接服务策略更新估计。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2610.28409": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It trains budget-adaptive policies through reward design, studying how agents learn cross-turn resource decisions.",
+        "zh": "通过奖励设计训练预算适应策略，主要研究跨轮资源决策的学习。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2609.32444": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It corrects training-inference mismatch through confidence-dependent importance weighting, changing the learning estimator.",
+        "zh": "以置信度相关的重要性修正处理训练推理失配，主要改变学习估计。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2503.14476": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It improves language-model policy optimization through clipping, sampling, and reward-processing methods.",
+        "zh": "提出裁剪、采样与奖励处理配方，主要改进语言模型策略优化。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2305.13301": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It treats diffusion denoising as a decision process and optimizes generation rewards with policy gradients.",
+        "zh": "将扩散去噪视为决策过程，用策略梯度优化生成奖励。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2601.18543": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It organizes tool use, inspection, and reflection into a multi-turn generation agent, with training supporting that workflow.",
+        "zh": "组织工具调用、检查与反思形成多轮生成智能体，训练服务于这一工作流。"
+      },
+      "application_domains": [
+        "image",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2605.17969": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It learns generation navigation through state-conditioned policies and trajectory rewards, contributing policy optimization.",
+        "zh": "以状态条件策略和轨迹奖励学习生成导航，主要贡献是策略优化方法。"
+      },
+      "application_domains": [
+        "image",
+        "language"
+      ],
+      "system_layers": []
+    },
+    "greensmith-variance-reduction": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It develops control-variate and optimal-baseline theory specifically for reinforcement-learning gradient estimation.",
+        "zh": "针对策略梯度建立控制变量与最优基线理论，核心是强化学习估计。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "horvitz-thompson": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It establishes unbiased population estimation from inclusion probabilities as a general statistical sampling method.",
+        "zh": "建立基于入样概率的无偏总体估计，是通用抽样统计基础。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2503.05696": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It improves policy-learning sample efficiency through low-fidelity control variates that reduce gradient variance.",
+        "zh": "用低保真控制变量降低策略梯度方差，主要改进学习样本效率。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2610.02505": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It redesigns multifidelity gradients and PPO sampling to support stable learning from limited real interactions.",
+        "zh": "重设多保真策略梯度与PPO采样，使有限真实交互支持稳定学习。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2606.01985": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It connects multi-turn editing updates through trajectory rewards and advantages, changing generator learning.",
+        "zh": "以轨迹级奖励和优势连接多轮编辑更新，主要改变生成器的学习目标。"
+      },
+      "application_domains": [
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2507.06961": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It studies off-policy value estimation under missing trajectories, targeting statistical bias in policy evaluation.",
+        "zh": "研究缺失轨迹下的离策略价值估计，直接面向策略评估的统计偏差。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2609.36830": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It coordinates asynchronous training data through pool-aware rejection budgets and trajectory priorities.",
+        "zh": "根据轨迹池占用和生命周期安排拒收与优先级，主要协调异步训练数据。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime"
+      ]
+    },
+    "1707.06347": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It updates policies through constrained surrogate objectives as a general reinforcement-learning optimization algorithm.",
+        "zh": "通过受约束代理目标更新策略，是通用强化学习优化算法。"
+      },
+      "application_domains": [
+        "general",
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "reinforce": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It establishes reward-driven stochastic policy-gradient updates as a foundation for reinforcement-learning algorithms.",
+        "zh": "建立奖励驱动的随机策略梯度更新，是强化学习算法基础。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2511.08991": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It studies robust combinations of active and uniform sampling to guarantee statistical estimation quality.",
+        "zh": "研究主动与均匀抽样的稳健组合，目标是统计估计质量保证。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2610.22282": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It treats sparse routing as exploration actions and optimizes paired returns for diffusion-policy learning.",
+        "zh": "将稀疏路由作为探索动作并优化成对回报，主要贡献是扩散策略学习。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2609.14636": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "Teacher-feedback-driven stopping and restarting create an adaptive distillation workflow, rather than a separate runtime or resource-management design.",
+        "zh": "以教师反馈驱动停止、重启和课程形成，主要贡献是自适应蒸馏工作流，而非独立运行时或资源管理设计。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2606.11119": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It allocates rollout budgets using success information to improve learning signals and credit comparison.",
+        "zh": "按成功率信息分配生成预算以改善信用对比，属于学习采样方法。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2410.01679": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It samples returns from intermediate prefixes to improve step-level credit assignment in policy optimization.",
+        "zh": "从中间前缀采样回报以改善步骤信用分配，主要改进策略优化。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2609.25297": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It corrects within-group outcome-selection bias in prioritized replay to preserve the intended learning distribution.",
+        "zh": "修正优先回放的组内结果选择偏差，主要维护策略学习的采样目标。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "accuracy-congestion": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It models congestion and judgment accuracy, deriving theoretical properties of stopping policies.",
+        "zh": "建立拥塞与判断精度的排队决策模型，主要结果是停止策略的理论性质。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "akella-kumar": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It proves optimal threshold control in a failure-prone manufacturing model, contributing stochastic-control and scheduling theory.",
+        "zh": "在故障制造模型中证明最优阈值控制，是随机控制与生产调度理论。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "dai-lin-max-pressure-2005": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It establishes throughput properties of maximum-pressure policies in general stochastic processing networks.",
+        "zh": "证明最大压力策略的吞吐性质，研究的是通用随机处理网络。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "dai-lin-max-pressure-2008": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It proves scheduling asymptotic optimality through heavy-traffic limits, contributing mathematical analysis.",
+        "zh": "通过重流量极限证明调度渐近最优性，主要贡献是数学分析。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2012.11702": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It develops approximation algorithms and complexity guarantees for dependent coflows, contributing scheduling theory.",
+        "zh": "为依赖coflow给出近似算法和复杂度保证，主贡献是调度理论。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "erlang-r": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It analyzes reentrant queues and staffing policies through fluid and diffusion approximations.",
+        "zh": "以流体和扩散近似分析返回型排队系统及人员配置。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "feng-liu-scheduling": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It develops budget-allocation algorithms under error propagation and end-to-end deadlines as real-time scheduling theory.",
+        "zh": "建立误差传播与端到端时限下的预算分配算法，属于实时调度理论。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "johnson-flow-shop": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It proves optimal processing orders in restricted machine models as a foundation of combinatorial scheduling.",
+        "zh": "证明受限机器模型的最优加工次序，属于经典组合调度基础。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "partial-predictions-scheduling": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It studies scheduling bounds and guarantees with limited duration predictions, contributing learning-augmented scheduling theory.",
+        "zh": "研究有限时长预测下的调度下界与保证，是学习增强调度理论。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2509.19662": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It formalizes online progress feedback and proves competitive guarantees for scheduling algorithms.",
+        "zh": "形式化在线进度反馈并证明竞争界，主要研究调度算法保证。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "production-of-service": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It analyzes optimal allocations of service quality and processing effort through workload regions.",
+        "zh": "用工作量区域分析服务质量和处理努力的最优分配。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "when-to-use-speedup": {
+      "primary_topic": "foundation",
+      "primary_reason": {
+        "en": "It characterizes queueing networks with speedup and returns to establish when acceleration is beneficial.",
+        "zh": "刻画加速与返工共同作用的排队网络，给出提速适用条件。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2304.13705": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It learns continuous action chunks from demonstrations to deliver policies for fine-grained bimanual manipulation.",
+        "zh": "从示范学习连续动作块并执行精细双臂操作，主要交付机器人策略。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2209.07753": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It generates control programs that call perception and action APIs, delivering executable robot behavior.",
+        "zh": "生成调用感知动作接口的控制程序，主要交付可执行机器人行为。"
+      },
+      "application_domains": [
+        "robotics",
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2609.14858": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It uses fixed models to rewrite and replay search strategies, improving agent problem-solving workflows.",
+        "zh": "让固定模型改写搜索策略并回放验证，主要改进智能体的问题求解流程。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2602.15922": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It jointly predicts futures and actions to deliver zero-shot robot-control policies.",
+        "zh": "联合预测未来与动作以实现零样本机器人控制，主要产物是策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2603.16666": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It compares video training and test-time imagination for action policies, with robot-control performance as the target.",
+        "zh": "比较视频训练和测试时想象对动作策略的贡献，最终关注控制效果。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2507.21053": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It constructs advantage-weighted update surrogates for flow policies, contributing policy-gradient optimization.",
+        "zh": "构造流策略的优势加权更新代理，核心是策略梯度优化。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "gaponet": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It learns joint-action corrections to improve trajectory tracking, targeting low-level robot control.",
+        "zh": "学习关节动作修正以改善轨迹跟踪，研究对象是机器人低层控制。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2609.05588": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It combines visual planning and inverse dynamics for control, primarily evaluating robot-policy transfer.",
+        "zh": "以视觉规划和逆动力学生成控制，主要评估机器人策略迁移。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2412.08442": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It learns generalist embodied policies through unified action representations, primarily producing executable actions.",
+        "zh": "统一多领域动作表示并学习通用具身策略，主要输出可执行动作。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2410.04444": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It improves problem-solving logic through self-referential code modification, studying agent-workflow evolution.",
+        "zh": "通过自指式程序修改改进求解逻辑，主要研究智能体工作流演化。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2604.14268": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It reconstructs and extends navigable 3D scenes, delivering editable world representations.",
+        "zh": "重建并扩展可浏览三维场景，主要交付可编辑的世界表示。"
+      },
+      "application_domains": [
+        "spatial",
+        "image"
+      ],
+      "system_layers": []
+    },
+    "2606.01458": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It builds a hybrid simulation environment that generates demonstrations for robot learning.",
+        "zh": "构建可自动生成示范的混合仿真环境，为机器人学习提供世界与数据。"
+      },
+      "application_domains": [
+        "robotics",
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2601.21998": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It uses joint visual-action prediction for closed-loop manipulation, delivering robot-control policies.",
+        "zh": "以联合视觉动作预测驱动闭环操作，主要交付机器人控制策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2607.08639": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It natively pretrains a causal video-action model to improve robot-control generalization.",
+        "zh": "原生预训练因果视频动作模型以提高机器人控制泛化。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2606.18208": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It iteratively updates latent environment states for future simulation, studying world-prediction model design.",
+        "zh": "循环更新环境潜状态以进行未来模拟，主要研究世界预测的模型设计。"
+      },
+      "application_domains": [
+        "general"
+      ],
+      "system_layers": []
+    },
+    "2608.30821": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It parses, generates, and places objects to reconstruct editable simulation scenes and world assets.",
+        "zh": "解析、生成并放置对象以重建可编辑仿真场景，主要产物是世界资产。"
+      },
+      "application_domains": [
+        "spatial"
+      ],
+      "system_layers": []
+    },
+    "2502.13130": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It learns generalist action models for digital and physical environments through shared spatial-action supervision.",
+        "zh": "通过统一空间动作监督学习数字与物理环境中的通用行动模型。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2609.06396": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It organizes data, harness, and model-improvement operations into recursive self-improvement workflows.",
+        "zh": "组合数据、脚手架和模型改进操作，主要研究自改进流程的组织。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2508.15755": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It learns robot dynamics that replace physics solvers, primarily providing an environment-transition model.",
+        "zh": "学习可替代物理求解器的机器人动力学，主要提供环境状态转移模型。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2509.02322": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It learns GUI and robot actions through hierarchical sharing and separate experts, delivering cross-domain policies.",
+        "zh": "以分层共享与专家分离学习GUI和机器人动作，主要输出跨域策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2502.19645": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It redesigns action representation, decoding, and fine-tuning to improve robot-policy success and speed.",
+        "zh": "改造动作表示、解码与微调目标，主要提升机器人策略成功率和速度。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2610.07922": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It compares action-interaction designs on a shared video backbone, primarily delivering evaluable world-action policies.",
+        "zh": "在共同视频骨干上比较动作交互设计，主要交付可评测的世界动作策略。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2509.15965": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It transforms logical RL workflows into efficient hardware execution through resource and pipeline scheduling.",
+        "zh": "把RL逻辑工作流转换为高效硬件执行，主要贡献是资源与流水调度。"
+      },
+      "application_domains": [
+        "language",
+        "robotics"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "cluster"
+      ]
+    },
+    "2602.07837": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It unifies real-robot collection, asynchronous training, and persistent replay as online-learning infrastructure.",
+        "zh": "统一真实机器人采集、异步训练与持久回放，优化在线学习基础设施。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory"
+      ]
+    },
+    "2607.14187": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It combines textual reasoning and visual imagination into embodied plans, with action generation extending that planning capability.",
+        "zh": "联合文字推理与视觉想象形成具身计划，动作生成是该规划能力的扩展。"
+      },
+      "application_domains": [
+        "robotics",
+        "multimodal"
+      ],
+      "system_layers": []
+    },
+    "2502.05171": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "It expands internal computation through shared recurrent depth, contributing language-model architecture.",
+        "zh": "通过共享循环深度扩展模型内部计算，主要贡献是语言模型结构。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2303.17651": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It repeatedly revises answers using natural-language feedback, studying problem-solving workflows without additional training.",
+        "zh": "以自然语言反馈反复修改当前答案，研究无额外训练的求解流程。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2509.09674": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It improves VLAs through exploration, rewards, and policy updates, contributing a robot reinforcement-learning recipe.",
+        "zh": "通过探索、奖励与策略更新改善VLA，主要贡献是机器人强化学习配方。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2203.14465": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It bootstraps reasoning data through generation, correction, and fine-tuning loops, studying a self-improvement workflow.",
+        "zh": "以生成、纠错和再微调循环自举推理数据，主要研究自改进学习流程。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2310.02304": {
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "It recursively rewrites optimization scaffolds with fixed language models, contributing program-search workflows.",
+        "zh": "固定语言模型递归改写优化脚手架，主要创新在程序搜索流程。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "1807.03819": {
+      "primary_topic": "architecture",
+      "primary_reason": {
+        "en": "It changes network depth structure through recurrent shared self-attention and adaptive stopping.",
+        "zh": "以共享循环自注意力和动态停止改变网络深度结构。"
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": []
+    },
+    "2605.01352": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It coordinates compute and graphics scheduling on one GPU, contributing low-level resource management.",
+        "zh": "打通计算与图形调度以共享同一GPU，主要贡献是底层资源管理。"
+      },
+      "application_domains": [
+        "general",
+        "robotics"
+      ],
+      "system_layers": [
+        "runtime",
+        "memory"
+      ]
+    },
+    "2603.22078": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It compares action-model robustness under visual and language perturbations, evaluating robot policies.",
+        "zh": "比较动作模型在视觉和语言扰动下的控制鲁棒性，评估对象是机器人策略。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2608.01880": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It empirically compares asynchronous inference and action-continuation strategies, studying deployment and execution tradeoffs.",
+        "zh": "实证比较异步推理与动作衔接方案，主要研究模型部署和执行取舍。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "runtime",
+        "serving"
+      ]
+    },
+    "2606.20781": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It surveys models that couple future prediction with robot action, emphasizing control interfaces and deployment tradeoffs.",
+        "zh": "综述联合未来预测与机器人行动的模型，重点是控制接口和部署取舍。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2511.14759": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It iteratively improves control through advantage-conditioned policies and real experience, contributing a learning method.",
+        "zh": "通过优势条件策略和真实交互经验迭代改进控制，主要贡献是学习方法。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2604.15483": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It improves generalist robot-policy steerability through multimodal context and subgoal conditioning.",
+        "zh": "以多模态上下文和子目标增强通用机器人策略的可控性。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2510.25889": {
+      "primary_topic": "rl",
+      "primary_reason": {
+        "en": "It connects flow-action denoising to online policy optimization, contributing reinforcement-learning fine-tuning for VLAs.",
+        "zh": "把流动作去噪接入在线策略优化，主要研究VLA强化学习微调。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2608.16885": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It combines high-level world-model search with low-level action policies to deliver long-horizon robot control.",
+        "zh": "将高层世界模型搜索与低层动作策略结合，主要交付长时机器人控制。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": []
+    },
+    "2606.01027": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "en": "It provides joint future prediction and action-conditioned simulation to evaluate consequences and correct candidate actions.",
+        "zh": "提供联合未来预测和动作条件模拟接口，用环境后果评估并修正候选动作。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2603.11101": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "It develops cross-layer data, communication, and computation optimizations for large-scale embodied-training infrastructure.",
+        "zh": "整理数据、通信与计算的跨层优化，主要贡献是大规模具身训练基础设施。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2608.01150": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "Its central contribution is a placement planner and execution engine for efficient distributed DiT training.",
+        "zh": "核心贡献是分布式 DiT 训练的序列放置规划与执行引擎，属于系统与执行效率。"
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2609.19242": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是保持训练语义的分布式块并行执行与通信优化。",
+        "en": "The main contribution is a distributed block-parallel execution and communication scheme that preserves training semantics."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "communication",
+        "memory",
+        "runtime"
+      ]
+    },
+    "2605.18739": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "主要贡献覆盖长视频训练和推理的并行布局、数值精度及执行基础设施。",
+        "en": "Its central contribution is parallel layout, numerical precision, and execution infrastructure for long-video training and inference."
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory"
+      ]
+    },
+    "2505.13211": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "zh": "主要贡献是可流式、可逐块控制的大规模自回归视频生成模型与训练配方。",
+        "en": "The main contribution is a scalable autoregressive video model and training recipe for streaming and chunk-level control."
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "serving",
+        "runtime",
+        "communication",
+        "memory"
+      ]
+    },
+    "2511.00062": {
+      "primary_topic": "world",
+      "primary_reason": {
+        "zh": "核心目标是面向物理 AI 的可控世界模拟、视觉预测与仿真数据生成。",
+        "en": "Its main objective is controllable world simulation, visual prediction, and synthetic data generation for Physical AI."
+      },
+      "application_domains": [
+        "video",
+        "robotics",
+        "spatial"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "memory"
+      ]
+    },
+    "2504.08685": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "zh": "论文整体贡献是成本有效的视频生成基础模型及其数据、训练和系统配方。",
+        "en": "The overall contribution is a cost-effective video foundation model with integrated data, training, and systems recipes."
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory",
+        "kernel"
+      ]
+    },
+    "2506.09113": {
+      "primary_topic": "video",
+      "primary_reason": {
+        "zh": "核心贡献是多镜头视频基础模型及其从数据、预训练到对齐和加速的整体配方。",
+        "en": "The central contribution is a multi-shot video foundation model with a full recipe spanning data, pretraining, alignment, and acceleration."
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "serving",
+        "runtime",
+        "memory",
+        "communication"
+      ]
+    },
+    "2510.10620": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是数据与计算分离放置的动态并行执行系统。",
+        "en": "Its main contribution is a dynamic parallel execution system that separates data placement from computation placement."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2605.17923": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "主要贡献是训练负载管理与 GPU 算子执行优化。",
+        "en": "Its central contribution is training-load management combined with GPU-kernel optimization."
+      },
+      "application_domains": [
+        "image",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "kernel",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2609.34318": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "主要贡献是生产规模的动态并行调度与通信执行。",
+        "en": "Its main contribution is scalable dynamic-parallel scheduling and communication execution."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2510.18121": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是注意力分离执行、细粒度调度与通信重叠系统。",
+        "en": "Its core contribution is a system for attention disaggregation, fine-grained scheduling, and communication overlap."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2412.01523": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是面向变长训练负载的自适应并行规划系统。",
+        "en": "Its central contribution is adaptive parallel planning for variable-length training workloads."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "cluster"
+      ]
+    },
+    "2412.07894": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "主要贡献是并行执行策略与训练数据分配的系统协同优化。",
+        "en": "Its main contribution is a systems co-design of parallel execution strategies and training-data assignment."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2502.21231": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是大规模训练的动态并行网格、通信优化与调度系统。",
+        "en": "Its core contribution is a dynamic parallel mesh, communication optimization, and scheduling system for large-scale training."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory",
+        "cluster"
+      ]
+    },
+    "2309.14509": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是长上下文训练的分布式注意力执行原语。",
+        "en": "Its main contribution is a distributed-attention execution primitive for long-context training."
+      },
+      "application_domains": [
+        "language"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory"
+      ]
+    },
+    "scalefusion": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是跨机 DiT 推理的通信计算重叠与执行调度。",
+        "en": "The core contribution is communication-computation overlap and execution scheduling for distributed DiT inference."
+      },
+      "application_domains": [
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "communication",
+        "memory"
+      ]
+    }
+  }
+}

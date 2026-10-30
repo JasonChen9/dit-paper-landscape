@@ -18,7 +18,13 @@
       })();
     </script>
     <link rel="stylesheet" href="./styles.css?v=__DEPLOY_VERSION__" />
+    <link rel="stylesheet" href="./library.css?v=__DEPLOY_VERSION__" />
     <script src="./i18n.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./library-i18n.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./catalog.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./export.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./library-store.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./library-ui.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./landscape.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./authors.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./app.js?v=__DEPLOY_VERSION__" defer></script>
@@ -30,7 +36,6 @@
         <div class="nav-links">
           <a href="#landscape" data-i18n="nav.map">map</a>
           <a class="active" href="#papers" data-i18n="nav.papers">papers</a>
-          <a href="#method" data-i18n="nav.about">about</a>
           <a class="nav-home" href="https://jasonchen9.github.io/" data-i18n="nav.homepage">homepage</a>
           <a class="nav-github" href="https://github.com/JasonChen9/dit-paper-landscape">GitHub</a>
           <button id="language-toggle" class="language-toggle" type="button" aria-label="Switch to Chinese" title="Switch to Chinese">中文</button>
@@ -39,17 +44,19 @@
       </nav>
     </header>
 
+    <div class="home-layout">
+    <aside id="library-sidebar" class="home-library-sidebar" aria-label="Library" data-library-label="title"></aside>
     <main class="page-width">
       <section class="intro" aria-labelledby="page-title">
         <h1 id="page-title"><strong>Diffusion Intelligence</strong> Atlas</h1>
         <p class="subtitle" data-i18n="intro.subtitle">A research map of diffusion models and embodied intelligence</p>
         <p data-i18n="intro.description">A curated map connecting diffusion and flow models with scalable generation, efficient systems, reinforcement learning, world models, embodied AI, and native multimodal intelligence. DiT remains a central architectural thread, while adjacent work is included where it helps explain how these areas converge.</p>
         <div class="stats" aria-label="Collection statistics" data-i18n-aria-label="stats.aria">
-          <span><strong id="total-count">156</strong> <span data-i18n="stats.papers">papers</span></span>
-          <span><strong id="window-count">139</strong> <span data-i18n="stats.threeYears">in the last 3 years</span></span>
-          <span><strong>7</strong> <span data-i18n="stats.topics">research topics</span></span>
+          <span><strong id="total-count">—</strong> <span data-i18n="stats.papers">papers</span></span>
+          <span><strong id="window-count">—</strong> <span data-i18n="stats.threeYears">in the last 3 years</span></span>
+          <span><strong id="topic-count">8</strong> <span data-i18n="stats.topics">primary topics</span></span>
           <span><strong id="export-count" aria-live="polite">—</strong> <span id="export-count-label" data-i18n="stats.exports">exports</span></span>
-          <span data-i18n="stats.updated">updated Aug 2026</span>
+          <span data-i18n="stats.updated">updated Oct 2026</span>
         </div>
       </section>
 
@@ -57,7 +64,7 @@
         <div class="landscape-heading">
           <div>
             <h2 id="landscape-title" data-i18n="landscape.title">research landscape</h2>
-            <p id="landscape-description" class="section-note" data-i18n="landscape.description">Papers are positioned from SPECTER embeddings of their titles and full abstracts, with UMAP preserving local semantic neighborhoods. Colors show seven interpretable research topics, while distance and links reflect semantic similarity. Select a topic, tag, or date range to update the whole view. Pinch or use the mouse wheel to zoom; drag or use two-finger scrolling to pan.</p>
+            <p id="landscape-description" class="section-note" data-i18n="landscape.descriptionTags">Colors show eight primary topics assigned by each paper's main contribution. Filter by application domain or system layer to explore the map and paper list together.</p>
           </div>
           <div class="landscape-actions">
             <div class="landscape-mode-toggle" role="group" aria-label="Landscape view" data-i18n-aria-label="landscape.modeAria">
@@ -66,6 +73,18 @@
             </div>
             <button id="landscape-reset" class="plain-button" type="button" data-i18n="landscape.reset">Reset filters</button>
           </div>
+        </div>
+
+        <div id="map-search" class="map-search">
+          <label id="map-search-label" for="map-search-input" data-i18n="mapSearch.label">Search this map</label>
+          <div class="map-search-row">
+            <div class="map-search-field">
+              <input id="map-search-input" type="search" autocomplete="off" placeholder="Paper title, author, or keyword…" aria-describedby="map-search-status" aria-controls="map-search-results" />
+              <button id="map-search-clear" type="button" data-i18n="mapSearch.clear" hidden>Clear</button>
+            </div>
+            <output id="map-search-status" for="map-search-input" aria-live="polite"></output>
+          </div>
+          <div id="map-search-results" class="map-search-results" hidden></div>
         </div>
 
         <div class="landscape-layout">
@@ -246,7 +265,21 @@
           </div>
         </div>
 
-        <div id="category-filters" class="category-filters" aria-label="Filter by the shared topic clusters" data-i18n-aria-label="cluster.filterAria"></div>
+        <div class="taxonomy-heading">
+          <h3 data-i18n="taxonomy.primary">Primary topic</h3>
+          <p data-i18n="taxonomy.primaryHelp">Each paper has one primary topic based on its main contribution.</p>
+        </div>
+        <div id="category-filters" class="category-filters" aria-label="Filter by primary topic" data-i18n-aria-label="cluster.filterAria"></div>
+        <div class="facet-panel">
+          <div class="facet-heading">
+            <div>
+              <h3 data-i18n="taxonomy.facets">Cross-filter</h3>
+              <p data-i18n="taxonomy.facetHelp">Match any selected value within a row, and all selected rows.</p>
+            </div>
+            <button id="filter-reset" type="button" data-i18n="empty.reset">Clear filters</button>
+          </div>
+          <div id="facet-filters"></div>
+        </div>
 
         <div class="results-toolbar">
           <p id="result-count" aria-live="polite" data-i18n="papers.loading">Loading the paper catalog…</p>
@@ -295,20 +328,21 @@
         <h2 id="method-title" data-i18n="about.title">about this collection</h2>
         <div class="method-grid">
           <article>
-            <h3 data-i18n="about.timeHeading">Time coverage</h3>
-            <p data-i18n="about.timeBody">The main window covers papers first released from 2 Aug 2023 to 2 Aug 2026. Earlier work is included when it is needed to understand how diffusion-based intelligence evolved.</p>
+            <h3 data-i18n="about.timeHeading">Scope</h3>
+            <p data-i18n="about.timeBody">Research on diffusion and flow models, efficient systems, reinforcement learning, world models, robotics and agent workflows, alongside foundational references. All dates are included by default; the timeline compresses earlier work while keeping it selectable.</p>
           </article>
           <article>
-            <h3 data-i18n="about.criteriaHeading">Inclusion criteria</h3>
-            <p data-i18n="about.criteriaBody">The collection favors papers that introduce a reusable architectural, training, systems, or evaluation idea. Each paper is also labeled by how directly it relates to DiT.</p>
+            <h3 data-i18n="about.criteriaHeading">Classification &amp; browsing</h3>
+            <p data-i18n="about.criteriaBody">Each paper has one primary topic based on its main contribution. Application domains, system layers and collection sources provide independent filters. The map is arranged by primary topic, with links showing topic-tag similarity as reading suggestions.</p>
           </article>
           <article>
-            <h3 data-i18n="about.sourcesHeading">Sources &amp; maintenance</h3>
-            <p data-i18n="about.sourcesBody">Metadata and full English abstracts are checked against arXiv or the original paper. Chinese abstracts are translated with GPT-5.6-sol and cached in the catalog. Semantic embeddings and the map are rebuilt when the catalog changes.</p>
+            <h3 data-i18n="about.sourcesHeading">Content &amp; sources</h3>
+            <p data-i18n="about.sourcesBody">Bilingual cards summarize the background, challenge, method and reported results. Expand Abstract for the original English text or a full AI-translated Chinese version with its source. Verified conference and journal pages take priority; preprint links and date precision are retained.</p>
           </article>
         </div>
       </section>
     </main>
+    </div>
 
     <footer class="site-footer">
       <div class="page-width">

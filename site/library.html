@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="deploy-version" content="__DEPLOY_VERSION__" />
+    <title>Library · Diffusion Intelligence Atlas</title>
+    <script>
+      (() => { try { document.documentElement.dataset.theme = localStorage.getItem("dit-paper-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); } catch {} })();
+    </script>
+    <link rel="stylesheet" href="./styles.css?v=__DEPLOY_VERSION__" />
+    <link rel="stylesheet" href="./library.css?v=__DEPLOY_VERSION__" />
+    <script src="./i18n.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./library-i18n.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./catalog.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./export.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./library-store.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./library-ui.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./library.js?v=__DEPLOY_VERSION__" defer></script>
+  </head>
+  <body class="library-page">
+    <header class="site-header">
+      <nav class="navbar library-page-width" aria-label="Site navigation" data-i18n-aria-label="nav.aria">
+        <a class="site-title library-return-link" href="./"><strong>Diffusion Intelligence</strong> Atlas</a>
+        <div class="nav-links">
+          <span class="library-current-nav" data-library-i18n="title">Library</span>
+          <button id="language-toggle" class="language-toggle" type="button">中文</button>
+          <button id="theme-toggle" class="theme-toggle" type="button" data-i18n-aria-label="theme.toggle">◐</button>
+        </div>
+      </nav>
+    </header>
+    <div class="library-page-width library-layout">
+      <aside id="library-sidebar" aria-label="Library collections" data-library-label="folders"></aside>
+      <main class="library-main">
+        <a class="library-return-link library-back" href="./" data-library-i18n="back">← Back to paper map</a>
+        <div class="library-title-row"><h1 id="library-title" data-library-i18n="all">All saved papers</h1><span class="library-local-label" data-library-i18n="browserLocal">Local library</span></div>
+        <div id="library-status" class="library-status" role="status" aria-live="polite"></div>
+        <div id="library-undo" class="library-undo" hidden><button id="library-undo-button" class="library-action" type="button" data-library-i18n="undo">Undo</button></div>
+        <section id="library-management" class="library-management" hidden aria-label="Manage collection" data-library-label="manage">
+          <input id="collection-name" type="text" maxlength="80" data-library-label="name" />
+          <button id="collection-rename" class="library-action" type="button" data-library-i18n="rename">Rename</button>
+          <button id="collection-up" class="library-action" type="button" data-library-label="moveUp">↑</button>
+          <button id="collection-down" class="library-action" type="button" data-library-label="moveDown">↓</button>
+          <button id="collection-delete" class="library-action" type="button" data-library-i18n="deleteFolder">Delete collection</button>
+        </section>
+        <div id="collection-delete-confirmation" class="library-confirmation" hidden><p id="collection-delete-question"></p><button id="collection-delete-confirm" class="library-action" type="button" data-library-i18n="confirmDelete">Delete collection</button> <button id="collection-delete-cancel" class="library-action" type="button" data-library-i18n="cancel">Cancel</button></div>
+        <div class="library-search-row">
+          <label class="library-search-label"><span data-library-i18n="search">Search saved papers and notes</span><input id="library-search" type="search" data-library-placeholder="search" /></label>
+          <label><span data-library-i18n="sort">Sort</span><select id="library-sort"><option value="recent" data-library-i18n="recent">Recently saved</option><option value="newest" data-library-i18n="newest">Newest publication</option><option value="title" data-library-i18n="alphabetical">Title</option></select></label>
+        </div>
+        <div class="library-selection-toolbar">
+          <label class="library-checkbox"><input id="library-select-all" type="checkbox" /><span data-library-i18n="selectAll">Select all results</span></label>
+          <span id="library-result-count" class="library-result-count"></span>
+          <button id="library-clear-selection" class="library-action" type="button" data-library-i18n="clearSelection">Clear selection</button>
+        </div>
+        <div class="library-batch-toolbar">
+          <label class="library-target-label"><span data-library-i18n="target">Choose collection</span><select id="library-target"></select></label>
+          <button id="library-add" class="library-action" type="button" data-library-i18n="addTo">Add to collection</button>
+          <button id="library-remove" class="library-action" type="button" data-library-i18n="removeFrom" hidden>Remove from this collection</button>
+          <button id="library-unsave" class="library-action" type="button" data-library-i18n="removeSaved">Remove selected from saved papers</button>
+        </div>
+        <div class="library-export-toolbar">
+          <label class="library-checkbox"><input id="library-include-notes" type="checkbox" /><span data-library-i18n="includeNotes">Include my notes</span></label>
+          <details id="library-export-menu" class="library-export-menu"><summary id="library-export-label">Export papers</summary><div class="library-export-options"><button type="button" id="library-export-markdown">Markdown</button><button type="button" id="library-export-html">HTML</button></div></details>
+          <span class="library-export-hint" data-library-i18n="exportHint">The same Markdown and HTML formats as the paper list.</span>
+        </div>
+        <div id="library-papers" class="library-papers"></div>
+        <div id="library-empty" class="library-empty" hidden><p data-library-i18n="empty">No papers here yet.</p><p data-library-i18n="emptyHint">Save papers from the map, or choose another collection.</p><a class="library-return-link" href="./" data-library-i18n="back">← Back to paper map</a></div>
+        <section class="library-backup-area">
+          <div><button id="library-backup" class="library-action" type="button" data-library-i18n="backup">Download backup</button> <button id="library-restore" class="library-action" type="button" data-library-i18n="restore">Restore backup</button></div>
+          <input id="library-import-file" type="file" accept=".json,application/json" data-library-label="backupPicker" hidden />
+          <p data-library-i18n="backupHint">JSON backup includes your collections and notes. It is separate from paper export.</p>
+          <p class="library-storage-hint" data-library-i18n="local">Stored in this browser. Use backup to move your library to another browser or site.</p>
+          <div id="library-import-preview" class="library-confirmation" hidden><p id="library-import-summary"></p><button id="library-import-confirm" class="library-action primary" type="button" data-library-i18n="restoreConfirm">Merge backup</button> <button id="library-import-cancel" class="library-action" type="button" data-library-i18n="cancel">Cancel</button></div>
+        </section>
+      </main>
+      <aside id="library-note-panel" class="library-note-panel" aria-label="My note" data-library-label="noteTitle">
+        <div class="library-note-heading"><h2 data-library-i18n="noteTitle">My note</h2><button id="library-note-close" type="button" class="library-action" data-library-i18n="closeNote">Close note</button></div>
+        <p class="library-note-private" data-library-i18n="notePrivate">Private · saved in this browser</p>
+        <p id="library-note-empty" data-library-i18n="noteEmpty">Choose a paper to write a note.</p>
+        <div id="library-note-editor" hidden>
+          <h3 id="library-note-paper"></h3>
+          <label for="library-note-text" data-library-i18n="noteHint">Record your thoughts, page numbers, figures or excerpts.</label>
+          <textarea id="library-note-text" rows="12" maxlength="200000" data-library-placeholder="notePlaceholder"></textarea>
+          <p id="library-note-status" role="status" aria-live="polite"></p>
+          <div class="library-note-actions"><button id="library-note-save" class="library-action primary" type="button" data-library-i18n="save">Save</button><button id="library-note-copy" class="library-action" type="button" data-library-i18n="copyDraft">Copy draft</button><button id="library-note-delete" class="library-action" type="button" data-library-i18n="deleteNote">Clear note</button></div>
+          <div id="library-note-conflict" class="library-confirmation" hidden><p data-library-i18n="noteConflict">This note changed in another tab.</p><strong data-library-i18n="latestVersion">Other saved version</strong><pre id="library-note-other"></pre><button id="library-note-merge" class="library-action" type="button" data-library-i18n="mergeNotes">Keep both versions</button></div>
+        </div>
+      </aside>
+    </div>
+  </body>
+</html>

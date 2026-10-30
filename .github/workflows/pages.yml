@@ -9,8 +9,17 @@ on:
       - "catalog/author_affiliations.json"
       - "catalog/summaries_en.json"
       - "catalog/abstracts.json"
+      - "catalog/paper_details.json"
+      - "catalog/taxonomy.json"
+      - "catalog/paper_taxonomy.json"
+      - "catalog/id_aliases.json"
       - "catalog/semantic_landscape.json"
       - "scripts/build_landscape_data.mjs"
+      - "scripts/validate_catalog.py"
+      - "scripts/check_taxonomy_filters.cjs"
+      - "scripts/check_library_store.cjs"
+      - "scripts/check_library_notes.cjs"
+      - "scripts/check_library_export.cjs"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -37,13 +46,22 @@ jobs:
         env:
           DEPLOY_VERSION: ${{ github.sha }}
         run: |
+          python3 scripts/validate_catalog.py
+          node scripts/check_taxonomy_filters.cjs
+          node scripts/check_library_store.cjs
+          node scripts/check_library_notes.cjs
+          node scripts/check_library_export.cjs
           mkdir -p _site/data
           cp -R site/. _site/
           cp catalog/papers.csv _site/data/papers.csv
           cp catalog/summaries_en.json _site/data/summaries_en.json
           cp catalog/abstracts.json _site/data/abstracts.json
+          cp catalog/paper_details.json _site/data/paper_details.json
+          cp catalog/taxonomy.json _site/data/taxonomy.json
+          cp catalog/paper_taxonomy.json _site/data/paper_taxonomy.json
+          cp catalog/id_aliases.json _site/data/id_aliases.json
           node scripts/build_landscape_data.mjs catalog/papers.csv _site/data/landscape.json catalog/author_affiliations.json
-          sed -i "s/__DEPLOY_VERSION__/$DEPLOY_VERSION/g" _site/index.html
+          sed -i "s/__DEPLOY_VERSION__/$DEPLOY_VERSION/g" _site/index.html _site/library.html
           printf '{"version":"%s"}\n' "$DEPLOY_VERSION" > _site/version.json
 
       - name: Configure Pages

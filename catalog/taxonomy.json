@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "topics": [
+    {
+      "id": "foundation",
+      "label": {
+        "en": "Foundations, Objectives & Sampling",
+        "zh": "基础方法、目标与采样"
+      }
+    },
+    {
+      "id": "architecture",
+      "label": {
+        "en": "Architecture, Representation & Unified Generation",
+        "zh": "架构、表示与统一生成"
+      }
+    },
+    {
+      "id": "video",
+      "label": {
+        "en": "Video & Long-Horizon Generation",
+        "zh": "视频与长时生成"
+      }
+    },
+    {
+      "id": "systems",
+      "label": {
+        "en": "Systems & Execution Efficiency",
+        "zh": "系统与执行效率"
+      }
+    },
+    {
+      "id": "rl",
+      "label": {
+        "en": "Reinforcement Learning & Alignment",
+        "zh": "强化学习与对齐"
+      }
+    },
+    {
+      "id": "world",
+      "label": {
+        "en": "World Models & Interactive Simulation",
+        "zh": "世界模型与交互模拟"
+      }
+    },
+    {
+      "id": "vla",
+      "label": {
+        "en": "Embodied AI & VLA",
+        "zh": "具身智能与 VLA"
+      }
+    },
+    {
+      "id": "agent",
+      "label": {
+        "en": "Agent Reasoning & Workflows",
+        "zh": "智能体推理与工作流"
+      }
+    }
+  ],
+  "facets": {
+    "domains": {
+      "field": "application_domains",
+      "options": [
+        {
+          "id": "image",
+          "label": {
+            "en": "Image",
+            "zh": "图像"
+          }
+        },
+        {
+          "id": "video",
+          "label": {
+            "en": "Video",
+            "zh": "视频"
+          }
+        },
+        {
+          "id": "robotics",
+          "label": {
+            "en": "Robotics",
+            "zh": "机器人"
+          }
+        },
+        {
+          "id": "language",
+          "label": {
+            "en": "Language & agents",
+            "zh": "语言与智能体"
+          }
+        },
+        {
+          "id": "spatial",
+          "label": {
+            "en": "3D & spatial",
+            "zh": "三维与空间"
+          }
+        },
+        {
+          "id": "audio",
+          "label": {
+            "en": "Audio",
+            "zh": "音频"
+          }
+        },
+        {
+          "id": "multimodal",
+          "label": {
+            "en": "Multimodal",
+            "zh": "多模态"
+          }
+        },
+        {
+          "id": "general",
+          "label": {
+            "en": "General methods & hardware",
+            "zh": "通用方法与硬件"
+          }
+        }
+      ]
+    },
+    "layers": {
+      "field": "system_layers",
+      "options": [
+        {
+          "id": "training",
+          "label": {
+            "en": "Training",
+            "zh": "训练"
+          }
+        },
+        {
+          "id": "serving",
+          "label": {
+            "en": "Serving",
+            "zh": "服务"
+          }
+        },
+        {
+          "id": "compiler",
+          "label": {
+            "en": "Compiler",
+            "zh": "编译器"
+          }
+        },
+        {
+          "id": "kernel",
+          "label": {
+            "en": "GPU kernels",
+            "zh": "GPU 算子"
+          }
+        },
+        {
+          "id": "runtime",
+          "label": {
+            "en": "Runtime",
+            "zh": "运行时"
+          }
+        },
+        {
+          "id": "communication",
+          "label": {
+            "en": "Communication",
+            "zh": "通信"
+          }
+        },
+        {
+          "id": "memory",
+          "label": {
+            "en": "Memory",
+            "zh": "内存与显存"
+          }
+        },
+        {
+          "id": "cluster",
+          "label": {
+            "en": "Cluster scheduling",
+            "zh": "集群调度"
+          }
+        }
+      ]
+    },
+    "collections": {
+      "field": "collection_tags",
+      "options": [
+        {
+          "id": "original",
+          "label": {
+            "en": "Original atlas",
+            "zh": "原地图"
+          }
+        },
+        {
+          "id": "systems-research",
+          "label": {
+            "en": "Systems research",
+            "zh": "系统调研"
+          }
+        },
+        {
+          "id": "robotics-library",
+          "label": {
+            "en": "Robotics library",
+            "zh": "机器人资料库"
+          }
+        }
+      ]
+    }
+  },
+  "rules": {
+    "en": "Each paper has one editorial primary topic based on its main contribution. Facets are multi-valued: OR within a dimension, AND across dimensions. System layers describe design or optimization targets, not all components a paper uses.",
+    "zh": "每篇论文按主要贡献确定唯一主类；筛选维度可多选，同维度满足任一项、跨维度同时满足。系统层级指设计或优化对象，不表示论文使用的全部组件。"
+  }
+}

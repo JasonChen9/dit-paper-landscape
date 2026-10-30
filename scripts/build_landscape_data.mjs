@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
 
 const [
   , ,
@@ -9,8 +10,10 @@ const [
   outputPath = "site/data/landscape.json",
   affiliationsPath = "catalog/author_affiliations.json",
   semanticPath = "catalog/semantic_landscape.json",
+  taxonomyPath = "catalog/paper_taxonomy.json",
 ] = process.argv;
-const CLUSTER_COUNT = 7;
+const TOPIC_ORDER = ["foundation", "architecture", "video", "systems", "rl", "world", "vla", "agent"];
+const CLUSTER_COUNT = TOPIC_ORDER.length;
 const TOP_INSTITUTION_PALETTE_SIZE = 10;
 const FAMILIES = {
   foundation: [
@@ -148,67 +151,29 @@ function dot(left, right) {
   return result;
 }
 
-function normalizeVector(vector) {
-  const norm = Math.hypot(...vector) || 1;
-  return vector.map((value) => value / norm);
-}
-
-function clusterVectors(vectors, documents) {
-  const used = new Set();
-  let centroids = Object.keys(FAMILIES).map((family) => {
-    let best = -1;
-    let bestScore = -Infinity;
-    documents.forEach((document, index) => {
-      if (used.has(index)) return;
-      const overlap = Object.entries(document.families).filter(([key]) => key !== family)
-        .reduce((sum, [, score]) => sum + score, 0);
-      const score = document.families[family] * 3 - overlap * 0.25;
-      if (score > bestScore) { best = index; bestScore = score; }
-    });
-    if (best < 0) best = vectors.findIndex((_, index) => !used.has(index));
-    used.add(best);
-    return [...vectors[best]];
-  });
-  let assignments = new Array(vectors.length).fill(-1);
-  for (let iteration = 0; iteration < 30; iteration += 1) {
-    const next = vectors.map((vector) => {
-      let bestCluster = 0;
-      let bestSimilarity = -Infinity;
-      centroids.forEach((centroid, cluster) => {
-        const similarity = dot(vector, centroid);
-        if (similarity > bestSimilarity) { bestCluster = cluster; bestSimilarity = similarity; }
-      });
-      return bestCluster;
-    });
-    if (next.every((cluster, index) => cluster === assignments[index])) break;
-    assignments = next;
-    centroids = centroids.map((oldCentroid, cluster) => {
-      const members = vectors.filter((_, index) => assignments[index] === cluster);
-      if (!members.length) return oldCentroid;
-      return normalizeVector(oldCentroid.map((_, dimension) =>
-        members.reduce((sum, vector) => sum + vector[dimension], 0) / members.length));
-    });
-  }
-  return assignments;
-}
-
 function similarityMatrix(vectors) {
   return vectors.map((vector, left) => vectors.map((other, right) => left === right ? 1 : dot(vector, other)));
 }
 
-function describeClusters(papers, documents, assignments) {
+function manualAssignments(papers) {
+  return papers.map((paper) => {
+    const topic = paper.primary_topic || paper.taxonomy?.primary_topic || "";
+    const index = TOPIC_ORDER.indexOf(topic);
+    if (index < 0) throw new Error(`Missing or invalid primary_topic for ${paper.arxiv_id}: ${topic}`);
+    return index;
+  });
+}
+
+function describeClusters(papers, assignments) {
   return Array.from({ length: CLUSTER_COUNT }, (_, cluster) => {
     const members = papers.map((_, index) => index).filter((index) => assignments[index] === cluster);
-    const scores = Object.keys(FAMILIES).map((family) => ({
-      family, score: members.reduce((sum, index) => sum + documents[index].families[family], 0),
-    })).sort((left, right) => right.score - left.score);
     const counts = new Map();
     members.forEach((index) => paperTags(papers[index]).forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1)));
     return {
       cluster,
       members,
-      primaryFamily: scores[0]?.family ?? null,
-      secondaryFamily: scores[1]?.score >= Math.max(1, scores[0]?.score * 0.5) ? scores[1].family : null,
+      primaryFamily: TOPIC_ORDER[cluster],
+      secondaryFamily: null,
       topTags: [...counts.entries()].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
         .slice(0, 3).map(([tag]) => tag),
     };
@@ -248,11 +213,18 @@ function catalogSignature(papers) {
   return (hash >>> 0).toString(16).padStart(8, "0");
 }
 
+function taxonomySignature(papers) {
+  const value = papers.map((paper) => [paper.arxiv_id, paper.primary_topic || paper.taxonomy?.primary_topic || ""].join("\t")).join("\n");
+  let hash = 2166136261;
+  for (const char of value) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); }
+  return (hash >>> 0).toString(16).padStart(8, "0");
+}
+
 function paperLayout(papers, assignments, clusterInfo, edges) {
   const height = Math.max(980, 540 * 1.9, Math.sqrt(Math.max(1, papers.length)) * 88);
   const width = Math.max(1520, 930 * 1.55, height * 1.95);
   const area = width * height;
-  const slots = [[0.5, 0.28], [0.27, 0.3], [0.73, 0.3], [0.14, 0.7], [0.38, 0.7], [0.62, 0.7], [0.86, 0.7]];
+  const slots = [[0.14, 0.28], [0.38, 0.28], [0.62, 0.28], [0.86, 0.28], [0.14, 0.72], [0.38, 0.72], [0.62, 0.72], [0.86, 0.72]];
   const ordered = clusterInfo.map((info, cluster) => ({ cluster, count: info.members.length }))
     .sort((left, right) => right.count - left.count || left.cluster - right.cluster);
   const targets = new Array(CLUSTER_COUNT);
@@ -420,7 +392,7 @@ function authorModel(papers, paperClusters, affiliationRecords = {}, paperSimila
   const edges = [...edgeMap.values()];
   const height = Math.max(980, 540 * 1.9, Math.sqrt(Math.max(1, profiles.length)) * 84);
   const width = Math.max(1520, 930 * 1.55, height * 1.9);
-  const slots = [[0.5, 0.27], [0.25, 0.31], [0.75, 0.31], [0.13, 0.72], [0.38, 0.7], [0.63, 0.7], [0.87, 0.72]];
+  const slots = [[0.14, 0.28], [0.38, 0.28], [0.62, 0.28], [0.86, 0.28], [0.14, 0.72], [0.38, 0.72], [0.62, 0.72], [0.86, 0.72]];
   const clusterCounts = Array(CLUSTER_COUNT).fill(0); profiles.forEach((profile) => { clusterCounts[profile.cluster] += 1; });
   const ranks = Array(CLUSTER_COUNT).fill(0); const goldenAngle = Math.PI * (3 - Math.sqrt(5));
   const nodes = profiles.map((profile, index) => {
@@ -468,37 +440,60 @@ function roundNumbers(value) {
 
 const papers = parseCSV(fs.readFileSync(catalogPath, "utf8"));
 if (!papers.length) throw new Error(`No papers found in ${catalogPath}`);
+const taxonomyPayload = JSON.parse(fs.readFileSync(taxonomyPath, "utf8"));
+if (taxonomyPayload.schema_version !== 1 || !taxonomyPayload.papers) throw new Error(`Invalid taxonomy: ${taxonomyPath}`);
+const catalogIds = new Set(papers.map((paper) => paper.arxiv_id));
+const extraTaxonomyIds = Object.keys(taxonomyPayload.papers).filter((id) => !catalogIds.has(id));
+if (extraTaxonomyIds.length) throw new Error(`Taxonomy has unknown paper IDs: ${extraTaxonomyIds.join(", ")}`);
+papers.forEach((paper) => {
+  paper.taxonomy = taxonomyPayload.papers[paper.arxiv_id];
+  paper.primary_topic = paper.taxonomy?.primary_topic;
+});
+const clusters = manualAssignments(papers);
 const affiliationPayload = fs.existsSync(affiliationsPath)
   ? JSON.parse(fs.readFileSync(affiliationsPath, "utf8"))
   : { authors: {} };
 const semanticPayload = fs.existsSync(semanticPath)
   ? JSON.parse(fs.readFileSync(semanticPath, "utf8"))
   : null;
-const semanticValid = semanticPayload?.schemaVersion === 1
+const semanticShapeValid = semanticPayload?.schemaVersion === 1
+  && typeof semanticPayload.model === "string"
   && Array.isArray(semanticPayload.paperIds)
   && semanticPayload.paperIds.length === papers.length
   && semanticPayload.paperIds.every((id, index) => id === papers[index].arxiv_id)
-  && Array.isArray(semanticPayload.paper?.clusters)
-  && semanticPayload.paper.clusters.length === papers.length
   && Array.isArray(semanticPayload.paper?.similarities)
   && semanticPayload.paper.similarities.length === papers.length
-  && Array.isArray(semanticPayload.paper?.clusterInfo)
-  && semanticPayload.paper.clusterInfo.length === CLUSTER_COUNT
+  && semanticPayload.paper.similarities.every((row) => Array.isArray(row) && row.length === papers.length && row.every(Number.isFinite))
   && Array.isArray(semanticPayload.paper?.edges)
   && Array.isArray(semanticPayload.paper?.positions)
-  && semanticPayload.paper.positions.length === papers.length;
+  && semanticPayload.paper.positions.length === papers.length
+  && semanticPayload.paper.positions.every((position) => Number.isFinite(position.x) && Number.isFinite(position.y));
+// Semantic coordinates may be reused, but semantic cluster labels never determine
+// the editorial taxonomy. Verify the actual title/abstract corpus before reuse.
+let semanticValid = false;
+const abstractsPath = path.join(path.dirname(catalogPath), "abstracts.json");
+if (semanticShapeValid && fs.existsSync(abstractsPath)) {
+  const abstracts = JSON.parse(fs.readFileSync(abstractsPath, "utf8")).papers || {};
+  if (papers.every((paper) => typeof abstracts[paper.arxiv_id]?.en === "string")) {
+    const digest = createHash("sha256").update(semanticPayload.model);
+    papers.forEach((paper) => digest.update(paper.arxiv_id).update(paper.title).update(abstracts[paper.arxiv_id].en));
+    semanticValid = digest.digest("hex").slice(0, 16) === semanticPayload.corpusSignature;
+  }
+}
 const paperModel = semanticValid ? null : buildPaperVectors(papers);
-const clusters = semanticValid ? semanticPayload.paper.clusters : clusterVectors(paperModel.vectors, paperModel.documents);
 const similarities = semanticValid ? semanticPayload.paper.similarities : similarityMatrix(paperModel.vectors);
-const clusterInfo = semanticValid ? semanticPayload.paper.clusterInfo : describeClusters(papers, paperModel.documents, clusters);
+const clusterInfo = describeClusters(papers, clusters);
 const edges = semanticValid ? semanticPayload.paper.edges : buildPaperEdges(similarities, clusters);
 const positions = semanticValid ? semanticPayload.paper.positions : paperLayout(papers, clusters, clusterInfo, edges);
 const output = roundNumbers({
-  algorithmVersion: semanticValid ? 2 : 1,
+  algorithmVersion: 3,
+  classificationModel: "editorial-primary-topic",
+  topicOrder: TOPIC_ORDER,
   similarityModel: semanticValid ? semanticPayload.model : "tag-tfidf",
   semanticCorpusSignature: semanticValid ? semanticPayload.corpusSignature : null,
   generatedAt: new Date().toISOString(),
   catalogSignature: catalogSignature(papers),
+  taxonomySignature: taxonomySignature(papers),
   paperIds: papers.map((paper) => paper.arxiv_id),
   paper: { clusters, similarities, clusterInfo, edges, positions },
   authors: authorModel(papers, clusters, affiliationPayload.authors || {}, semanticValid ? similarities : null),

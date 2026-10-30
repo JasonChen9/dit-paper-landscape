@@ -1,0 +1,45 @@
+{
+  "paper_count": 362,
+  "bilingual_card_count": 362,
+  "official_venue_link_count": 120,
+  "semantic_snapshot_count": 156,
+  "semantic_rebuild_needed": true,
+  "errors": [],
+  "warnings": [],
+  "updated_at": "2026-10-30",
+  "publication_status_counts": {
+    "published": 120,
+    "preprint": 159,
+    "author-reported-published": 19,
+    "unknown": 58,
+    "author-reported-accepted": 6
+  },
+  "date_precision_counts": {
+    "day": 335,
+    "year": 25,
+    "month": 2
+  },
+  "abstract_types": {
+    "en": {
+      "source-abstract": 362
+    },
+    "zh": {
+      "translation": 362
+    }
+  },
+  "scope": "Validation checks catalog completeness and consistency; formal venue links and card claims have individual cited evidence. The full SPECTER map has not been rebuilt.",
+  "bilingual_source_abstract_count": 362,
+  "classified_paper_count": 362,
+  "bilingual_abstract_count": 362,
+  "primary_topic_counts": {
+    "foundation": 28,
+    "architecture": 43,
+    "video": 19,
+    "rl": 36,
+    "systems": 149,
+    "vla": 47,
+    "world": 31,
+    "agent": 9
+  },
+  "source_link_repairs": 29
+}

@@ -75,10 +75,13 @@
         "sim-to-real", "trajectory-critic", "foundation-policy", "denoising-transformer",
       ],
     },
+    agent: { labelKey: "cluster.agent", tags: [] },
   };
 
-  const CLUSTER_COUNT = 7;
+  const TOPIC_ORDER = ["foundation", "architecture", "video", "systems", "rl", "world", "vla", "agent"];
+  const CLUSTER_COUNT = TOPIC_ORDER.length;
   const DEFAULT_VIEW_SCALE = 1.25;
+  const OLD_TIME_SHARE = 0.12;
   const state = {
     papers: [],
     paperDays: [],
@@ -93,6 +96,8 @@
     hovered: null,
     activeCluster: null,
     activeTag: null,
+    mapSearchQuery: "",
+    mapSearchMatches: new Set(),
     width: 0,
     height: 0,
     virtualWidth: 0,
@@ -118,6 +123,7 @@
     timeMax: null,
     timeStart: null,
     timeEnd: null,
+    timeCutoff: null,
     externalIds: null,
     precomputedPositions: null,
   };
@@ -131,12 +137,35 @@
       .filter(Boolean);
   }
 
-  function publishedDay(value) {
+  function publishedDay(value, end = false) {
+    if (/^\d{4}$/.test(value)) value += end ? "-12-31" : "-01-01";
+    else if (/^\d{4}-\d{2}$/.test(value)) {
+      const [year, month] = value.split("-").map(Number);
+      value += end ? `-${new Date(Date.UTC(year, month, 0)).getUTCDate()}` : "-01";
+    }
     return Math.floor(Date.parse(`${value}T00:00:00Z`) / 86400000);
   }
 
   function formatDay(day) {
     return new Date(day * 86400000).toISOString().slice(0, 10);
+  }
+
+  function hasCompressedTimeRange() {
+    return state.timeMin < state.timeCutoff && state.timeCutoff < state.timeMax;
+  }
+
+  function dayToTimePosition(day) {
+    const bounded = Math.max(state.timeMin, Math.min(day, state.timeMax));
+    if (!hasCompressedTimeRange()) return (bounded - state.timeMin) / Math.max(1, state.timeMax - state.timeMin);
+    if (bounded <= state.timeCutoff) return OLD_TIME_SHARE * (bounded - state.timeMin) / (state.timeCutoff - state.timeMin);
+    return OLD_TIME_SHARE + (1 - OLD_TIME_SHARE) * (bounded - state.timeCutoff) / (state.timeMax - state.timeCutoff);
+  }
+
+  function timePositionToDay(position) {
+    const bounded = Math.max(0, Math.min(position, 1));
+    if (!hasCompressedTimeRange()) return Math.round(state.timeMin + bounded * (state.timeMax - state.timeMin));
+    if (bounded <= OLD_TIME_SHARE) return Math.round(state.timeMin + bounded / OLD_TIME_SHARE * (state.timeCutoff - state.timeMin));
+    return Math.round(state.timeCutoff + (bounded - OLD_TIME_SHARE) / (1 - OLD_TIME_SHARE) * (state.timeMax - state.timeCutoff));
   }
 
   function paperSummary(paper) {
@@ -151,7 +180,8 @@
 
   function paperInTimeRange(index) {
     const day = state.paperDays[index];
-    return day >= state.timeStart && day <= state.timeEnd;
+    if (!Number.isFinite(day)) return state.timeStart === state.timeMin && state.timeEnd === state.timeMax;
+    return publishedDay(state.papers[index].published, true) >= state.timeStart && day <= state.timeEnd;
   }
 
   function paperInExternalFilter(index) {
@@ -228,94 +258,42 @@
     return result;
   }
 
-  function normalizeVector(vector) {
-    const norm = Math.hypot(...vector) || 1;
-    return vector.map((value) => value / norm);
-  }
-
-  function seedCentroids(vectors, documents) {
-    const used = new Set();
-    return Object.keys(FAMILIES).map((family) => {
-      let best = -1;
-      let bestScore = -Infinity;
-      documents.forEach((document, index) => {
-        if (used.has(index)) return;
-        const own = document.families[family];
-        const overlap = Object.entries(document.families)
-          .filter(([key]) => key !== family)
-          .reduce((sum, [, score]) => sum + score, 0);
-        const score = own * 3 - overlap * 0.25;
-        if (score > bestScore) {
-          best = index;
-          bestScore = score;
-        }
-      });
-      if (best < 0) best = vectors.findIndex((_, index) => !used.has(index));
-      used.add(best);
-      return [...vectors[best]];
-    });
-  }
-
-  function clusterVectors(vectors, documents) {
-    let centroids = seedCentroids(vectors, documents);
-    let assignments = new Array(vectors.length).fill(-1);
-
-    for (let iteration = 0; iteration < 30; iteration += 1) {
-      const nextAssignments = vectors.map((vector) => {
-        let bestCluster = 0;
-        let bestSimilarity = -Infinity;
-        centroids.forEach((centroid, cluster) => {
-          const similarity = dot(vector, centroid);
-          if (similarity > bestSimilarity) {
-            bestCluster = cluster;
-            bestSimilarity = similarity;
-          }
-        });
-        return bestCluster;
-      });
-      if (nextAssignments.every((cluster, index) => cluster === assignments[index])) break;
-      assignments = nextAssignments;
-
-      centroids = centroids.map((oldCentroid, cluster) => {
-        const members = vectors.filter((_, index) => assignments[index] === cluster);
-        if (!members.length) return oldCentroid;
-        const mean = oldCentroid.map((_, dimension) =>
-          members.reduce((sum, vector) => sum + vector[dimension], 0) / members.length,
-        );
-        return normalizeVector(mean);
-      });
-    }
-    return assignments;
-  }
-
   function buildSimilarityMatrix(vectors) {
     return vectors.map((vector, left) =>
       vectors.map((other, right) => (left === right ? 1 : dot(vector, other))),
     );
   }
 
-  function describeClusters(papers, documents, assignments) {
+  function manualAssignments(papers) {
+    return papers.map((paper) => {
+      const topic = paper.primary_topic || paper.taxonomy?.primary_topic || "";
+      const index = TOPIC_ORDER.indexOf(topic);
+      if (index < 0) throw new Error(`Missing or invalid primary_topic for ${paper.arxiv_id}: ${topic}`);
+      return index;
+    });
+  }
+
+  function taxonomySignature(papers) {
+    const value = papers.map((paper) => [paper.arxiv_id, paper.primary_topic || paper.taxonomy?.primary_topic || ""].join("\t")).join("\n");
+    let hash = 2166136261;
+    for (const char of value) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); }
+    return (hash >>> 0).toString(16).padStart(8, "0");
+  }
+
+  function describeClusters(papers, assignments) {
     return Array.from({ length: CLUSTER_COUNT }, (_, cluster) => {
       const members = papers.map((_, index) => index).filter((index) => assignments[index] === cluster);
-      const scores = Object.keys(FAMILIES).map((family) => ({
-        family,
-        score: members.reduce((sum, index) => sum + documents[index].families[family], 0),
-      })).sort((left, right) => right.score - left.score);
       const counts = new Map();
       members.forEach((index) => paperTags(papers[index]).forEach((tag) => counts.set(tag, (counts.get(tag) ?? 0) + 1)));
       const topTags = [...counts.entries()]
         .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
         .slice(0, 3)
         .map(([tag]) => tag);
-      const primaryFamily = scores[0]?.family ?? null;
-      const secondaryFamily = scores[1]?.score >= Math.max(1, scores[0]?.score * 0.5)
-        ? scores[1].family
-        : null;
       return {
         cluster,
         members,
-        primaryFamily,
-        secondaryFamily,
+        primaryFamily: TOPIC_ORDER[cluster],
+        secondaryFamily: null,
         topTags,
       };
     });
@@ -379,17 +357,67 @@
     return true;
   }
 
+  function validSavedCamera(camera) {
+    return camera && [camera.centerX, camera.centerY, camera.width, camera.height].every(Number.isFinite)
+      && camera.width > 0 && camera.height > 0;
+  }
+
+  function getViewState() {
+    if (!state.view.initialized || !state.nodes.length || !(state.view.scale > 0)) return null;
+    const { scale, offsetX, offsetY } = state.view;
+    return {
+      version: 1,
+      camera: {
+        centerX: (state.width / 2 - offsetX) / scale / state.virtualWidth,
+        centerY: (state.height / 2 - offsetY) / scale / state.virtualHeight,
+        width: state.width / scale / state.virtualWidth,
+        height: state.height / scale / state.virtualHeight,
+      },
+      selectedPaperId: state.papers[state.selected]?.arxiv_id || null,
+      activeCluster: state.activeCluster,
+      activeTag: state.activeTag,
+    };
+  }
+
+  function restoreViewState(snapshot) {
+    if (snapshot?.version !== 1 || !validSavedCamera(snapshot.camera)
+      || !state.nodes.length || !elements.context) return false;
+    const camera = snapshot.camera;
+    const scale = Math.min(
+      state.width / (camera.width * state.virtualWidth),
+      state.height / (camera.height * state.virtualHeight),
+    );
+    if (!(scale > 0) || !Number.isFinite(scale)) return false;
+    const offsetX = state.width / 2 - camera.centerX * state.virtualWidth * scale;
+    const offsetY = state.height / 2 - camera.centerY * state.virtualHeight * scale;
+    if (![offsetX, offsetY].every(Number.isFinite)) return false;
+    if (state.viewAnimationFrame !== null) cancelAnimationFrame(state.viewAnimationFrame);
+    state.viewAnimationFrame = null;
+    Object.assign(state.view, {
+      scale, offsetX, offsetY, targetScale: scale, targetOffsetX: offsetX, targetOffsetY: offsetY,
+      initialized: true,
+      // A restored camera is explicit user state; a still-settling layout must not refit it.
+      manual: true,
+    });
+    state.activeCluster = Number.isInteger(snapshot.activeCluster) && snapshot.activeCluster >= 0
+      && snapshot.activeCluster < state.clusterInfo.length ? snapshot.activeCluster : null;
+    state.activeTag = typeof snapshot.activeTag === "string"
+      && state.papers.some((paper) => paperTags(paper).includes(snapshot.activeTag)) ? snapshot.activeTag : null;
+    renderLegend();
+    renderTopicCloud();
+    const selected = state.papers.findIndex((paper) => paper.arxiv_id === snapshot.selectedPaperId);
+    if (selected >= 0) selectPaper(selected);
+    else draw();
+    // App filters are restored separately. Do not emit a topic/time filter here.
+    return true;
+  }
+
   function computeClusterTargets() {
     const total = Math.max(1, state.papers.length);
     const virtualArea = state.virtualWidth * state.virtualHeight;
     const slots = [
-      [0.5, 0.28],
-      [0.27, 0.3],
-      [0.73, 0.3],
-      [0.14, 0.7],
-      [0.38, 0.7],
-      [0.62, 0.7],
-      [0.86, 0.7],
+      [0.14, 0.28], [0.38, 0.28], [0.62, 0.28], [0.86, 0.28],
+      [0.14, 0.72], [0.38, 0.72], [0.62, 0.72], [0.86, 0.72],
     ];
     const orderedClusters = state.clusterInfo
       .map((info, cluster) => ({ cluster, count: info.members.length }))
@@ -691,11 +719,50 @@
     return true;
   }
 
+  function normalizeMapSearch(value) {
+    return String(value || "").normalize("NFKC").toLocaleLowerCase().replace(/[-_/]+/g, " ").replace(/\s+/g, " ").trim();
+  }
+
+  function setMapSearch(query) {
+    state.mapSearchQuery = normalizeMapSearch(query);
+    state.mapSearchMatches = new Set();
+    const terms = state.mapSearchQuery.split(" ").filter(Boolean);
+    const results = [];
+    if (terms.length) state.nodes.forEach((node) => {
+      if (!isNodeActive(node)) return;
+      const paper = state.papers[node.index];
+      const text = normalizeMapSearch([paper.short_title, paper.title, paper.title_zh, paper.alternate_titles, paper.authors, paper.topic_tags].join(" "));
+      if (!terms.every((term) => text.includes(term))) return;
+      state.mapSearchMatches.add(node.index);
+      results.push({
+        id: paper.arxiv_id,
+        title: paper.short_title || paper.title,
+        subtitle: window.DiTI18n.language === "zh" ? paper.title_zh || paper.title : paper.title,
+      });
+    });
+    if (elements.context) draw();
+    return results;
+  }
+
+  function locateSearchResult(id) {
+    const index = state.papers.findIndex((paper) => paper.arxiv_id === id);
+    const node = state.nodes[index];
+    if (!node || !isNodeActive(node) || !state.width || !state.height) return false;
+    state.view.targetScale = state.view.scale;
+    state.view.targetOffsetX = state.width / 2 - node.x * state.view.scale;
+    state.view.targetOffsetY = state.height / 2 - node.y * state.view.scale;
+    state.view.manual = true;
+    selectPaper(index);
+    startViewAnimation();
+    return true;
+  }
+
   function draw() {
     const context = elements.context;
     const rootStyles = getComputedStyle(document.documentElement);
     const edgeColor = rootStyles.getPropertyValue("--landscape-edge").trim();
     const labelColor = rootStyles.getPropertyValue("--text").trim();
+    const searchColor = rootStyles.getPropertyValue("--accent").trim() || labelColor;
     const zoomRatio = state.view.scale / Math.max(0.001, state.view.fitScale);
     context.clearRect(0, 0, state.width, state.height);
     const focus = state.hovered ?? state.selected;
@@ -719,6 +786,7 @@
       context.globalAlpha = edgeActive
         ? (highlighted ? 0.7 : 0.18 + edge.similarity * 0.25)
         : 0.025;
+      if (state.mapSearchQuery && !state.mapSearchMatches.has(edge.source) && !state.mapSearchMatches.has(edge.target)) context.globalAlpha *= 0.3;
       context.lineWidth = highlighted ? 1.6 : 0.8;
       context.stroke();
     }
@@ -734,38 +802,50 @@
       const active = isNodeActive(node);
       const selected = state.selected === node.index;
       const hovered = state.hovered === node.index;
+      const matched = active && state.mapSearchMatches.has(node.index);
+      const searchOpacity = state.mapSearchQuery && !matched ? 0.25 : 1;
       const degree = degrees[node.index];
       const radius = (selected ? 7.5 : hovered ? 6.8 : 4.3) + Math.min(1.8, degree * 0.12);
       context.beginPath();
       context.arc(point.x, point.y, radius, 0, Math.PI * 2);
       context.fillStyle = state.palette[node.cluster];
-      context.globalAlpha = active ? 0.94 : 0.12;
+      context.globalAlpha = (active ? 0.94 : 0.12) * searchOpacity;
       context.fill();
       if ((selected || hovered) && active) {
         context.strokeStyle = labelColor;
-        context.globalAlpha = 0.9;
+        context.globalAlpha = 0.9 * searchOpacity;
         context.lineWidth = 1.5;
+        context.stroke();
+      }
+      if (matched) {
+        context.beginPath();
+        context.arc(point.x, point.y, radius + 3, 0, Math.PI * 2);
+        context.strokeStyle = searchColor;
+        context.globalAlpha = 1;
+        context.lineWidth = 2.2;
         context.stroke();
       }
       const showLabel = selected
         || hovered
+        || matched
         || zoomRatio >= 1.9
         || (zoomRatio >= 1.6 && degree >= 4)
         || (zoomRatio >= 1.35 && degree >= 6);
       const inViewport = point.x >= 0 && point.x <= state.width && point.y >= 0 && point.y <= state.height;
-      if (active && showLabel && inViewport) labelCandidates.push({ node, point, selected, hovered, degree, radius });
+      if (active && showLabel && inViewport) labelCandidates.push({ node, point, selected, hovered, matched, searchOpacity, degree, radius });
     });
 
     const labelBoxes = [];
     labelCandidates
       .sort((left, right) => Number(right.selected) - Number(left.selected)
         || Number(right.hovered) - Number(left.hovered)
+        || Number(right.matched) - Number(left.matched)
         || right.degree - left.degree
         || left.node.index - right.node.index)
-      .forEach(({ node, point, selected, hovered, radius }) => {
+      .forEach(({ node, point, selected, hovered, matched, searchOpacity, radius }) => {
         const label = state.papers[node.index].short_title;
         const fontSize = selected ? 12 : 10;
-        const fontWeight = selected ? 600 : 500;
+        const fontWeight = selected || matched ? 600 : 500;
         const align = point.x > state.width - 150 ? "right" : "left";
         const labelX = point.x + (align === "right" ? -radius - 6 : radius + 6);
         const labelY = Math.max(fontSize, Math.min(state.height - fontSize, point.y));
@@ -783,7 +863,7 @@
           || box.top - 3 > placed.bottom));
         if (overlaps && !selected && !hovered) return;
         labelBoxes.push(box);
-        context.globalAlpha = selected || hovered ? 1 : 0.76;
+        context.globalAlpha = (selected || hovered || matched ? 1 : 0.76) * searchOpacity;
         context.fillStyle = labelColor;
         context.textAlign = align;
         context.textBaseline = "middle";
@@ -903,11 +983,25 @@
     const fullTitle = document.createElement("p");
     fullTitle.className = "selection-full-title";
     fullTitle.textContent = paper.title;
-    const summary = document.createElement("p");
-    summary.textContent = paperSummary(paper);
+    const detailFields = ["background", "challenge", "method", "result"];
+    const language = window.DiTI18n.language;
+    const hasDetails = detailFields.every((key) => paper.details?.[key]?.[language]);
+    const summary = document.createElement(hasDetails ? "dl" : "p");
+    if (hasDetails) {
+      summary.className = "paper-details";
+      detailFields.forEach((key) => {
+        const label = document.createElement("dt");
+        label.textContent = t(`paper.${key}`);
+        const text = document.createElement("dd");
+        text.textContent = paper.details[key][language];
+        summary.append(label, text);
+      });
+    } else summary.textContent = paperSummary(paper);
     const links = document.createElement("div");
     links.className = "selection-links";
-    links.append(link(`${paper.source_label || "arXiv"} ↗`, paper.arxiv_url), link(t("paper.pdf"), paper.pdf_url));
+    links.append(link(`${paper.venue_url ? paper.venue : paper.source_label || "Source"} ↗`, paper.venue_url || paper.arxiv_url));
+    if (paper.venue_url && paper.arxiv_url !== paper.venue_url) links.append(link(`${paper.source_label || "Preprint"} ↗`, paper.arxiv_url));
+    if (paper.pdf_url) links.append(link(t("paper.pdf"), paper.pdf_url));
 
     const neighborTitle = document.createElement("h4");
     neighborTitle.textContent = t("neighbors.heading");
@@ -922,28 +1016,29 @@
     });
     container.append(eyebrow, title, fullTitle, summary, links, neighborTitle, neighbors);
     draw();
+    window.dispatchEvent(new CustomEvent("dit:paper-selection", { detail: { paperId: paper.arxiv_id } }));
   }
 
   function emitTopicFilter() {
     let ids = null;
     let label = "";
     let source = null;
-    let cluster = null;
-    if (state.activeCluster !== null) {
-      const info = state.clusterInfo[state.activeCluster];
+    const cluster = state.activeCluster;
+    const tag = state.activeTag;
+    if (tag) {
+      ids = state.papers
+        .filter((paper) => paperTags(paper).includes(tag))
+        .map((paper) => paper.arxiv_id);
+      label = tag;
+      source = "tag";
+    } else if (cluster !== null) {
+      const info = state.clusterInfo[cluster];
       ids = info.members.map((index) => state.papers[index].arxiv_id);
       label = clusterName(info);
       source = "cluster";
-      cluster = state.activeCluster;
-    } else if (state.activeTag) {
-      ids = state.papers
-        .filter((paper) => paperTags(paper).includes(state.activeTag))
-        .map((paper) => paper.arxiv_id);
-      label = state.activeTag;
-      source = "tag";
     }
     window.dispatchEvent(new CustomEvent("dit:landscape-topic-filter", {
-      detail: { ids, label, source, cluster },
+      detail: { ids, label, source, cluster, tag },
     }));
   }
 
@@ -986,7 +1081,6 @@
       button.append(swatch, label);
       button.addEventListener("click", () => {
         state.activeCluster = state.activeCluster === cluster ? null : cluster;
-        state.activeTag = null;
         renderTimeDensity();
         syncTimeFilter();
         renderLegend();
@@ -1021,7 +1115,6 @@
       button.textContent = `${tag} ${count}`;
       button.addEventListener("click", () => {
         state.activeTag = state.activeTag === tag ? null : tag;
-        state.activeCluster = null;
         renderTimeDensity();
         syncTimeFilter();
         renderLegend();
@@ -1069,13 +1162,12 @@
 
   function renderTimeDensity() {
     const binCount = 30;
-    const span = Math.max(1, state.timeMax - state.timeMin);
     const counts = new Array(binCount).fill(0);
     state.paperDays.forEach((day, paperIndex) => {
-      if (!paperInExternalFilter(paperIndex) || !paperInTopicFilter(paperIndex)) return;
+      if (!Number.isFinite(day) || !paperInExternalFilter(paperIndex) || !paperInTopicFilter(paperIndex)) return;
       const index = Math.min(
         binCount - 1,
-        Math.round(((day - state.timeMin) / span) * (binCount - 1)),
+        Math.round(dayToTimePosition(day) * (binCount - 1)),
       );
       counts[index] += 1;
     });
@@ -1097,28 +1189,62 @@
 
   function renderTimeTicks() {
     elements.timeTicks.replaceChildren();
-    const span = Math.max(1, state.timeMax - state.timeMin);
-    const firstYear = new Date(state.timeMin * 86400000).getUTCFullYear();
+    const width = elements.timeTicks.getBoundingClientRect().width;
+    if (width <= 0) return;
+    const compressed = hasCompressedTimeRange();
+    const firstYear = new Date((compressed ? state.timeCutoff : state.timeMin) * 86400000).getUTCFullYear();
     const lastYear = new Date(state.timeMax * 86400000).getUTCFullYear();
-    for (let year = firstYear; year <= lastYear; year += 1) {
-      const day = publishedDay(`${year}-01-01`);
-      if (day < state.timeMin || day > state.timeMax) continue;
+    const occupied = [];
+    const addTick = (day, label, edge = "", checkOverlap = false) => {
       const tick = document.createElement("span");
       tick.className = "time-range-tick";
-      tick.style.left = `${(((day - state.timeMin) / span) * 100).toFixed(3)}%`;
-      tick.textContent = String(year);
+      if (edge) tick.classList.add(`time-range-tick-${edge}`);
+      tick.style.left = edge === "single" ? "50%" : `${(dayToTimePosition(day) * 100).toFixed(3)}%`;
+      tick.textContent = label;
+      tick.title = formatDay(day);
       elements.timeTicks.append(tick);
+      const bounds = tick.getBoundingClientRect();
+      if (checkOverlap && occupied.some((other) => bounds.left < other.right + 14 && bounds.right > other.left - 14)) {
+        tick.remove();
+        return null;
+      }
+      occupied.push(bounds);
+      return tick;
+    };
+    if (state.timeMin === state.timeMax) {
+      addTick(state.timeMin, formatDay(state.timeMin), "single");
+      return;
+    }
+    // The old segment keeps its real dates, but receives only one range label.
+    // Measure labels so the longer translated "before" label does not collide
+    // with the cutoff year on narrow screens or with enlarged fonts.
+    const endpointLabel = (day, year) => firstYear === lastYear ? formatDay(day) : String(year);
+    const first = addTick(state.timeMin, compressed ? t("time.before", { year: firstYear }) : endpointLabel(state.timeMin, firstYear), "start");
+    if (compressed) first.title = `${formatDay(state.timeMin)} — ${formatDay(state.timeCutoff - 1)}`;
+    addTick(state.timeMax, endpointLabel(state.timeMax, lastYear), "end");
+    const maxLabels = Math.max(2, Math.min(12, Math.floor(width / 90) + 1));
+    const rawStep = Math.max(1, (lastYear - firstYear) / (maxLabels - 1));
+    const magnitude = 10 ** Math.floor(Math.log10(rawStep));
+    const step = [1, 2, 5, 10].map((value) => value * magnitude).find((value) => value >= rawStep);
+    for (let year = Math.ceil(firstYear / step) * step; year <= lastYear; year += step) {
+      if ((!compressed && year <= firstYear) || year >= lastYear) continue;
+      const day = publishedDay(`${year}-01-01`);
+      if (day <= state.timeMin || day >= state.timeMax) continue;
+      addTick(day, String(year), "", true);
     }
   }
 
   function syncTimeFilter() {
-    const span = Math.max(1, state.timeMax - state.timeMin);
-    const startPercent = ((state.timeStart - state.timeMin) / span) * 100;
-    const endPercent = ((state.timeEnd - state.timeMin) / span) * 100;
+    const startPercent = dayToTimePosition(state.timeStart) * 100;
+    const endPercent = dayToTimePosition(state.timeEnd) * 100;
+    elements.timeControl.dataset.compressed = String(hasCompressedTimeRange());
+    elements.timeControl.style.setProperty("--time-cutoff", `${OLD_TIME_SHARE * 100}%`);
     elements.timeControl.style.setProperty("--range-start", `${startPercent.toFixed(3)}%`);
     elements.timeControl.style.setProperty("--range-end", `${endPercent.toFixed(3)}%`);
-    elements.timeStart.value = String(state.timeStart);
-    elements.timeEnd.value = String(state.timeEnd);
+    elements.timeStart.value = String(startPercent / 100);
+    elements.timeEnd.value = String(endPercent / 100);
+    elements.timeStart.setAttribute("aria-valuenow", String(state.timeStart));
+    elements.timeEnd.setAttribute("aria-valuenow", String(state.timeEnd));
     elements.timeStart.setAttribute("aria-valuetext", formatDay(state.timeStart));
     elements.timeEnd.setAttribute("aria-valuetext", formatDay(state.timeEnd));
     const fullRange = state.timeStart === state.timeMin && state.timeEnd === state.timeMax;
@@ -1129,13 +1255,14 @@
       paperInExternalFilter(index) && paperInTopicFilter(index)).length;
     const count = state.paperDays.filter((day, index) =>
       paperInExternalFilter(index) && paperInTopicFilter(index)
-      && day >= state.timeStart && day <= state.timeEnd).length;
+      && paperInTimeRange(index)).length;
     elements.timeCount.textContent = t("time.count", { count, total: availableTotal });
   }
 
   function applyTimeRange(start, end, { notify = true } = {}) {
-    state.timeStart = Math.max(state.timeMin, Math.min(start, state.timeMax));
-    state.timeEnd = Math.max(state.timeStart, Math.min(end, state.timeMax));
+    if (!Number.isFinite(start) || !Number.isFinite(end)) return;
+    state.timeStart = Math.max(state.timeMin, Math.min(Math.round(start), state.timeMax));
+    state.timeEnd = Math.max(state.timeStart, Math.min(Math.round(end), state.timeMax));
     state.hovered = null;
     elements.tooltip.hidden = true;
     syncTimeFilter();
@@ -1150,11 +1277,16 @@
     let drag = null;
     elements.timeWindow.addEventListener("pointerdown", (event) => {
       if (event.button !== 0) return;
+      const rect = elements.timeControl.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const anchorPosition = Math.max(0, Math.min((event.clientX - rect.left) / rect.width, 1));
       drag = {
         pointerId: event.pointerId,
         clientX: event.clientX,
         start: state.timeStart,
         end: state.timeEnd,
+        anchorPosition,
+        anchorDay: timePositionToDay(anchorPosition),
       };
       elements.timeWindow.setPointerCapture(event.pointerId);
       elements.timeWindow.classList.add("is-dragging");
@@ -1163,9 +1295,10 @@
     elements.timeWindow.addEventListener("pointermove", (event) => {
       if (!drag || event.pointerId !== drag.pointerId) return;
       const rect = elements.timeControl.getBoundingClientRect();
-      const totalSpan = Math.max(1, state.timeMax - state.timeMin);
+      if (rect.width <= 0) return;
       const selectedSpan = drag.end - drag.start;
-      const delta = Math.round(((event.clientX - drag.clientX) / rect.width) * totalSpan);
+      const position = drag.anchorPosition + (event.clientX - drag.clientX) / rect.width;
+      const delta = timePositionToDay(position) - drag.anchorDay;
       const start = Math.max(state.timeMin, Math.min(drag.start + delta, state.timeMax - selectedSpan));
       applyTimeRange(start, start + selectedSpan);
     });
@@ -1183,22 +1316,40 @@
 
   function initializeTimeFilter() {
     state.paperDays = state.papers.map((paper) => publishedDay(paper.published));
-    state.timeMin = Math.min(...state.paperDays);
-    state.timeMax = Math.max(...state.paperDays);
+    const dated = state.paperDays.filter(Number.isFinite);
+    const ends = state.papers.map((paper) => publishedDay(paper.published, true)).filter(Number.isFinite);
+    state.timeMin = dated.length ? Math.min(...dated) : 0;
+    state.timeMax = ends.length ? Math.max(...ends) : state.timeMin;
     state.timeStart = state.timeMin;
     state.timeEnd = state.timeMax;
+    const cutoffYear = new Date().getUTCFullYear() - 4;
+    state.timeCutoff = Math.floor(Date.UTC(cutoffYear, 0, 1) / 86400000);
     [elements.timeStart, elements.timeEnd].forEach((input) => {
-      input.min = String(state.timeMin);
-      input.max = String(state.timeMax);
-      input.step = "1";
+      // Native slider positions are normalized; keyboard steps below remain days.
+      input.min = "0";
+      input.max = "1";
+      input.step = "any";
+      input.setAttribute("aria-valuemin", String(state.timeMin));
+      input.setAttribute("aria-valuemax", String(state.timeMax));
+      input.addEventListener("keydown", (event) => {
+        const steps = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -10, PageUp: 10 };
+        if (!(event.key in steps) && event.key !== "Home" && event.key !== "End") return;
+        event.preventDefault();
+        const isStart = input === elements.timeStart;
+        const current = isStart ? state.timeStart : state.timeEnd;
+        const day = event.key === "Home" ? state.timeMin : event.key === "End" ? state.timeMax : current + steps[event.key];
+        if (isStart) applyTimeRange(Math.min(day, state.timeEnd), state.timeEnd);
+        else applyTimeRange(state.timeStart, Math.max(day, state.timeStart));
+      });
     });
     renderTimeDensity();
     renderTimeTicks();
+    new ResizeObserver(renderTimeTicks).observe(elements.timeTicks);
     elements.timeStart.addEventListener("input", (event) => {
-      applyTimeRange(Math.min(Number(event.currentTarget.value), state.timeEnd), state.timeEnd);
+      applyTimeRange(Math.min(timePositionToDay(Number(event.currentTarget.value)), state.timeEnd), state.timeEnd);
     });
     elements.timeEnd.addEventListener("input", (event) => {
-      applyTimeRange(state.timeStart, Math.max(Number(event.currentTarget.value), state.timeStart));
+      applyTimeRange(state.timeStart, Math.max(timePositionToDay(Number(event.currentTarget.value)), state.timeStart));
     });
     bindTimeBrushWindow();
     syncTimeFilter();
@@ -1380,7 +1531,6 @@
       ? cluster
       : null;
     state.activeCluster = nextCluster;
-    state.activeTag = null;
     if (!state.papers.length) return;
     renderTimeDensity();
     syncTimeFilter();
@@ -1409,7 +1559,7 @@
     const days = state.papers
       .map((paper, index) => ({ paper, day: state.paperDays[index] }))
       .filter(({ paper }) => paper.window === preset)
-      .map(({ day }) => day);
+      .map(({ day }) => day).filter(Number.isFinite);
     if (days.length) applyTimeRange(Math.min(...days), Math.max(...days), { notify: false });
   }
 
@@ -1423,16 +1573,21 @@
   }
 
   function validPrecomputed(papers, payload) {
-    return [1, 2].includes(payload?.algorithmVersion)
+    const assignments = manualAssignments(papers);
+    return payload?.algorithmVersion === 3
+      && payload.classificationModel === "editorial-primary-topic"
+      && payload.taxonomySignature === taxonomySignature(papers)
       && Array.isArray(payload.paperIds)
       && payload.paperIds.length === papers.length
       && payload.paperIds.every((id, index) => id === papers[index].arxiv_id)
       && Array.isArray(payload.paper?.clusters)
       && payload.paper.clusters.length === papers.length
+      && payload.paper.clusters.every((cluster, index) => cluster === assignments[index])
       && Array.isArray(payload.paper?.similarities)
       && payload.paper.similarities.length === papers.length
       && Array.isArray(payload.paper?.clusterInfo)
       && payload.paper.clusterInfo.length === CLUSTER_COUNT
+      && payload.paper.clusterInfo.every((info, index) => info.primaryFamily === TOPIC_ORDER[index])
       && Array.isArray(payload.paper?.edges)
       && Array.isArray(payload.paper?.positions)
       && payload.paper.positions.length === papers.length;
@@ -1440,6 +1595,7 @@
 
   function init(papers, precomputedPayload = null) {
     if (!papers?.length || state.papers.length) return;
+    const assignments = manualAssignments(papers);
     Object.assign(elements, {
       canvas: document.querySelector("#landscape-canvas"),
       plot: document.querySelector("#landscape-plot"),
@@ -1468,19 +1624,19 @@
     initializeTimeFilter();
     const usePrecomputed = validPrecomputed(papers, precomputedPayload);
     document.documentElement.dataset.landscapeData = usePrecomputed ? "precomputed" : "client";
+    // Classification comes exclusively from the reviewed taxonomy, including when
+    // cached geometry is unavailable or its signature no longer matches.
+    state.clusters = assignments;
+    state.clusterInfo = describeClusters(papers, assignments);
     if (usePrecomputed) {
-      state.clusters = precomputedPayload.paper.clusters;
       state.similarities = precomputedPayload.paper.similarities;
-      state.clusterInfo = precomputedPayload.paper.clusterInfo;
       state.edges = precomputedPayload.paper.edges;
       state.precomputedPositions = precomputedPayload.paper.positions;
     } else {
       const model = buildVectors(papers);
       state.tags = model.documents;
       state.vectors = model.vectors;
-      state.clusters = clusterVectors(model.vectors, model.documents);
       state.similarities = buildSimilarityMatrix(model.vectors);
-      state.clusterInfo = describeClusters(papers, model.documents, state.clusters);
       state.edges = buildEdges(state.similarities, state.clusters);
     }
     readPalette();
@@ -1496,8 +1652,10 @@
     elements.zoomIn.addEventListener("click", () => zoomAt(state.width / 2, state.height / 2, DEFAULT_VIEW_SCALE, true));
     elements.zoomFit.addEventListener("click", fitView);
     new ResizeObserver(() => {
+      const previousView = getViewState();
       if (setDimensions()) {
         initializeNodes();
+        if (previousView) restoreViewState(previousView);
         if (state.precomputedPositions) startPrecomputedLayout();
         else runSimulation();
       }
@@ -1518,6 +1676,7 @@
     renderLegend();
     renderTopicCloud();
     renderBridges();
+    renderTimeTicks();
     syncTimeFilter();
     if (state.selected !== null) selectPaper(state.selected);
     emitClusterCatalog();
@@ -1528,11 +1687,15 @@
 
   window.DiTLandscape = {
     init,
+    getViewState,
+    restoreViewState,
     themeChanged,
     clearTopicFilter,
     resetFilters,
     setClusterFilter,
     setExternalFilter,
+    setMapSearch,
+    locateSearchResult,
     setTimePreset,
     setTimeRange,
   };

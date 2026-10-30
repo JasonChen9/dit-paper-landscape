@@ -48,5 +48,65 @@
   "socc25-diffusion-serving": [
     "Yanying Lin|first",
     "Kejiang Ye|corresponding"
+  ],
+  "2608.01150": [
+    "Guangyu Xiang|first+co-first",
+    "Xueze Kang|co-first",
+    "Lin Zhang|corresponding",
+    "Xiaowen Chu|corresponding"
+  ],
+  "2609.19242": [
+    "Suresh, Tarun|co-first+corresponding",
+    "Chaturvedi, Pranshu|co-first+corresponding",
+    "Kang, Hangoo|co-first+corresponding"
+  ],
+  "2605.18739": [
+    "Chen, Yukang|co-first",
+    "Wang, Luozhou|co-first",
+    "Huang, Wei|co-first",
+    "Yang, Shuai|co-first"
+  ],
+  "2505.13211": [
+    "Sand.ai|first"
+  ],
+  "2511.00062": [
+    "NVIDIA|first"
+  ],
+  "2504.08685": [
+    "ByteDance Seed|first"
+  ],
+  "2506.09113": [
+    "ByteDance Seed|first"
+  ],
+  "2510.10620": [
+    "Chenyu Jiang|first"
+  ],
+  "2605.17923": [
+    "Yucheng Guo|first"
+  ],
+  "2609.34318": [
+    "Zihao Fan|first"
+  ],
+  "2510.18121": [
+    "Yonghao Zhuang|first"
+  ],
+  "2412.01523": [
+    "Yujie Wang|first"
+  ],
+  "2412.07894": [
+    "Li, Haoyang|first"
+  ],
+  "2502.21231": [
+    "Hao Ge|first"
+  ],
+  "2309.14509": [
+    "Sam Ade Jacobs|first"
+  ],
+  "megascale-data": [
+    "Juntao Zhao|first"
+  ],
+  "scalefusion": [
+    "Jiacheng Yang|first",
+    "Gennady Pekhimenko|corresponding"
   ]
 }

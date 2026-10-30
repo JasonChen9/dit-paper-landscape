@@ -260,12 +260,12 @@
         "Hong Kong University of Science and Technology (Guangzhou)"
       ],
       "confidence": "high",
-      "paper_id": "2607.11136",
-      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "paper_id": "2608.01150",
+      "paper_title": "Zellige: Moldable Sequence Placement for Mixed Image-Video DiT Training",
       "primary": "Hong Kong University of Science and Technology (Guangzhou)",
-      "published": "2026-07-13",
-      "source": "arXiv HTML",
-      "source_url": "https://arxiv.org/html/2607.11136"
+      "published": "2026-08-02",
+      "source": "arXiv HTML author block",
+      "source_url": "https://arxiv.org/html/2608.01150v1"
     },
     "Guoqing Ma": {
       "all": [
@@ -767,12 +767,12 @@
         "Hong Kong University of Science and Technology"
       ],
       "confidence": "high",
-      "paper_id": "2607.11136",
-      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "paper_id": "2608.01150",
+      "paper_title": "Zellige: Moldable Sequence Placement for Mixed Image-Video DiT Training",
       "primary": "Hong Kong University of Science and Technology",
-      "published": "2026-07-13",
-      "source": "arXiv HTML",
-      "source_url": "https://arxiv.org/html/2607.11136"
+      "published": "2026-08-02",
+      "source": "arXiv HTML author block",
+      "source_url": "https://arxiv.org/html/2608.01150v1"
     },
     "Ling Yang": {
       "all": [
@@ -1372,15 +1372,16 @@
     },
     "Xiaowen Chu": {
       "all": [
-        "Hong Kong University of Science and Technology (Guangzhou)"
+        "Hong Kong University of Science and Technology (Guangzhou)",
+        "Hong Kong University of Science and Technology"
       ],
       "confidence": "high",
-      "paper_id": "2607.11136",
-      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "paper_id": "2608.01150",
+      "paper_title": "Zellige: Moldable Sequence Placement for Mixed Image-Video DiT Training",
       "primary": "Hong Kong University of Science and Technology (Guangzhou)",
-      "published": "2026-07-13",
-      "source": "arXiv HTML",
-      "source_url": "https://arxiv.org/html/2607.11136"
+      "published": "2026-08-02",
+      "source": "arXiv HTML author block",
+      "source_url": "https://arxiv.org/html/2608.01150v1"
     },
     "Xiaoxiao Jiang": {
       "all": [
@@ -1435,12 +1436,12 @@
         "Hong Kong University of Science and Technology (Guangzhou)"
       ],
       "confidence": "high",
-      "paper_id": "2607.11136",
-      "paper_title": "Xema: Efficient Diffusion Serving through Fine-Grained Memory Management and Auto-Configuration",
+      "paper_id": "2608.01150",
+      "paper_title": "Zellige: Moldable Sequence Placement for Mixed Image-Video DiT Training",
       "primary": "Hong Kong University of Science and Technology (Guangzhou)",
-      "published": "2026-07-13",
-      "source": "arXiv HTML",
-      "source_url": "https://arxiv.org/html/2607.11136"
+      "published": "2026-08-02",
+      "source": "arXiv HTML author block",
+      "source_url": "https://arxiv.org/html/2608.01150v1"
     },
     "Xukun Li": {
       "all": [
@@ -1806,7 +1807,7 @@
       "source_url": "https://arxiv.org/html/2606.04463"
     }
   },
-  "generated_at": "2026-08-03",
+  "generated_at": "2026-10-30",
   "institution_counts": {
     "Adobe": 5,
     "Alibaba Group": 3,

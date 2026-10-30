@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-29",
+  "resources": [
+    {
+      "id": "applied-compute-staleness",
+      "title": "Predicting and Controlling Staleness in Fully Asynchronous RL Training",
+      "title_zh": "完全异步RL训练中的陈旧度预测与控制",
+      "description": {
+        "zh": "以系统模型和实践分析异步RL中的排队、并发与策略陈旧度；属于技术文章。",
+        "en": "A technical article analyzing queueing, concurrency and policy staleness in fully asynchronous reinforcement learning."
+      },
+      "url": "https://www.appliedcompute.com/research/staleness-in-fully-async-rl",
+      "kind": "technical-article",
+      "collection_tags": [
+        "systems-research"
+      ],
+      "venue": "Applied Compute 技术文章，2026-07-03（非会议论文）",
+      "venue_evidence_url": "https://www.appliedcompute.com/research/staleness-in-fully-async-rl"
+    },
+    {
+      "id": "autows",
+      "title": "Warp Specialization in Triton: Design and Roadmap",
+      "title_zh": "Triton Warp Specialization：设计与路线图",
+      "description": {
+        "zh": "介绍Triton自动warp specialization的设计、已实现组件与后续规划；路线图不等于全部能力已交付。",
+        "en": "Describes the design, implemented components and roadmap for automatic warp specialization in Triton; planned capabilities are distinguished from delivered features."
+      },
+      "url": "https://pytorch.org/blog/warp-specialization-in-triton-design-and-roadmap/",
+      "kind": "technical-article",
+      "collection_tags": [
+        "systems-research"
+      ],
+      "venue": "不适用：官方技术文章",
+      "venue_evidence_url": "https://pytorch.org/blog/warp-specialization-in-triton-design-and-roadmap/"
+    },
+    {
+      "id": "sala-artifact-pdf",
+      "title": "Signal-Aware Liveness Analysis for Shared Memory Optimization in Warp-Specialized GPU Kernels",
+      "title_zh": "SALA：面向warp specialization的共享内存活跃期分析",
+      "description": {
+        "zh": "共享内存活跃期分析的公开研究artifact；论文PDF与正式发表状态仍需核验。",
+        "en": "A public research artifact for shared-memory liveness analysis in warp-specialized kernels; the paper PDF and formal publication status require verification."
+      },
+      "url": "https://github.com/LancerLab/sala-artifacts",
+      "kind": "research-artifact",
+      "collection_tags": [
+        "systems-research"
+      ],
+      "venue": "CGO 2027（仅作者artifact自述，正式录用未核实）",
+      "venue_evidence_url": "https://github.com/LancerLab/sala-artifacts"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "checked_at": "2026-10-30",
+  "venue_changes_from_previous_snapshot": [
+    {
+      "id": "2204.03458",
+      "short_title": "Video Diffusion Models",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "NeurIPS 2022",
+      "evidence_url": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/39235c56aef13fb05a6adc95eb9d8d66-Abstract-Conference.html"
+    },
+    {
+      "id": "2505.05470",
+      "short_title": "Flow-GRPO",
+      "previous_venue": "ICLR 2026",
+      "current_venue": "NeurIPS 2025",
+      "evidence_url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/3a10c46572628d58cb44fb705f25cbbf-Abstract-Conference.html"
+    },
+    {
+      "id": "2506.08009",
+      "short_title": "Self Forcing",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "NeurIPS 2025",
+      "evidence_url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/f4823f831af67a3ef15e41a85434422a-Abstract-Conference.html"
+    },
+    {
+      "id": "2310.00426",
+      "short_title": "PixArt-α",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "ICLR 2024",
+      "evidence_url": "https://proceedings.iclr.cc/paper_files/paper/2024/file/fe989bb038b5dcc44181255dd6913e43-Paper-Conference.pdf"
+    },
+    {
+      "id": "2401.08740",
+      "short_title": "SiT",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "ECCV 2024",
+      "evidence_url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/9828_ECCV_2024_paper.php"
+    },
+    {
+      "id": "2403.03206",
+      "short_title": "Stable Diffusion 3",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "ICML 2024",
+      "evidence_url": "https://proceedings.mlr.press/v235/esser24a.html"
+    },
+    {
+      "id": "2410.06940",
+      "short_title": "REPA",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "ICLR 2025",
+      "evidence_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/d9e42b4d7163931f3689d6d6fbaa11d0-Abstract-Conference.html"
+    },
+    {
+      "id": "2410.10629",
+      "short_title": "SANA",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "ICLR 2025",
+      "evidence_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/34345e243156da67605d4b63d71c8d98-Abstract-Conference.html"
+    },
+    {
+      "id": "2312.06662",
+      "short_title": "W.A.L.T.",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "ECCV 2024",
+      "evidence_url": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/10270_ECCV_2024_paper.php"
+    },
+    {
+      "id": "2408.06072",
+      "short_title": "CogVideoX",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "ICLR 2025",
+      "evidence_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/ce31378e9f41d8907e97dab172b6c559-Abstract-Conference.html"
+    },
+    {
+      "id": "2402.19481",
+      "short_title": "DistriFusion",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "CVPR 2024",
+      "evidence_url": "https://openaccess.thecvf.com/content/CVPR2024/html/Li_DistriFusion_Distributed_Parallel_Inference_for_High-Resolution_Diffusion_Models_CVPR_2024_paper.html"
+    },
+    {
+      "id": "2411.19108",
+      "short_title": "TeaCache",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "CVPR 2025",
+      "evidence_url": "https://openaccess.thecvf.com/content/CVPR2025/html/Liu_Timestep_Embedding_Tells_Its_Time_to_Cache_for_Video_Diffusion_CVPR_2025_paper.html"
+    },
+    {
+      "id": "2303.04137",
+      "short_title": "Diffusion Policy",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "RSS 2023",
+      "evidence_url": "https://roboticsproceedings.org/rss19/p026.pdf"
+    },
+    {
+      "id": "2506.10100",
+      "short_title": "EfficientVLA",
+      "previous_venue": "arXiv preprint",
+      "current_venue": "NeurIPS 2025",
+      "evidence_url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/3a2ef31a1e45908901adc0ca853a8faf-Abstract-Conference.html"
+    },
+    {
+      "id": "2310.07896",
+      "short_title": "NoMaD",
+      "previous_venue": "CoRL 2023",
+      "current_venue": "ICRA 2024",
+      "evidence_url": "https://ieeexplore.ieee.org/abstract/document/10610665/media"
+    },
+    {
+      "id": "2402.10885",
+      "short_title": "3D Diffuser Actor",
+      "previous_venue": "CVPR 2024",
+      "current_venue": "CoRL 2024（论文集出版于 2025）",
+      "evidence_url": "https://proceedings.mlr.press/v270/ke25a.html"
+    }
+  ],
+  "title_source_checks": [
+    {
+      "id": "2604.10180",
+      "previous_title": "FluidGPU: Fine-Grained Kernel Disaggregation for Large Model Inference on Heterogeneous GPUs",
+      "current_title": "Tessera: Unlocking Heterogeneous GPUs through Kernel-Granularity Disaggregation",
+      "preserved_alias": "FluidGPU",
+      "evidence_url": "https://arxiv.org/abs/2604.10180v3",
+      "checked_at": "2026-10-30",
+      "note": "The current official arXiv metadata and the stored source abstract both name Tessera; the alternative title remains searchable."
+    }
+  ]
+}
