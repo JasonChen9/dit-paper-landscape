@@ -445,6 +445,33 @@
     "bridges.description": "不同主类中内容或标签相近的论文，可作为跨方向阅读线索。",
   });
 
+  Object.assign(COPY.en, {
+    "stats.updated": "Updated November 2026",
+    "search.placeholder": "Search papers and technical resources…",
+    "resources.title": "Technical resources",
+    "resources.description": "Official technical articles and research artifacts, counted separately from papers. Cards are editorial summaries, not source abstracts.",
+    "resources.searchHelp": "The keyword search above also searches these resources; paper filters apply only to papers.",
+    "resources.count": "{count} / {total} resources",
+    "resources.empty": "No resources match the keyword search.",
+    "resources.article": "Technical article / report",
+    "resources.artifact": "Research artifact",
+    "resources.supplement": "Supplementary source",
+    "resources.related": "Technically related · not citation or lineage links",
+  });
+  Object.assign(COPY.zh, {
+    "stats.updated": "2026 年 11 月更新",
+    "search.placeholder": "检索论文与技术资料…",
+    "resources.title": "技术资料",
+    "resources.description": "官方技术文章与研究资料，单独统计。卡片为基于来源的双语简介，可通过来源链接阅读原文。",
+    "resources.searchHelp": "上方关键词同时检索本区；论文分类与时间等筛选仅作用于论文。",
+    "resources.count": "{count} / {total} 项资料",
+    "resources.empty": "没有匹配关键词的技术资料。",
+    "resources.article": "技术文章／报告",
+    "resources.artifact": "研究资料",
+    "resources.supplement": "补充来源",
+    "resources.related": "技术相关 · 不表示引用或继承",
+  });
+
   let language = localStorage.getItem(STORAGE_KEY) === "zh" ? "zh" : "en";
 
   function t(key, values = {}) {

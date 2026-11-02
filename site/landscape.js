@@ -1015,6 +1015,8 @@
       neighbors.append(button);
     });
     container.append(eyebrow, title, fullTitle, summary, links, neighborTitle, neighbors);
+    const related = window.DiTResources?.relatedLinks(paper.arxiv_id);
+    if (related) container.append(related);
     draw();
     window.dispatchEvent(new CustomEvent("dit:paper-selection", { detail: { paperId: paper.arxiv_id } }));
   }

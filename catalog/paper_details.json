@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30",
-  "paper_count": 362,
+  "updated_at": "2026-11-02",
+  "paper_count": 371,
   "description": {
     "en": "Editorial bilingual cards; results describe what the cited work reports, not independent reproduction.",
     "zh": "双语整理卡片；结果描述所引论文报告的结论，不代表独立复现。"
@@ -10849,6 +10849,289 @@
         "verification": "official-proceedings"
       },
       "review_note": "Results follow the official abstract (1.36×); the introduction gives 1.40×. This is inference, not training. Publication precision is the conference year."
+    },
+    "2506.21539": {
+      "title_zh": "WorldVLA：面向自回归动作世界模型",
+      "background": {
+        "zh": "机器人策略需要依据视觉观测生成动作，而环境动力学预测可为控制提供互补的物理知识。",
+        "en": "Robot policies generate actions from visual observations, while predicting environment dynamics can supply complementary physical knowledge for control."
+      },
+      "challenge": {
+        "zh": "分别训练动作与世界模型难以共享知识，自回归生成动作块还会让较早动作的错误向后传播。",
+        "en": "Separately trained action and world models cannot fully share knowledge, and autoregressive action chunks propagate errors from earlier predictions."
+      },
+      "method": {
+        "zh": "在同一离散 token 自回归框架中联合学习动作预测与动作条件图像预测，并在动作块生成时掩蔽先前动作的注意力。",
+        "en": "A shared discrete-token autoregressive framework learns action prediction and action-conditioned image prediction, with prior-action attention masked during action-chunk generation."
+      },
+      "result": {
+        "zh": "作者报告联合训练优于单独训练动作或世界模型，并在动作块生成中通过注意力掩码进一步改善控制表现。",
+        "en": "The authors report that joint training improves over standalone action and world models and that attention masking further improves action-chunk control performance."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2506.21539",
+        "https://arxiv.org/html/2506.21539v1"
+      ],
+      "venue": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2506.21539",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2506.21539",
+        "verification": "arxiv-record"
+      },
+      "review_note": "Author list and first-publication date verified on arXiv; the HTML identifies Jun Cen as the correspondence contact. No official venue verified; indexed as preprint. Policy and world-model modes are distinguished."
+    },
+    "2512.13030": {
+      "title_zh": "Motus：统一的潜动作世界模型",
+      "background": {
+        "zh": "通用具身智能体需要同时理解场景、预测世界并生成动作，还要利用大量缺少动作标注的视频。",
+        "en": "General embodied agents must understand scenes, predict the world and generate actions while learning from abundant videos without action labels."
+      },
+      "challenge": {
+        "zh": "分离的理解、世界模型和控制模块难以统一生成能力，不同机器人动作空间也妨碍共享异构数据。",
+        "en": "Separate understanding, world-model and control modules fragment generative capabilities, while different robot action spaces complicate learning from heterogeneous data."
+      },
+      "method": {
+        "zh": "以 MoT 连接理解、视频和动作专家，通过 UniDiffuser 式噪声调度切换五种模式，并结合光流潜动作、三阶段训练和六层数据金字塔。",
+        "en": "Motus connects understanding, video and action experts through MoT, switches five modes with UniDiffuser-style noise schedules, and combines optical-flow latent actions with three-stage training and a six-level data pyramid."
+      },
+      "result": {
+        "zh": "作者在仿真中报告相对 X-VLA 和 π0.5 分别提升 15% 和 45%，并在所测真实任务上报告 11%–48% 的改善。",
+        "en": "The authors report simulation improvements of 15% over X-VLA and 45% over π0.5, with gains of 11%–48% on the evaluated real-world tasks."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2512.13030",
+        "https://openaccess.thecvf.com/content/CVPR2026/html/Bi_Motus_A_Unified_Latent_Action_World_Model_CVPR_2026_paper.html"
+      ],
+      "venue": {
+        "name": "CVPR 2026",
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Bi_Motus_A_Unified_Latent_Action_World_Model_CVPR_2026_paper.html",
+        "status": "published",
+        "evidence_url": "https://openaccess.thecvf.com/content/CVPR2026/html/Bi_Motus_A_Unified_Latent_Action_World_Model_CVPR_2026_paper.html",
+        "verification": "official-publication-page"
+      },
+      "review_note": "CVPR 2026 publication verified in official CVF proceedings; six joint first authors explicitly marked on the official paper first page. Abstract is the latest arXiv v2 text; percentages preserve the authors' reported wording rather than being relabeled percentage-point gains."
+    },
+    "2604.27792": {
+      "title_zh": "MotuBrain：面向机器人控制的先进世界动作模型",
+      "background": {
+        "zh": "机器人 VLA 具有语义泛化能力，但精细控制仍需要理解多视角观测下的世界动力学。",
+        "en": "Robot VLAs generalize semantically, but precise control also requires understanding world dynamics from multiview observations."
+      },
+      "challenge": {
+        "zh": "跨机器人本体的数据和动作表示不一致，联合视频–动作生成还必须满足长时闭环控制的计算要求。",
+        "en": "Robot embodiments differ in data and action representations, while joint video-action generation must meet the compute demands of long-horizon closed-loop control."
+      },
+      "method": {
+        "zh": "以 UniDiffuser 与三流 MoT 统一视频和动作，加入多视角建模、独立文本流和共享动作表示，并组合步数减少、编译、FP8、DiT 缓存与动作专用推理。",
+        "en": "A UniDiffuser formulation and three-stream MoT unify video and actions with multiview modeling, a dedicated text stream and shared action representations, while deployment combines fewer steps, compilation, FP8, DiT caching and action-only inference."
+      },
+      "result": {
+        "zh": "作者报告 RoboTwin 2.0 干净及随机设置的平均成功率为 95.8% 和 96.1%，组合优化相对朴素基线加速超过 50 倍、推理最高达 11 Hz。",
+        "en": "The authors report 95.8% and 96.1% average success in clean and randomized RoboTwin 2.0 settings, with combined optimizations exceeding 50× speedup over a naive baseline and reaching up to 11 Hz inference."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.27792"
+      ],
+      "venue": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2604.27792",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2604.27792",
+        "verification": "arxiv-record"
+      },
+      "review_note": "Current arXiv v5 title is Motubrain; MotuBrain is retained as the searchable short title/alias. First public date remains 2026-04-30, not the July revision date. The 50× speedup combines modeling, precision, compiler and caching changes; 11 Hz is model inference, not a generic low-level control frequency. No official venue verified."
+    },
+    "2601.16163": {
+      "title_zh": "Cosmos Policy：微调视频模型以实现视觉运动控制与规划",
+      "background": {
+        "zh": "预训练视频生成模型包含物理交互和时空演化先验，可用于提升机器人视觉运动策略。",
+        "en": "Pretrained video generators contain priors about physical interaction and spatiotemporal evolution that can benefit robot visuomotor policies."
+      },
+      "challenge": {
+        "zh": "已有视频策略适配通常需要多阶段后训练或新增动作模块，且直接执行与基于未来预测的规划需要共同的表示。",
+        "en": "Prior video-policy adaptation often adds training stages or action modules, while direct execution and future-conditioned planning need a common representation."
+      },
+      "method": {
+        "zh": "将动作、未来状态图像和价值编码为潜帧，在不修改 Cosmos-Predict2 架构的情况下单阶段后训练，并按需用世界模型与价值选择动作轨迹。",
+        "en": "Cosmos Policy encodes actions, future-state images and values as latent frames, post-trains Cosmos-Predict2 in one stage without architectural changes, and optionally uses world predictions and values to select action trajectories."
+      },
+      "result": {
+        "zh": "作者报告 LIBERO 和 RoboCasa 平均成功率分别为 98.5% 和 67.1%，并在其真实双臂任务比较中取得最高平均得分。",
+        "en": "The authors report 98.5% and 67.1% average success on LIBERO and RoboCasa and the highest average score in their real-world bimanual-task comparison."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2601.16163",
+        "https://proceedings.iclr.cc/paper_files/paper/2026/hash/748becc400a57c0e31cfe6a2e7951467-Abstract-Conference.html"
+      ],
+      "venue": {
+        "name": "ICLR 2026",
+        "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/748becc400a57c0e31cfe6a2e7951467-Abstract-Conference.html",
+        "status": "published",
+        "evidence_url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/748becc400a57c0e31cfe6a2e7951467-Abstract-Conference.html",
+        "verification": "official-publication-page"
+      },
+      "review_note": "ICLR 2026 publication verified in official proceedings. Direct-policy execution and optional model-based planning are distinguished; not every execution mode must generate future video. Original arXiv metadata preserves the project URL omitted by rendered abstract link text."
+    },
+    "2603.10448": {
+      "title_zh": "DiT4DiT：联合建模视频动力学与动作以实现可泛化机器人控制",
+      "background": {
+        "zh": "机器人策略需要理解环境随动作变化的物理动态，视频生成预训练可提供静态图文表示之外的时空先验。",
+        "en": "Robot policies need physical dynamics beyond static image-text representations, and pretrained video generators provide transferable spatiotemporal priors."
+      },
+      "challenge": {
+        "zh": "仅靠有限机器人动作数据学习动力学效率低，而直接重建未来视频会增加控制链路中的生成开销。",
+        "en": "Limited robot-action data constrain dynamics learning, while reconstructing future video adds generation work to the control path."
+      },
+      "method": {
+        "zh": "级联视频 DiT 与动作 DiT，以视频去噪中间特征条件化动作，并用解耦时间步与噪声尺度的双流匹配目标联合训练。",
+        "en": "DiT4DiT cascades video and action DiTs, conditions actions on intermediate video-denoising features, and jointly trains them with dual flow matching at decoupled timesteps and noise scales."
+      },
+      "result": {
+        "zh": "作者的 arXiv 摘要报告 LIBERO 与 RoboCasa GR1 平均成功率分别为 98.6% 和 50.8%，并报告样本效率提升超过 10 倍、收敛加速最高 7 倍。",
+        "en": "The arXiv abstract reports 98.6% average LIBERO success and 50.8% on RoboCasa GR1, with over 10× greater sample efficiency and up to 7× faster convergence."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.10448",
+        "https://dit4dit.github.io/",
+        "https://github.com/Mondo-Robotics/DiT4DiT"
+      ],
+      "venue": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2603.10448",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2603.10448",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "review_note": "Card claims follow the linked primary sources and describe author-reported results; formal conference or journal publication has not been verified."
+    },
+    "2606.09811": {
+      "title_zh": "AHA-WAM：通过观测引导上下文路由实现异步时域自适应世界动作建模",
+      "background": {
+        "zh": "世界动作模型以视觉动态辅助机器人控制，但规划未来环境与执行短动作片段具有不同的时间尺度。",
+        "en": "World-action models use visual dynamics for robot control, although long-horizon world planning and short action execution operate on different timescales."
+      },
+      "challenge": {
+        "zh": "同频运行会重复计算信息量有限的相邻画面，而复用低频规划上下文又必须处理规划与最新观测之间的时间错位。",
+        "en": "Lockstep updates repeat weakly informative near-term predictions, while reusing slow planner context requires handling offsets from current observations."
+      },
+      "method": {
+        "zh": "用滚动 KV 记忆的低频视频 DiT 配合高频动作 DiT，并通过时域自适应偏移训练及观测引导上下文路由支持异步闭环执行。",
+        "en": "AHA-WAM pairs a low-frequency video DiT with rolling KV memory and a high-frequency action DiT, using horizon-adaptive offset training and observation-guided routing for asynchronous closed-loop execution."
+      },
+      "result": {
+        "zh": "作者报告无机器人数据预训练时 RoboTwin 平均成功率 92.80%、四项真机任务成功率 78.3%，闭环控制达到 24.17 Hz、相对 Fast-WAM 加速 4.59 倍。",
+        "en": "Without robot-data pretraining, the authors report 92.80% average RoboTwin success, 78.3% success across four real-world tasks, and 24.17 Hz closed-loop control with a 4.59× speedup over Fast-WAM."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.09811",
+        "https://arxiv.org/html/2606.09811v1",
+        "https://serene-sivy.github.io/aha-wam/",
+        "https://github.com/serene-sivy/AHA-WAM"
+      ],
+      "venue": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2606.09811",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2606.09811",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "review_note": "Card claims follow the linked primary sources and describe author-reported results; formal conference or journal publication has not been verified."
+    },
+    "2608.04404": {
+      "title_zh": "Faster-WAM：以高效推理时未来条件构建鲁棒世界动作模型",
+      "background": {
+        "zh": "机器人策略可利用未来场景表示应对分布偏移，但联合去噪视频与动作的计算成本较高。",
+        "en": "Robot policies can use future-scene representations to handle distribution shifts, but jointly denoising video and actions is expensive."
+      },
+      "challenge": {
+        "zh": "完全移除推理时未来条件可能降低鲁棒性，而密集逐层融合又使视频动作交互成为额外开销。",
+        "en": "Removing future conditioning at inference can reduce robustness, whereas dense layerwise fusion makes video-action interaction costly."
+      },
+      "method": {
+        "zh": "一次计算未来表示，以 SparseMoT 选择少量交互阶段，并用 Interval KV-Fusion 聚合多深度 KV 特征供动作去噪复用。",
+        "en": "Faster-WAM computes future representations once, uses SparseMoT to select a few interaction stages, and aggregates multi-depth KV features with Interval KV-Fusion for reuse during action denoising."
+      },
+      "result": {
+        "zh": "作者报告 LIBERO-Plus 成功率从 Fast-WAM 的 49.14% 提升至 73.57%，同时推理比 Joint-WAM 快 2.21 倍。",
+        "en": "The authors report 73.57% success on LIBERO-Plus versus 49.14% for Fast-WAM, while inference runs 2.21× faster than Joint-WAM."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.04404",
+        "https://arxiv.org/html/2608.04404v1",
+        "https://github.com/hustvl/FasterWAM"
+      ],
+      "venue": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2608.04404",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2608.04404",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "review_note": "Card claims follow the linked primary sources and describe author-reported results; formal conference or journal publication has not been verified."
+    },
+    "2609.34608": {
+      "title_zh": "WAMachine：通过自适应中间状态实现高效世界动作模型推理",
+      "background": {
+        "zh": "世界动作模型在闭环重规划、迭代去噪和 Transformer 层内反复处理相关中间状态，带来较高观测到动作延迟。",
+        "en": "World-action models repeatedly process related intermediate states across closed-loop replans, denoising iterations, and Transformer layers, increasing observation-to-action latency."
+      },
+      "challenge": {
+        "zh": "新观测与规划上下文会使旧状态失效，直接复用容易损害控制表现，必须判断何时适配与何时重新计算。",
+        "en": "Fresh observations and planning contexts can invalidate retained states, so useful reuse requires deciding when to adapt them and when to recompute."
+      },
+      "method": {
+        "zh": "无需训练地组合轨迹重映射、观测重绑定与残差重缩放，在一致性或探针检查不通过时刷新相应计算。",
+        "en": "WAMachine combines training-free trajectory remapping, observation rebinding, and residual rescaling, refreshing relevant computation when consistency or probe checks fail."
+      },
+      "result": {
+        "zh": "作者在三类 WAM 上报告观测到动作延迟加速 1.47–3.05 倍、每次重规划 GPU 推理加速 2.23–3.27 倍，并保留原生任务成功表现的 96.69%–99.54%。",
+        "en": "Across three WAM architectures, the authors report 1.47–3.05× lower observation-to-action latency and 2.23–3.27× faster GPU inference per replan, preserving 96.69–99.54% of native task success."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.34608",
+        "https://arxiv.org/html/2609.34608v1"
+      ],
+      "venue": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2609.34608",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2609.34608",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "review_note": "Card claims follow the linked primary sources and describe author-reported results; formal conference or journal publication has not been verified."
+    },
+    "2609.07398": {
+      "title_zh": "OpenWAM：迈向系统化世界动作模型预训练的开放模块化探索",
+      "background": {
+        "zh": "世界动作模型将视频生成先验迁移为机器人控制能力，但骨干、表示、信息流和训练数据往往紧密耦合。",
+        "en": "World-action models transfer video-generation priors into robot control, but backbones, representations, information flow, and training data are often tightly coupled."
+      },
+      "challenge": {
+        "zh": "整套实现同时变化会掩盖有效设计因素，使预训练知识如何迁移、世界与动作如何协同难以公平比较。",
+        "en": "Changing complete implementations obscures which design choices matter and prevents controlled comparisons of knowledge transfer and world-action synergy."
+      },
+      "method": {
+        "zh": "以 OpenWAM-Infra 统一模块与实验流程，系统比较关键设计，并用独立动作容量、显式信息流、同步联合去噪及人类机器人联合预训练构建 OpenWAM-α。",
+        "en": "OpenWAM-Infra standardizes modules and experiments, and OpenWAM-α combines dedicated action capacity, explicit information flow, synchronized joint denoising, and joint human-robot pretraining."
+      },
+      "result": {
+        "zh": "作者报告在约 6,400 小时第一人称人类与机器人数据上预训练后在八个仿真基准与多种真机形态上具有较强表现，并公开基础设施、评测协议、模型及数据配方。",
+        "en": "With pretraining on roughly 6,400 hours of egocentric human and robot data, the authors report strong performance across eight simulation benchmarks and multiple real-robot embodiments, and release infrastructure, evaluation protocols, models, and data recipes."
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.07398",
+        "https://openwam-official.github.io/",
+        "https://github.com/OpenWAM-Official/OpenWAM"
+      ],
+      "venue": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2609.07398",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2609.07398",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "review_note": "Card claims follow the linked primary sources and describe author-reported results; formal conference or journal publication has not been verified."
     }
   }
 }

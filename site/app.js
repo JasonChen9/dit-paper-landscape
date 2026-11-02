@@ -1,4 +1,4 @@
-const CATALOG_VERSION = "20261030-editorial-taxonomy-v1";
+const CATALOG_VERSION = "20261102-dyna-wam-v1";
 const DEPLOY_ASSET_VERSION = document.querySelector('meta[name="deploy-version"]')?.content;
 const DATA_VERSION = DEPLOY_ASSET_VERSION && !DEPLOY_ASSET_VERSION.startsWith("__")
   ? DEPLOY_ASSET_VERSION
@@ -614,10 +614,14 @@ function createPaperCard(paper) {
     });
     links.append(toggle);
     card.append(meta, heading, fullTitle, authors, classification, summary, tags, links, panel);
+    const related = window.DiTResources?.relatedLinks(paper.arxiv_id);
+    if (related) card.append(related);
     return card;
   }
 
   card.append(meta, heading, fullTitle, authors, classification, summary, tags, links);
+  const related = window.DiTResources?.relatedLinks(paper.arxiv_id);
+  if (related) card.append(related);
   return card;
 }
 
@@ -799,6 +803,7 @@ function render() {
 
   renderClusterFilters();
   renderFacetFilters();
+  window.DiTResources?.render(state.query);
   updateURL();
   syncLandscapeListFilter();
 }
@@ -1087,6 +1092,7 @@ async function initialize() {
     state.abstracts = new Map(Object.entries(catalog.abstracts));
     state.taxonomy = catalog.taxonomy;
     state.papers = catalog.papers;
+    window.DiTResources?.init(catalog);
     const usablePrecomputedLandscape = precomputedLandscape?.catalogSignature === catalogSignature(state.papers)
       && precomputedLandscape?.taxonomySignature === taxonomySignature(state.papers)
       ? precomputedLandscape

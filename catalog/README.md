@@ -1,6 +1,6 @@
 # 论文目录与数据约定
 
-目录包含 362 篇独立论文。每篇以稳定 ID 关联基本信息、双语卡片、完整摘要及分类；非论文资源单列，不混入论文统计。网站只读取已生成的数据，元数据核验、翻译和地图计算在维护阶段完成。
+目录包含 371 篇独立论文。每篇以稳定 ID 关联基本信息、双语卡片、完整摘要及分类；非论文资源单列，不混入论文统计。网站只读取已生成的数据，元数据核验、翻译和地图计算在维护阶段完成。
 
 ## 数据文件
 
@@ -16,7 +16,8 @@
 | `author_affiliations.json` | 关键作者论文的单位快照与依据 |
 | `id_aliases.json` | 简称或其他 ID 到论文规范 ID 的映射 |
 | `import_provenance.json` | 收录来源及待核验项 |
-| `resources.json` | 软件、项目或技术文章等非论文资料 |
+| `resources.json` | 软件、项目或技术文章等非论文资料；含双语介绍、分类、来源与日期精度 |
+| `related_work.json` | 人工技术关联及双语理由；与引用、继承及算法计算的相似度区分 |
 | `metadata_quality.json` / `metadata_corrections.json` / `tag_review.json` | 元数据检查与修订依据 |
 | `semantic_landscape.json` | 可选语义快照；能否使用由目录覆盖和内容签名决定 |
 
@@ -74,6 +75,14 @@
 
 同维度多选取并集，跨维度取交集；未选表示不限。主类、应用领域、系统层级、收录来源与搜索、时间、作者筛选共同作用。URL 保存筛选状态；导出采用相同筛选结果。每篇只保存一份 PDF，跨方向联系由分类和笔记链接表达。
 
+## 技术资料与关联
+
+技术文章与官方报告继续使用 `resources.json` 中的独立稳定 `id`，不写入 `papers.csv`、论文摘要表或论文计数。资料页使用 `description` 和可选双语四句 `details` 展示整理内容，不能将网站简介改标为原始摘要。Dyna-2、Dyna-2.1、Dyna-2 infrastructure 与 Dyna-1 均为 `technical-article`，没有虚构会议或 arXiv 信息；只知月份的资料保留月份精度。
+
+资料的 `primary_topic`、`primary_reason`、`application_domains` 和 `system_layers` 沿用论文分类词表。网页技术资料区与论文共享关键词检索，论文的分类、时间等筛选不作用于该独立区域。资料暂不进入论文收藏或论文导出。
+
+`related_work.json` 的 `links` 每项使用 `source_id`、`target_id`、`kind=technical-related`、双语 `reason` 与 `evidence_urls`；连接论文或资源 ID，按无向关系去重。关联仅为技术阅读线索，不默认表示引用、继承或可以直接组合。构建产物的 `resourceIds` 与 `relatedWork` 保留这些资料和关联；`paperIds`、论文位置与作者图仍仅统计论文。两个 OpenWAM 分别以 `2609.07398` 与 `2610.07922` 保存。
+
 ## 作者与地图
 
 关键作者仅包括第一作者、论文明确标注的共同第一作者和通讯作者，角色分别为 `first`、`co-first`、`corresponding`。不能仅从作者顺序推断共一或通讯。同一作者兼具多种角色时可写为 `姓名|co-first+corresponding`。
@@ -96,6 +105,6 @@ node scripts/check_taxonomy_filters.cjs
 node scripts/build_landscape_data.mjs catalog/papers.csv tmp/landscape.json catalog/author_affiliations.json
 ```
 
-校验要求 CSV、卡片、摘要和人工分类的 ID 完全对应，检查双语字段、日期、公开 URL、发表证据和分类值。需要固定论文数量时可添加 `--expected-count 362`；新增论文后相应调整。筛选检查覆盖同维度并集、跨维度交集及组合场景。
+校验要求 CSV、卡片、摘要和人工分类的 ID 完全对应，检查双语字段、日期、公开 URL、发表证据和分类值。需要固定论文数量时可添加 `--expected-count 371`；新增论文后相应调整。筛选检查覆盖同维度并集、跨维度交集及组合场景。
 
 地图构建不下载 PDF 或模型。前端读取的文件复制与本地预览步骤见 [项目 README](../README.md)；部署使用相同数据及构建脚本。

@@ -1,5 +1,26 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700&display=swap");
 
+.technical-resources {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 90px;
+}
+.resource-card {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  scroll-margin-top: 90px;
+}
+.resource-heading { cursor: pointer; line-height: 1.6; }
+.resource-title { font-weight: 500; overflow-wrap: anywhere; }
+.resource-kind { margin-left: 12px; color: var(--faint); font-size: 0.75rem; }
+.resource-body { padding: 16px 0 4px; }
+.resource-note { color: var(--muted); font-size: 0.8rem; line-height: 1.6; }
+.technical-related { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin-top: 16px; font-size: 0.75rem; }
+.technical-related-label { flex-basis: 100%; color: var(--faint); }
+.technical-related a { overflow-wrap: anywhere; }
+.resource-heading:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
 :root {
   color-scheme: light;
   --bg: #ffffff;

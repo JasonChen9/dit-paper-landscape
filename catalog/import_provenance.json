@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30",
+  "updated_at": "2026-11-02",
   "scope": "Original map, systems research (including the earlier LongVideoLab review), and robotics reading collection. Private paths and research notes are excluded.",
   "counts": {
     "original": 156,
-    "added": 206,
-    "papers": 362,
-    "resources": 3,
-    "bilingual_cards": 362,
+    "added": 215,
+    "papers": 371,
+    "resources": 7,
+    "bilingual_cards": 371,
     "authors_unverified": 0,
     "dates_unknown": 0,
-    "official_venue_links": 120
+    "official_venue_links": 122
   },
   "collections": {
     "original": {
@@ -10337,6 +10337,354 @@
       "abstract_kind": "source-abstract",
       "abstract_extraction": "official-proceedings-abstract",
       "chinese_abstract_kind": "translation"
+    },
+    "2506.21539": {
+      "collections": [
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2506.21539",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2506.21539",
+        "https://arxiv.org/html/2506.21539v1"
+      ],
+      "venue_review": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2506.21539",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2506.21539",
+        "verification": "arxiv-record"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2506.21539",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "formal-venue-unverified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-citation-abstract-meta",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_version": "v1",
+        "verification_note": "Author list and first-publication date verified on arXiv; the HTML identifies Jun Cen as the correspondence contact. No official venue verified; indexed as preprint. Policy and world-model modes are distinguished.",
+        "project_url": "https://github.com/alibaba-damo-academy/WorldVLA"
+      }
+    },
+    "2512.13030": {
+      "collections": [
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2512.13030",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2512.13030",
+        "https://openaccess.thecvf.com/content/CVPR2026/html/Bi_Motus_A_Unified_Latent_Action_World_Model_CVPR_2026_paper.html"
+      ],
+      "venue_review": {
+        "name": "CVPR 2026",
+        "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Bi_Motus_A_Unified_Latent_Action_World_Model_CVPR_2026_paper.html",
+        "status": "published",
+        "evidence_url": "https://openaccess.thecvf.com/content/CVPR2026/html/Bi_Motus_A_Unified_Latent_Action_World_Model_CVPR_2026_paper.html",
+        "verification": "official-publication-page"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2512.13030",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "source-verified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-citation-abstract-meta",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_version": "v2",
+        "verification_note": "CVPR 2026 publication verified in official CVF proceedings; six joint first authors explicitly marked on the official paper first page. Abstract is the latest arXiv v2 text; percentages preserve the authors' reported wording rather than being relabeled percentage-point gains.",
+        "project_url": "https://motus-robotics.github.io/motus",
+        "key_author_evidence_url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Bi_Motus_A_Unified_Latent_Action_World_Model_CVPR_2026_paper.pdf"
+      }
+    },
+    "2604.27792": {
+      "collections": [
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2604.27792",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2604.27792"
+      ],
+      "venue_review": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2604.27792",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2604.27792",
+        "verification": "arxiv-record"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2604.27792",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "formal-venue-unverified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-citation-abstract-meta",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_version": "v5",
+        "verification_note": "Current arXiv v5 title is Motubrain; MotuBrain is retained as the searchable short title/alias. First public date remains 2026-04-30, not the July revision date. The 50× speedup combines modeling, precision, compiler and caching changes; 11 Hz is model inference, not a generic low-level control frequency. No official venue verified.",
+        "project_url": "https://www.genspi.com/en/motubrain",
+        "code_url": "https://github.com/shengshu-ai/Motubrain"
+      }
+    },
+    "2601.16163": {
+      "collections": [
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2601.16163",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2601.16163",
+        "https://proceedings.iclr.cc/paper_files/paper/2026/hash/748becc400a57c0e31cfe6a2e7951467-Abstract-Conference.html"
+      ],
+      "venue_review": {
+        "name": "ICLR 2026",
+        "url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/748becc400a57c0e31cfe6a2e7951467-Abstract-Conference.html",
+        "status": "published",
+        "evidence_url": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/748becc400a57c0e31cfe6a2e7951467-Abstract-Conference.html",
+        "verification": "official-publication-page"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2601.16163",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "source-verified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-citation-abstract-meta",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_version": "v1",
+        "verification_note": "ICLR 2026 publication verified in official proceedings. Direct-policy execution and optional model-based planning are distinguished; not every execution mode must generate future video. Original arXiv metadata preserves the project URL omitted by rendered abstract link text.",
+        "project_url": "https://research.nvidia.com/labs/dir/cosmos-policy/"
+      }
+    },
+    "2603.10448": {
+      "collections": [
+        "systems-research",
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2603.10448",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2603.10448",
+        "https://dit4dit.github.io/",
+        "https://github.com/Mondo-Robotics/DiT4DiT"
+      ],
+      "venue_review": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2603.10448",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2603.10448",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2603.10448",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "verified-arxiv-metadata",
+        "formal-venue-not-verified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-abstract-page",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_url": "https://arxiv.org/abs/2603.10448",
+        "source_version": "v2",
+        "source_metadata": "arXiv citation meta tags and first submission date",
+        "notes": [
+          "The current arXiv v2 abstract reports RoboCasa GR1 50.8%; the project/code pages report 56.7% for a released checkpoint. Cards and full abstracts use the arXiv result consistently rather than combining evaluation versions.",
+          "Corresponding roles are explicitly identified on the official project page."
+        ],
+        "venue_check": "Official arXiv and linked project/code pages did not establish a conference or journal publication; retained as preprint.",
+        "project_url": "https://dit4dit.github.io/",
+        "code_url": "https://github.com/Mondo-Robotics/DiT4DiT"
+      }
+    },
+    "2606.09811": {
+      "collections": [
+        "systems-research",
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2606.09811",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2606.09811",
+        "https://arxiv.org/html/2606.09811v1",
+        "https://serene-sivy.github.io/aha-wam/",
+        "https://github.com/serene-sivy/AHA-WAM"
+      ],
+      "venue_review": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2606.09811",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2606.09811",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2606.09811",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "verified-arxiv-metadata",
+        "formal-venue-not-verified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-abstract-page",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_url": "https://arxiv.org/abs/2606.09811",
+        "source_version": "v1",
+        "source_metadata": "arXiv citation meta tags and first submission date",
+        "notes": [
+          "The card uses the base AHA-WAM 24.17 Hz result, not the 56.95 Hz ODE-distilled AHA-WAM-Flash variant.",
+          "Yao Mu is explicitly identified as corresponding author in the official paper HTML; unspecified equal-contribution markers are not inferred from author order."
+        ],
+        "venue_check": "Official arXiv and linked project/code pages did not establish a conference or journal publication; retained as preprint.",
+        "project_url": "https://serene-sivy.github.io/aha-wam/",
+        "code_url": "https://github.com/serene-sivy/AHA-WAM"
+      }
+    },
+    "2608.04404": {
+      "collections": [
+        "systems-research",
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2608.04404",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2608.04404",
+        "https://arxiv.org/html/2608.04404v1",
+        "https://github.com/hustvl/FasterWAM"
+      ],
+      "venue_review": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2608.04404",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2608.04404",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2608.04404",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "verified-arxiv-metadata",
+        "formal-venue-not-verified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-abstract-page",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_url": "https://arxiv.org/abs/2608.04404",
+        "source_version": "v1",
+        "source_metadata": "arXiv citation meta tags and first submission date",
+        "notes": [
+          "Identity is pinned to arXiv 2608.04404 and hustvl/FasterWAM, not another project with a similar Faster-WAM name.",
+          "Speed and robustness comparisons use different named baselines (Joint-WAM and Fast-WAM respectively); the card preserves that distinction.",
+          "The official paper explicitly identifies Xinggang Wang as corresponding author; project leader is not treated as a corresponding-author role."
+        ],
+        "venue_check": "Official arXiv and linked project/code pages did not establish a conference or journal publication; retained as preprint.",
+        "code_url": "https://github.com/hustvl/FasterWAM"
+      }
+    },
+    "2609.34608": {
+      "collections": [
+        "systems-research",
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2609.34608",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2609.34608",
+        "https://arxiv.org/html/2609.34608v1"
+      ],
+      "venue_review": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2609.34608",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2609.34608",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2609.34608",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "verified-arxiv-metadata",
+        "formal-venue-not-verified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-abstract-page",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_url": "https://arxiv.org/abs/2609.34608",
+        "source_version": "v1",
+        "source_metadata": "arXiv citation meta tags and first submission date",
+        "notes": [
+          "The arXiv citation metadata spells the first author as Zhinnan Liu, while the submitter line says Zhinan Liu; the catalog preserves the citation metadata spelling.",
+          "96.69–99.54% is retention relative to native model task success, not an absolute success rate.",
+          "Observation-to-action and GPU-per-replan speedups are separate metrics and are not merged."
+        ],
+        "venue_check": "Official arXiv and linked project/code pages did not establish a conference or journal publication; retained as preprint."
+      }
+    },
+    "2609.07398": {
+      "collections": [
+        "systems-research",
+        "robotics-library"
+      ],
+      "source_url": "https://arxiv.org/abs/2609.07398",
+      "metadata_basis": "official-arxiv-and-publication-pages",
+      "card_evidence_urls": [
+        "https://arxiv.org/abs/2609.07398",
+        "https://openwam-official.github.io/",
+        "https://github.com/OpenWAM-Official/OpenWAM"
+      ],
+      "venue_review": {
+        "name": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2609.07398",
+        "status": "preprint",
+        "evidence_url": "https://arxiv.org/abs/2609.07398",
+        "verification": "official-arxiv-page; no official conference or journal venue verified"
+      },
+      "pdf_url": "https://arxiv.org/pdf/2609.07398",
+      "date_precision": "day",
+      "date_basis": "arxiv-first-public-date",
+      "metadata_status": [
+        "verified-arxiv-metadata",
+        "formal-venue-not-verified"
+      ],
+      "abstract_kind": "source-abstract",
+      "abstract_extraction": "arxiv-abstract-page",
+      "chinese_abstract_kind": "translation",
+      "verification": {
+        "verified_at": "2026-11-02",
+        "source_url": "https://arxiv.org/abs/2609.07398",
+        "source_version": "v1",
+        "source_metadata": "arXiv citation meta tags and first submission date",
+        "notes": [
+          "This is arXiv 2609.07398 from OpenWAM-Official, distinct from the existing composable-framework paper 2610.07922; do not merge IDs or reuse that paper’s metadata.",
+          "The official project page explicitly marks five equal-contribution authors; equal-advising marks on Lin Shao and Hang Zhao are not treated as corresponding-author labels.",
+          "The approximately 6,400-hour wording follows the source abstract; the project page further specifies 6,369 hours."
+        ],
+        "venue_check": "Official arXiv and linked project/code pages did not establish a conference or journal publication; retained as preprint.",
+        "project_url": "https://openwam-official.github.io/",
+        "code_url": "https://github.com/OpenWAM-Official/OpenWAM"
+      }
     }
   },
   "review_queue": [

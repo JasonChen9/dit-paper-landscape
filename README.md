@@ -4,7 +4,7 @@
 
 [在线浏览](https://jasonchen9.github.io/dit-paper-landscape/) · [论文目录](catalog/papers.csv) · [数据维护说明](catalog/README.md)
 
-目录收录 **362 篇独立论文**，每篇提供中英文介绍、英文原始摘要及完整中文译文；其中 120 篇已有核验过的会议或期刊链接。软件和技术文章单列在 `catalog/resources.json`，不计入论文数。
+目录收录 **371 篇独立论文**，每篇提供中英文介绍、英文原始摘要及完整中文译文；其中 122 篇已有核验过的会议或期刊链接。另有 **7 项技术资料**，包括 Dyna 系列官方报告；在技术资料区单独展示，不计入论文数。
 
 ## 浏览与检索
 
@@ -13,6 +13,7 @@
 - **论文地图与作者地图**：支持缩放、平移、节点聚焦和地图内搜索。地图搜索保留当前图并高亮匹配项，点击结果定位节点；作者取消聚焦后恢复先前视野。
 - **时间轴**：默认选择全部时间。当前年份前四年的年初以前压缩为一个短区段，近四年占据主要宽度；压缩只改变显示比例。
 - **列表与导出**：检索标题、作者、标签及摘要；筛选状态保存在 URL。当前筛选结果可完整导出为 Markdown 或独立 HTML，不受分页影响。
+- **技术资料与关联**：技术文章以双语四句和官方来源呈现，关键词可同时检索；论文分类、时间筛选及导出仍以论文为范围。人工关联明确标为“技术相关”，与地图中的相似度连线分开，不表示引用或继承。
 - **个人收藏夹**：主页侧栏提供收藏及分类入口，展开后可新建、重命名、排序和删除分类；同一篇可加入多个分类。支持多选整理、论文批注，以及沿用列表格式的 Markdown / HTML 导出，可选附带批注。
 - **界面**：中英文切换、深浅主题、适配手机。网站读取静态数据，访问时不调用模型或翻译服务。
 
@@ -39,7 +40,7 @@ node scripts/check_library_export.cjs
 
 mkdir -p tmp/site-preview/data
 cp -R site/. tmp/site-preview/
-cp catalog/papers.csv catalog/summaries_en.json catalog/abstracts.json catalog/paper_details.json catalog/taxonomy.json catalog/paper_taxonomy.json catalog/id_aliases.json tmp/site-preview/data/
+cp catalog/papers.csv catalog/summaries_en.json catalog/abstracts.json catalog/paper_details.json catalog/taxonomy.json catalog/paper_taxonomy.json catalog/id_aliases.json catalog/resources.json catalog/related_work.json tmp/site-preview/data/
 node scripts/build_landscape_data.mjs catalog/papers.csv tmp/site-preview/data/landscape.json catalog/author_affiliations.json
 
 python3 - <<'PY'

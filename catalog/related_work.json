@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-02",
+  "description": {
+    "en": "Editorial technical reading links, not verified citations or inheritance. Stored separately from computed map-similarity edges.",
+    "zh": "人工标注的技术阅读关联，不表示已核实引用或继承；与地图相似度连线分开保存。"
+  },
+  "links": [
+    {
+      "source_id": "dyna-2",
+      "target_id": "dyna-2-infrastructure",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Model scaling and the data/training infrastructure needed to support it.",
+        "zh": "模型规模研究及支撑其数据与训练规模的基础设施。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2",
+        "https://www.dyna.co/research/dyna-2-infrastructure"
+      ]
+    },
+    {
+      "source_id": "dyna-2",
+      "target_id": "dyna-2.1",
+      "kind": "technical-related",
+      "reason": {
+        "en": "World-action policies within a layered physical-agent workflow.",
+        "zh": "世界动作策略在分层物理智能体工作流中的应用。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2",
+        "https://www.dyna.co/dyna-2.1"
+      ]
+    },
+    {
+      "source_id": "dyna-1",
+      "target_id": "dyna-2.1",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Recovery and deployment data for continuous tasks and complete workflows.",
+        "zh": "持续任务与完整工作流中的错误恢复和部署数据利用。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/research/dyna-1",
+        "https://www.dyna.co/dyna-2.1"
+      ]
+    },
+    {
+      "source_id": "dyna-2",
+      "target_id": "2602.15922",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Video-based world-action learning and transfer across robot embodiments, with different inference paths.",
+        "zh": "视频世界动作学习与跨机器人本体迁移，推理路径并不相同。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2",
+        "https://arxiv.org/abs/2602.15922"
+      ]
+    },
+    {
+      "source_id": "dyna-2",
+      "target_id": "2603.16666",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Video prediction as a training objective without requiring future-video generation in every policy mode.",
+        "zh": "以视频预测辅助训练，而非要求所有策略模式在线生成未来视频。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2",
+        "https://arxiv.org/abs/2603.16666"
+      ]
+    },
+    {
+      "source_id": "dyna-2",
+      "target_id": "2512.13030",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Scaling multimodal world-action learning using human and robot data.",
+        "zh": "利用人类与机器人数据扩展多模态世界动作学习。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2",
+        "https://arxiv.org/abs/2512.13030"
+      ]
+    },
+    {
+      "source_id": "dyna-2",
+      "target_id": "2606.20781",
+      "kind": "technical-related",
+      "reason": {
+        "en": "A model case and a broader taxonomy of world-action modeling and execution.",
+        "zh": "具体模型案例与世界动作建模及执行的领域分类。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2",
+        "https://arxiv.org/abs/2606.20781"
+      ]
+    },
+    {
+      "source_id": "dyna-2.1",
+      "target_id": "2606.09811",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Multi-rate execution across separate reasoning or world-planning and action/control components.",
+        "zh": "不同频率的推理或世界规划与动作控制模块协同执行。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2.1",
+        "https://arxiv.org/abs/2606.09811"
+      ]
+    },
+    {
+      "source_id": "dyna-2.1",
+      "target_id": "2608.16885",
+      "kind": "technical-related",
+      "reason": {
+        "en": "High-level task selection and memory coordinated with a low-level robot policy.",
+        "zh": "高层任务选择与记忆同底层机器人策略协同。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2.1",
+        "https://arxiv.org/abs/2608.16885"
+      ]
+    },
+    {
+      "source_id": "dyna-2-infrastructure",
+      "target_id": "megascale-data",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Data ingestion, preparation and delivery as bottlenecks in distributed training.",
+        "zh": "分布式训练中的数据摄取、准备与交付瓶颈。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/research/dyna-2-infrastructure",
+        "https://arxiv.org/abs/2504.09844"
+      ]
+    },
+    {
+      "source_id": "2506.21539",
+      "target_id": "2602.15922",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Joint action-policy and world-prediction learning, using different discrete-token and diffusion formulations.",
+        "zh": "联合动作策略与世界预测学习，分别采用离散 token 与扩散形式。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2506.21539",
+        "https://arxiv.org/abs/2602.15922"
+      ]
+    },
+    {
+      "source_id": "2512.13030",
+      "target_id": "2604.27792",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Multi-expert world-action architectures and complementary video/action generation modes.",
+        "zh": "多专家世界动作架构及互补的视频和动作生成模式。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2512.13030",
+        "https://arxiv.org/abs/2604.27792"
+      ]
+    },
+    {
+      "source_id": "2512.13030",
+      "target_id": "2601.21998",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Mixture-of-Transformers video/action modeling for robot control.",
+        "zh": "用于机器人控制的 Mixture-of-Transformers 视频动作建模。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2512.13030",
+        "https://arxiv.org/abs/2601.21998"
+      ]
+    },
+    {
+      "source_id": "2604.27792",
+      "target_id": "2607.08639",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Cross-embodiment world-action policies and efficient online execution.",
+        "zh": "跨本体世界动作策略与高效在线执行。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2604.27792",
+        "https://arxiv.org/abs/2607.08639"
+      ]
+    },
+    {
+      "source_id": "2601.16163",
+      "target_id": "2606.01027",
+      "kind": "technical-related",
+      "reason": {
+        "en": "World prediction and action-candidate evaluation for model-based planning.",
+        "zh": "以世界预测与候选动作评估支持基于模型的规划。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2601.16163",
+        "https://arxiv.org/abs/2606.01027"
+      ]
+    },
+    {
+      "source_id": "2603.10448",
+      "target_id": "2607.23909",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Interfaces between diffusion-based visual dynamics and robot action prediction.",
+        "zh": "扩散视觉动态与机器人动作预测之间的接口。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2603.10448",
+        "https://arxiv.org/abs/2607.23909"
+      ]
+    },
+    {
+      "source_id": "2606.09811",
+      "target_id": "2608.01880",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Temporal alignment between observations, slow world inference and asynchronous action execution.",
+        "zh": "观测、低频世界推理与异步动作执行之间的时间对齐。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2606.09811",
+        "https://arxiv.org/abs/2608.01880"
+      ]
+    },
+    {
+      "source_id": "2608.04404",
+      "target_id": "2603.16666",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Contrasting retained future conditioning with action-only inference after video co-training.",
+        "zh": "比较保留未来条件与视频联合训练后仅推理动作的路线。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2608.04404",
+        "https://arxiv.org/abs/2603.16666"
+      ]
+    },
+    {
+      "source_id": "2609.34608",
+      "target_id": "2608.04404",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Reusing world/action computation within denoising or across replanning cycles.",
+        "zh": "在去噪内部或跨重规划周期复用世界动作计算。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.34608",
+        "https://arxiv.org/abs/2608.04404"
+      ]
+    },
+    {
+      "source_id": "2609.34608",
+      "target_id": "2608.01880",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Observation-to-action latency and state alignment in real-time world-action execution.",
+        "zh": "实时世界动作执行中的观测到动作延迟与状态对齐。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.34608",
+        "https://arxiv.org/abs/2608.01880"
+      ]
+    },
+    {
+      "source_id": "2609.07398",
+      "target_id": "2610.07922",
+      "kind": "technical-related",
+      "reason": {
+        "en": "Distinct OpenWAM projects comparing modular world/action coupling designs; these are separate publications.",
+        "zh": "两项独立的 OpenWAM 工作均比较模块化世界动作耦合设计，属于不同论文。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.07398",
+        "https://arxiv.org/abs/2610.07922"
+      ]
+    },
+    {
+      "source_id": "2609.07398",
+      "target_id": "2512.13030",
+      "kind": "technical-related",
+      "reason": {
+        "en": "World/action expert coupling, joint denoising and human/robot pretraining.",
+        "zh": "世界动作专家耦合、联合去噪及人类机器人预训练。"
+      },
+      "evidence_urls": [
+        "https://arxiv.org/abs/2609.07398",
+        "https://arxiv.org/abs/2512.13030"
+      ]
+    }
+  ]
+}

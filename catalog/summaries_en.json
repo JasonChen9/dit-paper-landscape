@@ -360,5 +360,14 @@
   "2412.07894": "Co-optimizes heterogeneous parallel strategies and two-stage data assignment to address imbalances introduced by sampling and packing.",
   "2502.21231": "Unifies data and context parallelism in a dynamic mesh, reducing redundant communication and balancing mixed-length training with selective offloading.",
   "2309.14509": "Uses all-to-all layout changes between sequence and attention-head sharding for communication-efficient long-context Transformer training.",
-  "scalefusion": "Exploits spatial-temporal independence to pipeline intra-layer and inter-layer communication with sliced attention computation for scalable long-video DiT inference."
+  "scalefusion": "Exploits spatial-temporal independence to pipeline intra-layer and inter-layer communication with sliced attention computation for scalable long-video DiT inference.",
+  "2506.21539": "Unifies action policies and action-conditioned image prediction in an autoregressive model, using action attention masks to reduce error propagation within action chunks; policy mode directly predicts actions from observations.",
+  "2512.13030": "Combines understanding, video and action experts with modality-specific noise scheduling to support five modeling modes, using optical-flow latent actions to learn from heterogeneous video and robot data.",
+  "2604.27792": "Extends multimode world-action modeling with unified multiview video and cross-embodiment action representations, combining post-training and execution optimizations for long-horizon closed-loop robot control.",
+  "2601.16163": "Encodes actions, future states and values within video-diffusion latents, adapting a robot policy with one post-training stage and supporting direct action execution or optional test-time planning.",
+  "2603.10448": "Cascades video and action DiTs and conditions action prediction on intermediate video-denoising features, using joint dual flow matching without requiring reconstructed future video for control.",
+  "2606.09811": "A low-frequency video DiT provides reusable long-horizon context, while a high-frequency action DiT adapts it to fresh observations through context routing and offset training.",
+  "2608.04404": "Computes future representations once at inference and reuses them sparsely during action denoising with SparseMoT and Interval KV-Fusion to balance OOD robustness and efficiency.",
+  "2609.34608": "Accelerates WAM inference without retraining by adapting retained states across replans, observation arrival, and Transformer layers through trajectory remapping, observation rebinding, and residual rescaling.",
+  "2609.07398": "Modularizes world-action pretraining for controlled comparisons of backbones, representations, interaction, and denoising, and trains OpenWAM-α on roughly 6,400 hours of human egocentric and robot data."
 }

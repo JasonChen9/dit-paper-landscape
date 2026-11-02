@@ -22,6 +22,7 @@
     <script src="./i18n.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./library-i18n.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./catalog.js?v=__DEPLOY_VERSION__" defer></script>
+    <script src="./resources.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./export.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./library-store.js?v=__DEPLOY_VERSION__" defer></script>
     <script src="./library-ui.js?v=__DEPLOY_VERSION__" defer></script>
@@ -36,6 +37,7 @@
         <div class="nav-links">
           <a href="#landscape" data-i18n="nav.map">map</a>
           <a class="active" href="#papers" data-i18n="nav.papers">papers</a>
+          <a href="#technical-resources" data-i18n="resources.title">resources</a>
           <a class="nav-home" href="https://jasonchen9.github.io/" data-i18n="nav.homepage">homepage</a>
           <a class="nav-github" href="https://github.com/JasonChen9/dit-paper-landscape">GitHub</a>
           <button id="language-toggle" class="language-toggle" type="button" aria-label="Switch to Chinese" title="Switch to Chinese">中文</button>
@@ -56,7 +58,7 @@
           <span><strong id="window-count">—</strong> <span data-i18n="stats.threeYears">in the last 3 years</span></span>
           <span><strong id="topic-count">8</strong> <span data-i18n="stats.topics">primary topics</span></span>
           <span><strong id="export-count" aria-live="polite">—</strong> <span id="export-count-label" data-i18n="stats.exports">exports</span></span>
-          <span data-i18n="stats.updated">updated Oct 2026</span>
+          <span data-i18n="stats.updated">updated Nov 2026</span>
         </div>
       </section>
 
@@ -322,6 +324,15 @@
           <p data-i18n="empty.message">No papers match the current filters.</p>
           <button id="reset-button" type="button" data-i18n="empty.reset">Clear filters</button>
         </div>
+      </section>
+
+      <section id="technical-resources" class="technical-resources" aria-labelledby="resource-title">
+        <h2 id="resource-title" data-i18n="resources.title">Technical resources</h2>
+        <p class="section-note" data-i18n="resources.description">Official technical articles and research artifacts, counted separately from papers. Cards are editorial summaries, not source abstracts.</p>
+        <p class="section-note" data-i18n="resources.searchHelp">The keyword search above also searches these resources; paper filters apply only to papers.</p>
+        <p id="resource-count" aria-live="polite"></p>
+        <div id="resource-list"></div>
+        <p id="resource-empty" data-i18n="resources.empty" hidden>No resources match the keyword search.</p>
       </section>
 
       <section id="method" class="method" aria-labelledby="method-title">

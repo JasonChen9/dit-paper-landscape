@@ -13,6 +13,8 @@ on:
       - "catalog/taxonomy.json"
       - "catalog/paper_taxonomy.json"
       - "catalog/id_aliases.json"
+      - "catalog/resources.json"
+      - "catalog/related_work.json"
       - "catalog/semantic_landscape.json"
       - "scripts/build_landscape_data.mjs"
       - "scripts/validate_catalog.py"
@@ -60,6 +62,7 @@ jobs:
           cp catalog/taxonomy.json _site/data/taxonomy.json
           cp catalog/paper_taxonomy.json _site/data/paper_taxonomy.json
           cp catalog/id_aliases.json _site/data/id_aliases.json
+          cp catalog/resources.json catalog/related_work.json _site/data/
           node scripts/build_landscape_data.mjs catalog/papers.csv _site/data/landscape.json catalog/author_affiliations.json
           sed -i "s/__DEPLOY_VERSION__/$DEPLOY_VERSION/g" _site/index.html _site/library.html
           printf '{"version":"%s"}\n' "$DEPLOY_VERSION" > _site/version.json

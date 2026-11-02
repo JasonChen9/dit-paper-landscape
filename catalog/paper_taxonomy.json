@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30",
+  "updated_at": "2026-11-02",
   "classification_basis": {
     "en": "Editorial classification by main contribution, with bilingual rationales based on the source-backed paper cards and abstracts.",
     "zh": "按主要贡献逐篇确定主类，依据已核实来源的论文卡片与摘要，并保留中英文理由。"
@@ -4789,6 +4789,125 @@
         "runtime",
         "communication",
         "memory"
+      ]
+    },
+    "2506.21539": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "The main contribution is a unified robot action policy and action-conditioned world predictor, evaluated through control performance.",
+        "zh": "主要贡献是统一机器人动作策略与动作条件世界预测，并通过控制性能评价。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2512.13030": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Its unified experts and latent-action pretraining target general robot policies across complementary world/action modeling modes.",
+        "zh": "以统一专家和潜动作预训练学习通用机器人策略，并兼容互补的世界与动作建模模式。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2604.27792": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "The contribution centers on a general multiview, cross-embodiment robot world-action policy, with execution optimizations supporting deployment.",
+        "zh": "核心是多视角、跨本体的机器人世界动作策略，执行优化服务于其部署。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2601.16163": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "It adapts a pretrained video model into a robot-control policy with optional model-based action planning.",
+        "zh": "将预训练视频模型适配为机器人控制策略，并支持可选的基于模型的动作规划。"
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2603.10448": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "zh": "主要贡献是通过视频动态特征学习可泛化机器人动作策略，与现有世界动作策略统一归入具身智能。",
+        "en": "Its main contribution is a generalizable robot policy conditioned on video-dynamics features, consistent with the atlas classification of world-action policies."
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": []
+    },
+    "2606.09811": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "zh": "提出面向机器人控制的双频世界动作架构与配套训练方法，核心贡献超出通用部署调度。",
+        "en": "Its main contribution is a multi-rate world-action policy architecture and matching training method for robot control, beyond a general deployment scheduler."
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "serving"
+      ]
+    },
+    "2608.04404": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "zh": "主要设计保留未来条件的稀疏世界动作策略架构，以机器人鲁棒性和效率为共同目标。",
+        "en": "It designs a sparse future-conditioned world-action policy architecture, jointly targeting robot robustness and inference efficiency."
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": [
+        "serving"
+      ]
+    },
+    "2609.34608": {
+      "primary_topic": "systems",
+      "primary_reason": {
+        "zh": "核心贡献是无需重训的状态适配与推理复用运行时，直接优化已有世界动作模型的执行成本。",
+        "en": "The main contribution is a training-free state-adaptation and inference-reuse framework that directly optimizes execution of existing world-action models."
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": [
+        "runtime",
+        "serving"
+      ]
+    },
+    "2609.07398": {
+      "primary_topic": "vla",
+      "primary_reason": {
+        "zh": "模块化实验围绕世界动作策略设计与预训练展开，并交付跨机器人形态的 OpenWAM-α 控制模型。",
+        "en": "Its modular experiments study world-action policy design and pretraining and deliver the OpenWAM-α control model across robot embodiments."
+      },
+      "application_domains": [
+        "robotics",
+        "video"
+      ],
+      "system_layers": [
+        "training",
+        "serving"
       ]
     }
   }

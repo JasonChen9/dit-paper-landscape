@@ -485,6 +485,12 @@ const similarities = semanticValid ? semanticPayload.paper.similarities : simila
 const clusterInfo = describeClusters(papers, clusters);
 const edges = semanticValid ? semanticPayload.paper.edges : buildPaperEdges(similarities, clusters);
 const positions = semanticValid ? semanticPayload.paper.positions : paperLayout(papers, clusters, clusterInfo, edges);
+// Editorial reading links are typed separately from computed similarity edges.
+// Technical resources stay outside the paper and author counts.
+const relatedWorkPath = path.join(path.dirname(catalogPath), "related_work.json");
+const resourcesPath = path.join(path.dirname(catalogPath), "resources.json");
+const relatedWork = fs.existsSync(relatedWorkPath) ? JSON.parse(fs.readFileSync(relatedWorkPath, "utf8")).links : [];
+const resources = fs.existsSync(resourcesPath) ? JSON.parse(fs.readFileSync(resourcesPath, "utf8")).resources : [];
 const output = roundNumbers({
   algorithmVersion: 3,
   classificationModel: "editorial-primary-topic",
@@ -495,6 +501,8 @@ const output = roundNumbers({
   catalogSignature: catalogSignature(papers),
   taxonomySignature: taxonomySignature(papers),
   paperIds: papers.map((paper) => paper.arxiv_id),
+  resourceIds: resources.map(resource => resource.id),
+  relatedWork,
   paper: { clusters, similarities, clusterInfo, edges, positions },
   authors: authorModel(papers, clusters, affiliationPayload.authors || {}, semanticValid ? similarities : null),
 });

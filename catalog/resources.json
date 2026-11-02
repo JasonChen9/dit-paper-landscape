@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29",
+  "updated_at": "2026-11-02",
   "resources": [
     {
       "id": "applied-compute-staleness",
@@ -49,6 +49,297 @@
       ],
       "venue": "CGO 2027（仅作者artifact自述，正式录用未核实）",
       "venue_evidence_url": "https://github.com/LancerLab/sala-artifacts"
+    },
+    {
+      "id": "dyna-2",
+      "title": "Dyna-2: A 1-Million-Hour Scaling Law for World-Action Models",
+      "title_zh": "Dyna-2：世界动作模型的百万小时规模规律",
+      "description": {
+        "en": "Studies human-video pretraining and transfer to robot actions with a video-diffusion world-action model.",
+        "zh": "以视频扩散世界动作模型研究人类视频预训练与机器人动作迁移的规模规律。"
+      },
+      "description_kind": "editorial-summary",
+      "url": "https://www.dyna.co/dyna-2",
+      "kind": "technical-article",
+      "authors": [
+        "Dyna Robotics"
+      ],
+      "collection_tags": [
+        "robotics-library"
+      ],
+      "venue": "Dyna official technical report",
+      "venue_evidence_url": "https://www.dyna.co/dyna-2",
+      "published": "2026-08",
+      "published_precision": "month",
+      "published_basis": "official-article-header",
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "The main contribution tests human-video scaling and transfer to robot action policies, consistent with the classification of DreamZero and Fast-WAM.",
+        "zh": "主要贡献是检验人类视频规模与机器人动作策略迁移，按现有 DreamZero、Fast-WAM 的规则归入具身智能。"
+      },
+      "application_domains": [
+        "video",
+        "robotics"
+      ],
+      "system_layers": [],
+      "topic_tags": [
+        "world-action-model",
+        "video-diffusion",
+        "human-video-pretraining",
+        "cross-embodiment-transfer",
+        "scaling-law"
+      ],
+      "details": {
+        "background": {
+          "en": "Robot policies could learn manipulation from abundant egocentric human recordings.",
+          "zh": "机器人策略可利用大规模第一人称人类记录学习操作能力。"
+        },
+        "challenge": {
+          "en": "Better human-data predictions need not imply transfer across embodiments.",
+          "zh": "人类数据上的预测改善未必能跨本体迁移到机器人。"
+        },
+        "method": {
+          "en": "Dyna-2 trains video and action streams with flow matching, testing nested human-data subsets from 1,000 to 1,000,000 hours.",
+          "zh": "Dyna-2 通过流匹配学习视频与动作流，以一千至一百万小时的嵌套人类数据子集检验规模效应。"
+        },
+        "result": {
+          "en": "The authors report improving held-out robot predictions and post-trained robot performance as human pretraining grows.",
+          "zh": "作者报告，人类预训练规模增长能改善未见机器人数据的离线预测和后训练后的真机表现。"
+        }
+      },
+      "source_notes": {
+        "en": "The scaling-study variant neither generates nor attends to future video at inference; other production variants are discussed separately.",
+        "zh": "规模实验变体在推理时既不生成也不读取预测的未来视频；报告另行讨论其他生产变体。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2"
+      ],
+      "supplementary_links": [],
+      "verified_at": "2026-11-02"
+    },
+    {
+      "id": "dyna-2.1",
+      "title": "Dyna-2.1: A Physical Agent for End-to-End Workflows",
+      "title_zh": "Dyna-2.1：执行端到端工作流的物理智能体",
+      "description": {
+        "en": "Combines workflow reasoning, a world-action policy and whole-body control for extended physical workflows.",
+        "zh": "组合工作流推理、世界动作策略和全身控制，以执行持续多步骤的物理工作流。"
+      },
+      "description_kind": "editorial-summary",
+      "url": "https://www.dyna.co/dyna-2.1",
+      "kind": "technical-article",
+      "authors": [
+        "Dyna Robotics"
+      ],
+      "collection_tags": [
+        "robotics-library",
+        "systems-research"
+      ],
+      "venue": "Dyna official technical report",
+      "venue_evidence_url": "https://www.dyna.co/dyna-2.1",
+      "published": "2026-09-29",
+      "published_precision": "day",
+      "published_basis": "official-article-header",
+      "primary_topic": "agent",
+      "primary_reason": {
+        "en": "The main contribution integrates reasoning, action and control into a physical workflow agent.",
+        "zh": "主要贡献是把推理、动作与控制整合为执行物理工作流的智能体。"
+      },
+      "application_domains": [
+        "robotics",
+        "language",
+        "multimodal"
+      ],
+      "system_layers": [
+        "runtime"
+      ],
+      "topic_tags": [
+        "embodied-agent",
+        "workflow-orchestration",
+        "hierarchical-control",
+        "asynchronous-inference",
+        "action-representation",
+        "world-action-model"
+      ],
+      "details": {
+        "background": {
+          "en": "Useful robots must coordinate complete workflows rather than isolated manipulation tasks.",
+          "zh": "实用机器人需要协调完整工作流，而非只完成孤立操作任务。"
+        },
+        "challenge": {
+          "en": "Long workflows combine accumulated errors, interruptions and decisions requiring persistent memory.",
+          "zh": "长工作流同时面临误差累积、任务中断和依赖长期记忆的决策。"
+        },
+        "method": {
+          "en": "A low-frequency VLM orchestrates workflows, an improved Dyna-2 policy emits task-space targets in a Unified Robot Representation, and an RL whole-body controller executes them.",
+          "zh": "低频 VLM 编排工作流，改进版 Dyna-2 策略输出统一机器人表示中的任务空间目标，再由 RL 全身控制器执行。"
+        },
+        "result": {
+          "en": "Dyna demonstrates an uncut hour-long laundry workflow and recovery behaviors on its Taku robot.",
+          "zh": "Dyna 展示 Taku 机器人一小时未剪辑洗衣工作流及自主恢复行为。"
+        }
+      },
+      "source_notes": {
+        "en": "100 Hz describes the whole-body controller, not the VLM or Dyna-2 policy; demonstrated workflows are not a general reliability guarantee.",
+        "zh": "100 Hz 指全身控制器频率，不是 VLM 或 Dyna-2 策略频率；工作流展示不等于通用可靠性保证。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/dyna-2.1"
+      ],
+      "supplementary_links": [],
+      "verified_at": "2026-11-02"
+    },
+    {
+      "id": "dyna-2-infrastructure",
+      "title": "Training Dyna-2 at million-hour scale, repeatably",
+      "title_zh": "可重复地训练百万小时规模的 Dyna-2",
+      "description": {
+        "en": "Describes the data and training infrastructure behind repeatable million-hour robotics experiments.",
+        "zh": "介绍支撑百万小时机器人训练实验反复运行的数据与训练基础设施。"
+      },
+      "description_kind": "editorial-summary",
+      "url": "https://www.dyna.co/research/dyna-2-infrastructure",
+      "kind": "technical-article",
+      "authors": [
+        "Dyna Robotics"
+      ],
+      "collection_tags": [
+        "systems-research",
+        "robotics-library"
+      ],
+      "venue": "Dyna official technical article",
+      "venue_evidence_url": "https://www.dyna.co/research/dyna-2-infrastructure",
+      "published": "2026-08",
+      "published_precision": "month",
+      "published_basis": "official-article-header",
+      "primary_topic": "systems",
+      "primary_reason": {
+        "en": "The contribution concerns data delivery, distributed training and job resilience.",
+        "zh": "主要贡献是数据供给、分布式训练和作业容错。"
+      },
+      "application_domains": [
+        "robotics",
+        "video",
+        "multimodal"
+      ],
+      "system_layers": [
+        "training",
+        "runtime",
+        "communication",
+        "memory",
+        "cluster"
+      ],
+      "topic_tags": [
+        "training-infrastructure",
+        "data-pipeline",
+        "storage-layout",
+        "mcap",
+        "nvme-cache",
+        "optimizer-sharding",
+        "fault-tolerance"
+      ],
+      "details": {
+        "background": {
+          "en": "Million-hour robot training must feed synchronized multimodal samples to distributed GPU workers.",
+          "zh": "百万小时机器人训练需要持续向分布式 GPU 提供时间同步的多模态样本。"
+        },
+        "challenge": {
+          "en": "Storage reads, ingestion, manifests and cross-node optimizer traffic become successive bottlenecks.",
+          "zh": "存储读取、数据摄取、训练清单和跨节点优化器通信依次成为瓶颈。"
+        },
+        "method": {
+          "en": "The stack combines grouped MCAP storage, DAG ingestion, mapped manifests, NVMe caching, topology-aware Muon sharding and checkpoint recovery.",
+          "zh": "系统组合分组 MCAP 存储、DAG 摄取、内存映射清单、NVMe 缓存、拓扑感知 Muon 分片及检查点恢复。"
+        },
+        "result": {
+          "en": "Reported ingestion grows from 14,000 to 440,000 episode-hours weekly, while manifest-related startup falls from about 48 hours to under a minute.",
+          "zh": "作者报告每周摄取量由 1.4 万增至 44 万 episode-hours，清单相关启动时间由约 48 小时降至不足一分钟。"
+        }
+      },
+      "source_notes": {
+        "en": "The roughly 3× gain applies to large-scale optimizer steps; 98% GPU utilization is reported for a warmed-cache multi-node run.",
+        "zh": "约 3 倍提升仅指较大规模下的优化器步骤；98% GPU 利用率对应缓存预热后的多节点运行。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/research/dyna-2-infrastructure"
+      ],
+      "supplementary_links": [],
+      "verified_at": "2026-11-02"
+    },
+    {
+      "id": "dyna-1",
+      "title": "Dynamism v1 (Dyna-1) Model: A Breakthrough in Performance and Production-Ready Embodied AI",
+      "title_zh": "Dynamism v1（Dyna-1）：面向生产部署的具身智能模型",
+      "description": {
+        "en": "Dyna's earlier manipulation model emphasizes reward-guided improvement, recovery and continuous deployment data.",
+        "zh": "Dyna 前代操作模型，重点是奖励辅助改进、错误恢复和持续部署数据。"
+      },
+      "description_kind": "editorial-summary",
+      "url": "https://www.dyna.co/research/dyna-1",
+      "kind": "technical-article",
+      "authors": [
+        "Dyna Team"
+      ],
+      "collection_tags": [
+        "robotics-library"
+      ],
+      "venue": "Dyna official technical report",
+      "venue_evidence_url": "https://www.dyna.co/research/dyna-1",
+      "published": "2025-06",
+      "published_precision": "month",
+      "published_basis": "official-article-header",
+      "primary_topic": "vla",
+      "primary_reason": {
+        "en": "Provides embodied-policy and deployment context without establishing a world-action architecture.",
+        "zh": "提供具身策略与部署背景，未据此确认世界动作架构。"
+      },
+      "application_domains": [
+        "robotics"
+      ],
+      "system_layers": [],
+      "topic_tags": [
+        "robotics",
+        "reward-model",
+        "error-recovery",
+        "continuous-deployment",
+        "data-curation"
+      ],
+      "details": {
+        "background": {
+          "en": "Continuous dexterous operation requires recovery from rare mistakes over long runs.",
+          "zh": "持续灵巧操作需要在长时间运行中恢复罕见错误。"
+        },
+        "challenge": {
+          "en": "Deployment streams lack episode boundaries, and compounding failures undermine throughput.",
+          "zh": "部署数据缺少明确回合边界，累积故障会降低吞吐。"
+        },
+        "method": {
+          "en": "Reward models estimate progress and support recovery, stream segmentation and iterative training.",
+          "zh": "奖励模型估计任务进度，辅助错误恢复、流数据分段和迭代训练。"
+        },
+        "result": {
+          "en": "Dyna reports over 850 napkins folded in 24 hours at 99.4% task success and roughly 60% of human speed.",
+          "zh": "Dyna 报告 24 小时折叠超过 850 张餐巾，任务成功率 99.4%，速度约为人类的 60%。"
+        }
+      },
+      "source_notes": {
+        "en": "Not classified as a confirmed WAM; task autonomy does not imply automatic replenishment or complete-workflow autonomy.",
+        "zh": "不标记为已确认 WAM；单项任务自主运行不代表补料和整个工作流均自动完成。"
+      },
+      "evidence_urls": [
+        "https://www.dyna.co/research/dyna-1",
+        "https://www.dyna.co/dyna-2.1"
+      ],
+      "supplementary_links": [
+        {
+          "label": {
+            "en": "Dyna-1 pretraining update (November 2025)",
+            "zh": "Dyna-1 预训练更新（2025 年 11 月）"
+          },
+          "url": "https://www.dyna.co/research/pre-training"
+        }
+      ],
+      "verified_at": "2026-11-02"
     }
   ]
 }

@@ -24,6 +24,8 @@ def main():
     summaries = json.loads((ROOT / "catalog/summaries_en.json").read_text())
     taxonomy = json.loads((ROOT / "catalog/taxonomy.json").read_text())
     classifications = json.loads((ROOT / "catalog/paper_taxonomy.json").read_text())["papers"]
+    resources = json.loads((ROOT / "catalog/resources.json").read_text())["resources"]
+    related_work = json.loads((ROOT / "catalog/related_work.json").read_text())["links"]
     errors, warnings = [], []
     ids = [p["arxiv_id"] for p in rows]
     for identifier, count in collections.Counter(ids).items():
@@ -100,14 +102,62 @@ def main():
             errors.append(f"{identifier}: abstract lacks source provenance")
         if detail.get("venue", {}).get("status") in ("published", "accepted") and not detail.get("venue", {}).get("evidence_url"):
             errors.append(f"{identifier}: formal venue claim lacks evidence URL")
+    resource_ids = [resource.get("id") for resource in resources]
+    if len(set(resource_ids)) != len(resource_ids) or set(resource_ids) & set(ids):
+        errors.append("resource IDs must be unique and separate from paper IDs")
+    for resource in resources:
+        identifier = resource.get("id")
+        if not identifier or not resource.get("title") or not resource.get("title_zh"):
+            errors.append(f"{identifier}: resource lacks ID or bilingual titles")
+        if resource.get("kind") not in ("technical-article", "research-artifact", "software"):
+            errors.append(f"{identifier}: unsupported resource kind")
+        if not all(resource.get("description", {}).get(lang, "").strip() for lang in ("en", "zh")):
+            errors.append(f"{identifier}: resource lacks bilingual description")
+        source = urlparse(resource.get("url", ""))
+        if source.scheme not in ("http", "https") or not source.netloc:
+            errors.append(f"{identifier}: resource lacks a public source")
+        if resource.get("details"):
+            for field in FIELDS:
+                if not all(resource["details"].get(field, {}).get(lang, "").strip() for lang in ("en", "zh")):
+                    errors.append(f"{identifier}: resource lacks bilingual {field}")
+        if "primary_topic" in resource:
+            if resource["primary_topic"] not in topics:
+                errors.append(f"{identifier}: invalid resource topic")
+            if not all(resource.get("primary_reason", {}).get(lang) for lang in ("en", "zh")):
+                errors.append(f"{identifier}: resource lacks classification rationale")
+            for dimension, definition in taxonomy["facets"].items():
+                values = resource.get("collection_tags" if dimension == "collections" else definition["field"], [])
+                allowed = {option["id"] for option in definition["options"]}
+                if not isinstance(values, list) or any(value not in allowed for value in values):
+                    errors.append(f"{identifier}: invalid resource {dimension}")
+        date = resource.get("published", "")
+        if date and not re.fullmatch(r"\d{4}(-\d{2}){0,2}", date):
+            errors.append(f"{identifier}: unsupported resource date")
+    known_ids = set(ids) | set(resource_ids)
+    pairs = set()
+    for edge in related_work:
+        source, target = edge.get("source_id"), edge.get("target_id")
+        pair = frozenset((source, target))
+        if source not in known_ids or target not in known_ids or source == target:
+            errors.append(f"invalid related-work endpoints: {source}, {target}")
+        if pair in pairs:
+            errors.append(f"duplicate related-work pair: {source}, {target}")
+        pairs.add(pair)
+        if edge.get("kind") != "technical-related":
+            errors.append(f"{source}, {target}: relation must be technical-related")
+        if not all(edge.get("reason", {}).get(lang, "").strip() for lang in ("en", "zh")):
+            errors.append(f"{source}, {target}: relation lacks bilingual rationale")
+        if not edge.get("evidence_urls") or any(urlparse(url).scheme not in ("http", "https") or not urlparse(url).netloc for url in edge.get("evidence_urls", [])):
+            errors.append(f"{source}, {target}: relation lacks public evidence")
     # Only public bibliographic evidence belongs in the public catalog.
-    for name in ("papers.csv", "paper_details.json", "abstracts.json", "summaries_en.json", "resources.json", "import_provenance.json", "taxonomy.json", "paper_taxonomy.json"):
+    for name in ("papers.csv", "paper_details.json", "abstracts.json", "summaries_en.json", "resources.json", "related_work.json", "import_provenance.json", "taxonomy.json", "paper_taxonomy.json"):
         path = ROOT / "catalog" / name
         if path.exists() and re.search(r"/Users/|file://|/tmp/dit-|work/myaicoder", path.read_text()):
             errors.append(f"{name}: contains a private local path")
     semantic = json.loads((ROOT / "catalog/semantic_landscape.json").read_text())
     report = {
         "paper_count": len(rows), "bilingual_card_count": len(details),
+        "resource_count": len(resources), "technical_relation_count": len(related_work),
         "official_venue_link_count": sum(bool(p.get("venue_url")) for p in rows),
         "classified_paper_count": len(classifications),
         "bilingual_abstract_count": sum(record.get('en_kind') == 'source-abstract' and record.get('zh_kind') == 'translation' for record in abstracts.values()),
